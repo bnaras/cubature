@@ -1,17 +1,20 @@
 #' Adaptive multivariate integration over hypercubes
-#' 
+#'
 #' The function performs adaptive multidimensional integration (cubature) of
 #' (possibly) vector-valued integrands over hypercubes.
-#' 
+#'
 #' The function merely calls Johnson's C code and returns the results.  The
 #' original C code by Johnson was modified for use with R memory allocation
 #' functions and a helper function does the callback.
-#' 
+#'
 #' One can specify a maximum number of function evaluations (default is 0 for
 #' no limit).  Otherwise, the integration stops when the estimated error is
 #' less than the absolute error requested, or when the estimated error is less
-#' than tol times the integral, in absolute value.
-#' 
+#' than tol times the integral, in absolute value, or the maximum number of
+#' iterations is reached (see parameter info below), whichever is earlier.
+#'
+#' @importFrom Rcpp evalCpp
+#'
 #' @param f The function (integrand) to be integrated
 #' @param lowerLimit The lower limit of integration, a vector for hypercubes
 #' @param upperLimit The upper limit of integration, a vector for hypercubes
@@ -20,7 +23,8 @@
 #' @param fDim The dimension of the integrand, default 1, bears no relation to
 #' the dimension of the hypercube
 #' @param maxEval The maximum number of function evaluations needed, default 0
-#' implying no limit
+#' implying no limit. Note that the actual number of function evaluations
+#' performed is only approximately guaranteed not to exceed this number.
 #' @param absError The maximum absolute error tolerated
 #' @param doChecking A flag to be a bit anal about checking inputs to C
 #' routines. A FALSE value results in approximately 9 percent speed gain in our
@@ -33,40 +37,38 @@
 #' @references See \url{http://ab-initio.mit.edu/wiki/index.php/Cubature}.
 #' @keywords math
 #' @examples
-#' 
+#'
+#' \dontrun{
 #' ## Test function 0
 #' ## Compare with original cubature result of
 #' ## ./cubature_test 2 1e-4 0 0
 #' ## 2-dim integral, tolerance = 0.0001
 #' ## integrand 0: integral = 0.708073, est err = 1.70943e-05, true err = 7.69005e-09
 #' ## #evals = 17
-#' 
+#'
 #' testFn0 <- function(x) {
 #'   prod(cos(x))
 #' }
-#' 
+#'
 #' adaptIntegrate(testFn0, rep(0,2), rep(1,2), tol=1e-4)
-#' 
+#'
 #' M_2_SQRTPI <- 2/sqrt(pi)
-#' 
+#'
 #' ## Test function 1
 #' ## Compare with original cubature result of
 #' ## ./cubature_test 3 1e-4 1 0
 #' ## 3-dim integral, tolerance = 0.0001
 #' ## integrand 1: integral = 1.00001, est err = 9.67798e-05, true err = 9.76919e-06
 #' ## #evals = 5115
-#' 
+#'
 #' testFn1 <- function(x) {
-#'   scale = 1.0
-#'   val = 0
-#'   dim = length(x)
-#'   val = sum (((1-x) / x)^2)
-#'   scale = prod(M_2_SQRTPI/x^2)
+#'   val <- sum (((1-x) / x)^2)
+#'   scale <- prod(M_2_SQRTPI/x^2)
 #'   exp(-val) * scale
 #' }
-#' 
+#'
 #' adaptIntegrate(testFn1, rep(0, 3), rep(1, 3), tol=1e-4)
-#' 
+#'
 #' ##
 #' ## Test function 2
 #' ## Compare with original cubature result of
@@ -74,15 +76,15 @@
 #' ## 2-dim integral, tolerance = 0.0001
 #' ## integrand 2: integral = 0.19728, est err = 1.97261e-05, true err = 4.58316e-05
 #' ## #evals = 166141
-#' 
+#'
 #' testFn2 <- function(x) {
 #'   ## discontinuous objective: volume of hypersphere
-#'   radius = as.double(0.50124145262344534123412)
+#'   radius <- as.double(0.50124145262344534123412)
 #'   ifelse(sum(x*x) < radius*radius, 1, 0)
 #' }
-#' 
+#'
 #' adaptIntegrate(testFn2, rep(0, 2), rep(1, 2), tol=1e-4)
-#' 
+#'
 #' ##
 #' ## Test function 3
 #' ## Compare with original cubature result of
@@ -90,13 +92,13 @@
 #' ## 3-dim integral, tolerance = 0.0001
 #' ## integrand 3: integral = 1, est err = 0, true err = 2.22045e-16
 #' ## #evals = 33
-#' 
+#'
 #' testFn3 <- function(x) {
 #'   prod(2*x)
 #' }
-#' 
+#'
 #' adaptIntegrate(testFn3, rep(0,3), rep(1,3), tol=1e-4)
-#' 
+#'
 #' ##
 #' ## Test function 4 (Gaussian centered at 1/2)
 #' ## Compare with original cubature result of
@@ -104,16 +106,16 @@
 #' ## 2-dim integral, tolerance = 0.0001
 #' ## integrand 4: integral = 1, est err = 9.84399e-05, true err = 2.78894e-06
 #' ## #evals = 1853
-#' 
+#'
 #' testFn4 <- function(x) {
-#'   a = 0.1
-#'   s = sum((x-0.5)^2)
+#'   a <- 0.1
+#'   s <- sum((x - 0.5)^2)
 #'   (M_2_SQRTPI / (2. * a))^length(x) * exp (-s / (a * a))
 #' }
-#' 
+#'
 #' adaptIntegrate(testFn4, rep(0,2), rep(1,2), tol=1e-4)
-#' 
-#' 
+#'
+#'
 #' ##
 #' ## Test function 5 (double Gaussian)
 #' ## Compare with original cubature result of
@@ -121,16 +123,16 @@
 #' ## 3-dim integral, tolerance = 0.0001
 #' ## integrand 5: integral = 0.999994, est err = 9.98015e-05, true err = 6.33407e-06
 #' ## #evals = 59631
-#' 
+#'
 #' testFn5 <- function(x) {
-#'   a = 0.1
-#'   s1 = sum((x-1/3)^2)
-#'   s2 = sum((x-2/3)^2)
+#'   a <- 0.1
+#'   s1 <- sum((x - 1/3)^2)
+#'   s2 <- sum((x - 2/3)^2)
 #'   0.5 * (M_2_SQRTPI / (2. * a))^length(x) * (exp(-s1 / (a * a)) + exp(-s2 / (a * a)))
 #' }
-#' 
+#'
 #' adaptIntegrate(testFn5, rep(0,3), rep(1,3), tol=1e-4)
-#' 
+#'
 #' ##
 #' ## Test function 6 (Tsuda's example)
 #' ## Compare with original cubature result of
@@ -138,15 +140,15 @@
 #' ## 4-dim integral, tolerance = 0.0001
 #' ## integrand 6: integral = 0.999998, est err = 9.99685e-05, true err = 1.5717e-06
 #' ## #evals = 18753
-#' 
+#'
 #' testFn6 <- function(x) {
-#'   a = (1+sqrt(10.0))/9.0
-#'   prod(a/(a+1)*((a+1)/(a+x))^2)
+#'   a <- (1 + sqrt(10.0)) / 9.0
+#'   prod(a / (a + 1) * ((a + 1) / (a + x))^2)
 #' }
-#' 
+#'
 #' adaptIntegrate(testFn6, rep(0,4), rep(1,4), tol=1e-4)
-#' 
-#' 
+#'
+#'
 #' ##
 #' ## Test function 7
 #' ##   test integrand from W. J. Morokoff and R. E. Caflisch, "Quasi=
@@ -157,16 +159,16 @@
 #' ## 3-dim integral, tolerance = 0.0001
 #' ## integrand 7: integral = 1.00001, est err = 9.96657e-05, true err = 1.15994e-05
 #' ## #evals = 7887
-#' 
+#'
 #' testFn7 <- function(x) {
 #'   n <- length(x)
 #'   p <- 1/n
-#'   (1+p)^n * prod(x^p)
+#'   (1 + p)^n * prod(x^p)
 #' }
-#' 
+#'
 #' adaptIntegrate(testFn7, rep(0,3), rep(1,3), tol=1e-4)
-#' 
-#' 
+#'
+#'
 #' ## Example from web page
 #' ## http://ab-initio.mit.edu/wiki/index.php/Cubature
 #' ##
@@ -174,11 +176,11 @@
 #' ## hyperbcube [-2, 2]^3
 #' ## Compare with original cubature result
 #' testFnWeb <-  function(x) {
-#'   exp(-0.5*sum(x^2))
+#'   exp(-0.5 * sum(x^2))
 #' }
-#' 
+#'
 #' adaptIntegrate(testFnWeb, rep(-2,3), rep(2,3), tol=1e-4)
-#' 
+#'
 #' ## Test function I.1d from
 #' ## Numerical integration using Wang-Landau sampling
 #' ## Y. W. Li, T. Wust, D. P. Landau, H. Q. Lin
@@ -189,29 +191,24 @@
 #'   sin(4*x) *
 #'     x * ((x * ( x * (x*x-4) + 1) - 1))
 #' }
-#' 
+#'
 #' adaptIntegrate(I.1d, -2, 2, tol=1e-7)
-#' 
+#'
 #' ## Test function I.2d from
 #' ## Numerical integration using Wang-Landau sampling
 #' ## Y. W. Li, T. Wust, D. P. Landau, H. Q. Lin
 #' ## Computer Physics Communications, 2007, 524-529
 #' ## Compare with exact answer: -0.01797992646
 #' ##
-#' ## Test function I.2d from
-#' ## Numerical integration using Wang-Landau sampling
-#' ## Y.W. Li, T. Wust, D.P. Landau, H.Q. Lin
-#' ## Computer Physics Communications, 2007 524-529
-#' ## Compare with exact answer: -0.01797992646
 #' ##
 #' I.2d <- function(x) {
 #'   x1 = x[1]
 #'   x2 = x[2]
 #'   sin(4*x1+1) * cos(4*x2) * x1 * (x1*(x1*x1)^2 - x2*(x2*x2 - x1) +2)
 #' }
-#' 
+#'
 #' adaptIntegrate(I.2d, rep(-1, 2), rep(1, 2), maxEval=10000)
-#' 
+#'
 #' ##
 #' ## Example of multivariate normal integration borrowed from
 #' ## package mvtnorm (on CRAN) to check ... argument
@@ -246,7 +243,7 @@
 #'         return(logretval)
 #'     exp(logretval)
 #' }
-#' 
+#'
 #' m <- 3
 #' sigma <- diag(3)
 #' sigma[2,1] <- sigma[1, 2] <- 3/5 ; sigma[3,1] <- sigma[1, 3] <- 1/3
@@ -254,51 +251,46 @@
 #' adaptIntegrate(dmvnorm, lower=rep(-0.5, m), upper=c(1,4,2),
 #'                         mean=rep(0, m), sigma=sigma, log=FALSE,
 #'                maxEval=10000)
-#' 
-#' 
+#' }
+#'
 #' @export adaptIntegrate
-adaptIntegrate <-
-function(f, lowerLimit, upperLimit, ..., tol=1e-5,
-                      fDim=1, maxEval=0, absError=0, doChecking=FALSE) {
+adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
+                           fDim = 1, maxEval = 0, absError = 0, doChecking = FALSE) {
 
-  nL = length(lowerLimit); nU = length(upperLimit)
-  if (fDim <= 0 || nL <= 0 || nU <= 0) {
-      stop("Both f and x must have dimension >= 1")
-  }
+    nL = length(lowerLimit); nU = length(upperLimit)
+    if (fDim <= 0 || nL <= 0 || nU <= 0) {
+        stop("Both f and x must have dimension >= 1")
+    }
 
-  if (nL != nU) {
-      stop("lowerLimit and upperLimit must have same length")
-  }
+    if (nL != nU) {
+        stop("lowerLimit and upperLimit must have same length")
+    }
 
-  if (tol <= 0) {
-      stop("tol should be positive!")
-  }
+    if (tol <= 0) {
+        stop("tol should be positive!")
+    }
 
-  f <- match.fun(f)
+    f <- match.fun(f)
 
-  if (doChecking) {
-      fnF <- function(x) {
-          x <- f(x, ...)
-          if(!is.numeric(x) || length(x) != fDim) {
-              print("adaptIntegrate: Error in evaluation function f(x) for x=")
-              print(x)
-              stop("adaptIntegrate: Result f(x) is not numeric or has wrong dimension")
-          }
-          as.double(x)
-      }
-  } else {
-      fnF <- function(x) {
-          as.double(f(x, ...))
-      }
-  }
+    if (doChecking) {
+        fnF <- function(x) {
+            fx <- f(x, ...)
+            if(!is.numeric(fx) || length(fx) != fDim) {
+                cat("adaptIntegrate: Error in evaluation function f(x) for x = ", x, "\n")
+                stop("adaptIntegrate: Result f(x) is not numeric or has wrong dimension")
+            }
+            as.double(fx)
+        }
+    } else {
+        fnF <- function(x) {
+            as.double(f(x, ...))
+        }
+    }
 
-  result = .Call("doCubature", as.integer(fDim), body(fnF), as.double(lowerLimit),
-  as.double(upperLimit), as.integer(maxEval), as.double(absError),
-  as.double(tol), environment(),
-  PACKAGE="cubature")
 
-  names(result) <- c("integral", "error", "functionEvaluations", "returnCode")
-  result
+    .Call("cubature_doCubature", as.integer(fDim), fnF, as.double(lowerLimit),
+          as.double(upperLimit), as.integer(maxEval), as.double(absError),
+          as.double(tol), PACKAGE="cubature")
 }
 
 
