@@ -14,6 +14,7 @@
 #' iterations is reached (see parameter info below), whichever is earlier.
 #'
 #' @importFrom Rcpp evalCpp
+#' @aliases adaptIntegrate
 #'
 #' @param f The function (integrand) to be integrated
 #' @param lowerLimit The lower limit of integration, a vector for hypercubes
@@ -29,10 +30,33 @@
 #' @param doChecking A flag to be a bit anal about checking inputs to C
 #' routines. A FALSE value results in approximately 9 percent speed gain in our
 #' experiments. Your mileage will of course vary. Default value is FALSE.
+#' @param norm For vector-valued integrands, \code{norm} specifies the norm that is
+#' used to measure the error and determine convergence properties. See below.
 #' @return The returned value is a list of three items: \item{integral}{the
 #' value of the integral} \item{error}{the estimated relative error}
 #' \item{functionEvaluations}{the number of times the function was evaluated}
 #' \item{returnCode}{the actual integer return code of the C routine}
+#'
+#' @details
+#' The \code{norm} argument is irrelevant for scalar integrands and is ignored.
+#' Given vectors \eqn{v} and \eqn{e} of estimated integrals and errors therein,
+#' respectively, the \code{norm} argument takes on one of the following values:
+#' \describe{
+#'   \item{\code{INDIVIDUAL}}{Convergence is achieved only when each integrand
+#'   (each component of \eqn{v} and \eqn{e}) individually satisfies the requested
+#'   error tolerances}
+#'   \item{\code{L1}, \code{L2}, \code{LINF}}{The absolute error is measured as
+#'   \eqn{|e|} and the relative error as \eqn{|e|/|v|}, where \eqn{|...|} is the
+#'   \eqn{L_1}, \eqn{L_2}, or \eqn{\L_{\infty}} norm, respectively}
+#'   \item{\code{PAIRED}}{Like \code{INDIVIDUAL}, except that the integrands are
+#'   grouped into consecutive pairs, with the error tolerance applied in an
+#'   \eqn{L_2} sense to each pair. This option is mainly useful for integrating
+#'   vectors of complex numbers, where each consecutive pair of real integrands
+#'   is the real and imaginary parts of a single complex integrand, and the concern
+#'   is only the error in the complex plane rather than the error in the real and
+#'   imaginary parts separately}
+#' }
+#'
 #' @author Balasubramanian Narasimhan
 #' @references See \url{http://ab-initio.mit.edu/wiki/index.php/Cubature}.
 #' @keywords math
@@ -50,7 +74,7 @@
 #'   prod(cos(x))
 #' }
 #'
-#' adaptIntegrate(testFn0, rep(0,2), rep(1,2), tol=1e-4)
+#' hcubature(testFn0, rep(0,2), rep(1,2), tol=1e-4)
 #'
 #' M_2_SQRTPI <- 2/sqrt(pi)
 #'
@@ -67,7 +91,7 @@
 #'   exp(-val) * scale
 #' }
 #'
-#' adaptIntegrate(testFn1, rep(0, 3), rep(1, 3), tol=1e-4)
+#' hcubature(testFn1, rep(0, 3), rep(1, 3), tol=1e-4)
 #'
 #' ##
 #' ## Test function 2
@@ -83,7 +107,7 @@
 #'   ifelse(sum(x*x) < radius*radius, 1, 0)
 #' }
 #'
-#' adaptIntegrate(testFn2, rep(0, 2), rep(1, 2), tol=1e-4)
+#' hcubature(testFn2, rep(0, 2), rep(1, 2), tol=1e-4)
 #'
 #' ##
 #' ## Test function 3
@@ -97,7 +121,7 @@
 #'   prod(2*x)
 #' }
 #'
-#' adaptIntegrate(testFn3, rep(0,3), rep(1,3), tol=1e-4)
+#' hcubature(testFn3, rep(0,3), rep(1,3), tol=1e-4)
 #'
 #' ##
 #' ## Test function 4 (Gaussian centered at 1/2)
@@ -113,7 +137,7 @@
 #'   (M_2_SQRTPI / (2. * a))^length(x) * exp (-s / (a * a))
 #' }
 #'
-#' adaptIntegrate(testFn4, rep(0,2), rep(1,2), tol=1e-4)
+#' hcubature(testFn4, rep(0,2), rep(1,2), tol=1e-4)
 #'
 #'
 #' ##
@@ -131,7 +155,7 @@
 #'   0.5 * (M_2_SQRTPI / (2. * a))^length(x) * (exp(-s1 / (a * a)) + exp(-s2 / (a * a)))
 #' }
 #'
-#' adaptIntegrate(testFn5, rep(0,3), rep(1,3), tol=1e-4)
+#' hcubature(testFn5, rep(0,3), rep(1,3), tol=1e-4)
 #'
 #' ##
 #' ## Test function 6 (Tsuda's example)
@@ -146,7 +170,7 @@
 #'   prod(a / (a + 1) * ((a + 1) / (a + x))^2)
 #' }
 #'
-#' adaptIntegrate(testFn6, rep(0,4), rep(1,4), tol=1e-4)
+#' hcubature(testFn6, rep(0,4), rep(1,4), tol=1e-4)
 #'
 #'
 #' ##
@@ -166,7 +190,7 @@
 #'   (1 + p)^n * prod(x^p)
 #' }
 #'
-#' adaptIntegrate(testFn7, rep(0,3), rep(1,3), tol=1e-4)
+#' hcubature(testFn7, rep(0,3), rep(1,3), tol=1e-4)
 #'
 #'
 #' ## Example from web page
@@ -179,7 +203,7 @@
 #'   exp(-0.5 * sum(x^2))
 #' }
 #'
-#' adaptIntegrate(testFnWeb, rep(-2,3), rep(2,3), tol=1e-4)
+#' hcubature(testFnWeb, rep(-2,3), rep(2,3), tol=1e-4)
 #'
 #' ## Test function I.1d from
 #' ## Numerical integration using Wang-Landau sampling
@@ -192,7 +216,7 @@
 #'     x * ((x * ( x * (x*x-4) + 1) - 1))
 #' }
 #'
-#' adaptIntegrate(I.1d, -2, 2, tol=1e-7)
+#' hcubature(I.1d, -2, 2, tol=1e-7)
 #'
 #' ## Test function I.2d from
 #' ## Numerical integration using Wang-Landau sampling
@@ -207,7 +231,7 @@
 #'   sin(4*x1+1) * cos(4*x2) * x1 * (x1*(x1*x1)^2 - x2*(x2*x2 - x1) +2)
 #' }
 #'
-#' adaptIntegrate(I.2d, rep(-1, 2), rep(1, 2), maxEval=10000)
+#' hcubature(I.2d, rep(-1, 2), rep(1, 2), maxEval=10000)
 #'
 #' ##
 #' ## Example of multivariate normal integration borrowed from
@@ -248,15 +272,22 @@
 #' sigma <- diag(3)
 #' sigma[2,1] <- sigma[1, 2] <- 3/5 ; sigma[3,1] <- sigma[1, 3] <- 1/3
 #' sigma[3,2] <- sigma[2, 3] <- 11/15
-#' adaptIntegrate(dmvnorm, lower=rep(-0.5, m), upper=c(1,4,2),
+#' hcubature(dmvnorm, lower=rep(-0.5, m), upper=c(1,4,2),
 #'                         mean=rep(0, m), sigma=sigma, log=FALSE,
 #'                maxEval=10000)
 #' }
 #'
-#' @export adaptIntegrate
-adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
-                           fDim = 1, maxEval = 0, absError = 0, doChecking = FALSE) {
-
+#' @export hcubature adaptIntegrate
+#'
+hcubature <- adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
+                                        fDim = 1, maxEval = 0, absError = 0, doChecking = FALSE,
+                                        norm = c("INDIVIDUAL",
+                                                 "PAIRED",
+                                                 "L2",
+                                                 "L1",
+                                                 "LINF")) {
+    NORM_CODES <- c(INDIVIDUAL = 0L, PAIRED = 1L, L2 = 2L, L1 = 3L, LINF = 4L)
+    norm <- as.integer(NORM_CODES[match.arg(norm)])
     nL = length(lowerLimit); nU = length(upperLimit)
     if (fDim <= 0 || nL <= 0 || nU <= 0) {
         stop("Both f and x must have dimension >= 1")
@@ -276,8 +307,8 @@ adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
         fnF <- function(x) {
             fx <- f(x, ...)
             if(!is.numeric(fx) || length(fx) != fDim) {
-                cat("adaptIntegrate: Error in evaluation function f(x) for x = ", x, "\n")
-                stop("adaptIntegrate: Result f(x) is not numeric or has wrong dimension")
+                cat("hcubature: Error in evaluation function f(x) for x = ", x, "\n")
+                stop("hcubature: Result f(x) is not numeric or has wrong dimension")
             }
             as.double(fx)
         }
@@ -287,10 +318,9 @@ adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
         }
     }
 
-
     .Call("cubature_doCubature", as.integer(fDim), fnF, as.double(lowerLimit),
           as.double(upperLimit), as.integer(maxEval), as.double(absError),
-          as.double(tol), PACKAGE="cubature")
+          as.double(tol), norm, PACKAGE="cubature")
 }
 
 

@@ -1,7 +1,7 @@
 Package: cubature
 Type: Package
 Title: Adaptive multivariate integration over hypercubes
-Version: 1.2-0
+Version: 1.3-0
 URL: http://ab-initio.mit.edu/wiki/index.php/Cubature
 Authors@R: c(person("Balasubramanian", "Narasimhan", role=c("aut", "cre"),
 	   	   email = "naras@stat.Stanford.EDU"),

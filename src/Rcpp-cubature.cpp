@@ -10,7 +10,7 @@
 SEXP fun;                   /* The function itself */
 int count;                  /* Count of function evaluations */
 
-void fWrapper(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fval) {
+int fWrapper(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fval) {
     //     Rcpp::Rcout<<"In Wrapper" <<std::endl;
 
     Rcpp::NumericVector xVal(ndim);   /* The x argument for the R function f */
@@ -30,11 +30,12 @@ void fWrapper(unsigned ndim, const double *x, void *fdata, unsigned fdim, double
         fval[i] = fxp[i];
     }
     count++;
+    return 0;
 }
 
 // [[Rcpp::export]]
 Rcpp::List doCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL,
-		      int maxEval, double absErr, double tol) {
+		      int maxEval, double absErr, double tol, unsigned norm) {
 
     count = 0; /* Zero count */
     fun = f;
@@ -43,10 +44,10 @@ Rcpp::List doCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVe
     Rcpp::NumericVector errVals(fDim);
 
     // Rcpp::Rcout<<"Call Integrator" <<std::endl;
-    int retCode = adapt_integrate(fDim, fWrapper, NULL,
-                                  xLL.size(), xLL.begin(), xUL.begin(),
-                                  maxEval, absErr, tol,
-                                  integral.begin(), errVals.begin());
+    int retCode = hcubature(fDim, fWrapper, NULL,
+                            xLL.size(), xLL.begin(), xUL.begin(),
+                            maxEval, absErr, tol, (error_norm) norm,
+                            integral.begin(), errVals.begin());
     return Rcpp::List::create(
                               Rcpp::_["integral"] = integral,
                               Rcpp::_["error"] = errVals,

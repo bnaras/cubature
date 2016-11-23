@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // doCubature
-Rcpp::List doCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int maxEval, double absErr, double tol);
-RcppExport SEXP cubature_doCubature(SEXP fDimSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP maxEvalSEXP, SEXP absErrSEXP, SEXP tolSEXP) {
+Rcpp::List doCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int maxEval, double absErr, double tol, unsigned norm);
+RcppExport SEXP cubature_doCubature(SEXP fDimSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP maxEvalSEXP, SEXP absErrSEXP, SEXP tolSEXP, SEXP normSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,7 +18,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type maxEval(maxEvalSEXP);
     Rcpp::traits::input_parameter< double >::type absErr(absErrSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(doCubature(fDim, f, xLL, xUL, maxEval, absErr, tol));
+    Rcpp::traits::input_parameter< unsigned >::type norm(normSEXP);
+    rcpp_result_gen = Rcpp::wrap(doCubature(fDim, f, xLL, xUL, maxEval, absErr, tol, norm));
     return rcpp_result_gen;
 END_RCPP
 }
