@@ -17,6 +17,25 @@ test_that("Test a product of Cosine functions", {
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
                            info = "Absolute error not reached")
+
+    testFn0_v <- function(x) {
+        r <- apply(x, 2, function(z) prod(cos(z)))
+        matrix(r, ncol = ncol(x))
+    }
+    result <- cubature::adaptIntegrate(f = testFn0_v,
+                                       lowerLimit = rep(0, 2),
+                                       upperLimit = rep(1, 2),
+                                       tol = tol,
+                                       vectorInterface = TRUE)
+    testthat::expect_equal(0, result$returnCode, info = "Vector mode Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                           info = "Relative error not reached in vector mode")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached in vector mode")
+
+
 })
 
 test_that("Test a Gaussian integral remapped to [0, infinity] limits", {
@@ -40,6 +59,24 @@ test_that("Test a Gaussian integral remapped to [0, infinity] limits", {
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
                            info = "Absolute error not reached")
 
+    testFn1_v <- function(x) {
+        val <- matrix(apply(x, 2, function(z) sum(((1 - z) / z)^2)), ncol(x))
+        scale <- matrix(apply(x, 2, function(z) prod((2 / sqrt(pi)) / z^2)), ncol(x))
+        exp(-val) * scale
+    }
+    result <- cubature::adaptIntegrate(f = testFn1_v,
+                                       lowerLimit = rep(0, 3),
+                                       upperLimit = rep(1, 3),
+                                       tol = tol,
+                                       vectorInterface = TRUE)
+    testthat::expect_equal(0, result$returnCode, info = "Vector mode Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                 info = "Relative error not reached in vector mode")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached in vector mode")
+
 })
 
 test_that("Test volume of a hypersphere (integrating a discountinuous function)", {
@@ -62,6 +99,23 @@ test_that("Test volume of a hypersphere (integrating a discountinuous function)"
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
                            info = "Absolute error not reached")
 
+    testFn2_v <- function(x) {
+        radius <- 0.50124145262344534123412
+        matrix(apply(x, 2, function(z) ifelse(sum(z * z) < radius * radius, 1, 0)), ncol = ncol(x))
+    }
+    result <- cubature::adaptIntegrate(f = testFn2_v,
+                                       lowerLimit = rep(0, 2),
+                                       upperLimit = rep(1, 2),
+                                       tol = tol,
+                                       vectorInterface = TRUE)
+    testthat::expect_equal(0, result$returnCode, info = "Vector mode Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                 info = "Relative error not reached in vector mode")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached in vector mode")
+
 })
 
 test_that("Test a simple polynomial (product of coordinates)", {
@@ -81,6 +135,20 @@ test_that("Test a simple polynomial (product of coordinates)", {
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
                            info = "Absolute error not reached")
 
+    testFn3_v <- function(x) matrix(apply(x, 2, function(z) prod(2 * z)), ncol = ncol(x))
+    result <- cubature::adaptIntegrate(f = testFn3_v,
+                                       lowerLimit = rep(0, 3),
+                                       upperLimit = rep(1, 3),
+                                       tol = tol,
+                                       vectorInterface = TRUE)
+    testthat::expect_equal(0, result$returnCode, info = "Vector mode Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                 info = "Relative error not reached in vector mode")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached in vector mode")
+
 })
 
 test_that("Test Gaussian centered at 1/2", {
@@ -96,6 +164,27 @@ test_that("Test Gaussian centered at 1/2", {
                                        lowerLimit = rep(0, 2),
                                        upperLimit = rep(1, 2),
                                        tol = tol)
+    testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                 info = "Relative error not reached")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached")
+
+    testFn4_v <- function(x) {
+        a <- 0.1
+        r <- apply(x, 2, function(z) {
+            s <- sum((z - 0.5)^2)
+            ((2 / sqrt(pi)) / (2. * a))^length(z) * exp (-s / (a * a))
+        })
+        matrix(r, ncol = ncol(x))
+    }
+    result <- cubature::adaptIntegrate(f = testFn4_v,
+                                       lowerLimit = rep(0, 2),
+                                       upperLimit = rep(1, 2),
+                                       tol = tol,
+                                       vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
@@ -128,6 +217,28 @@ test_that("Test double Gaussian", {
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
                            info = "Absolute error not reached")
 
+    testFn5_v <- function(x) {
+        a = 0.1
+        r <- apply(x, 2, function(z) {
+            s1 <- sum((z - 1 / 3)^2)
+            s2 <- sum((z - 2 / 3)^2)
+            0.5 * ((2 / sqrt(pi)) / (2. * a))^length(z) * (exp(-s1 / (a * a)) + exp(-s2 / (a * a)))
+        })
+        matrix(r, ncol = ncol(x))
+    }
+    result <- cubature::adaptIntegrate(f = testFn5_v,
+                                       lowerLimit = rep(0, 3),
+                                       upperLimit = rep(1, 3),
+                                       tol = tol,
+                                       vectorInterface = TRUE)
+    testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                 info = "Relative error not reached")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached")
+
 })
 
 test_that("Test Tsuda's example", {
@@ -151,6 +262,24 @@ test_that("Test Tsuda's example", {
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
                            info = "Absolute error not reached")
 
+    testFn6_v <- function(x) {
+        a <- (1 + sqrt(10.0)) / 9.0
+        r <- apply(x, 2, function(z) prod( a / (a + 1) * ((a + 1) / (a + z))^2))
+        matrix(r, ncol = ncol(x))
+    }
+
+    result <- cubature::adaptIntegrate(f = testFn6_v,
+                                       lowerLimit = rep(0, 3),
+                                       upperLimit = rep(1, 3),
+                                       tol = tol,
+                                       vectorInterface = TRUE)
+    testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                 info = "Relative error not reached")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached")
 })
 
 test_that("Test Morokoff & Calflish example", {
@@ -174,6 +303,26 @@ test_that("Test Morokoff & Calflish example", {
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
                            info = "Absolute error not reached")
 
+    testFn7_v <- function(x) {
+        matrix(apply(x, 2, function(z) {
+            n <- length(z)
+            p <- 1/n
+            (1 + p)^n * prod(z^p)
+            }), ncol = ncol(x))
+    }
+    result <- cubature::adaptIntegrate(f = testFn7_v,
+                                       lowerLimit = rep(0, 3),
+                                       upperLimit = rep(1, 3),
+                                       tol = tol,
+                                       vectorInterface = TRUE)
+    testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                 info = "Relative error not reached")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached")
+
 })
 
 test_that("Test cubature web example", {
@@ -183,6 +332,21 @@ test_that("Test cubature web example", {
                                        lowerLimit = rep(-2, 3),
                                        upperLimit = rep(2, 3),
                                        tol = tol)
+    testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                 info = "Relative error not reached")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached")
+
+    result <- cubature::adaptIntegrate(f = function(x) matrix(
+                                                           apply(x, 2, function(z) exp(-0.5 * sum(z^2))),
+                                                           ncol = ncol(x)),
+                                       lowerLimit = rep(-2, 3),
+                                       upperLimit = rep(2, 3),
+                                       tol = tol,
+                                       vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
@@ -217,6 +381,26 @@ test_that("Test Wang-Landau sampling 1d example", {
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
                            info = "Absolute error not reached")
+    I.1d_v <- function(x) {
+        matrix(apply(x, 2, function(z)
+            sin(4 * z) *
+            z * ((z * ( z * (z * z - 4) + 1) - 1))),
+            ncol = ncol(x))
+        }
+
+    result <- cubature::adaptIntegrate(f = I.1d_v,
+                                       lowerLimit = -2,
+                                       upperLimit = 2,
+                                       tol = tol,
+                                       vectorInterface = TRUE)
+    testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                 info = "Relative error not reached")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached")
+
 })
 
 test_that("Test Wang-Landau sampling 2d example", {
@@ -225,7 +409,7 @@ test_that("Test Wang-Landau sampling 2d example", {
     ## Numerical integration using Wang-Landau sampling
     ## Y. W. Li, T. Wust, D. P. Landau, H. Q. Lin
     ## Computer Physics Communications, 2007, 524-529
-    ## Compare with exact answer: 1.63564436296
+    ## Compare with exact answer: -0.01797992646
     ##
     I.2d <- function(x) {
         x1 <- x[1]; x2 <- x[2]
@@ -244,37 +428,41 @@ test_that("Test Wang-Landau sampling 2d example", {
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
                            info = "Absolute error not reached")
+
+    I.2d_v <- function(x) {
+        matrix(apply(x, 2,
+                     function(z) {
+                         x1 <- z[1]; x2 <- z[2]
+                         sin(4 * x1 + 1) * cos(4 * x2) * x1 * (x1 * (x1 * x1)^2 - x2 * (x2 * x2 - x1) +2)
+                     }),
+               ncol = ncol(x))
+    }
+
+
+    result <- cubature::adaptIntegrate(f = I.2d_v,
+                                       lowerLimit = rep(-1, 2),
+                                       upperLimit = rep(1, 2),
+                                       tol = tol,
+                                       vectorInterface = TRUE)
+    testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+                 info = "Relative error not reached")
+
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
+                           info = "Absolute error not reached")
+
 })
 
 test_that("Test Multivariate Normal", {
     expected <- 0.3341125
     tol <- 1e-5
 
-    dmvnorm <- function (x, mean, sigma, log = FALSE) {
-        if (is.vector(x)) {
-            x <- matrix(x, ncol = length(x))
-        }
-        if (missing(mean)) {
-            mean <- rep(0, length = ncol(x))
-        }
-        if (missing(sigma)) {
-            sigma <- diag(ncol(x))
-        }
-        if (NCOL(x) != NCOL(sigma)) {
-            stop("x and sigma have non-conforming size")
-        }
-        if (!isSymmetric(sigma, tol = sqrt(.Machine$double.eps),
-                         check.attributes = FALSE)) {
-            stop("sigma must be a symmetric matrix")
-        }
-        if (length(mean) != NROW(sigma)) {
-            stop("mean and sigma have non-conforming size")
-        }
-        distval <- mahalanobis(x, center = mean, cov = sigma)
+    dmvnorm <- function (x, mean, sigma) {
+        x <- matrix(x, ncol = length(x))
+        distval <- stats::mahalanobis(x, center = mean, cov = sigma)
         logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
         logretval <- -(ncol(x) * log(2 * pi) + logdet + distval)/2
-        if (log)
-            return(logretval)
         exp(logretval)
     }
 
@@ -287,7 +475,7 @@ test_that("Test Multivariate Normal", {
                                        lowerLimit = rep(-0.5, 3),
                                        upperLimit = c(1, 4, 2),
                                        tol = tol,
-                                       mean=rep(0, m), sigma=sigma, log=FALSE)
+                                       mean=rep(0, m), sigma=sigma)
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
@@ -296,4 +484,20 @@ test_that("Test Multivariate Normal", {
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
                            info = "Absolute error not reached")
+
+    dmvnorm_v <- function (x, mean, sigma) {
+        x <- t(x)
+        distval <- stats::mahalanobis(x, center = mean, cov = sigma)
+        logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
+        logretval <- -(ncol(x) * log(2 * pi) + logdet + distval)/2
+        logretval <- matrix(logretval, ncol = nrow(x))
+        exp(logretval)
+    }
+
+    result <- cubature::adaptIntegrate(f = dmvnorm_v,
+                                       lowerLimit = rep(-0.5, 3),
+                                       upperLimit = c(1, 4, 2),
+                                       tol = tol,
+                                       vectorInterface = TRUE,
+                                       mean=rep(0, m), sigma=sigma)
 })

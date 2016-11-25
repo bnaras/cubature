@@ -12,6 +12,8 @@
  */
 
 void R_init_cubature(DllInfo *info) {
-  R_RegisterCCallable("cubature", "adapt_integrate", (DL_FUNC) adapt_integrate);
-  R_RegisterCCallable("cubature", "adapt_integrate_v", (DL_FUNC) adapt_integrate_v);
+  R_RegisterCCallable("cubature", "adapt_integrate", (DL_FUNC) hcubature);
+  R_RegisterCCallable("cubature", "adapt_integrate_v", (DL_FUNC) hcubature_v);
+  R_RegisterCCallable("cubature", "hcubature", (DL_FUNC) hcubature);
+  R_RegisterCCallable("cubature", "hcubature_v", (DL_FUNC) hcubature_v);
 }
