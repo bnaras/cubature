@@ -6,8 +6,9 @@
 \title{Adaptive multivariate integration over hypercubes}
 \usage{
 hcubature(f, lowerLimit, upperLimit, ..., tol = 1e-05, fDim = 1,
-  maxEval = 0, absError = 0, doChecking = FALSE, norm = c("INDIVIDUAL",
-  "PAIRED", "L2", "L1", "LINF"))
+  maxEval = 0, absError = 0, doChecking = FALSE,
+  vectorInterface = FALSE, norm = c("INDIVIDUAL", "PAIRED", "L2", "L1",
+  "LINF"))
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated}
@@ -33,6 +34,9 @@ performed is only approximately guaranteed not to exceed this number.}
 routines. A FALSE value results in approximately 9 percent speed gain in our
 experiments. Your mileage will of course vary. Default value is FALSE.}
 
+\item{vectorInterface}{A flag that indicates whether to use the vector interface
+and is by default FALSE. Experimental for now. See details below}
+
 \item{norm}{For vector-valued integrands, \code{norm} specifies the norm that is
 used to measure the error and determine convergence properties. See below.}
 }
@@ -44,7 +48,9 @@ value of the integral} \item{error}{the estimated relative error}
 }
 \description{
 The function performs adaptive multidimensional integration (cubature) of
-(possibly) vector-valued integrands over hypercubes.
+(possibly) vector-valued integrands over hypercubes. The function includes
+a vector interface where the integrand may be evaluated at several hundred
+points in a single call.
 }
 \details{
 The function merely calls Johnson's C code and returns the results.  The
@@ -57,6 +63,11 @@ less than the absolute error requested, or when the estimated error is less
 than tol times the integral, in absolute value, or the maximum number of
 iterations is reached (see parameter info below), whichever is earlier.
 
+
+The vector interface requires the integrand to take a matrix as its argument.
+The return value should also be a matrix. The number of points at which the
+integrand may be evaluated is not under user control: the integration routine
+takes care of that and this number may run to several hundreds.
 
 The \code{norm} argument is irrelevant for scalar integrands and is ignored.
 Given vectors \eqn{v} and \eqn{e} of estimated integrals and errors therein,

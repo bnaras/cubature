@@ -1,0 +1,119 @@
+---
+title: "Cubature Vectorization Efficiency"
+author: "Balasubramanian Narasimhan"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+  fig_caption: yes
+  theme: cerulean
+  toc: yes
+  toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Cubature Vectorization Efficiency}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(
+    message = FALSE,
+    warning = FALSE,
+    error = FALSE,
+    tidy = FALSE,
+    cache = FALSE
+)
+```
+
+## Introduction
+
+Starting with version 1.2, `cubature` now uses `Rcpp`. Also,
+version 1.3 uses the newer version (1.0.2) of Steven G. Johnson's
+[`hcubature`](https://ab-initio.mit.edu/wiki/index.php/Cubature)
+routines, including the vectorized interface.
+
+We have chosen not to implement the `pcubature` routines at the
+moment, but it is trivial to do so if there is a demand for it. (There
+is the issue of a large header file, however, 39MiB!)
+
+The main point of this note is to examine the difference vectorization
+makes. So we look at an example.
+
+### Multivariate Normal
+
+Using `cubature`, we evaluate
+$$
+\int_R\phi(x)dx
+$$
+where $\phi(x)$ is the three-dimensional multivariate normal density with mean
+0, and variance
+$$
+\Sigma = \left(\begin{array}{rrr}
+1 &\frac{3}{5} &\frac{1}{3}\\
+\frac{3}{5} &1 &\frac{11}{15}\\
+\frac{1}{3} &\frac{11}{15} & 1
+\end{array}
+\right)
+$$
+and $R$ is $[-\frac{1}{2}, 1] \times [-\frac{1}{2}, 4] \times [-\frac{1}{2}, 2].$
+
+We construct a scalar function (`my_dmvnorm`), a vector analog
+(`my_dmvnorm_v`) and compare the timing results with that obtained
+using `mvtnorm::pmvnorm`. (Of course, we expect the latter to beat the
+hell out of the others since it is specialized for the multivariate
+normal.)
+
+First the functions.
+
+```{r}
+m <- 3
+sigma <- diag(3)
+sigma[2,1] <- sigma[1, 2] <- 3/5 ; sigma[3,1] <- sigma[1, 3] <- 1/3
+sigma[3,2] <- sigma[2, 3] <- 11/15
+
+my_dmvnorm <- function (x, mean, sigma) {
+    x <- matrix(x, ncol = length(x))
+    distval <- stats::mahalanobis(x, center = mean, cov = sigma)
+    logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
+    exp(-(ncol(x) * log(2 * pi) + logdet + distval)/2)
+}
+
+my_dmvnorm_v <- function (x, mean, sigma) {
+    distval <- stats::mahalanobis(t(x), center = mean, cov = sigma)
+    logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
+    exp(matrix(-(nrow(x) * log(2 * pi) + logdet + distval)/2, ncol = ncol(x)))
+}
+```
+Now the timing expressions.
+
+```{r}
+library(cubature)
+library(mvtnorm)
+f <- function() cubature::adaptIntegrate(f = my_dmvnorm,
+                                         lowerLimit = rep(-0.5, 3),
+                                         upperLimit = c(1, 4, 2),
+                                         mean = rep(0, m), sigma = sigma)
+f_v <- function() cubature::adaptIntegrate(f = my_dmvnorm_v,
+                                           lowerLimit = rep(-0.5, 3),
+                                           upperLimit = c(1, 4, 2),
+                                           vectorInterface = TRUE,
+                                           mean = rep(0, m), sigma = sigma)
+g <- function() mvtnorm::pmvnorm(lower=rep(-0.5, m), upper=c(1,4,2), mean=rep(0, m), corr=sigma, alg=Miwa())
+```
+
+The benchmarking.
+
+```{r}
+library(microbenchmark)
+result <- microbenchmark(f(), f_v(), g(), unit = "ms", times = 10)
+d <- summary(result)
+d$expr <- c("Non-vectorized cubature", "Vectorized cubature", "mvtnorm::pmvnorm")
+```
+
+The table below shows the results in milliseconds.
+
+```{r}
+knitr::kable(d, digits = 3)
+```
+
+The effect of vectorization is huge. So it makes sense for users to
+vectorize the integrands as much as possible for efficiency.

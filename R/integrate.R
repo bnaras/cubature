@@ -1,7 +1,9 @@
 #' Adaptive multivariate integration over hypercubes
 #'
 #' The function performs adaptive multidimensional integration (cubature) of
-#' (possibly) vector-valued integrands over hypercubes.
+#' (possibly) vector-valued integrands over hypercubes. The function includes
+#' a vector interface where the integrand may be evaluated at several hundred
+#' points in a single call.
 #'
 #' The function merely calls Johnson's C code and returns the results.  The
 #' original C code by Johnson was modified for use with R memory allocation
@@ -30,6 +32,8 @@
 #' @param doChecking A flag to be a bit anal about checking inputs to C
 #' routines. A FALSE value results in approximately 9 percent speed gain in our
 #' experiments. Your mileage will of course vary. Default value is FALSE.
+#' @param vectorInterface A flag that indicates whether to use the vector interface
+#' and is by default FALSE. Experimental for now. See details below
 #' @param norm For vector-valued integrands, \code{norm} specifies the norm that is
 #' used to measure the error and determine convergence properties. See below.
 #' @return The returned value is a list of three items: \item{integral}{the
@@ -38,6 +42,11 @@
 #' \item{returnCode}{the actual integer return code of the C routine}
 #'
 #' @details
+#' The vector interface requires the integrand to take a matrix as its argument.
+#' The return value should also be a matrix. The number of points at which the
+#' integrand may be evaluated is not under user control: the integration routine
+#' takes care of that and this number may run to several hundreds.
+#'
 #' The \code{norm} argument is irrelevant for scalar integrands and is ignored.
 #' Given vectors \eqn{v} and \eqn{e} of estimated integrals and errors therein,
 #' respectively, the \code{norm} argument takes on one of the following values:
@@ -281,6 +290,7 @@
 #'
 hcubature <- adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
                                         fDim = 1, maxEval = 0, absError = 0, doChecking = FALSE,
+                                        vectorInterface = FALSE,
                                         norm = c("INDIVIDUAL",
                                                  "PAIRED",
                                                  "L2",
@@ -310,17 +320,16 @@ hcubature <- adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e
                 cat("hcubature: Error in evaluation function f(x) for x = ", x, "\n")
                 stop("hcubature: Result f(x) is not numeric or has wrong dimension")
             }
-            as.double(fx)
+            fx
         }
     } else {
         fnF <- function(x) {
-            as.double(f(x, ...))
+            f(x, ...)
         }
     }
 
     .Call("cubature_doCubature", as.integer(fDim), fnF, as.double(lowerLimit),
           as.double(upperLimit), as.integer(maxEval), as.double(absError),
-          as.double(tol), norm, PACKAGE="cubature")
+          as.double(tol), as.integer(vectorInterface), norm, PACKAGE="cubature")
 }
-
 

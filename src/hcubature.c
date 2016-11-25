@@ -925,8 +925,10 @@ static int rulecubature(rule *r, unsigned fdim,
      esterr *ee = NULL;
 
      if (fdim <= 1) norm = ERROR_INDIVIDUAL; /* norm is irrelevant */
-     if (norm < 0 || norm > ERROR_LINF) return FAILURE; /* invalid norm */
 
+#ifndef R_PACKAGE
+     if (norm < 0 || norm > ERROR_LINF) return FAILURE; /* invalid norm */
+#endif
      regions = heap_alloc(1, fdim);
      if (!regions.ee || !regions.items) goto bad;
 
