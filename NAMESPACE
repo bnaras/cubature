@@ -2,5 +2,6 @@
 
 export(adaptIntegrate)
 export(hcubature)
+export(pcubature)
 importFrom(Rcpp,evalCpp)
 useDynLib(cubature)

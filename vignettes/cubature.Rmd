@@ -1,5 +1,5 @@
 ---
-title: "Cubature Vectorization Efficiency"
+title: "Cubature Vectorization Results"
 author: "Balasubramanian Narasimhan"
 date: '`r Sys.Date()`'
 output:
@@ -28,17 +28,133 @@ knitr::opts_chunk$set(
 
 Starting with version 1.2, `cubature` now uses `Rcpp`. Also,
 version 1.3 uses the newer version (1.0.2) of Steven G. Johnson's
-[`hcubature`](https://ab-initio.mit.edu/wiki/index.php/Cubature)
+[`hcubature` and `pcubature`](https://ab-initio.mit.edu/wiki/index.php/Cubature)
 routines, including the vectorized interface.
 
-We have chosen not to implement the `pcubature` routines at the
-moment, but it is trivial to do so if there is a demand for it. (There
-is the issue of a large header file, however, 39MiB!)
+Per the documentation, use of `pcubature` is advisable only for smooth
+integrands in dimesions up to three at most. In fact, the `pcubature`
+routines perform significantly worse than the vectorized `hcubature`
+in inappropriate cases. So when in doubt, you are better off using
+`hcubature`.
 
 The main point of this note is to examine the difference vectorization
-makes. So we look at an example.
+makes. My recommendations are below in the summary section.
 
-### Multivariate Normal
+### Apropos the `Cuba` library
+
+The package [`R2Cuba`](https://cran.r-project.org/package=R2Cuba)
+provides a suite of cubature and other useful Monte Carlo integration
+routines linked against version 1.6 of the C library. The authors of
+`R2Cuba` have obviously put a lot of work has into it since it uses
+C-style R API. This approach also means that it is harder to keep the
+R package in sync with new versions of the underlying C library. In
+fact, the Cuba library is now at version 4.2!
+
+In a matter of a couple of hours, I was able to link the latest
+version (4.2) of the [Cuba libraries](http://www.feynarts.de/cuba/)
+with R using Rcpp; you can see it on the `Cuba` branch of my
+[Github repo](https://github.com/bnaras/cubature). This branch package
+builds and installs in R on my Mac and Ubuntu machines and gives
+correct answers at least for `cuhre`. The
+4.2 version of the Cuba library also has vectorized versions of the
+routines that can be gainfully exploited (not implemented in the
+branch). As of this writing, I have also not yet carefully considered
+the issue of parallel execution (via `fork()`) which might be
+problematic in the Windows version. In addition, my timing benchmarks
+showed very disappointing results.
+
+For the above reasons, I decided not to bother with Cuba for now, but
+if there is enough interest, I might consider rolling `Cuba-4.2+` into
+this `cubature` package in the future.
+
+## A Timing Harness
+
+Our harness will provide timing results for `hcubature`, `pcubature`
+(where appropriate) and `R2Cuba` calls.  We begin by creating a
+harness for these calls.
+
+```{R}
+library(microbenchmark)
+library(cubature)
+library(R2Cuba)
+
+harness <- function(which = NULL,
+                    f, fv, lowerLimit, upperLimit, tol = 1e-3, times = 20, ...) {
+
+    fns <- c(hc = "Non-vectorized Hcubature",
+             hc.v = "Vectorized Hcubature",
+             pc = "Non-vectorized Pcubature",
+             pc.v = "Vectorized Pcubature",
+             cc = "R2Cuba::cuhre")
+
+    hc <- function() cubature::hcubature(f = f,
+                                         lowerLimit = lowerLimit,
+                                         upperLimit = upperLimit,
+                                         tol = tol,
+                                         ...)
+
+    hc.v <- function() cubature::hcubature(f = fv,
+                                           lowerLimit = lowerLimit,
+                                           upperLimit = upperLimit,
+                                           tol = tol,
+                                           vectorInterface = TRUE,
+                                           ...)
+
+    pc <- function() cubature::pcubature(f = f,
+                                         lowerLimit = lowerLimit,
+                                         upperLimit = upperLimit,
+                                         tol = tol,
+                                         ...)
+
+    pc.v <- function() cubature::pcubature(f = fv,
+                                           lowerLimit = lowerLimit,
+                                           upperLimit = upperLimit,
+                                           tol = tol,
+                                           vectorInterface = TRUE,
+                                           ...)
+    ndim = length(lowerLimit)
+
+    cc <- function() R2Cuba::cuhre(ndim = ndim, ncomp = 1, integrand = f,
+                                   lower = lowerLimit, upper = upperLimit,
+                                   flags = list(verbose = 0, final = 1),
+                                   rel.tol = tol,
+                                   max.eval = 10^6,
+                                   ...)
+    if (is.null(which)) {
+        fnIndices <- seq_along(fns)
+    } else {
+        fnIndices <- match(which, names(fns))
+    }
+    fnList <- lapply(names(fns)[fnIndices], function(x) call(x))
+    argList <- c(fnList, unit = "ms", times = times)
+    result <- do.call(microbenchmark, args = argList)
+    d <- summary(result)
+    d$expr <- fns[fnIndices]
+    d
+}
+
+```
+
+We reel off the timing runs.
+
+## Example 1.
+
+```{r}
+func <- function(x) sin(x[1]) * cos(x[2]) * exp(x[3])
+func.v <- function(x) {
+    matrix(apply(x, 2, function(z) sin(z[1]) * cos(z[2]) * exp(z[3])), ncol = ncol(x))
+}
+
+d <- harness(f = func, fv = func.v,
+             lowerLimit = rep(0, 3),
+             upperLimit = rep(1, 3),
+             tol = 1e-5,
+             times = 100)
+knitr::kable(d, digits = 3, row.names = FALSE)
+```
+
+
+## Multivariate Normal
 
 Using `cubature`, we evaluate
 $$
@@ -56,13 +172,8 @@ $$
 $$
 and $R$ is $[-\frac{1}{2}, 1] \times [-\frac{1}{2}, 4] \times [-\frac{1}{2}, 2].$
 
-We construct a scalar function (`my_dmvnorm`), a vector analog
-(`my_dmvnorm_v`) and compare the timing results with that obtained
-using `mvtnorm::pmvnorm`. (Of course, we expect the latter to beat the
-hell out of the others since it is specialized for the multivariate
-normal.)
-
-First the functions.
+We construct a scalar function (`my_dmvnorm`) and a vector analog
+(`my_dmvnorm_v`). First the functions.
 
 ```{r}
 m <- 3
@@ -83,37 +194,238 @@ my_dmvnorm_v <- function (x, mean, sigma) {
     exp(matrix(-(nrow(x) * log(2 * pi) + logdet + distval)/2, ncol = ncol(x)))
 }
 ```
-Now the timing expressions.
+
+Now the timing.
 
 ```{r}
-library(cubature)
-library(mvtnorm)
-f <- function() cubature::adaptIntegrate(f = my_dmvnorm,
-                                         lowerLimit = rep(-0.5, 3),
-                                         upperLimit = c(1, 4, 2),
-                                         mean = rep(0, m), sigma = sigma)
-f_v <- function() cubature::adaptIntegrate(f = my_dmvnorm_v,
-                                           lowerLimit = rep(-0.5, 3),
-                                           upperLimit = c(1, 4, 2),
-                                           vectorInterface = TRUE,
-                                           mean = rep(0, m), sigma = sigma)
-g <- function() mvtnorm::pmvnorm(lower=rep(-0.5, m), upper=c(1,4,2), mean=rep(0, m), corr=sigma, alg=Miwa())
-```
-
-The benchmarking.
-
-```{r}
-library(microbenchmark)
-result <- microbenchmark(f(), f_v(), g(), unit = "ms", times = 10)
-d <- summary(result)
-d$expr <- c("Non-vectorized cubature", "Vectorized cubature", "mvtnorm::pmvnorm")
-```
-
-The table below shows the results in milliseconds.
-
-```{r}
+d <- harness(f = my_dmvnorm, fv = my_dmvnorm_v,
+             lowerLimit = rep(-0.5, 3),
+             upperLimit = c(1, 4, 2),
+             tol = 1e-5,
+             times = 10,
+             mean = rep(0, m), sigma = sigma)
 knitr::kable(d, digits = 3)
 ```
 
 The effect of vectorization is huge. So it makes sense for users to
 vectorize the integrands as much as possible for efficiency.
+
+Furthermore, for this particular example, we expect `mvtnorm::pmvnorm`
+to do pretty well since it is specialized for the multivariate
+normal. The good news is that the vectorized versions of `hcubature`
+and `pcubature` are quite competitive if you compare the table above
+to the one below.
+
+```{r}
+library(mvtnorm)
+g1 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
+                                  upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                                  alg = Miwa(), abseps = 1e-5, releps = 1e-5)
+g2 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
+                                  upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                                  alg = GenzBretz(), abseps = 1e-5, releps = 1e-5)
+g3 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
+                                  upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                                  alg = TVPACK(), abseps = 1e-5, releps = 1e-5)
+
+knitr::kable(summary(microbenchmark(g1(), g2(), g3(), times = 20)),
+             digits = 3, row.names = FALSE)
+```
+
+## Product of cosines
+
+```{r}
+testFn0 <- function(x) prod(cos(x))
+testFn0_v <- function(x) matrix(apply(x, 2, function(z) prod(cos(z))), ncol = ncol(x))
+
+d <- harness(f = testFn0, fv = testFn0_v,
+             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), times = 100)
+knitr::kable(d, digits = 3)
+```
+
+## Gaussian function
+
+```{r}
+testFn1 <- function(x) {
+    val <- sum(((1 - x) / x)^2)
+    scale <- prod((2 / sqrt(pi)) / x^2)
+    exp(-val) * scale
+}
+
+testFn1_v <- function(x) {
+    val <- matrix(apply(x, 2, function(z) sum(((1 - z) / z)^2)), ncol(x))
+    scale <- matrix(apply(x, 2, function(z) prod((2 / sqrt(pi)) / z^2)), ncol(x))
+    exp(-val) * scale
+}
+
+d <- harness(f = testFn1, fv = testFn1_v,
+             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), times = 10)
+
+knitr::kable(d, digits = 3)
+```
+
+## Discontinuous function
+
+```{r}
+testFn2 <- function(x) {
+    radius <- 0.50124145262344534123412
+    ifelse(sum(x * x) < radius * radius, 1, 0)
+}
+
+testFn2_v <- function(x) {
+    radius <- 0.50124145262344534123412
+    matrix(apply(x, 2, function(z) ifelse(sum(z * z) < radius * radius, 1, 0)), ncol = ncol(x))
+}
+
+d <- harness(which = c("hc", "hc.v", "cc"),
+             f = testFn2, fv = testFn2_v,
+             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), times = 10)
+knitr::kable(d, digits = 3)
+```
+
+## A Simple Polynomial (product of coordinates)
+
+```{r}
+testFn3 <- function(x) prod(2 * x)
+testFn3_v <- function(x) matrix(apply(x, 2, function(z) prod(2 * z)), ncol = ncol(x))
+
+d <- harness(f = testFn3, fv = testFn3_v,
+             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), times = 20)
+knitr::kable(d, digits = 3)
+```
+
+## Gaussian centered at \frac{1}{2}
+
+```{r}
+testFn4 <- function(x) {
+    a <- 0.1
+    s <- sum((x - 0.5)^2)
+    ((2 / sqrt(pi)) / (2. * a))^length(x) * exp (-s / (a * a))
+}
+
+testFn4_v <- function(x) {
+    a <- 0.1
+    r <- apply(x, 2, function(z) {
+        s <- sum((z - 0.5)^2)
+        ((2 / sqrt(pi)) / (2. * a))^length(z) * exp (-s / (a * a))
+    })
+    matrix(r, ncol = ncol(x))
+}
+
+d <- harness(f = testFn4, fv = testFn4_v,
+             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), times = 20)
+knitr::kable(d, digits = 3)
+```
+
+## Double Gaussian
+
+```{r}
+testFn5 <- function(x) {
+    a <- 0.1
+    s1 <- sum((x - 1 / 3)^2)
+    s2 <- sum((x - 2 / 3)^2)
+    0.5 * ((2 / sqrt(pi)) / (2. * a))^length(x) * (exp(-s1 / (a * a)) + exp(-s2 / (a * a)))
+}
+testFn5_v <- function(x) {
+    a <- 0.1
+    r <- apply(x, 2, function(z) {
+        s1 <- sum((z - 1 / 3)^2)
+        s2 <- sum((z - 2 / 3)^2)
+        0.5 * ((2 / sqrt(pi)) / (2. * a))^length(z) * (exp(-s1 / (a * a)) + exp(-s2 / (a * a)))
+    })
+    matrix(r, ncol = ncol(x))
+}
+
+d <- harness(f = testFn5, fv = testFn5_v,
+             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), times = 20)
+knitr::kable(d, digits = 3)
+```
+
+## Tsuda's Example
+
+```{r}
+testFn6 <- function(x) {
+    a <- (1 + sqrt(10.0)) / 9.0
+    prod( a / (a + 1) * ((a + 1) / (a + x))^2)
+}
+
+testFn6_v <- function(x) {
+    a <- (1 + sqrt(10.0)) / 9.0
+    r <- apply(x, 2, function(z) prod( a / (a + 1) * ((a + 1) / (a + z))^2))
+    matrix(r, ncol = ncol(x))
+}
+
+d <- harness(f = testFn6, fv = testFn6_v,
+             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), times = 20)
+knitr::kable(d, digits = 3)
+```
+
+## Morokoff & Calflish Example
+
+```{r}
+testFn7 <- function(x) {
+    n <- length(x)
+    p <- 1/n
+    (1 + p)^n * prod(x^p)
+}
+testFn7_v <- function(x) {
+    matrix(apply(x, 2, function(z) {
+        n <- length(z)
+        p <- 1/n
+        (1 + p)^n * prod(z^p)
+    }), ncol = ncol(x))
+}
+
+d <- harness(f = testFn7, fv = testFn7_v,
+             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), times = 20)
+knitr::kable(d, digits = 3)
+```
+
+## Wang-Landau Sampling 1d, 2d Examples
+
+```{r}
+I.1d <- function(x) {
+    sin(4 * x) *
+        x * ((x * ( x * (x * x - 4) + 1) - 1))
+}
+I.1d_v <- function(x) {
+    matrix(apply(x, 2, function(z)
+        sin(4 * z) *
+        z * ((z * ( z * (z * z - 4) + 1) - 1))),
+        ncol = ncol(x))
+}
+d <- harness(f = I.1d, fv = I.1d_v,
+             lowerLimit = -2, upperLimit = 2, times = 50)
+knitr::kable(d, digits = 3)
+```
+
+```{r}
+I.2d <- function(x) {
+    x1 <- x[1]; x2 <- x[2]
+    sin(4 * x1 + 1) * cos(4 * x2) * x1 * (x1 * (x1 * x1)^2 - x2 * (x2 * x2 - x1) +2)
+}
+I.2d_v <- function(x) {
+    matrix(apply(x, 2,
+                 function(z) {
+                     x1 <- z[1]; x2 <- z[2]
+                     sin(4 * x1 + 1) * cos(4 * x2) * x1 * (x1 * (x1 * x1)^2 - x2 * (x2 * x2 - x1) +2)
+                 }),
+           ncol = ncol(x))
+}
+d <- harness(f = I.2d, fv = I.2d_v,
+             lowerLimit = rep(-1, 2), upperLimit = rep(1, 2), times = 50)
+knitr::kable(d, digits = 3)
+```
+
+
+## Summary
+
+The following is therefore my recommendation.
+
+1. _Vectorize_ your function. The time spent in so doing pays back
+   enormously. This is easy to do and the examples above show how.
+
+2. Vectorized `hcubature` seems to be a good starting point.
+
+3. In low dimensions (< 3) `pcubature` might be worth trying out.
+
