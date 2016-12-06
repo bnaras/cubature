@@ -1,1 +1,20 @@
-PKG_CFLAGS="-DR_PACKAGE=1 -DTEST_INTEGRATOR=0"
+PKG_CFLAGS=-DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./cubature-1.0.2
+PKG_CPPFLAGS=-DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./cubature-1.0.2
+PKG_LIBS=-Lcubature-1.0.2 -lcubature
+
+$(SHLIB): Rcpp-cubature.o RcppExports.o rcubature.o
+
+Rcpp-cubature.o: cubature.ts
+RcppExports.o: cubature.ts
+rcubature.o: cubature.ts
+
+cubature.ts:
+	(cd cubature-1.0.2 && \
+	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) -DR_PACKAGE=1" AR="$(AR)" RANLIB="$(RANLIB)") && \
+	touch $@)
+
+clean:
+	rm -f Rcpp-cubature.o RcppExports.o rcubature.o cubature.so
+	rm -f cubature-1.0.2/*.o
+	rm -f cubature-1.0.2/libcubature.a cubature-1.0.2/cubature.ts
+
