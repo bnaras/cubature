@@ -10,3 +10,4 @@ Updated this package in several ways:
   `pcubature` are now available.
 - Added vectorized interface to `hcubature` and `pcubature`
 - Added a vignette to show the great gains from vectorization
+- Added tests to avoid screw-ups
