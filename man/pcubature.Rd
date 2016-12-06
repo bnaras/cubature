@@ -2,7 +2,7 @@
 % Please edit documentation in R/pcubature.R
 \name{pcubature}
 \alias{pcubature}
-\title{Adaptive multivariate integration over hypercubes}
+\title{Adaptive multivariate integration over hypercubes (pcubature)}
 \usage{
 pcubature(f, lowerLimit, upperLimit, ..., tol = 1e-05, fDim = 1,
   maxEval = 0, absError = 0, doChecking = FALSE,
@@ -52,9 +52,7 @@ a vector interface where the integrand may be evaluated at several hundred
 points in a single call.
 }
 \details{
-The function merely calls Johnson's C code and returns the results.  The
-original C code by Johnson was modified for use with R memory allocation
-functions and a helper function does the callback.
+The function merely calls Johnson's C code and returns the results.
 
 One can specify a maximum number of function evaluations (default is 0 for
 no limit).  Otherwise, the integration stops when the estimated error is
@@ -62,11 +60,19 @@ less than the absolute error requested, or when the estimated error is less
 than tol times the integral, in absolute value, or the maximum number of
 iterations is reached (see parameter info below), whichever is earlier.
 
+This function uses p-adaptive integration (repeatedly doubling the degree
+of the quadrature rules until convergence is achieved), is based on a tensor
+product of Clenshaw–Curtis quadrature rules. This algorithm is often superior
+to h-adaptive integration for smooth integrands in a few (<=3) dimensions,
+but is a poor choice in higher dimensions or for non-smooth integrands.
+Compare with \code{hcubature} which also takes the same arguments.
+
 
 The vector interface requires the integrand to take a matrix as its argument.
 The return value should also be a matrix. The number of points at which the
 integrand may be evaluated is not under user control: the integration routine
-takes care of that and this number may run to several hundreds.
+takes care of that and this number may run to several hundreds. We strongly
+advise vectorization; see vignette.
 
 The \code{norm} argument is irrelevant for scalar integrands and is ignored.
 Given vectors \eqn{v} and \eqn{e} of estimated integrals and errors therein,
@@ -310,6 +316,9 @@ Balasubramanian Narasimhan
 }
 \references{
 See \url{http://ab-initio.mit.edu/wiki/index.php/Cubature}.
+}
+\seealso{
+hcubature
 }
 \keyword{math}
 
