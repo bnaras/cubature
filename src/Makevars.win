@@ -10,8 +10,15 @@ rcubature.o: cubature.ts
 
 Rcpp-Cuba.o: cubature.ts
 
-cubature.ts:
+cubature.ts: cubature-1.0.2
 	cd cubature-1.0.2 && $(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) -DNOSHORTS -DR_PACKAGE=1" AR=$(AR) RANLIB=$(RANLIB)
+	touch $@
+
+cubature-1.0.2:
+	echo 'download.file(url = "https://api.github.com/repos/bnaras/cubature-1.0.2/zipball", destfile = "master.zip", method = "libcurl", mode = "wb")' | ${R_HOME}/bin/R --vanilla --slave
+	unzip master.zip
+	mv bnaras-cubature-1.0.2-594160f cubature-1.0.2
+	rm -f master.zip
 	touch $@
 
 clean:

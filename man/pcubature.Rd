@@ -62,7 +62,7 @@ iterations is reached (see parameter info below), whichever is earlier.
 
 This function uses p-adaptive integration (repeatedly doubling the degree
 of the quadrature rules until convergence is achieved), is based on a tensor
-product of Clenshaw–Curtis quadrature rules. This algorithm is often superior
+product of Clenshaw-Curtis quadrature rules. This algorithm is often superior
 to h-adaptive integration for smooth integrands in a few (<=3) dimensions,
 but is a poor choice in higher dimensions or for non-smooth integrands.
 Compare with \code{hcubature} which also takes the same arguments.
