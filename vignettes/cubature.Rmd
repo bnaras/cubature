@@ -40,33 +40,6 @@ in inappropriate cases. So when in doubt, you are better off using
 The main point of this note is to examine the difference vectorization
 makes. My recommendations are below in the summary section.
 
-### Apropos the `Cuba` library
-
-The package [`R2Cuba`](https://cran.r-project.org/package=R2Cuba)
-provides a suite of cubature and other useful Monte Carlo integration
-routines linked against version 1.6 of the C library. The authors of
-`R2Cuba` have obviously put a lot of work has into it since it uses
-C-style R API. This approach also means that it is harder to keep the
-R package in sync with new versions of the underlying C library. In
-fact, the Cuba library is now at version 4.2!
-
-In a matter of a couple of hours, I was able to link the latest
-version (4.2) of the [Cuba libraries](http://www.feynarts.de/cuba/)
-with R using Rcpp; you can see it on the `Cuba` branch of my
-[Github repo](https://github.com/bnaras/cubature). This branch package
-builds and installs in R on my Mac and Ubuntu machines and gives
-correct answers at least for `cuhre`. The
-4.2 version of the Cuba library also has vectorized versions of the
-routines that can be gainfully exploited (not implemented in the
-branch). As of this writing, I have also not yet carefully considered
-the issue of parallel execution (via `fork()`) which might be
-problematic in the Windows version. In addition, my timing benchmarks
-showed very disappointing results.
-
-For the above reasons, I decided not to bother with Cuba for now, but
-if there is enough interest, I might consider rolling `Cuba-4.2+` into
-this `cubature` package in the future.
-
 ## A Timing Harness
 
 Our harness will provide timing results for `hcubature`, `pcubature`
@@ -418,6 +391,43 @@ knitr::kable(d, digits = 3)
 ```
 
 
+## An implementation note
+
+About the only real modification we have made to the underlying
+[`cubature-1.0.2`](http://ab-initio.mit.edu/wiki/index.php/Cubature)
+library is that we use `M = 16` rather than the default `M = 19`
+suggested by the original author for `pcubature`. This allows us to
+comply with CRAN package size limits and seems to work reasonably well
+for the above tests. Future versions will allow for such customization
+on demand.
+
+### Apropos the `Cuba` library
+
+The package [`R2Cuba`](https://cran.r-project.org/package=R2Cuba)
+provides a suite of cubature and other useful Monte Carlo integration
+routines linked against version 1.6 of the C library. The authors of
+`R2Cuba` have obviously put a lot of work has into it since it uses
+C-style R API. This approach also means that it is harder to keep the
+R package in sync with new versions of the underlying C library. In
+fact, the Cuba C library has marched on now to version 4.2.
+
+In a matter of a couple of hours, I was able to link the latest
+version (4.2) of the [Cuba libraries](http://www.feynarts.de/cuba/)
+with R using Rcpp; you can see it on the `Cuba` branch of my
+[Github repo](https://github.com/bnaras/cubature). This branch package
+builds and installs in R on my Mac and Ubuntu machines and gives
+correct answers at least for `cuhre`. The
+4.2 version of the Cuba library also has vectorized versions of the
+routines that can be gainfully exploited (not implemented in the
+branch). As of this writing, I have also not yet carefully considered
+the issue of parallel execution (via `fork()`) which might be
+problematic in the Windows version. In addition, my timing benchmarks
+showed very disappointing results.
+
+For the above reasons, I decided not to bother with Cuba for now, but
+if there is enough interest, I might consider rolling `Cuba-4.2+` into
+this `cubature` package in the future.
+
 ## Summary
 
 The following is therefore my recommendation.
@@ -427,5 +437,6 @@ The following is therefore my recommendation.
 
 2. Vectorized `hcubature` seems to be a good starting point.
 
-3. In low dimensions (< 3) `pcubature` might be worth trying out.
+3. For smooth integrands in low dimensions ($\leq 3$), `pcubature` might be
+   worth trying out. Experiment before using in a production package.
 
