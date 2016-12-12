@@ -3,9 +3,15 @@
 \name{hcubature}
 \alias{adaptIntegrate}
 \alias{hcubature}
-\title{Adaptive multivariate integration over hypercubes (hcubature)}
+\alias{pcubature}
+\title{Adaptive multivariate integration over hypercubes (hcubature and pcubature)}
 \usage{
 hcubature(f, lowerLimit, upperLimit, ..., tol = 1e-05, fDim = 1,
+  maxEval = 0, absError = 0, doChecking = FALSE,
+  vectorInterface = FALSE, norm = c("INDIVIDUAL", "PAIRED", "L2", "L1",
+  "LINF"))
+
+pcubature(f, lowerLimit, upperLimit, ..., tol = 1e-05, fDim = 1,
   maxEval = 0, absError = 0, doChecking = FALSE,
   vectorInterface = FALSE, norm = c("INDIVIDUAL", "PAIRED", "L2", "L1",
   "LINF"))
@@ -61,11 +67,24 @@ less than the absolute error requested, or when the estimated error is less
 than tol times the integral, in absolute value, or the maximum number of
 iterations is reached (see parameter info below), whichever is earlier.
 
-This function uses h-adaptive integration, recursively partitioning the
-integration domain into smaller subdomains, applying the same integration
-rule to each, until convergence is achieved. Compare with \code{pcubature}
-which also takes the same arguments.
+For compatibility with earlier versions, the \code{adaptIntegrate} function
+is an alias for the underlying \code{hcubature} function which uses h-adaptive
+integration. Otherwise, the calling conventions are the same.
 
+We highly recommend referring to the vignette to achieve the best results!
+
+
+
+The \code{hcubature} function is the h-adaptive version that recursively partitions
+the integration domain into smaller subdomains, applying the same integration
+rule to each, until convergence is achieved.
+
+The p-adaptive version, \code{pcubature}, repeatedly doubles the degree
+of the quadrature rules until convergence is achieved, and is based on a tensor
+product of Clenshaw-Curtis quadrature rules. This algorithm is often superior
+to h-adaptive integration for smooth integrands in a few (<=3) dimensions,
+but is a poor choice in higher dimensions or for non-smooth integrands.
+Compare with \code{hcubature} which also takes the same arguments.
 
 The vector interface requires the integrand to take a matrix as its argument.
 The return value should also be a matrix. The number of points at which the
@@ -108,6 +127,8 @@ testFn0 <- function(x) {
 
 hcubature(testFn0, rep(0,2), rep(1,2), tol=1e-4)
 
+pcubature(testFn0, rep(0,2), rep(1,2), tol=1e-4)
+
 M_2_SQRTPI <- 2/sqrt(pi)
 
 ## Test function 1
@@ -124,6 +145,7 @@ testFn1 <- function(x) {
 }
 
 hcubature(testFn1, rep(0, 3), rep(1, 3), tol=1e-4)
+pcubature(testFn1, rep(0, 3), rep(1, 3), tol=1e-4)
 
 ##
 ## Test function 2
@@ -140,6 +162,7 @@ testFn2 <- function(x) {
 }
 
 hcubature(testFn2, rep(0, 2), rep(1, 2), tol=1e-4)
+pcubature(testFn2, rep(0, 2), rep(1, 2), tol=1e-4)
 
 ##
 ## Test function 3
@@ -154,6 +177,7 @@ testFn3 <- function(x) {
 }
 
 hcubature(testFn3, rep(0,3), rep(1,3), tol=1e-4)
+pcubature(testFn3, rep(0,3), rep(1,3), tol=1e-4)
 
 ##
 ## Test function 4 (Gaussian centered at 1/2)
@@ -170,7 +194,7 @@ testFn4 <- function(x) {
 }
 
 hcubature(testFn4, rep(0,2), rep(1,2), tol=1e-4)
-
+pcubature(testFn4, rep(0,2), rep(1,2), tol=1e-4)
 
 ##
 ## Test function 5 (double Gaussian)
@@ -188,6 +212,7 @@ testFn5 <- function(x) {
 }
 
 hcubature(testFn5, rep(0,3), rep(1,3), tol=1e-4)
+pcubature(testFn5, rep(0,3), rep(1,3), tol=1e-4)
 
 ##
 ## Test function 6 (Tsuda's example)
@@ -203,6 +228,7 @@ testFn6 <- function(x) {
 }
 
 hcubature(testFn6, rep(0,4), rep(1,4), tol=1e-4)
+pcubature(testFn6, rep(0,4), rep(1,4), tol=1e-4)
 
 
 ##
@@ -223,6 +249,7 @@ testFn7 <- function(x) {
 }
 
 hcubature(testFn7, rep(0,3), rep(1,3), tol=1e-4)
+pcubature(testFn7, rep(0,3), rep(1,3), tol=1e-4)
 
 
 ## Example from web page
@@ -236,6 +263,7 @@ testFnWeb <-  function(x) {
 }
 
 hcubature(testFnWeb, rep(-2,3), rep(2,3), tol=1e-4)
+pcubature(testFnWeb, rep(-2,3), rep(2,3), tol=1e-4)
 
 ## Test function I.1d from
 ## Numerical integration using Wang-Landau sampling
@@ -249,6 +277,7 @@ I.1d <- function(x) {
 }
 
 hcubature(I.1d, -2, 2, tol=1e-7)
+pcubature(I.1d, -2, 2, tol=1e-7)
 
 ## Test function I.2d from
 ## Numerical integration using Wang-Landau sampling
@@ -264,6 +293,7 @@ I.2d <- function(x) {
 }
 
 hcubature(I.2d, rep(-1, 2), rep(1, 2), maxEval=10000)
+pcubature(I.2d, rep(-1, 2), rep(1, 2), maxEval=10000)
 
 ##
 ## Example of multivariate normal integration borrowed from
@@ -307,6 +337,9 @@ sigma[3,2] <- sigma[2, 3] <- 11/15
 hcubature(dmvnorm, lower=rep(-0.5, m), upper=c(1,4,2),
                         mean=rep(0, m), sigma=sigma, log=FALSE,
                maxEval=10000)
+pcubature(dmvnorm, lower=rep(-0.5, m), upper=c(1,4,2),
+                        mean=rep(0, m), sigma=sigma, log=FALSE,
+               maxEval=10000)
 }
 
 }
@@ -315,9 +348,6 @@ Balasubramanian Narasimhan
 }
 \references{
 See \url{http://ab-initio.mit.edu/wiki/index.php/Cubature}.
-}
-\seealso{
-pcubature
 }
 \keyword{math}
 

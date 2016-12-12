@@ -11,4 +11,4 @@ Updated this package in several ways:
 - Added vectorized interface to `hcubature` and `pcubature`
 - Added a vignette to show the great gains from vectorization
 - Added tests to avoid screw-ups
-- Added make rules so that cubature is downloaded from github
+- Fixed up clencurt.h so that CRAN size limitations are not violated

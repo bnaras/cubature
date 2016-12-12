@@ -1,4 +1,4 @@
-#' Adaptive multivariate integration over hypercubes (hcubature)
+#' Adaptive multivariate integration over hypercubes (hcubature and pcubature)
 #'
 #' The function performs adaptive multidimensional integration (cubature) of
 #' (possibly) vector-valued integrands over hypercubes. The function includes
@@ -13,14 +13,14 @@
 #' than tol times the integral, in absolute value, or the maximum number of
 #' iterations is reached (see parameter info below), whichever is earlier.
 #'
-#' This function uses h-adaptive integration, recursively partitioning the
-#' integration domain into smaller subdomains, applying the same integration
-#' rule to each, until convergence is achieved. Compare with \code{pcubature}
-#' which also takes the same arguments.
+#' For compatibility with earlier versions, the \code{adaptIntegrate} function
+#' is an alias for the underlying \code{hcubature} function which uses h-adaptive
+#' integration. Otherwise, the calling conventions are the same.
+#'
+#' We highly recommend referring to the vignette to achieve the best results!
 #'
 #' @importFrom Rcpp evalCpp
-#' @aliases adaptIntegrate
-#' @seealso pcubature
+#' @aliases adaptIntegrate pcubature
 #'
 #' @param f The function (integrand) to be integrated
 #' @param lowerLimit The lower limit of integration, a vector for hypercubes
@@ -46,6 +46,18 @@
 #' \item{returnCode}{the actual integer return code of the C routine}
 #'
 #' @details
+#'
+#' The \code{hcubature} function is the h-adaptive version that recursively partitions
+#' the integration domain into smaller subdomains, applying the same integration
+#' rule to each, until convergence is achieved.
+#'
+#' The p-adaptive version, \code{pcubature}, repeatedly doubles the degree
+#' of the quadrature rules until convergence is achieved, and is based on a tensor
+#' product of Clenshaw-Curtis quadrature rules. This algorithm is often superior
+#' to h-adaptive integration for smooth integrands in a few (<=3) dimensions,
+#' but is a poor choice in higher dimensions or for non-smooth integrands.
+#' Compare with \code{hcubature} which also takes the same arguments.
+#'
 #' The vector interface requires the integrand to take a matrix as its argument.
 #' The return value should also be a matrix. The number of points at which the
 #' integrand may be evaluated is not under user control: the integration routine
@@ -90,6 +102,8 @@
 #'
 #' hcubature(testFn0, rep(0,2), rep(1,2), tol=1e-4)
 #'
+#' pcubature(testFn0, rep(0,2), rep(1,2), tol=1e-4)
+#'
 #' M_2_SQRTPI <- 2/sqrt(pi)
 #'
 #' ## Test function 1
@@ -106,6 +120,7 @@
 #' }
 #'
 #' hcubature(testFn1, rep(0, 3), rep(1, 3), tol=1e-4)
+#' pcubature(testFn1, rep(0, 3), rep(1, 3), tol=1e-4)
 #'
 #' ##
 #' ## Test function 2
@@ -122,6 +137,7 @@
 #' }
 #'
 #' hcubature(testFn2, rep(0, 2), rep(1, 2), tol=1e-4)
+#' pcubature(testFn2, rep(0, 2), rep(1, 2), tol=1e-4)
 #'
 #' ##
 #' ## Test function 3
@@ -136,6 +152,7 @@
 #' }
 #'
 #' hcubature(testFn3, rep(0,3), rep(1,3), tol=1e-4)
+#' pcubature(testFn3, rep(0,3), rep(1,3), tol=1e-4)
 #'
 #' ##
 #' ## Test function 4 (Gaussian centered at 1/2)
@@ -152,7 +169,7 @@
 #' }
 #'
 #' hcubature(testFn4, rep(0,2), rep(1,2), tol=1e-4)
-#'
+#' pcubature(testFn4, rep(0,2), rep(1,2), tol=1e-4)
 #'
 #' ##
 #' ## Test function 5 (double Gaussian)
@@ -170,6 +187,7 @@
 #' }
 #'
 #' hcubature(testFn5, rep(0,3), rep(1,3), tol=1e-4)
+#' pcubature(testFn5, rep(0,3), rep(1,3), tol=1e-4)
 #'
 #' ##
 #' ## Test function 6 (Tsuda's example)
@@ -185,6 +203,7 @@
 #' }
 #'
 #' hcubature(testFn6, rep(0,4), rep(1,4), tol=1e-4)
+#' pcubature(testFn6, rep(0,4), rep(1,4), tol=1e-4)
 #'
 #'
 #' ##
@@ -205,6 +224,7 @@
 #' }
 #'
 #' hcubature(testFn7, rep(0,3), rep(1,3), tol=1e-4)
+#' pcubature(testFn7, rep(0,3), rep(1,3), tol=1e-4)
 #'
 #'
 #' ## Example from web page
@@ -218,6 +238,7 @@
 #' }
 #'
 #' hcubature(testFnWeb, rep(-2,3), rep(2,3), tol=1e-4)
+#' pcubature(testFnWeb, rep(-2,3), rep(2,3), tol=1e-4)
 #'
 #' ## Test function I.1d from
 #' ## Numerical integration using Wang-Landau sampling
@@ -231,6 +252,7 @@
 #' }
 #'
 #' hcubature(I.1d, -2, 2, tol=1e-7)
+#' pcubature(I.1d, -2, 2, tol=1e-7)
 #'
 #' ## Test function I.2d from
 #' ## Numerical integration using Wang-Landau sampling
@@ -246,6 +268,7 @@
 #' }
 #'
 #' hcubature(I.2d, rep(-1, 2), rep(1, 2), maxEval=10000)
+#' pcubature(I.2d, rep(-1, 2), rep(1, 2), maxEval=10000)
 #'
 #' ##
 #' ## Example of multivariate normal integration borrowed from
@@ -289,9 +312,12 @@
 #' hcubature(dmvnorm, lower=rep(-0.5, m), upper=c(1,4,2),
 #'                         mean=rep(0, m), sigma=sigma, log=FALSE,
 #'                maxEval=10000)
+#' pcubature(dmvnorm, lower=rep(-0.5, m), upper=c(1,4,2),
+#'                         mean=rep(0, m), sigma=sigma, log=FALSE,
+#'                maxEval=10000)
 #' }
 #'
-#' @export hcubature adaptIntegrate
+#' @export hcubature adaptIntegrate pcubature
 #'
 hcubature <- adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
                                         fDim = 1, maxEval = 0, absError = 0, doChecking = FALSE,
@@ -334,6 +360,57 @@ hcubature <- adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e
     }
 
     .Call("cubature_doHCubature", as.integer(fDim), fnF, as.double(lowerLimit),
+          as.double(upperLimit), as.integer(maxEval), as.double(absError),
+          as.double(tol), as.integer(vectorInterface), norm, PACKAGE="cubature")
+}
+
+#' @rdname hcubature
+pcubature <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
+                      fDim = 1, maxEval = 0, absError = 0, doChecking = FALSE,
+                      vectorInterface = FALSE,
+                      norm = c("INDIVIDUAL",
+                               "PAIRED",
+                               "L2",
+                               "L1",
+                               "LINF")) {
+    NORM_CODES <- c(INDIVIDUAL = 0L, PAIRED = 1L, L2 = 2L, L1 = 3L, LINF = 4L)
+    norm <- as.integer(NORM_CODES[match.arg(norm)])
+    nL = length(lowerLimit); nU = length(upperLimit)
+    if (fDim <= 0 || nL <= 0 || nU <= 0) {
+        stop("Both f and x must have dimension >= 1")
+    }
+
+    if (nL != nU) {
+        stop("lowerLimit and upperLimit must have same length")
+    }
+
+    if (nL > 3) {
+        warning("pcubature not recommended for dimensions > 3!")
+    }
+
+    if (tol <= 0) {
+        stop("tol should be positive!")
+    }
+
+
+    f <- match.fun(f)
+
+    if (doChecking) {
+        fnF <- function(x) {
+            fx <- f(x, ...)
+            if(!is.numeric(fx) || length(fx) != fDim) {
+                cat("pcubature: Error in evaluation function f(x) for x = ", x, "\n")
+                stop("pcubature: Result f(x) is not numeric or has wrong dimension")
+            }
+            fx
+        }
+    } else {
+        fnF <- function(x) {
+            f(x, ...)
+        }
+    }
+
+    .Call("cubature_doPCubature", as.integer(fDim), fnF, as.double(lowerLimit),
           as.double(upperLimit), as.integer(maxEval), as.double(absError),
           as.double(tol), as.integer(vectorInterface), norm, PACKAGE="cubature")
 }
