@@ -46,10 +46,16 @@ Our harness will provide timing results for `hcubature`, `pcubature`
 (where appropriate) and `R2Cuba` calls.  We begin by creating a
 harness for these calls.
 
-```{R}
-library(microbenchmark)
+```{r}
+loadedSuggested  <- c(benchr = FALSE, R2Cuba = FALSE)
+if (requireNamespace("benchr", quietly = TRUE)) {
+    loadedSuggested["benchr"] <- TRUE
+}
+if (requireNamespace("R2Cuba", quietly = TRUE)) {
+    loadedSuggested["R2Cuba"] <- TRUE
+}
+
 library(cubature)
-library(R2Cuba)
 
 harness <- function(which = NULL,
                     f, fv, lowerLimit, upperLimit, tol = 1e-3, times = 20, ...) {
@@ -57,8 +63,17 @@ harness <- function(which = NULL,
     fns <- c(hc = "Non-vectorized Hcubature",
              hc.v = "Vectorized Hcubature",
              pc = "Non-vectorized Pcubature",
-             pc.v = "Vectorized Pcubature",
-             cc = "R2Cuba::cuhre")
+             pc.v = "Vectorized Pcubature")
+
+    if (loadedSuggested["R2Cuba"]) {
+        fns <- c(fns, cc = "R2Cuba::cuhre")
+        cc <- function() R2Cuba::cuhre(ndim = ndim, ncomp = 1, integrand = f,
+                                       lower = lowerLimit, upper = upperLimit,
+                                       flags = list(verbose = 0, final = 1),
+                                       rel.tol = tol,
+                                       max.eval = 10^6,
+                                       ...)
+    }
 
     hc <- function() cubature::hcubature(f = f,
                                          lowerLimit = lowerLimit,
@@ -85,27 +100,26 @@ harness <- function(which = NULL,
                                            tol = tol,
                                            vectorInterface = TRUE,
                                            ...)
+
     ndim = length(lowerLimit)
 
-    cc <- function() R2Cuba::cuhre(ndim = ndim, ncomp = 1, integrand = f,
-                                   lower = lowerLimit, upper = upperLimit,
-                                   flags = list(verbose = 0, final = 1),
-                                   rel.tol = tol,
-                                   max.eval = 10^6,
-                                   ...)
     if (is.null(which)) {
         fnIndices <- seq_along(fns)
     } else {
         fnIndices <- match(which, names(fns))
     }
     fnList <- lapply(names(fns)[fnIndices], function(x) call(x))
-    argList <- c(fnList, unit = "ms", times = times)
-    result <- do.call(microbenchmark, args = argList)
-    d <- summary(result)
-    d$expr <- fns[fnIndices]
-    d
-}
 
+    if (loadedSuggested["benchr"]) {
+        argList <- c(fnList, times = times, progress = FALSE)
+        result <- do.call(benchr::benchmark, args = argList)
+        d <- summary(result)[seq_along(fnIndices), ]
+        d$expr <- fns[fnIndices]
+        d
+    } else {
+        d <- data.frame(expr = names(fns)[fnIndices], timing = NA)
+    }
+}
 ```
 
 We reel off the timing runs.
@@ -153,18 +167,16 @@ m <- 3
 sigma <- diag(3)
 sigma[2,1] <- sigma[1, 2] <- 3/5 ; sigma[3,1] <- sigma[1, 3] <- 1/3
 sigma[3,2] <- sigma[2, 3] <- 11/15
-
-my_dmvnorm <- function (x, mean, sigma) {
+logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
+my_dmvnorm <- function (x, mean, sigma, logdet) {
     x <- matrix(x, ncol = length(x))
     distval <- stats::mahalanobis(x, center = mean, cov = sigma)
-    logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
-    exp(-(ncol(x) * log(2 * pi) + logdet + distval)/2)
+    exp(-(3 * log(2 * pi) + logdet + distval)/2)
 }
 
-my_dmvnorm_v <- function (x, mean, sigma) {
+my_dmvnorm_v <- function (x, mean, sigma, logdet) {
     distval <- stats::mahalanobis(t(x), center = mean, cov = sigma)
-    logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
-    exp(matrix(-(nrow(x) * log(2 * pi) + logdet + distval)/2, ncol = ncol(x)))
+    exp(matrix(-(3 * log(2 * pi) + logdet + distval)/2, ncol = ncol(x)))
 }
 ```
 
@@ -176,7 +188,7 @@ d <- harness(f = my_dmvnorm, fv = my_dmvnorm_v,
              upperLimit = c(1, 4, 2),
              tol = 1e-5,
              times = 10,
-             mean = rep(0, m), sigma = sigma)
+             mean = rep(0, m), sigma = sigma, logdet = logdet)
 knitr::kable(d, digits = 3)
 ```
 
@@ -201,7 +213,7 @@ g3 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
                                   upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
                                   alg = TVPACK(), abseps = 1e-5, releps = 1e-5)
 
-knitr::kable(summary(microbenchmark(g1(), g2(), g3(), times = 20)),
+knitr::kable(summary(benchr::benchmark(g1(), g2(), g3(), times = 20, progress = FALSE)),
              digits = 3, row.names = FALSE)
 ```
 
@@ -212,7 +224,7 @@ testFn0 <- function(x) prod(cos(x))
 testFn0_v <- function(x) matrix(apply(x, 2, function(z) prod(cos(z))), ncol = ncol(x))
 
 d <- harness(f = testFn0, fv = testFn0_v,
-             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), times = 100)
+             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), times = 1000)
 knitr::kable(d, digits = 3)
 ```
 
@@ -263,7 +275,7 @@ testFn3 <- function(x) prod(2 * x)
 testFn3_v <- function(x) matrix(apply(x, 2, function(z) prod(2 * z)), ncol = ncol(x))
 
 d <- harness(f = testFn3, fv = testFn3_v,
-             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), times = 20)
+             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), times = 50)
 knitr::kable(d, digits = 3)
 ```
 
@@ -368,7 +380,7 @@ I.1d_v <- function(x) {
         ncol = ncol(x))
 }
 d <- harness(f = I.1d, fv = I.1d_v,
-             lowerLimit = -2, upperLimit = 2, times = 50)
+             lowerLimit = -2, upperLimit = 2, times = 100)
 knitr::kable(d, digits = 3)
 ```
 
@@ -386,7 +398,7 @@ I.2d_v <- function(x) {
            ncol = ncol(x))
 }
 d <- harness(f = I.2d, fv = I.2d_v,
-             lowerLimit = rep(-1, 2), upperLimit = rep(1, 2), times = 50)
+             lowerLimit = rep(-1, 2), upperLimit = rep(1, 2), times = 100)
 knitr::kable(d, digits = 3)
 ```
 
