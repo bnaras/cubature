@@ -52,3 +52,7 @@ Version 1.3-3 (2016-12-09)
 Version 1.3-4 up (2016-12-11)
 	- Generated smaller pcubature header (clencurt.h) using
 	M = 16 and put back C cubature source in tree.
+
+Version 1.3-7 (2017-05-09)
+	- Registered .Call stuff and removed microbenchmark suggestion in
+	favor of benchr.

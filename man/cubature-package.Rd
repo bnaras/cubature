@@ -2,8 +2,8 @@
 % Please edit documentation in R/cubature-package.R
 \docType{package}
 \name{cubature-package}
-\alias{cubature}
 \alias{cubature-package}
+\alias{cubature}
 \title{Cubature is a package for adaptive multidimensional integration over
 hypercubes}
 \description{
@@ -18,13 +18,12 @@ Steven G. Johnson available from the URL
 \tab yes\cr } There is only one function in the package called
 \link[cubature]{adaptIntegrate}.
 }
+\references{
+See \url{http://ab-initio.mit.edu/wiki/index.php/Cubature}
+}
 \author{
 C code by Steven G. Johnson, R by Balasubramanian Narasimhan
 
 Maintainer: Balasubramanian Narasimhan<naras@stat.stanford.edu>
 }
-\references{
-See \url{http://ab-initio.mit.edu/wiki/index.php/Cubature}
-}
 \keyword{package}
-
