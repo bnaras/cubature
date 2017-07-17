@@ -106,7 +106,7 @@ harness <- function(which = NULL,
     if (is.null(which)) {
         fnIndices <- seq_along(fns)
     } else {
-        fnIndices <- match(which, names(fns))
+        fnIndices <- na.omit(match(which, names(fns)))
     }
     fnList <- lapply(names(fns)[fnIndices], function(x) call(x))
 

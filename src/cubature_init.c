@@ -1,6 +1,7 @@
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
+#include "cubature.h"
 
 
 /* .Call entry points */
@@ -19,4 +20,10 @@ static const R_CallMethodDef CallEntries[] = {
 void R_init_cubature(DllInfo *dll) {
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
+  R_RegisterCCallable("cubature", "adapt_integrate", (DL_FUNC) hcubature);
+  R_RegisterCCallable("cubature", "adapt_integrate_v", (DL_FUNC) hcubature_v);
+  R_RegisterCCallable("cubature", "hcubature", (DL_FUNC) hcubature);
+  R_RegisterCCallable("cubature", "hcubature_v", (DL_FUNC) hcubature_v);
+  R_RegisterCCallable("cubature", "pcubature", (DL_FUNC) pcubature);
+  R_RegisterCCallable("cubature", "pcubature_v", (DL_FUNC) pcubature_v);
 }
