@@ -9,8 +9,7 @@ hypercubes}
 \description{
 Cubature is a package for adaptive multidimensional integration over
 hypercubes. It is a wrapper around the pure C, GPLed implementation by
-Steven G. Johnson available from the URL
-\url{http://ab-initio.mit.edu/wiki/index.php/Cubature}.
+Steven G. Johnson available.
 }
 \details{
 \tabular{ll}{ Package: \tab cubature\cr Type: \tab Package\cr Version: \tab

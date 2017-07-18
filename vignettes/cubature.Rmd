@@ -26,10 +26,9 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-Starting with version 1.2, `cubature` now uses `Rcpp`. Also,
-version 1.3 uses the newer version (1.0.2) of Steven G. Johnson's
-[`hcubature` and `pcubature`](https://ab-initio.mit.edu/wiki/index.php/Cubature)
-routines, including the vectorized interface.
+Starting with version 1.2, `cubature` now uses `Rcpp`. Also, version
+1.3 uses the newer version (1.0.2) of Steven G. Johnson's `hcubature`
+and `pcubature` routines, including the vectorized interface.
 
 Per the documentation, use of `pcubature` is advisable only for smooth
 integrands in dimesions up to three at most. In fact, the `pcubature`
@@ -406,12 +405,11 @@ knitr::kable(d, digits = 3)
 ## An implementation note
 
 About the only real modification we have made to the underlying
-[`cubature-1.0.2`](http://ab-initio.mit.edu/wiki/index.php/Cubature)
-library is that we use `M = 16` rather than the default `M = 19`
-suggested by the original author for `pcubature`. This allows us to
-comply with CRAN package size limits and seems to work reasonably well
-for the above tests. Future versions will allow for such customization
-on demand.
+`cubature-1.0.2` library is that we use `M = 16` rather than the
+default `M = 19` suggested by the original author for
+`pcubature`. This allows us to comply with CRAN package size limits
+and seems to work reasonably well for the above tests. Future versions
+will allow for such customization on demand.
 
 ### Apropos the `Cuba` library
 
