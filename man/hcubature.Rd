@@ -344,9 +344,6 @@ pcubature(dmvnorm, lower=rep(-0.5, m), upper=c(1,4,2),
 }
 
 }
-\references{
-See \url{http://ab-initio.mit.edu/wiki/index.php/Cubature}.
-}
 \author{
 Balasubramanian Narasimhan
 }

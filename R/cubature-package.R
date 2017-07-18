@@ -20,7 +20,6 @@
 #' @author C code by Steven G. Johnson, R by Balasubramanian Narasimhan
 #'
 #' Maintainer: Balasubramanian Narasimhan<naras@@stat.stanford.edu>
-#' @references See \url{http://ab-initio.mit.edu/wiki/index.php/Cubature}
 #' @keywords package
 NULL
 

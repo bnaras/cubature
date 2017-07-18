@@ -5,7 +5,7 @@
 
 #include <Rcpp.h>      // need to include the main Rcpp header file only
 
-#include "cubature.h"
+#include <cubature.h>
 
 SEXP fun;                   /* The function itself */
 int count;                  /* Count of function evaluations */

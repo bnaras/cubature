@@ -84,7 +84,6 @@
 #' }
 #'
 #' @author Balasubramanian Narasimhan
-#' @references See \url{http://ab-initio.mit.edu/wiki/index.php/Cubature}.
 #' @keywords math
 #' @examples
 #'
@@ -359,7 +358,7 @@ hcubature <- adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e
         }
     }
 
-    .Call("cubature_doHCubature", as.integer(fDim), fnF, as.double(lowerLimit),
+    .Call("_cubature_doHCubature", as.integer(fDim), fnF, as.double(lowerLimit),
           as.double(upperLimit), as.integer(maxEval), as.double(absError),
           as.double(tol), as.integer(vectorInterface), norm, PACKAGE="cubature")
 }
@@ -410,7 +409,7 @@ pcubature <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
         }
     }
 
-    .Call("cubature_doPCubature", as.integer(fDim), fnF, as.double(lowerLimit),
+    .Call("_cubature_doPCubature", as.integer(fDim), fnF, as.double(lowerLimit),
           as.double(upperLimit), as.integer(maxEval), as.double(absError),
           as.double(tol), as.integer(vectorInterface), norm, PACKAGE="cubature")
 }

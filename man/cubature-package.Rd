@@ -18,9 +18,6 @@ Steven G. Johnson available from the URL
 \tab yes\cr } There is only one function in the package called
 \link[cubature]{adaptIntegrate}.
 }
-\references{
-See \url{http://ab-initio.mit.edu/wiki/index.php/Cubature}
-}
 \author{
 C code by Steven G. Johnson, R by Balasubramanian Narasimhan
 

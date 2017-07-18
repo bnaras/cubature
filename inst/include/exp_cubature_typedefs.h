@@ -1,5 +1,5 @@
-#ifndef __cubature_typedefs_h__
-#define __cubature_typedefs_h__
+#ifndef __exp_cubature_typedefs_h__
+#define __exp_cubature_typedefs_h__
 
 /* separate h file for the types and the error_norm enum,
  to avoid duplicate symbol error. */

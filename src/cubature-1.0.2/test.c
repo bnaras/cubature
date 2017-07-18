@@ -39,7 +39,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "cubature.h"
+#include <cubature.h>
 
 #define VERBOSE 0
 
