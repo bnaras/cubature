@@ -1,5 +1,17 @@
-cubature
-========
+## cubature [![Build Status](](https://travis-ci.org/cubature) 
+
+Cubature is an R package for adaptive multivariate integration over
+hypercubes. The core of the package is the cubature C library
+of [Steven G. Johnson](https://math.mit.edu/~stevenj/).
+
+The package provides both `hcubature` and `pcubature` routines in
+addition to a vector interface. R users will gain a lot by using the
+vector interace and writing functions to take advantage of the vector
+interface is quite easy. Refer to the vignette that provides timing
+comparisons and also examples to emulate for using the vector
+interface.
+	
+### Change log
 
 Updated this package in several ways:
 
