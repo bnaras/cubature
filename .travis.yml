@@ -4,3 +4,5 @@ r:
   - devel
 cache: packages
 sudo: false
+notifications:
+  email: false
