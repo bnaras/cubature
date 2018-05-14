@@ -1,0 +1,6 @@
+*.Rproj
+.Rproj.user
+.RData
+.Rhistory
+src/*.o
+src/cvxr.so
