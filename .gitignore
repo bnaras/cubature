@@ -3,4 +3,4 @@
 .RData
 .Rhistory
 src/*.o
-src/cvxr.so
+src/cubature.so
