@@ -52,7 +52,7 @@
    3) Goto (1).
 
  The basic algorithm is based on the adaptive cubature described in
-
+ 
      A. C. Genz and A. A. Malik, "An adaptive algorithm for numeric
      integration over an N-dimensional rectangular region,"
      J. Comput. Appl. Math. 6 (4), 295-302 (1980).
@@ -103,7 +103,7 @@
 	  To compile a test program, compile cubature.c with
 	  -DTEST_INTEGRATOR as described at the end. */
 
-#include <cubature.h>
+#include "cubature.h"
 
 /* error return codes */
 #define SUCCESS 0
@@ -254,7 +254,7 @@ static int alloc_rule_pts(rule *r, unsigned num_regions)
 			       repeatedly calling alloc_rule_pts with
 			       growing num_regions only needs
 			       a logarithmic number of allocations */
-	  r->pts = (double *) malloc(sizeof(double) *
+	  r->pts = (double *) malloc(sizeof(double) * 
 				     (num_regions
 				      * r->num_points * (r->dim + r->fdim)));
 	  if (r->fdim + r->dim > 0 && !r->pts) return FAILURE;
@@ -282,7 +282,7 @@ static rule *make_rule(size_t sz, /* >= sizeof(rule) */
 }
 
 /* note: all regions must have same fdim */
-static int eval_regions(unsigned nR, region *R,
+static int eval_regions(unsigned nR, region *R, 
 			integrand_v f, void *fdata, rule *r)
 {
      unsigned iR;
@@ -476,10 +476,10 @@ static int rule75genzmalik_evalError(rule *r_, unsigned fdim, integrand_v f, voi
      for (iR = 0; iR < nR; ++iR) {
 	  const double *center = R[iR].h.data;
 	  const double *halfwidth = R[iR].h.data + dim;
-
+	  
 	  for (i = 0; i < dim; ++i)
 	       r->p[i] = center[i];
-
+	  
 	  for (i = 0; i < dim; ++i)
 	       r->widthLambda2[i] = halfwidth[i] * lambda2;
 	  for (i = 0; i < dim; ++i)
@@ -487,7 +487,7 @@ static int rule75genzmalik_evalError(rule *r_, unsigned fdim, integrand_v f, voi
 
 	  /* Evaluate points in the center, in (lambda2,0,...,0) and
 	     (lambda3=lambda4, 0,...,0).  */
-	  evalR0_0fs4d(pts + npts*dim, dim, r->p, center,
+	  evalR0_0fs4d(pts + npts*dim, dim, r->p, center, 
 		       r->widthLambda2, r->widthLambda);
 	  npts += num0_0(dim) + 2 * numR0_0fs(dim);
 
@@ -507,14 +507,14 @@ static int rule75genzmalik_evalError(rule *r_, unsigned fdim, integrand_v f, voi
 	  return FAILURE;
 
      /* we are done with the points, and so we can re-use the pts
-	array to store the maximum difference diff[i] in each dimension
+	array to store the maximum difference diff[i] in each dimension 
 	for each hypercube */
      diff = pts;
      for (i = 0; i < dim * nR; ++i) diff[i] = 0;
 
      for (j = 0; j < fdim; ++j) {
 	  const double *v = vals + j;
-#         define VALS(i) v[fdim*(i)]
+#         define VALS(i) v[fdim*(i)]	       
 	  for (iR = 0; iR < nR; ++iR) {
 	       double result, res5th;
 	       double val0, sum2=0, sum3=0, sum4=0, sum5=0;
@@ -532,11 +532,11 @@ static int rule75genzmalik_evalError(rule *r_, unsigned fdim, integrand_v f, voi
 		    double v1 = VALS((k0 + 4*k) + 1);
 		    double v2 = VALS((k0 + 4*k) + 2);
 		    double v3 = VALS((k0 + 4*k) + 3);
-
+		    
 		    sum2 += v0 + v1;
 		    sum3 += v2 + v3;
-
-		    diff[iR * dim + k] +=
+		    
+		    diff[iR * dim + k] += 
 			 fabs(v0 + v1 - 2*val0 - ratio * (v2 + v3 - 2*val0));
 	       }
 	       k0 += 4*k;
@@ -544,17 +544,17 @@ static int rule75genzmalik_evalError(rule *r_, unsigned fdim, integrand_v f, voi
 	       for (k = 0; k < numRR0_0fs(dim); ++k)
 		    sum4 += VALS(k0 + k);
 	       k0 += k;
-
+	       
 	       for (k = 0; k < numR_Rfs(dim); ++k)
 		    sum5 += VALS(k0 + k);
-
+	       
 	       /* Calculate fifth and seventh order results */
 	       result = R[iR].h.vol * (r->weight1 * val0 + weight2 * sum2 + r->weight3 * sum3 + weight4 * sum4 + r->weight5 * sum5);
 	       res5th = R[iR].h.vol * (r->weightE1 * val0 + weightE2 * sum2 + r->weightE3 * sum3 + weightE4 * sum4);
-
+	       
 	       R[iR].ee[j].val = result;
 	       R[iR].ee[j].err = fabs(res5th - result);
-
+	       
 	       v += r_->num_points * fdim;
 	  }
 #         undef VALS
@@ -634,7 +634,7 @@ static int rule15gauss_evalError(rule *r,
 	  0.405845151377397166906606412076961,
 	  0.207784955007898467600689403773245,
 	  0.000000000000000000000000000000000
-	  /* xgk[1], xgk[3], ... abscissae of the 7-point gauss rule.
+	  /* xgk[1], xgk[3], ... abscissae of the 7-point gauss rule. 
 	     xgk[0], xgk[2], ... to optimally extend the 7-point gauss rule */
      };
      static const double wg[4] = {  /* weights of the 7-point gauss rule */
@@ -684,7 +684,7 @@ static int rule15gauss_evalError(rule *r,
 
      if (f(1, npts, pts, fdata, fdim, vals))
 	  return FAILURE;
-
+     
      for (k = 0; k < fdim; ++k) {
           const double *vk = vals + k;
 	  for (iR = 0; iR < nR; ++iR) {
@@ -701,23 +701,23 @@ static int rule15gauss_evalError(rule *r,
 		    double v = vk[fdim*npts] + vk[fdim*npts+fdim];
 		    result_gauss += wg[j] * v;
 		    result_kronrod += wgk[j2] * v;
-		    result_abs += wgk[j2] * (fabs(vk[fdim*npts])
+		    result_abs += wgk[j2] * (fabs(vk[fdim*npts]) 
 					     + fabs(vk[fdim*npts+fdim]));
 		    npts += 2;
 	       }
 	       for (j = 0; j < n/2; ++j) {
 		    int j2 = 2*j;
-		    result_kronrod += wgk[j2] * (vk[fdim*npts]
+		    result_kronrod += wgk[j2] * (vk[fdim*npts] 
 						 + vk[fdim*npts+fdim]);
-		    result_abs += wgk[j2] * (fabs(vk[fdim*npts])
+		    result_abs += wgk[j2] * (fabs(vk[fdim*npts]) 
 					     + fabs(vk[fdim*npts+fdim]));
 		    npts += 2;
 	       }
-
+	       
 	       /* integration result */
 	       R[iR].ee[k].val = result_kronrod * halfwidth;
 
-	       /* error estimate
+	       /* error estimate 
 		  (from GSL, probably dates back to QUADPACK
 		  ... not completely clear to me why we don't just use
 	          fabs(result_kronrod - result_gauss) * halfwidth */
@@ -748,7 +748,7 @@ static int rule15gauss_evalError(rule *r,
 		    if (min_err > err) err = min_err;
 	       }
 	       R[iR].ee[k].err = err;
-
+	       
 	       /* increment vk to point to next batch of results */
 	       vk += 15*fdim;
 	  }
@@ -901,9 +901,9 @@ static int converged(unsigned fdim, const esterr *ee,
 
 /* adaptive integration, analogous to adaptintegrator.cpp in HIntLib */
 
-static int rulecubature(rule *r, unsigned fdim,
-			integrand_v f, void *fdata,
-			const hypercube *h,
+static int rulecubature(rule *r, unsigned fdim, 
+			integrand_v f, void *fdata, 
+			const hypercube *h, 
 			size_t maxEval,
 			double reqAbsError, double reqRelError,
 			error_norm norm,
@@ -917,15 +917,14 @@ static int rulecubature(rule *r, unsigned fdim,
      esterr *ee = NULL;
 
      if (fdim <= 1) norm = ERROR_INDIVIDUAL; /* norm is irrelevant */
-#ifndef R_PACKAGE
      if (norm < 0 || norm > ERROR_LINF) return FAILURE; /* invalid norm */
-#endif
+
      regions = heap_alloc(1, fdim);
      if (!regions.ee || !regions.items) goto bad;
 
      ee = (esterr *) malloc(sizeof(esterr) * fdim);
      if (!ee) goto bad;
-
+     
      nR_alloc = 2;
      R = (region *) malloc(sizeof(region) * nR_alloc);
      if (!R) goto bad;
@@ -935,7 +934,7 @@ static int rulecubature(rule *r, unsigned fdim,
 	 || heap_push(&regions, R[0]))
 	       goto bad;
      numEval += r->num_points;
-
+     
      while (numEval < maxEval || !maxEval) {
 	  if (converged(fdim, regions.ee, reqAbsError, reqRelError, norm))
 	       break;
@@ -950,7 +949,7 @@ static int rulecubature(rule *r, unsigned fdim,
 		  T. L. Freeman, "Parallel Globally Adaptive
 		  Algorithms for Multi-dimensional Integration,"
 		  http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.42.6638
-		  (1994).
+		  (1994). 
 
 		  Basically, this evaluates in one shot all regions
 		  that *must* be evaluated in order to reduce the
@@ -999,9 +998,9 @@ static int rulecubature(rule *r, unsigned fdim,
      }
 
      /* re-sum integral and errors */
-     for (j = 0; j < fdim; ++j) val[j] = err[j] = 0;
+     for (j = 0; j < fdim; ++j) val[j] = err[j] = 0;  
      for (i = 0; i < regions.n; ++i) {
-	  for (j = 0; j < fdim; ++j) {
+	  for (j = 0; j < fdim; ++j) { 
 	       val[j] += regions.items[i].ee[j].val;
 	       err[j] += regions.items[i].ee[j].err;
 	  }
@@ -1021,9 +1020,9 @@ bad:
      return FAILURE;
 }
 
-static int cubature(unsigned fdim, integrand_v f, void *fdata,
-		    unsigned dim, const double *xmin, const double *xmax,
-		    size_t maxEval, double reqAbsError, double reqRelError,
+static int cubature(unsigned fdim, integrand_v f, void *fdata, 
+		    unsigned dim, const double *xmin, const double *xmax, 
+		    size_t maxEval, double reqAbsError, double reqRelError, 
 		    error_norm norm,
 		    double *val, double *err, int parallel)
 {
@@ -1031,7 +1030,7 @@ static int cubature(unsigned fdim, integrand_v f, void *fdata,
      hypercube h;
      int status;
      unsigned i;
-
+     
      if (fdim == 0) /* nothing to do */ return SUCCESS;
      if (dim == 0) { /* trivial integration */
 	  if (f(0, 1, xmin, fdata, fdim, val)) return FAILURE;
@@ -1040,10 +1039,10 @@ static int cubature(unsigned fdim, integrand_v f, void *fdata,
      }
      r = dim == 1 ? make_rule15gauss(dim, fdim)
  	          : make_rule75genzmalik(dim, fdim);
-     if (!r) {
+     if (!r) { 
 	  for (i = 0; i < fdim; ++i) {
 	       val[i] = 0;
-	       err[i] = HUGE_VAL;
+	       err[i] = HUGE_VAL; 
 	  }
 	  return FAILURE;
      }
@@ -1057,31 +1056,31 @@ static int cubature(unsigned fdim, integrand_v f, void *fdata,
      return status;
 }
 
-int hcubature_v(unsigned fdim, integrand_v f, void *fdata,
-                unsigned dim, const double *xmin, const double *xmax,
-                size_t maxEval, double reqAbsError, double reqRelError,
+int hcubature_v(unsigned fdim, integrand_v f, void *fdata, 
+                unsigned dim, const double *xmin, const double *xmax, 
+                size_t maxEval, double reqAbsError, double reqRelError, 
                 error_norm norm,
                 double *val, double *err)
 {
-     return cubature(fdim, f, fdata, dim, xmin, xmax,
+     return cubature(fdim, f, fdata, dim, xmin, xmax, 
 		     maxEval, reqAbsError, reqRelError, norm, val, err, 1);
 }
 
 #include "vwrapper.h"
 
-int hcubature(unsigned fdim, integrand f, void *fdata,
-	      unsigned dim, const double *xmin, const double *xmax,
-	      size_t maxEval, double reqAbsError, double reqRelError,
+int hcubature(unsigned fdim, integrand f, void *fdata, 
+	      unsigned dim, const double *xmin, const double *xmax, 
+	      size_t maxEval, double reqAbsError, double reqRelError, 
 	      error_norm norm,
 	      double *val, double *err)
 {
      int ret;
      fv_data d;
 
-     if (fdim == 0) return SUCCESS; /* nothing to do */
-
+     if (fdim == 0) return SUCCESS; /* nothing to do */     
+     
      d.f = f; d.fdata = fdata;
-     ret = cubature(fdim, fv, &d, dim, xmin, xmax,
+     ret = cubature(fdim, fv, &d, dim, xmin, xmax, 
 		    maxEval, reqAbsError, reqRelError, norm, val, err, 0);
      return ret;
 }

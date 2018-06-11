@@ -26,12 +26,12 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-Starting with version 1.2, `cubature` now uses `Rcpp`. Also, version
-1.3 uses the newer version (1.0.2) of Steven G. Johnson's `hcubature`
-and `pcubature` routines, including the vectorized interface.
+This R `cubature` package exposes both the `hcubature` and `pcubature`
+routines of the underlying C library, including the vectorized
+interfaces.
 
 Per the documentation, use of `pcubature` is advisable only for smooth
-integrands in dimesions up to three at most. In fact, the `pcubature`
+integrands in dimensions up to three at most. In fact, the `pcubature`
 routines perform significantly worse than the vectorized `hcubature`
 in inappropriate cases. So when in doubt, you are better off using
 `hcubature`.
@@ -451,3 +451,8 @@ The following is therefore my recommendation.
 3. For smooth integrands in low dimensions ($\leq 3$), `pcubature` might be
    worth trying out. Experiment before using in a production package.
 
+## Session Info
+
+```{r}
+sessionInfo()
+```

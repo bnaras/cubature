@@ -1,3 +1,9 @@
+# cubature 1.3-13
+
+- Generated package docs using pkgdown
+- Synced up to cubature-1.0.3 
+- Added LICENSE file ([request of Nick Youngblut](https://github.com/bnaras/cubature/issues/12))
+
 # cubature 1.3-12
 
 - Minor typographical and documentation fixes

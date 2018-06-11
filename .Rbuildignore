@@ -8,6 +8,7 @@
 ^pkgdown$
 ^codecov\.yml$
 ^LICENSE\.md$
+^NOTES\.md$
 ^CRAN-RELEASE$
 ^src/*\.o$
 ^src/*\.so$

@@ -28,7 +28,7 @@
 #include <string.h>
 #include <math.h>
 
-#include <cubature.h>
+#include "cubature.h"
 
 /* error return codes */
 #define SUCCESS 0
@@ -43,7 +43,7 @@
 /***************************************************************************/
 /* For adaptive cubature, thanks to the nesting of the C-C rules, we
    can re-use the values from coarser grids for finer grids, and the
-   coarser grids are also used for error estimation.
+   coarser grids are also used for error estimation. 
 
    A grid is determined by an m[dim] array, where m[i] denotes
    2^(m[i]+1)+1 points in the i-th dimension.
@@ -83,7 +83,7 @@ static void free_cachevals(valcache *v)
 /* recursive loop over all cubature points for the given (m,mi) cache entry:
    add each point to the buffer buf, evaluating all at once whenever the
    buffer is full or when we are done */
-static int compute_cacheval(const unsigned *m, unsigned mi,
+static int compute_cacheval(const unsigned *m, unsigned mi, 
 			    double *val, size_t *vali,
 			    unsigned fdim, integrand_v f, void *fdata,
 			    unsigned dim, unsigned id, double *p,
@@ -102,7 +102,7 @@ static int compute_cacheval(const unsigned *m, unsigned mi,
      else {
 	  double c = (xmin[id] + xmax[id]) * 0.5;
 	  double r = (xmax[id] - xmin[id]) * 0.5;
-	  const double *x = clencurt_x
+	  const double *x = clencurt_x 
 	       + ((id == mi) ? (m[id] ? (1 << (m[id] - 1)) : 0) : 0);
 	  unsigned i, nx = (id == mi ? (m[id] ? (1 << (m[id] - 1)) : 1)
 			    : (1 << (m[id])));
@@ -225,7 +225,7 @@ static unsigned eval(const unsigned *cm, unsigned cmi, double *cval,
 /* loop over all cache entries that contribute to the integral,
    (with m[md] decremented by 1) */
 static void evals(valcache vc, const unsigned *m, unsigned md,
-		  unsigned fdim, unsigned dim,
+		  unsigned fdim, unsigned dim, 
 		  double V, double *val)
 {
      size_t i;
@@ -242,13 +242,13 @@ static void evals(valcache vc, const unsigned *m, unsigned md,
 /* evaluate the integrals for the given m[] using the cached values in vc,
    storing the integrals in val[], the error estimate in err[], and the
    dimension to subdivide next (the largest error contribution) in *mi */
-static void eval_integral(valcache vc, const unsigned *m,
+static void eval_integral(valcache vc, const unsigned *m, 
 			  unsigned fdim, unsigned dim, double V,
 			  unsigned *mi, double *val, double *err, double *val1)
 {
      double maxerr = 0;
      unsigned i, j;
-
+     
      evals(vc, m, dim, fdim, dim, V, val);
 
      /* error estimates along each dimension by comparing val with
@@ -289,7 +289,7 @@ static int converged(unsigned fdim, const double *vals, const double *errs,
    Also allows the caller to specify an array m[dim] of starting degrees
    for the rule, which upon return will hold the final degrees.  The
    number of points in each dimension i is 2^(m[i]+1) + 1. */
-
+   
 int pcubature_v_buf(unsigned fdim, integrand_v f, void *fdata,
 		    unsigned dim, const double *xmin, const double *xmax,
 		    size_t maxEval,
@@ -307,9 +307,8 @@ int pcubature_v_buf(unsigned fdim, integrand_v f, void *fdata,
      double *val1 = NULL;
 
      if (fdim <= 1) norm = ERROR_INDIVIDUAL; /* norm is irrelevant */
-#ifndef R_PACKAGE
      if (norm < 0 || norm > ERROR_LINF) return FAILURE; /* invalid norm */
-#endif
+
      if (fdim == 0) return SUCCESS; /* nothing to do */
      if (dim > MAXDIM) return FAILURE; /* unsupported */
      if (dim == 0) { /* trivial case */
@@ -332,13 +331,13 @@ int pcubature_v_buf(unsigned fdim, integrand_v f, void *fdata,
      if (new_nbuf > max_nbuf) new_nbuf = max_nbuf;
      if (*nbuf < new_nbuf) {
 	  free(*buf);
-	  *buf = (double *) malloc(sizeof(double)
+	  *buf = (double *) malloc(sizeof(double) 
 				   * (*nbuf = new_nbuf) * dim);
 	  if (!*buf) goto done;
      }
 
      /* start by evaluating the m=0 cubature rule */
-     if (add_cacheval(&vc, m, dim, fdim, f, fdata, dim, xmin, xmax,
+     if (add_cacheval(&vc, m, dim, fdim, f, fdata, dim, xmin, xmax, 
 		       *buf, *nbuf) != SUCCESS)
 	  goto done;
 
@@ -365,7 +364,7 @@ int pcubature_v_buf(unsigned fdim, integrand_v f, void *fdata,
 	       if (!*buf) goto done; /* FAILURE */
 	  }
 
-	  if (add_cacheval(&vc, m, mi, fdim, f, fdata,
+	  if (add_cacheval(&vc, m, mi, fdim, f, fdata, 
 			   dim, xmin, xmax, *buf, *nbuf) != SUCCESS)
 	       goto done; /* FAILURE */
 	  numEval += new_nbuf;
@@ -416,7 +415,7 @@ int pcubature(unsigned fdim, integrand f, void *fdata,
      d.f = f; d.fdata = fdata;
      memset(m, 0, sizeof(unsigned) * dim);
      ret = pcubature_v_buf(
-	  fdim, fv, &d, dim, xmin, xmax,
+	  fdim, fv, &d, dim, xmin, xmax, 
 	  maxEval, reqAbsError, reqRelError, norm,
 	  m, &buf, &nbuf, 16 /* max_nbuf > 0 to amortize function overhead */,
 	  val, err);
