@@ -3,7 +3,7 @@
 cubature
 ========
 
-[![Travis-CI Build Status](https://travis-ci.org/bnaras/cubature.svg?branch=master)](https://travis-ci.org/bnaras/cubature) [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/cubature)](https://cloud.r-project.org/package=cubature) [![Coverage Status](https://img.shields.io/codecov/c/github/bnaras/cubature/master.svg)](https://codecov.io/github/bnaras/cubature?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/bnaras/cubature.svg?branch=master)](https://travis-ci.org/bnaras/cubature) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/cubature)](https://cran.r-project.org/package=cubature) [![Coverage Status](https://img.shields.io/codecov/c/github/bnaras/cubature/master.svg)](https://codecov.io/github/bnaras/cubature?branch=master)
 
 Cubature is an R package for adaptive multivariate integration over hypercubes. The core of the package is the cubature C library of [Steven G. Johnson](https://math.mit.edu/~stevenj/).
 
