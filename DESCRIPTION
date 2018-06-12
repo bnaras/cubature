@@ -1,7 +1,7 @@
 Package: cubature
 Type: Package
 Title: Adaptive Multivariate Integration over Hypercubes
-Version: 1.3-13
+Version: 1.4
 VignetteBuilder: knitr
 URL: https://github.com/bnaras/cubature
 BugReports: https://github.com/bnaras/cubature/issues

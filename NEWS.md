@@ -1,3 +1,10 @@
+# cubature 1.4
+
+- Fixed up the C call so that it is re-entrant (brought to my
+  attention by Pierre de Villemereuil)
+
+- Corrected private notes
+
 # cubature 1.3-13
 
 - Generated package docs using pkgdown
