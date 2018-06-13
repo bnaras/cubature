@@ -9,4 +9,5 @@ library.
   over
 3. Move `Makefile` to `Makefile.orig`
 4. Move in `Makefile` from our previous version over
-5. Rest as usual
+5. Copy over any includes in the new C library release
+6. Rest as usual
