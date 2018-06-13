@@ -1,7 +1,9 @@
+
 # cubature 1.4
 
 - Fixed up the C call so that it is re-entrant (brought to my
-  attention by Pierre de Villemereuil)
+  attention by Pierre de Villemereuil). This should be considered a
+  bug fix!
 
 - Corrected private notes
 
