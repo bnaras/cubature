@@ -10,10 +10,13 @@ extern SEXP _cubature_doHCubature(SEXP fDimSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP 
 
 extern SEXP _cubature_doPCubature(SEXP fDimSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP maxEvalSEXP, SEXP absErrSEXP, SEXP tolSEXP, SEXP vectorInterfaceSEXP, SEXP normSEXP);
 
+extern SEXP _cubature_doCuhre(SEXP ncompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nvecSEXP, SEXP maxEvalSEXP, SEXP absErrSEXP, SEXP tolSEXP, SEXP keySEXP);
+
 
 static const R_CallMethodDef CallEntries[] = {
   {"_cubature_doHCubature", (DL_FUNC) &_cubature_doHCubature, 9},
   {"_cubature_doPCubature", (DL_FUNC) &_cubature_doPCubature, 9},
+  {"_cubature_doCuhre", (DL_FUNC) &_cubature_doCuhre, 9},
   {NULL, NULL, 0}
 };
 
@@ -27,5 +30,4 @@ void R_init_cubature(DllInfo *dll) {
   R_RegisterCCallable("cubature", "hcubature_v", (DL_FUNC) hcubature_v);
   R_RegisterCCallable("cubature", "pcubature", (DL_FUNC) pcubature);
   R_RegisterCCallable("cubature", "pcubature_v", (DL_FUNC) pcubature_v);
-
 }

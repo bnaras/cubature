@@ -3,15 +3,8 @@
 //
 // We need both R and C/C++ interfaces!
 
-#include <Rcpp.h>      // need to include the main Rcpp header file only
-
+#include <rcubature.h>
 #include <cubature.h>
-
-typedef struct integrand_info {
-    SEXP fun;                   /* The function itself */
-    int count;                  /* Count of function evaluations */
-} *ii_ptr;
-
 
 int fWrapper(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fval) {
     //     Rcpp::Rcout<<"In Wrapper" <<std::endl;

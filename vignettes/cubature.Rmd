@@ -65,13 +65,25 @@ harness <- function(which = NULL,
              pc.v = "Vectorized Pcubature")
 
     if (loadedSuggested["R2Cuba"]) {
-        fns <- c(fns, cc = "R2Cuba::cuhre")
-        cc <- function() R2Cuba::cuhre(ndim = ndim, ncomp = 1, integrand = f,
+        fns <- c(fns,
+                 Rc = "R2Cuba::cuhre",
+                 cc = "Non-vectorized cubature::cuhre",
+                 cc_v = "Vectorized cubature::cuhre")
+        Rc <- function() R2Cuba::cuhre(ndim = ndim, ncomp = 1, integrand = f,
                                        lower = lowerLimit, upper = upperLimit,
                                        flags = list(verbose = 0, final = 1),
                                        rel.tol = tol,
                                        max.eval = 10^6,
                                        ...)
+        cc <- function() cubature::cuhre(f = f,
+                                         lower = lowerLimit, upper = upperLimit,
+                                         tol = tol,
+                                         ...)
+        cc_v <- function() cubature::cuhre(f = fv,
+                                           lower = lowerLimit, upper = upperLimit,
+                                           tol = tol,
+                                           nvec = 100L,
+                                           ...)
     }
 
     hc <- function() cubature::hcubature(f = f,
@@ -88,10 +100,10 @@ harness <- function(which = NULL,
                                            ...)
 
     pc <- function() cubature::pcubature(f = f,
-                                         lowerLimit = lowerLimit,
-                                         upperLimit = upperLimit,
-                                         tol = tol,
-                                         ...)
+                                     lowerLimit = lowerLimit,
+                                     upperLimit = upperLimit,
+                                     tol = tol,
+                                     ...)
 
     pc.v <- function() cubature::pcubature(f = fv,
                                            lowerLimit = lowerLimit,
@@ -99,7 +111,7 @@ harness <- function(which = NULL,
                                            tol = tol,
                                            vectorInterface = TRUE,
                                            ...)
-
+    
     ndim = length(lowerLimit)
 
     if (is.null(which)) {

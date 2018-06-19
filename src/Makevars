@@ -1,21 +1,31 @@
 CUBATURE_DIR=cubature-1.0.3
-PKG_CFLAGS=-DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I../inst/include
-PKG_CPPFLAGS=-DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I../inst/include
-PKG_LIBS=-L$(CUBATURE_DIR) -lcubature
+CUBA_DIR=Cuba-4.2
+PKG_CFLAGS=-DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I./$(CUBA_DIR) -I../inst/include
+PKG_CPPFLAGS=-DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I$(CUBA_DIR) -I../inst/include
+PKG_LIBS=-L$(CUBATURE_DIR) -L$(CUBA_DIR) -lcubature -lcuba
 
-$(SHLIB): Rcpp-cubature.o RcppExports.o rcubature.o
+$(SHLIB): Rcpp-cubature.o Rcpp-Cuba.o RcppExports.o cubature_init.o
 
 Rcpp-cubature.o: cubature.ts
 RcppExports.o: cubature.ts
-rcubature.o: cubature.ts
+rcubature.o: cubature.ts cuba.ts
+
+Rcpp-Cuba.o: cuba.ts
 
 cubature.ts:
 	(cd $(CUBATURE_DIR) && \
 	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS) -DR_PACKAGE=1" AR="$(AR)" RANLIB="$(RANLIB)") && \
 	touch $@)
 
+cuba.ts:
+	(cd $(CUBA_DIR) && \
+	(CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS) -DR_PACKAGE=1" AR="$(AR)" ARFLAGS="-U" RANLIB="$(RANLIB)" ./configure && $(MAKE) libcuba.a) && \
+	touch $@)
+
 clean:
-	rm -f Rcpp-cubature.o RcppExports.o rcubature.o cubature.so cubature_init.o
+	rm -f Rcpp-cubature.o RcppExports.o rcubature.o cubature.so Rcpp-Cuba.o cubature_init.o
 	rm -f $(CUBATURE_DIR)/*.o
 	rm -f $(CUBATURE_DIR)/libcubature.a $(CUBATURE_DIR)/cubature.ts
+	rm -f $(CUBA_DIR)/*.o
+	rm -f $(CUBA_DIR)/libcuba.a $(CUBA_DIR)/cuba.ts
 
