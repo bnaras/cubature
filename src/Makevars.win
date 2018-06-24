@@ -8,7 +8,7 @@ $(SHLIB): Rcpp-cubature.o Rcpp-cuba.o RcppExports.o rcubature.o
 
 Rcpp-cubature.o: cubature.ts
 RcppExports.o: cubature.ts
-rcubature.o: cubature.ts
+rcubature.o: cubature.ts cuba.ts
 
 Rcpp-Cuba.o: cuba.ts
 
@@ -17,12 +17,16 @@ cubature.ts:
 	touch $@
 
 cuba.ts:
-	cd $(CUBA_DIR) && CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS)" AR="$(AR)" ARFLAGS="-U" RANLIB="$(RANLIB)" ./configure && $(MAKE) libcuba.a
+	cp $(CUBA_DIR)/src/common/Fork-cuba-win.c $(CUBA_DIR)/src/common/Fork.c
+	cp $(CUBA_DIR)/src/common/stddecl-win.h $(CUBA_DIR)/src/common/stddecl.h
+	cp $(CUBA_DIR)/config-cuba-win.h $(CUBA_DIR)/config.h
+	cp $(CUBA_DIR)/Makefile_cuba.win $(CUBA_DIR)/Makefile
+	cd $(CUBA_DIR) && CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include -UHAVE_FORK -DHAVE_CONFIG_H -DREALSIZE=8 -I./src/common -I. $(CPICFLAGS)" AR=$(AR) RANLIB=$(RANLIB) $(MAKE) lib
 	touch $@
 
 clean:
 	rm -f Rcpp-cubature.o Rcpp-cuba.o RcppExports.o rcubature.o
 	rm -f $(CUBATURE_DIR)/*.o
 	rm -f $(CUBATURE_DIR)/libcubature.a $(CUBATURE_DIR)/cubature.ts
-	rm -f $(CUBA_DIR)/*.o
+	cd $(CUBA_DIR) && make clean
 	rm -f $(CUBA_DIR)/libcuba.a $(CUBA_DIR)/cuba.ts

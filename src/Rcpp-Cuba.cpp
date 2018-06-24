@@ -44,7 +44,7 @@ int cuba_fWrapper_v(const int *ndim, const double x[],
 
     Rcpp::NumericMatrix xVal(*ndim, *nvec);   /* The x argument for the R function f */
     double* xp = xVal.begin();        /* The ptr to x (real) matrix */
-    for (unsigned i = 0; i < (*ndim) * (*nvec); ++i) {
+    for (int i = 0; i < (*ndim) * (*nvec); ++i) {
         xp[i] = x[i];
     }
 
@@ -56,7 +56,7 @@ int cuba_fWrapper_v(const int *ndim, const double x[],
     //Rcpp::Rcout<<"after call" <<std::endl;
 
     double* fxp = fx.begin();         /* The ptr to f(x) (real) matrix */
-    for (unsigned i = 0; i < (*ncomp) * (*nvec); ++i) {
+    for (int i = 0; i < (*ncomp) * (*nvec); ++i) {
         f[i] = fxp[i];
     }
 

@@ -14,16 +14,16 @@
 
 /* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
    */
-#define HAVE_ALLOCA_H 1
+/* #undef HAVE_ALLOCA_H */
 
 /* Define to 1 if you have the `erf' function. */
 #define HAVE_ERF 1
 
 /* Define to 1 if you have the `fork' function. */
-#define HAVE_FORK 1
+/* #undef HAVE_FORK */
 
 /* Define to 1 if you have the `getloadavg' function. */
-#define HAVE_GETLOADAVG 1
+/* #undef HAVE_GETLOADAVG */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
@@ -43,7 +43,7 @@
 #define HAVE_POWL 1
 
 /* Define to 1 if you have the `shmget' function. */
-#define HAVE_SHMGET 1
+/* #undef HAVE_SHMGET */
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
@@ -67,16 +67,16 @@
 #define HAVE_UNISTD_H 1
 
 /* Define to 1 if you have the `vfork' function. */
-#define HAVE_VFORK 1
+/* #undef HAVE_VFORK */
 
 /* Define to 1 if you have the <vfork.h> header file. */
 /* #undef HAVE_VFORK_H */
 
 /* Define to 1 if `fork' works. */
-#define HAVE_WORKING_FORK 1
+/* #undef HAVE_WORKING_FORK */
 
 /* Define to 1 if `vfork' works. */
-#define HAVE_WORKING_VFORK 1
+/* #undef HAVE_WORKING_VFORK */
 
 /* Maximum number of dimensions */
 /* #undef NCOMP */
@@ -132,4 +132,4 @@
 /* #undef ssize_t */
 
 /* Define as `fork' if `vfork' does not work. */
-/* #undef vfork */
+#define vfork fork
