@@ -54,10 +54,6 @@ extern "C"
 void *alloca (size_t);
 #endif
 
-#ifndef MKSTEMP
-extern int mkstemp(char *);
-#endif
-
 #ifndef NDIM
 #define NDIM t->ndim
 #define MAXDIM 1024
@@ -294,6 +290,8 @@ enum { signature = 0x41425543 };
 
 
 #define StateWriteTest(t) ((t)->statefile)
+
+#define mkstemp(x) 0
 
 #define StateWriteOpen(t, fd) do { \
   ssize_t fail = 1; \

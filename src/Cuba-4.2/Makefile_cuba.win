@@ -67,19 +67,13 @@ Data.o: $(common)/Data.c $(common)/stddecl.h
 	$(CC) $(CFLAGS) -c -o Data.o $(common)/Data.c
 	$(AR) $(ARFLAGS) $(LIB) Data.o
 
-mkstemp.o: $(common)/mkstemp.c $(common)/stddecl.h
-	$(CC) $(CFLAGS) -c -o mkstemp.o $(common)/mkstemp.c
-	$(AR) $(ARFLAGS) $(LIB) mkstemp.o
-
-
 $(LIB): $(LIB)(Vegas.o)     \
 	$(LIB)(Suave.o)     \
 	$(LIB)(Divonne.o)   \
 	$(LIB)(Cuhre.o)     \
 	$(LIB)(Fork.o)      \
 	$(LIB)(Global.o)    \
-	$(LIB)(Data.o)      \
-	$(LIB)(mkstemp.o)
+	$(LIB)(Data.o)
 	-$(RANLIB) $(LIB)
 
 clean:
