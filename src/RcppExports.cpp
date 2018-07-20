@@ -7,21 +7,49 @@
 using namespace Rcpp;
 
 // doCuhre
-Rcpp::List doCuhre(int ncomp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int nvec, int maxEval, double absErr, double tol, int key);
-RcppExport SEXP _cubature_doCuhre(SEXP ncompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nvecSEXP, SEXP maxEvalSEXP, SEXP absErrSEXP, SEXP tolSEXP, SEXP keySEXP) {
+Rcpp::List doCuhre(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int nVec, int minEval, int maxEval, double absTol, double relTol, int key, int flag);
+RcppExport SEXP _cubature_doCuhre(SEXP nCompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP keySEXP, SEXP flagSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type ncomp(ncompSEXP);
+    Rcpp::traits::input_parameter< int >::type nComp(nCompSEXP);
     Rcpp::traits::input_parameter< SEXP >::type f(fSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type xLL(xLLSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type xUL(xULSEXP);
-    Rcpp::traits::input_parameter< int >::type nvec(nvecSEXP);
+    Rcpp::traits::input_parameter< int >::type nVec(nVecSEXP);
+    Rcpp::traits::input_parameter< int >::type minEval(minEvalSEXP);
     Rcpp::traits::input_parameter< int >::type maxEval(maxEvalSEXP);
-    Rcpp::traits::input_parameter< double >::type absErr(absErrSEXP);
-    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< double >::type absTol(absTolSEXP);
+    Rcpp::traits::input_parameter< double >::type relTol(relTolSEXP);
     Rcpp::traits::input_parameter< int >::type key(keySEXP);
-    rcpp_result_gen = Rcpp::wrap(doCuhre(ncomp, f, xLL, xUL, nvec, maxEval, absErr, tol, key));
+    Rcpp::traits::input_parameter< int >::type flag(flagSEXP);
+    rcpp_result_gen = Rcpp::wrap(doCuhre(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, key, flag));
+    return rcpp_result_gen;
+END_RCPP
+}
+// doVegas
+Rcpp::List doVegas(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int nVec, int minEval, int maxEval, double absTol, double relTol, int nStart, int nIncrease, int nBatch, int gridNo, SEXP stateFile, int seed, int flag);
+RcppExport SEXP _cubature_doVegas(SEXP nCompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP nStartSEXP, SEXP nIncreaseSEXP, SEXP nBatchSEXP, SEXP gridNoSEXP, SEXP stateFileSEXP, SEXP seedSEXP, SEXP flagSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type nComp(nCompSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type f(fSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type xLL(xLLSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type xUL(xULSEXP);
+    Rcpp::traits::input_parameter< int >::type nVec(nVecSEXP);
+    Rcpp::traits::input_parameter< int >::type minEval(minEvalSEXP);
+    Rcpp::traits::input_parameter< int >::type maxEval(maxEvalSEXP);
+    Rcpp::traits::input_parameter< double >::type absTol(absTolSEXP);
+    Rcpp::traits::input_parameter< double >::type relTol(relTolSEXP);
+    Rcpp::traits::input_parameter< int >::type nStart(nStartSEXP);
+    Rcpp::traits::input_parameter< int >::type nIncrease(nIncreaseSEXP);
+    Rcpp::traits::input_parameter< int >::type nBatch(nBatchSEXP);
+    Rcpp::traits::input_parameter< int >::type gridNo(gridNoSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type stateFile(stateFileSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    Rcpp::traits::input_parameter< int >::type flag(flagSEXP);
+    rcpp_result_gen = Rcpp::wrap(doVegas(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nStart, nIncrease, nBatch, gridNo, stateFile, seed, flag));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -64,7 +64,7 @@ points in a single call." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cubature</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.0</span>
       </span>
     </div>
 
@@ -207,7 +207,7 @@ iterations is reached (see parameter info below), whichever is earlier.</p>
 is an alias for the underlying <code>hcubature</code> function which uses h-adaptive
 integration. Otherwise, the calling conventions are the same.</p>
 <p>We highly recommend referring to the vignette to achieve the best results!</p>
-    <p>The <code>hcubature</code> function is the h-adaptive version that recursively partitions
+<p>The <code>hcubature</code> function is the h-adaptive version that recursively partitions
 the integration domain into smaller subdomains, applying the same integration
 rule to each, until convergence is achieved.</p>
 <p>The p-adaptive version, <code>pcubature</code>, repeatedly doubles the degree
@@ -224,19 +224,19 @@ advise vectorization; see vignette.</p>
 <p>The <code>norm</code> argument is irrelevant for scalar integrands and is ignored.
 Given vectors \(v\) and \(e\) of estimated integrals and errors therein,
 respectively, the <code>norm</code> argument takes on one of the following values:</p><dl class='dl-horizontal'>
-  <dt><code>INDIVIDUAL</code></dt><dd><p>Convergence is achieved only when each integrand
-  (each component of \(v\) and \(e\)) individually satisfies the requested
-  error tolerances</p></dd>
-  <dt><code>L1</code>, <code>L2</code>, <code>LINF</code></dt><dd><p>The absolute error is measured as
-  \(|e|\) and the relative error as \(|e|/|v|\), where \(|...|\) is the
-  \(L_1\), \(L_2\), or \(\L_{\infty}\) norm, respectively</p></dd>
-  <dt><code>PAIRED</code></dt><dd><p>Like <code>INDIVIDUAL</code>, except that the integrands are
-  grouped into consecutive pairs, with the error tolerance applied in an
-  \(L_2\) sense to each pair. This option is mainly useful for integrating
-  vectors of complex numbers, where each consecutive pair of real integrands
-  is the real and imaginary parts of a single complex integrand, and the concern
-  is only the error in the complex plane rather than the error in the real and
-  imaginary parts separately</p></dd>
+<dt><code>INDIVIDUAL</code></dt><dd><p>Convergence is achieved only when each integrand
+(each component of \(v\) and \(e\)) individually satisfies the requested
+error tolerances</p></dd>
+<dt><code>L1</code>, <code>L2</code>, <code>LINF</code></dt><dd><p>The absolute error is measured as
+\(|e|\) and the relative error as \(|e|/|v|\), where \(|...|\) is the
+\(L_1\), \(L_2\), or \(\L_{\infty}\) norm, respectively</p></dd>
+<dt><code>PAIRED</code></dt><dd><p>Like <code>INDIVIDUAL</code>, except that the integrands are
+grouped into consecutive pairs, with the error tolerance applied in an
+\(L_2\) sense to each pair. This option is mainly useful for integrating
+vectors of complex numbers, where each consecutive pair of real integrands
+is the real and imaginary parts of a single complex integrand, and the concern
+is only the error in the complex plane rather than the error in the real and
+imaginary parts separately</p></dd>
 </dl>
     
 
@@ -493,7 +493,7 @@ Balasubramanian Narasimhan
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://statistics.stanford.edu/people/balasubramanian-narasimhan'>Balasubramanian Narasimhan</a>, <a href='https://math.mit.edu/~stevenj/'>Steven G. Johnson</a>.</p>
+  <p>Developed by <a href='https://statistics.stanford.edu/people/balasubramanian-narasimhan'>Balasubramanian Narasimhan</a>, <a href='https://math.mit.edu/~stevenj/'>Steven G. Johnson</a>, Thomas Hahn.</p>
 </div>
 
 <div class="pkgdown">

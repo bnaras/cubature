@@ -76,13 +76,13 @@ harness <- function(which = NULL,
                                        max.eval = 10^6,
                                        ...)
         cc <- function() cubature::cuhre(f = f,
-                                         lower = lowerLimit, upper = upperLimit,
-                                         tol = tol,
+                                         lowerLimit = lowerLimit, upperLimit = upperLimit,
+                                         relTol = tol,
                                          ...)
         cc_v <- function() cubature::cuhre(f = fv,
-                                           lower = lowerLimit, upper = upperLimit,
-                                           tol = tol,
-                                           nvec = 100L,
+                                           lowerLimit = lowerLimit, upperLimit = upperLimit,
+                                           relTol = tol,
+                                           nVec = 100L,
                                            ...)
     }
 

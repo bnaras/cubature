@@ -2,57 +2,122 @@
 % Please edit documentation in R/cuhre.R
 \name{cuhre}
 \alias{cuhre}
-\title{Experimental interface to newer Cuba library}
+\title{Integration by a Deterministic Iterative Adaptive Algorithm}
 \usage{
-cuhre(f, lowerLimit, upperLimit, ..., tol = 1e-05, ncomp = 1,
-  maxEval = 10^6, absError = 0, key = 0L, nvec = 1L,
-  doChecking = FALSE)
+cuhre(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
+  absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose = 0,
+  final = 1), key = 0L, nVec = 1L, doChecking = FALSE)
 }
 \arguments{
-\item{f}{The function (integrand) to be integrated}
+\item{f}{The function (integrand) to be integrated. For cuhre, it
+can be something as simple as a function of a single argument,
+say x.}
 
-\item{lowerLimit}{The lower limit of integration, a vector for hypercubes}
+\item{nComp}{The number of components of the integrand, default 1,
+bears no relation to the dimension of the hypercube over which
+integration is performed}
 
-\item{upperLimit}{The upper limit of integration, a vector for hypercubes}
+\item{lowerLimit}{The lower limit of integration, a vector for
+hypercubes}
+
+\item{upperLimit}{The upper limit of integration, a vector for
+hypercubes}
 
 \item{...}{All other arguments passed to the function f}
 
-\item{tol}{The maximum tolerance, default 1e-5.}
+\item{relTol}{The maximum tolerance, default 1e-5.}
 
-\item{ncomp}{The dimension of the integrand, default 1, bears no relation to
-the dimension of the hypercube}
+\item{absTol}{the absolute tolerance, default 0.}
 
-\item{maxEval}{The maximum number of function evaluations needed, default 10^6.
-Note that the actual number of function evaluations
-performed is only approximately guaranteed not to exceed this number.}
+\item{minEval}{the minimum number of function evaluations required}
 
-\item{absError}{The maximum absolute error tolerated}
+\item{maxEval}{The maximum number of function evaluations needed,
+default 10^6.  Note that the actual number of function
+evaluations performed is only approximately guaranteed not to
+exceed this number.}
 
-\item{key}{the quadrature rule key, default 0}
+\item{flags}{flags governing the integration. A list with components:
+\itemize{
+\item \code{verbose}: \code{verbose} encodes the verbosity level, from 0 (default) to 3.
+Level 0 does not print any output, level 1 prints \dQuote{reasonable}
+information on the progress of the integration, level 2 also echoes the
+input parameters, and level 3 further prints the subregion results.
+\item \code{final}: when \code{ 0}, all sets of samples collected on a subregion
+during the various iterations or phases contribute to the final result.
+When \code{ 1}, only the last (largest) set of samples is used in the final
+result.
+}}
 
-\item{nvec}{the number of vectorization points, ignored but fixed at 1 for now}
+\item{key}{the quadrature rule key: \code{key = 7, 9, 11, 13}
+selects the cubature rule of degree key. Note that the
+degree-11 rule is available only in 3 dimensions, the degree-13
+rule only in 2 dimensions.
+For other values, including the default 0, the rule is the degree-13
+rule in 2 dimensions, the degree-11 rule in 3 dimensions, and the
+degree-9 rule otherwise.}
 
-\item{doChecking}{A flag to be a bit anal about checking inputs to C
-routines. A FALSE value results in approximately 9 percent speed gain in our
-experiments. Your mileage will of course vary. Default value is FALSE.}
+\item{nVec}{the number of vectorization points, default 1, but can
+be set to an integer > 1 for vectorization, for example, 1024
+and the function f above needs to handle the vector of points
+appropriately}
+
+\item{doChecking}{A flag to be a bit anal about checking inputs to
+C routines. A FALSE value can result in some performance gains}
 }
 \value{
-The returned value is a list of five items:
-\describe{
-  \item{integral}{thevalue of the integral}
-   \item{error}{the estimated relative error}
-    \item{functionEvaluations}{the number of times the function was evaluated}
-    \item{nregions}{the number of regions used}
-    \item{returnCode}{the actual integer return code of the C routine}
-}
+A list with components:
+\item{nregions }{the actual number of subregions needed}
+\item{neval }{the actual number of integrand evaluations needed}
+\item{returnCode}{return code: \code{0} , the desired accuracy was
+reached, \code{-1}, dimension out of range, \code{1}, the accuracy
+goal was not met within the allowed maximum number of integrand
+evaluations.}  item{integral}{vector of length \code{nComp}; the
+integral of \code{integrand} over the hypercube.}
+\item{error}{vector of length \code{nComp}; the presumed absolute
+error of \code{integral}} \item{prob}{vector of length
+\code{nComp}; the \eqn{$\chi^2$}{Chi2}-probability (not the
+\eqn{$\chi^2$}{Chi2}-value itself!) that \code{error} is not a
+reliable estimate of the true integration error.}
 }
 \description{
-Experimental interface to newer Cuba library
+Implement a deterministic algorithm for multidimensional numerical
+integration. Its algorithm uses one of several cubature rules in a globally
+adaptive subdivision scheme.  The subdivision algorithm is similar to
+\code{\link{suave}}'s.
+}
+\details{
+See details in the documentation.
+}
+\examples{
+
+integrand <- function(arg) {
+  x <- arg[1]
+  y <- arg[2]
+  z <- arg[3]
+  ff <- sin(x)*cos(y)*exp(z);
+return(ff)
+} # End integrand
+
+NDIM <- 3
+NCOMP <- 1
+cuhre(f = integrand,
+      lowerLimit = rep(0, NDIM),
+      upperLimit = rep(1, NDIM),
+      relTol = 1e-3, absTol= 1e-12,
+      flags = list(verbose = 2, final = 0))
+
 }
 \references{
+J. Berntsen, T. O. Espelid (1991) An adaptive algorithm for the
+approximate calculation of multiple integrals. \emph{ACM Transactions on
+Mathematical Software}, \bold{17}(4), 437-451.
+
+T. Hahn (2005) CUBA-a library for multidimensional numerical integration.
+\emph{Computer Physics Communications}, \bold{168}, 78-95.
+
 See \url{http://www.feynarts.de/cuba/}
 }
-\author{
-Balasubramanian Narasimhan
+\seealso{
+\code{\link{vegas}}, \code{\link{suave}}, \code{\link{divonne}}
 }
 \keyword{math}
