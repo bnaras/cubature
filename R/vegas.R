@@ -12,11 +12,11 @@
 #' @importFrom Rcpp evalCpp
 #'
 #' @param f The function (integrand) to be integrated. Optionally, the
-#'     function can take two additional arguments in addition
-#'     to the variable being integrated: - \code{vegas_weight} which
-#'     is the weight of the point being sampled, - \code{vegas_iter}
-#'     the current iteration number. The function may choose to use
-#'     these in any appropriate way or ignore them altogether
+#'     function can take two additional arguments in addition to the
+#'     variable being integrated: - \code{vegas_weight} which is the
+#'     weight of the point being sampled, - \code{vegas_iter} the
+#'     current iteration number. The function may choose to use these
+#'     in any appropriate way or ignore them altogether
 #' @param nComp The number of components of the integrand, default 1,
 #'     bears no relation to the dimension of the hypercube over which
 #'     integration is performed
@@ -45,12 +45,15 @@
 #'     smoothing to the importance function, this moderately improves
 #'     convergence for many integrands.  When \code{smooth = 1} , use
 #'     the importance function without smoothing, this should be
-#'     chosen if the integrand has sharp edges.  - \code{rng}: when
-#'     \code{ 0}, Sobol quasi-random numbers are used for
-#'     sampling. When \code{1}, Mersenne Twister pseudo-random numbers
-#'     are used for sampling.  - \code{rngSeed = 0}: the seed for the
-#'     Mersenne Twister algorithm, used when \code{rng=1} and only set
-#'     when > 0
+#'     chosen if the integrand has sharp edges.  - \code{keep_state}:
+#'     when nonzero, retain state file if argument \code{stateFile} is
+#'     non-null.  - \code{load_state}: when zero, load state file if
+#'     found; if nonzero, reset state regardless - \code{level}: when
+#'     \code{0}, Mersenne Twister random numbers are used. When
+#'     nonzero Ranlux random numbers are used.  - \code{rngSeed}: When
+#'     zero, Sobol quasi-random numbers are used for
+#'     sampling. Otherwise the seed is used for the generator
+#'     indicated by \code{level}.
 #' @param nStart the number of integrand evaluations per iteration to
 #'     start with.
 #' @param nIncrease the increase in the number of integrand
@@ -132,7 +135,7 @@
 vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
                   relTol = 1e-5, absTol = 0,
                   minEval = 0L, maxEval = 10^6,
-                  flags = list(verbose = 1, final = 1, rng = 0, smooth = 0, rngSeed = 0L),
+                  flags = list(verbose = 1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed = 12345L),
                   nVec = 1L, nStart = 1000L, nIncrease = 500L,
                   nBatch = 1000L, gridNo = 0L, stateFile = NULL) {
 
@@ -148,7 +151,7 @@ vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     if (relTol <= 0) {
         stop("tol should be positive!")
     }
-    all_flags <- list(verbose = 1, final = 1, rng = 0, smooth = 0, rngSeed = 12345L)
+    all_flags <- list(verbose = 1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed = 12345L)
     for (x in names(flags)) all_flags[[x]] <- flags[[x]]
 
     r <- upperLimit - lowerLimit
@@ -168,7 +171,8 @@ vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
         fnF <- function(x) prodR * f(lowerLimit + r * x)
     }
 
-    flag_code <- all_flags$verbose + 4 * all_flags$final + all_flags$rng * 8 + all_flags$smooth * 16
+    flag_code <- all_flags$verbose + 2^2 * all_flags$final + 2^3 * all_flags$smooth +
+        2^4 * all_flags$keep_state + 2^5 * all_flags$load_state + 2^8 * all_flags$level
 
     .Call('_cubature_doVegas', PACKAGE = 'cubature',
           as.integer(nComp), fnF,
@@ -176,7 +180,8 @@ vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
           as.integer(nVec), as.integer(minEval), as.integer(maxEval),
           as.double(absTol), as.double(relTol), as.integer(nStart),
           as.integer(nIncrease), as.integer(nBatch), as.integer(gridNo),
-          stateFile, as.integer(all_flags$rngSeed), as.integer(flag_code))
+          stateFile, as.integer(all_flags$rngSeed), as.integer(flag_code),
+          as.integer(vegas_params_exist))
 }
 
 

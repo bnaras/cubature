@@ -6,17 +6,17 @@
 \usage{
 vegas(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
   absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose = 1,
-  final = 1, rng = 0, smooth = 0, rngSeed = 12345L), nVec = 1L,
-  nStart = 1000L, nIncrease = 500L, nBatch = 1000L, gridNo = 0L,
-  stateFile = NULL)
+  final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed =
+  12345L), nVec = 1L, nStart = 1000L, nIncrease = 500L, nBatch = 1000L,
+  gridNo = 0L, stateFile = NULL)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated. Optionally, the
-function can take exactly two additional arguments in addition
-to the variable being integrated: - \code{vegas_weight} which
-is the weight of the point being sampled, - \code{vegas_iter}
-the current iteration number. The function may choose to use
-these in any appropriate way.}
+function can take two additional arguments in addition to the
+variable being integrated: - \code{vegas_weight} which is the
+weight of the point being sampled, - \code{vegas_iter} the
+current iteration number. The function may choose to use these
+in any appropriate way or ignore them altogether}
 
 \item{nComp}{The number of components of the integrand, default 1,
 bears no relation to the dimension of the hypercube over which
@@ -54,12 +54,15 @@ the last (largest) set of samples is used in the final result.
 smoothing to the importance function, this moderately improves
 convergence for many integrands.  When \code{smooth = 1} , use
 the importance function without smoothing, this should be
-chosen if the integrand has sharp edges.  - \code{rng}: when
-\code{ 0}, Sobol quasi-random numbers are used for
-sampling. When \code{1}, Mersenne Twister pseudo-random numbers
-are used for sampling.  - \code{rngSeed = 0}: the seed for the
-Mersenne Twister algorithm, used when \code{rng=1} and only set
-when > 0}
+chosen if the integrand has sharp edges.  - \code{keep_state}:
+when nonzero, retain state file if argument \code{stateFile} is
+non-null.  - \code{load_state}: when zero, load state file if
+found; if nonzero, reset state regardless - \code{level}: when
+\code{0}, Mersenne Twister random numbers are used. When
+nonzero Ranlux random numbers are used.  - \code{rngSeed}: When
+zero, Sobol quasi-random numbers are used for
+sampling. Otherwise the seed is used for the generator
+indicated by \code{level}.}
 
 \item{nVec}{the number of vectorization points, default 1, but can
 be set to an integer > 1 for vectorization, for example, 1024
@@ -157,6 +160,6 @@ T. Hahn (2005) CUBA-a library for multidimensional numerical integration.
 \emph{Computer Physics Communications}, \bold{168}, 78-95.
 }
 \seealso{
-\code{\link{vegas}}, \code{\link{suave}}, \code{\link{divonne}}
+\code{\link{cuhre}}, \code{\link{suave}}, \code{\link{divonne}}
 }
 \keyword{math}
