@@ -126,21 +126,21 @@ refinement of the grid.</p>
 
     <pre class="usage"><span class='fu'>vegas</span>(<span class='no'>f</span>, <span class='kw'>nComp</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>lowerLimit</span>, <span class='no'>upperLimit</span>, <span class='no'>...</span>, <span class='kw'>relTol</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>,
   <span class='kw'>absTol</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>minEval</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>maxEval</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>6</span>, <span class='kw'>flags</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>final</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>rng</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>rngSeed</span> <span class='kw'>=</span> <span class='fl'>12345L</span>), <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
-  <span class='kw'>nStart</span> <span class='kw'>=</span> <span class='fl'>1000L</span>, <span class='kw'>nIncrease</span> <span class='kw'>=</span> <span class='fl'>500L</span>, <span class='kw'>nBatch</span> <span class='kw'>=</span> <span class='fl'>1000L</span>, <span class='kw'>gridNo</span> <span class='kw'>=</span> <span class='fl'>0L</span>,
-  <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>doChecking</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>final</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>keep_state</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>load_state</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>rngSeed</span> <span class='kw'>=</span>
+  <span class='fl'>12345L</span>), <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>nStart</span> <span class='kw'>=</span> <span class='fl'>1000L</span>, <span class='kw'>nIncrease</span> <span class='kw'>=</span> <span class='fl'>500L</span>, <span class='kw'>nBatch</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
+  <span class='kw'>gridNo</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>f</th>
-      <td><p>The function (integrand) to be integrated. The function
-should take two additional arguments in addition to the
-variable being integrated: - <code>weight</code> which is the weight
-of the point being sampled, which can either be ignored by the
-function or used in some constructive way.  - <code>iter</code> the
-current iteration number. The function may choose to use these or not</p></td>
+      <td><p>The function (integrand) to be integrated. Optionally, the
+function can take two additional arguments in addition to the
+variable being integrated: - <code>vegas_weight</code> which is the
+weight of the point being sampled, - <code>vegas_iter</code> the
+current iteration number. The function may choose to use these
+in any appropriate way or ignore them altogether</p></td>
     </tr>
     <tr>
       <th>nComp</th>
@@ -183,25 +183,28 @@ exceed this number.</p></td>
     </tr>
     <tr>
       <th>flags</th>
-      <td><p>flags governing the integration. A list with components:</p><ul>
-<li><p><code>verbose</code>: <code>verbose</code> encodes the verbosity level, from 0 (default) to 3.
-Level 0 does not print any output, level 1 prints &#8220;reasonable&#8221;
-information on the progress of the integration, levels 2 and 3 echo the
-input parameters.</p></li>
-<li><p><code>final</code>: when <code> 0</code>, all sets of samples collected on a subregion
-during the various iterations or phases contribute to the final result.
-When <code> 1</code>, only the last (largest) set of samples is used in the final
-result.</p></li>
-<li><p><code>smooth</code>. When <code>smooth = 0</code>, apply
-additional smoothing to the importance function, this moderately improves
-convergence for many integrands.  When <code>smooth = 1</code> , use the
-importance function without smoothing, this should be chosen if the
-integrand has sharp edges.</p></li>
-<li><p><code>rng</code>: when <code> 0</code>, Sobol quasi-random numbers are used for sampling. When
-<code>1</code>, Mersenne Twister pseudo-random numbers are used for sampling.</p></li>
-<li><p><code>rngSeed = 0</code>: the seed for the Mersenne Twister algorithm, used when <code>rng=1</code>
-and only set when &gt; 0</p></li>
-</ul></td>
+      <td><p>flags governing the integration. A list with
+components: - <code>verbose</code>: <code>verbose</code> encodes the
+verbosity level, from 0 (default) to 3.  Level 0 does not print
+any output, level 1 prints &#8220;reasonable&#8221; information on
+the progress of the integration, levels 2 and 3 echo the input
+parameters.  - <code>final</code>: when <code> 0</code>, all sets of
+samples collected on a subregion during the various iterations
+or phases contribute to the final result.  When <code> 1</code>, only
+the last (largest) set of samples is used in the final result.
+- <code>smooth</code>. When <code>smooth = 0</code>, apply additional
+smoothing to the importance function, this moderately improves
+convergence for many integrands.  When <code>smooth = 1</code> , use
+the importance function without smoothing, this should be
+chosen if the integrand has sharp edges.  - <code>keep_state</code>:
+when nonzero, retain state file if argument <code>stateFile</code> is
+non-null.  - <code>load_state</code>: when zero, load state file if
+found; if nonzero, reset state regardless - <code>level</code>: when
+<code>0</code>, Mersenne Twister random numbers are used. When
+nonzero Ranlux random numbers are used.  - <code>rngSeed</code>: When
+zero, Sobol quasi-random numbers are used for
+sampling. Otherwise the seed is used for the generator
+indicated by <code>level</code>.</p></td>
     </tr>
     <tr>
       <th>nVec</th>
@@ -212,43 +215,47 @@ appropriately</p></td>
     </tr>
     <tr>
       <th>nStart</th>
-      <td><p>the number of integrand evaluations per iteration to start
-with.</p></td>
+      <td><p>the number of integrand evaluations per iteration to
+start with.</p></td>
     </tr>
     <tr>
       <th>nIncrease</th>
-      <td><p>the increase in the number of integrand evaluations per
-iteration. The j-th iteration evaluates the integrand at
-nStart+(j-1)*nincrease points.</p></td>
+      <td><p>the increase in the number of integrand
+evaluations per iteration. The j-th iteration evaluates the
+integrand at nStart+(j-1)*nincrease points.</p></td>
     </tr>
     <tr>
       <th>nBatch</th>
-      <td><p>Vegas samples points not all at once, but in batches of a
-predetermined size, to avoid excessive memory consumption. <code>nbatch</code> is
-the number of points sampled in each batch. Tuning this number should
-usually not be necessary as performance is affected significantly only as
-far as the batch of samples fits into the CPU cache.</p></td>
+      <td><p>Vegas samples points not all at once, but in batches
+of a predetermined size, to avoid excessive memory
+consumption. <code>nbatch</code> is the number of points sampled in
+each batch. Tuning this number should usually not be necessary
+as performance is affected significantly only as far as the
+batch of samples fits into the CPU cache.</p></td>
     </tr>
     <tr>
       <th>gridNo</th>
-      <td><p>an integer.  Vegas may accelerate convergence to keep the grid
-accumulated during one integration for the next one, if the integrands are
-reasonably similar to each other. Vegas maintains an internal table with
-space for ten grids for this purpose.  If <code>gridno</code> is a number between
-1 and 10, the grid is not discarded at the end of the integration, but
-stored in the respective slot of the table for a future invocation. The grid
-is only re-used if the dimension of the subsequent integration is the same
-as the one it originates from. In repeated invocations it may become
-necessary to flush a slot in memory. In this case the negative of the grid
-number should be set. Vegas will then start with a new grid and also restore
-the grid number to its positive value, such that at the end of the
-integration the grid is again stored in the indicated slot.</p></td>
+      <td><p>an integer.  Vegas may accelerate convergence to keep
+the grid accumulated during one integration for the next one,
+if the integrands are reasonably similar to each other. Vegas
+maintains an internal table with space for ten grids for this
+purpose.  If <code>gridno</code> is a number between 1 and 10, the
+grid is not discarded at the end of the integration, but stored
+in the respective slot of the table for a future
+invocation. The grid is only re-used if the dimension of the
+subsequent integration is the same as the one it originates
+from. In repeated invocations it may become necessary to flush
+a slot in memory. In this case the negative of the grid number
+should be set. Vegas will then start with a new grid and also
+restore the grid number to its positive value, such that at the
+end of the integration the grid is again stored in the
+indicated slot.</p></td>
     </tr>
     <tr>
       <th>stateFile</th>
-      <td><p>the name of an external file. Vegas can store its entire
-internal state (i.e. all the information to resume an interrupted
-integration) in an external file.</p>
+      <td><p>the name of an external file. Vegas can store its
+entire internal state (i.e. all the information to resume an
+interrupted integration) in an external file.</p>
 <p>The state file is updated after every iteration. If, on a subsequent
 invocation, Vegas finds a file of the specified name, it loads the internal
 state and continues from the point it left off. Needless to say, using an
@@ -257,11 +264,6 @@ results. Once the integration finishes successfully, i.e. the prescribed
 accuracy is attained, the state file is removed. This feature is useful
 mainly to define &#8216;check-points&#8217; in long-running integrations from
 which the calculation can be restarted.</p></td>
-    </tr>
-    <tr>
-      <th>doChecking</th>
-      <td><p>A flag to be a bit anal about checking inputs to
-C routines. A FALSE value can result in some performance gains</p></td>
     </tr>
     </table>
     
@@ -296,7 +298,7 @@ program. Research Report CLNS-80/447. Cornell University, Ithaca, N.-Y.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>vegas</code>, <code>suave</code>, <code>divonne</code></p></div>
+    <div class='dont-index'><p><code><a href='cuhre.html'>cuhre</a></code>, <code><a href='suave.html'>suave</a></code>, <code>divonne</code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

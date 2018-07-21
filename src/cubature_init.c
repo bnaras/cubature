@@ -14,11 +14,14 @@ extern SEXP _cubature_doCuhre(SEXP nCompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xUL
 
 extern SEXP _cubature_doVegas(SEXP nCompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP nStartSEXP, SEXP nIncreaseSEXP, SEXP nBatchSEXP, SEXP gridNoSEXP, SEXP stateFileSEXP, SEXP seedSEXP, SEXP flagSEXP, SEXP vegas_argsSEXP);
 
+extern SEXP _cubature_doSuave(SEXP nCompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP nNewSEXP, SEXP nMinSEXP, SEXP flatnessSEXP, SEXP stateFileSEXP, SEXP seedSEXP, SEXP flagSEXP, SEXP suave_argsSEXP);
+
 static const R_CallMethodDef CallEntries[] = {
   {"_cubature_doHCubature", (DL_FUNC) &_cubature_doHCubature, 9},
   {"_cubature_doPCubature", (DL_FUNC) &_cubature_doPCubature, 9},
   {"_cubature_doCuhre", (DL_FUNC) &_cubature_doCuhre, 11},
-  {"_cubature_doVegas", (DL_FUNC) &_cubature_doVegas, 17},  
+  {"_cubature_doVegas", (DL_FUNC) &_cubature_doVegas, 17},
+  {"_cubature_doSuave", (DL_FUNC) &_cubature_doSuave, 16},  
   {NULL, NULL, 0}
 };
 

@@ -54,6 +54,32 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// doSuave
+Rcpp::List doSuave(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int nVec, int minEval, int maxEval, double absTol, double relTol, int nNew, int nMin, double flatness, SEXP stateFile, int seed, int flag, int suave_args);
+RcppExport SEXP _cubature_doSuave(SEXP nCompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP nNewSEXP, SEXP nMinSEXP, SEXP flatnessSEXP, SEXP stateFileSEXP, SEXP seedSEXP, SEXP flagSEXP, SEXP suave_argsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type nComp(nCompSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type f(fSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type xLL(xLLSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type xUL(xULSEXP);
+    Rcpp::traits::input_parameter< int >::type nVec(nVecSEXP);
+    Rcpp::traits::input_parameter< int >::type minEval(minEvalSEXP);
+    Rcpp::traits::input_parameter< int >::type maxEval(maxEvalSEXP);
+    Rcpp::traits::input_parameter< double >::type absTol(absTolSEXP);
+    Rcpp::traits::input_parameter< double >::type relTol(relTolSEXP);
+    Rcpp::traits::input_parameter< int >::type nNew(nNewSEXP);
+    Rcpp::traits::input_parameter< int >::type nMin(nMinSEXP);
+    Rcpp::traits::input_parameter< double >::type flatness(flatnessSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type stateFile(stateFileSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    Rcpp::traits::input_parameter< int >::type flag(flagSEXP);
+    Rcpp::traits::input_parameter< int >::type suave_args(suave_argsSEXP);
+    rcpp_result_gen = Rcpp::wrap(doSuave(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nNew, nMin, flatness, stateFile, seed, flag, suave_args));
+    return rcpp_result_gen;
+END_RCPP
+}
 // doHCubature
 Rcpp::List doHCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int maxEval, double absErr, double tol, int vectorInterface, unsigned norm);
 RcppExport SEXP _cubature_doHCubature(SEXP fDimSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP maxEvalSEXP, SEXP absErrSEXP, SEXP tolSEXP, SEXP vectorInterfaceSEXP, SEXP normSEXP) {

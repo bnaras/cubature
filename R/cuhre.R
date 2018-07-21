@@ -135,10 +135,10 @@ cuhre <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     flag_code <- flags$verbose + 4 * flags$final
 
     .Call('_cubature_doCuhre', PACKAGE = 'cubature',
-          as.integer(nComp), fnF,
-          as.double(lowerLimit), as.double(upperLimit),
-          as.integer(nVec), as.integer(minEval), as.integer(maxEval),
-          as.double(absTol), as.double(relTol), as.integer(key), as.integer(flag_code))
+          nComp, fnF,
+          lowerLimit, upperLimit,
+          nVec, minEval, maxEval,
+          absTol, relTol, key, flag_code)
 }
 
 

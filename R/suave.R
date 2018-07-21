@@ -1,11 +1,11 @@
-#' Integration by a Monte Carlo Algorithm
+#' Integration with SUbregion-Adaptive Vegas Algorithm
 #'
-#' Implement a Monte Carlo algorithm for multidimensional numerical
-#' integration.  This algorithm uses importance sampling as a
-#' variance-reduction technique. Vegas iteratively builds up a
-#' piecewise constant weight function, represented on a rectangular
-#' grid. Each iteration consists of a sampling step followed by a
-#' refinement of the grid.
+#' Suave uses \code{\link{vegas}}-like importance sampling combined with a
+#' globally adaptive subdivision strategy: Until the requested accuracy is
+#' reached, the region with the largest error at the time is bisected in the
+#' dimension in which the fluctuations of the integrand are reduced most. The
+#' number of new samples in each half is prorated for the fluctuation in that
+#' half.
 #'
 #' See details in the documentation.
 #'
@@ -13,8 +13,8 @@
 #'
 #' @param f The function (integrand) to be integrated. Optionally, the
 #'     function can take two additional arguments in addition to the
-#'     variable being integrated: - \code{vegas_weight} which is the
-#'     weight of the point being sampled, - \code{vegas_iter} the
+#'     variable being integrated: - \code{suave_weight} which is the
+#'     weight of the point being sampled, - \code{suave_iter} the
 #'     current iteration number. The function may choose to use these
 #'     in any appropriate way or ignore them altogether
 #' @param nComp The number of components of the integrand, default 1,
@@ -54,42 +54,32 @@
 #'     zero, Sobol quasi-random numbers are used for
 #'     sampling. Otherwise the seed is used for the generator
 #'     indicated by \code{level}.
-#' @param nStart the number of integrand evaluations per iteration to
-#'     start with.
-#' @param nIncrease the increase in the number of integrand
-#'     evaluations per iteration. The j-th iteration evaluates the
-#'     integrand at nStart+(j-1)*nincrease points.
+#' @param nNew the number of new integrand evaluations in each
+#'     subdivision.
+#' @param nMin the minimum number of samples a former pass must
+#'     contribute to a subregion to be considered in that region’s
+#'     compound integral value. Increasing nmin may reduce jumps in
+#'     the \eqn{\Chi^2} value.
+#' @param flatness the parameter p, or the type of norm used to
+#'     compute the fluctuation of a sample. This determines how
+#'     prominently ‘outliers,’ i.e. individual samples with a large
+#'     fluctuation, figure in the total fluctuation, which in turn
+#'     determines how a region is split up. As suggested by its name,
+#'     flatness should be chosen large for ‘flat’ integrands and small
+#'     for ‘volatile’ integrands with high peaks. Note that since
+#'     flatness appears in the exponent, one should not use too large
+#'     values (say, no more than a few hundred) lest terms be
+#'     truncated internally to prevent overflow.
 #' @param nVec the number of vectorization points, default 1, but can
 #'     be set to an integer > 1 for vectorization, for example, 1024
 #'     and the function f above needs to handle the vector of points
 #'     appropriately
-#' @param nBatch Vegas samples points not all at once, but in batches
-#'     of a predetermined size, to avoid excessive memory
-#'     consumption. \code{nbatch} is the number of points sampled in
-#'     each batch. Tuning this number should usually not be necessary
-#'     as performance is affected significantly only as far as the
-#'     batch of samples fits into the CPU cache.
-#' @param gridNo an integer.  Vegas may accelerate convergence to keep
-#'     the grid accumulated during one integration for the next one,
-#'     if the integrands are reasonably similar to each other. Vegas
-#'     maintains an internal table with space for ten grids for this
-#'     purpose.  If \code{gridno} is a number between 1 and 10, the
-#'     grid is not discarded at the end of the integration, but stored
-#'     in the respective slot of the table for a future
-#'     invocation. The grid is only re-used if the dimension of the
-#'     subsequent integration is the same as the one it originates
-#'     from. In repeated invocations it may become necessary to flush
-#'     a slot in memory. In this case the negative of the grid number
-#'     should be set. Vegas will then start with a new grid and also
-#'     restore the grid number to its positive value, such that at the
-#'     end of the integration the grid is again stored in the
-#'     indicated slot.
-#' @param stateFile the name of an external file. Vegas can store its
+#' @param stateFile the name of an external file. Suave can store its
 #'     entire internal state (i.e. all the information to resume an
 #'     interrupted integration) in an external file.
 #'
 #' The state file is updated after every iteration. If, on a subsequent
-#' invocation, Vegas finds a file of the specified name, it loads the internal
+#' invocation, Suave finds a file of the specified name, it loads the internal
 #' state and continues from the point it left off. Needless to say, using an
 #' existing state file with a different integrand generally leads to wrong
 #' results. Once the integration finishes successfully, i.e. the prescribed
@@ -109,16 +99,9 @@
 #' \eqn{$\chi^2$}{Chi2}-value itself!) that \code{error} is not a
 #' reliable estimate of the true integration error.}
 #'
-#' @seealso \code{\link{cuhre}}, \code{\link{suave}}, \code{\link{divonne}}
-#'
-#' @references G. P. Lepage (1978) A new algorithm for adaptive
-#' multidimensional integration. \emph{J. Comput. Phys.}, \bold{27}, 192-210.
-#'
-#' G. P. Lepage (1980) VEGAS - An adaptive multi-dimensional integration
-#' program. Research Report CLNS-80/447. Cornell University, Ithaca, N.-Y.
-#'
-#' T. Hahn (2005) CUBA-a library for multidimensional numerical integration.
-#' \emph{Computer Physics Communications}, \bold{168}, 78-95.
+#' @seealso \code{\link{cuhre}}, \code{\link{divonne}}, \code{\link{vegas}}
+#' @references T. Hahn (2005) CUBA-a library for multidimensional numerical
+#' integration. \emph{Computer Physics Communications}, \bold{168}, 78-95.
 #' @keywords math
 #' @examples
 #'
@@ -129,15 +112,16 @@
 #'   ff <- sin(x)*cos(y)*exp(z);
 #' return(ff)
 #' } # end integrand
-#' vegas(3, 1, integrand, rel.tol=1e-3,  abs.tol=1e-12, flags=list(verbose=2))
+#' suave(3, 1, integrand, rel.tol=1e-3,  abs.tol=1e-12,
+#'              flags=list(verbose=2, final=0))
 #'
-#' @export vegas
-vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
+#' @export suave
+suave <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
                   relTol = 1e-5, absTol = 0,
                   minEval = 0L, maxEval = 10^6,
                   flags = list(verbose = 1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed = 12345L),
-                  nVec = 1L, nStart = 1000L, nIncrease = 500L,
-                  nBatch = 1000L, gridNo = 0L, stateFile = NULL) {
+                  nVec = 1L, nNew = 1000L, nMin = 50L,
+                  flatness = 50, stateFile = NULL) {
 
     nL <- length(lowerLimit); nU <- length(upperLimit)
     if (nComp <= 0L || nL <= 0L || nU <= 0L) {
@@ -159,13 +143,13 @@ vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
 
     f <- match.fun(f)
     dotargs_exist <- length(list(...)) > 0
-    vegas_params_exist <- length(intersect(c("vegas_weight", "vegas_iter"), names(formals(f)))) == 2L
+    suave_params_exist <- length(intersect(c("suave_weight", "suave_iter"), names(formals(f)))) == 2L
 
-    if (vegas_params_exist && dotargs_exist) {
-        fnF <- function(x, vegas_weight, vegas_iter) prodR * f(lowerLimit + r * x, vegas_weight = vegas_weight, vegas_iter = vegas_iter, ...)
-    } else if (vegas_params_exist && !dotargs_exist) {
-        fnF <- function(x, vegas_weight, vegas_iter) prodR * f(lowerLimit + r * x, vegas_weight = vegas_weight, vegas_iter = vegas_iter)
-    } else if (!vegas_params_exist && dotargs_exist) {
+    if (suave_params_exist && dotargs_exist) {
+        fnF <- function(x, suave_weight, suave_iter) prodR * f(lowerLimit + r * x, suave_weight = suave_weight, suave_iter = suave_iter, ...)
+    } else if (suave_params_exist && !dotargs_exist) {
+        fnF <- function(x, suave_weight, suave_iter) prodR * f(lowerLimit + r * x, suave_weight = suave_weight, suave_iter = suave_iter)
+    } else if (!suave_params_exist && dotargs_exist) {
         fnF <- function(x) prodR * f(lowerLimit + r * x, ...)
     } else {
         fnF <- function(x) prodR * f(lowerLimit + r * x)
@@ -174,14 +158,14 @@ vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     flag_code <- all_flags$verbose + 2^2 * all_flags$final + 2^3 * all_flags$smooth +
         2^4 * all_flags$keep_state + 2^5 * all_flags$load_state + 2^8 * all_flags$level
 
-    .Call('_cubature_doVegas', PACKAGE = 'cubature',
+    .Call('_cubature_doSuave', PACKAGE = 'cubature',
           nComp, fnF,
           lowerLimit, upperLimit,
           nVec, minEval, maxEval,
-          absTol, relTol, nStart,
-          nIncrease, nBatch, gridNo,
+          absTol, relTol,
+          nNew, nMin, flatness,
           stateFile, all_flags$rngSeed, flag_code,
-          vegas_params_exist)
+          suave_params_exist)
 }
 
 
