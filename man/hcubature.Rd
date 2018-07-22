@@ -20,38 +20,42 @@ pcubature(f, lowerLimit, upperLimit, ..., tol = 1e-05, fDim = 1,
 \arguments{
 \item{f}{The function (integrand) to be integrated}
 
-\item{lowerLimit}{The lower limit of integration, a vector for hypercubes}
+\item{lowerLimit}{The lower limit of integration, a vector for
+hypercubes}
 
-\item{upperLimit}{The upper limit of integration, a vector for hypercubes}
+\item{upperLimit}{The upper limit of integration, a vector for
+hypercubes}
 
 \item{...}{All other arguments passed to the function f}
 
 \item{tol}{The maximum tolerance, default 1e-5.}
 
-\item{fDim}{The dimension of the integrand, default 1, bears no relation to
-the dimension of the hypercube}
+\item{fDim}{The dimension of the integrand, default 1, bears no
+relation to the dimension of the hypercube}
 
-\item{maxEval}{The maximum number of function evaluations needed, default 0
-implying no limit. Note that the actual number of function evaluations
-performed is only approximately guaranteed not to exceed this number.}
+\item{maxEval}{The maximum number of function evaluations needed,
+default 0 implying no limit. Note that the actual number of
+function evaluations performed is only approximately guaranteed
+not to exceed this number.}
 
 \item{absError}{The maximum absolute error tolerated}
 
-\item{doChecking}{A flag to be a bit anal about checking inputs to C
-routines. A FALSE value results in approximately 9 percent speed gain in our
-experiments. Your mileage will of course vary. Default value is FALSE.}
+\item{doChecking}{As of version 2.0, this flag is ignored and will
+be dropped in forthcoming versions}
 
-\item{vectorInterface}{A flag that indicates whether to use the vector interface
-and is by default FALSE. See details below}
+\item{vectorInterface}{A flag that indicates whether to use the
+vector interface and is by default FALSE. See details below}
 
-\item{norm}{For vector-valued integrands, \code{norm} specifies the norm that is
-used to measure the error and determine convergence properties. See below.}
+\item{norm}{For vector-valued integrands, \code{norm} specifies the
+norm that is used to measure the error and determine
+convergence properties. See below.}
 }
 \value{
-The returned value is a list of three items: \item{integral}{the
-value of the integral} \item{error}{the estimated relative error}
-\item{functionEvaluations}{the number of times the function was evaluated}
-\item{returnCode}{the actual integer return code of the C routine}
+The returned value is a list of three items:
+\item{integral}{the value of the integral} \item{error}{the
+estimated relative error} \item{functionEvaluations}{the number
+of times the function was evaluated} \item{returnCode}{the
+actual integer return code of the C routine}
 }
 \description{
 The function performs adaptive multidimensional integration (cubature) of

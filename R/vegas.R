@@ -129,7 +129,9 @@
 #'   ff <- sin(x)*cos(y)*exp(z);
 #' return(ff)
 #' } # end integrand
-#' vegas(3, 1, integrand, rel.tol=1e-3,  abs.tol=1e-12, flags=list(verbose=2))
+#' vegas(integrand, lowerLimit = rep(0, 3), upperLimit = rep(1, 3),
+#'              relTol=1e-3,  absTol=1e-12,
+#'              flags=list(verbose=2, final=0))
 #'
 #' @export vegas
 vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,

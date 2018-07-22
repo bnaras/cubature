@@ -6,7 +6,7 @@
 \usage{
 cuhre(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
   absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose = 0,
-  final = 1), key = 0L, nVec = 1L, doChecking = FALSE)
+  final = 1), key = 0L, nVec = 1L)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated. For cuhre, it
@@ -60,9 +60,6 @@ degree-9 rule otherwise.}
 be set to an integer > 1 for vectorization, for example, 1024
 and the function f above needs to handle the vector of points
 appropriately}
-
-\item{doChecking}{A flag to be a bit anal about checking inputs to
-C routines. A FALSE value can result in some performance gains}
 }
 \value{
 A list with components:

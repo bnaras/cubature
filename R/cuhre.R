@@ -45,9 +45,6 @@
 #'     be set to an integer > 1 for vectorization, for example, 1024
 #'     and the function f above needs to handle the vector of points
 #'     appropriately
-#' @param doChecking A flag to be a bit anal about checking inputs to
-#'     C routines. A FALSE value can result in some performance gains
-#'
 #' @return A list with components:
 #' \item{nregions }{the actual number of subregions needed}
 #' \item{neval }{the actual number of integrand evaluations needed}
@@ -98,8 +95,7 @@ cuhre <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
                   relTol = 1e-5, absTol = 0,
                   minEval = 0L, maxEval = 10^6,
                   flags = list(verbose = 0, final = 1),
-                  key = 0L, nVec = 1L,
-                  doChecking = FALSE) {
+                  key = 0L, nVec = 1L) {
 
     nL <- length(lowerLimit); nU <- length(upperLimit)
     if (nComp <= 0L || nL <= 0L || nU <= 0L) {
@@ -113,23 +109,29 @@ cuhre <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     if (relTol <= 0) {
         stop("tol should be positive!")
     }
-    r <- upperLimit - lowerLimit
-    prodR <- prod(r)
     f <- match.fun(f)
 
-    if (doChecking) {
-        fnF <- function(x) {
-            fx <- f(lowerLimit + r * x, ...)
-            if(!is.numeric(fx) || length(fx) != nComp) {
-                cat("cuhre: Error in evaluation function f(x) for x = ", x, "\n")
-                stop("cuhre: Result f(x) is not numeric or has wrong dimension")
-            }
-            prodR * fx
-        }
-    } else {
+    if (all(is.finite(c(lowerLimit, upperLimit)))) {
+        r <- upperLimit - lowerLimit
+        prodR <- prod(r)
         fnF <- function(x) {
             prodR  * f(lowerLimit + r * x, ...)
         }
+    } else {
+        lowerLimit <- atan(lowerLimit)
+        upperLimit <- atan(upperLimit)
+        r <- upperLimit - lowerLimit
+        prodR <- prod(r)
+        fnF <- if (nVec > 1L)
+                   function(x) {
+                       y <- lowerLimit + r * x
+                       prodR * f(tan(y), ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
+                   }
+        else
+                   function(x) {
+                       y <- lowerLimit + r * x
+                       prodR * f(tan(y), ...) / prod(cos(y))^2
+                   }
     }
 
     flag_code <- flags$verbose + 4 * flags$final
