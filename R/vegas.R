@@ -156,21 +156,47 @@ vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     all_flags <- list(verbose = 1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed = 12345L)
     for (x in names(flags)) all_flags[[x]] <- flags[[x]]
 
-    r <- upperLimit - lowerLimit
-    prodR <- prod(r)
-
     f <- match.fun(f)
-    dotargs_exist <- length(list(...)) > 0
     vegas_params_exist <- length(intersect(c("vegas_weight", "vegas_iter"), names(formals(f)))) == 2L
 
-    if (vegas_params_exist && dotargs_exist) {
-        fnF <- function(x, vegas_weight, vegas_iter) prodR * f(lowerLimit + r * x, vegas_weight = vegas_weight, vegas_iter = vegas_iter, ...)
-    } else if (vegas_params_exist && !dotargs_exist) {
-        fnF <- function(x, vegas_weight, vegas_iter) prodR * f(lowerLimit + r * x, vegas_weight = vegas_weight, vegas_iter = vegas_iter)
-    } else if (!vegas_params_exist && dotargs_exist) {
-        fnF <- function(x) prodR * f(lowerLimit + r * x, ...)
+    if (all(is.finite(c(lowerLimit, upperLimit)))) {
+        r <- upperLimit - lowerLimit
+        prodR <- prod(r)
+        if (vegas_params_exist) {
+            fnF <- function(x, vegas_weight, vegas_iter) prodR * f(lowerLimit + r * x, vegas_weight = vegas_weight, vegas_iter = vegas_iter, ...)
+        } else {
+            fnF <- function(x) prodR * f(lowerLimit + r * x, ...)
+        }
     } else {
-        fnF <- function(x) prodR * f(lowerLimit + r * x)
+        lowerLimit <- atan(lowerLimit)
+        upperLimit <- atan(upperLimit)
+        r <- upperLimit - lowerLimit
+        prodR <- prod(r)
+        fnF <- if (nVec > 1L)
+                   if (vegas_params_exist) {
+                       function(x, vegas_weight, vegas_iter) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), vegas_weight, vegas_iter, ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
+                       }
+                   } else {
+                       function(x) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), vegas_weight, vegas_iter, ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
+                       }
+                   }
+               else
+                   if (vegas_params_exist) {
+                       function(x, vegas_weight, vegas_iter) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), vegas_weight, vegas_iter, ...) / prod(cos(y))^2
+                       }
+                   } else {
+                       function(x) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), ...) / prod(cos(y))^2
+                       }
+                   }
+
     }
 
     flag_code <- all_flags$verbose + 2^2 * all_flags$final + 2^3 * all_flags$smooth +
