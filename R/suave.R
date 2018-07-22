@@ -13,8 +13,8 @@
 #'
 #' @param f The function (integrand) to be integrated. Optionally, the
 #'     function can take two additional arguments in addition to the
-#'     variable being integrated: - \code{suave_weight} which is the
-#'     weight of the point being sampled, - \code{suave_iter} the
+#'     variable being integrated: - \code{cuba_weight} which is the
+#'     weight of the point being sampled, - \code{cuba_iter} the
 #'     current iteration number. The function may choose to use these
 #'     in any appropriate way or ignore them altogether
 #' @param nComp The number of components of the integrand, default 1,
@@ -140,46 +140,27 @@ suave <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     for (x in names(flags)) all_flags[[x]] <- flags[[x]]
 
     f <- match.fun(f)
-    suave_params_exist <- length(intersect(c("suave_weight", "suave_iter"), names(formals(f)))) == 2L
+    cuba_params_exist <- length(intersect(c("cuba_weight", "cuba_iter"), names(formals(f)))) == 2L
 
     if (all(is.finite(c(lowerLimit, upperLimit)))) {
         r <- upperLimit - lowerLimit
         prodR <- prod(r)
-        if (suave_params_exist) {
-            fnF <- function(x, suave_weight, suave_iter) prodR * f(lowerLimit + r * x, suave_weight = suave_weight, suave_iter = suave_iter, ...)
-        } else {
-            fnF <- function(x) prodR * f(lowerLimit + r * x, ...)
-        }
+        fnF <- function(x) prodR * f(lowerLimit + r * x, ...)
     } else {
         lowerLimit <- atan(lowerLimit)
         upperLimit <- atan(upperLimit)
         r <- upperLimit - lowerLimit
         prodR <- prod(r)
         fnF <- if (nVec > 1L)
-                   if (suave_params_exist) {
-                       function(x, suave_weight, suave_iter) {
-                           y <- lowerLimit + r * x
-                           prodR * f(tan(y), suave_weight, suave_iter, ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
-                       }
-                   } else {
-                       function(x) {
-                           y <- lowerLimit + r * x
-                           prodR * f(tan(y), suave_weight, suave_iter, ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
-                       }
+                   function(x) {
+                       y <- lowerLimit + r * x
+                       prodR * f(tan(y), ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
                    }
-               else
-                   if (suave_params_exist) {
-                       function(x, suave_weight, suave_iter) {
-                           y <- lowerLimit + r * x
-                           prodR * f(tan(y), suave_weight, suave_iter, ...) / prod(cos(y))^2
-                       }
-                   } else {
-                       function(x) {
-                           y <- lowerLimit + r * x
-                           prodR * f(tan(y), ...) / prod(cos(y))^2
-                       }
-                   }
-
+        else
+            function(x) {
+                y <- lowerLimit + r * x
+                prodR * f(tan(y), ...) / prod(cos(y))^2
+            }
     }
 
     flag_code <- all_flags$verbose + 2^2 * all_flags$final + 2^3 * all_flags$smooth +
@@ -192,7 +173,7 @@ suave <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
           absTol, relTol,
           nNew, nMin, flatness,
           stateFile, all_flags$rngSeed, flag_code,
-          suave_params_exist)
+          cuba_params_exist)
 }
 
 

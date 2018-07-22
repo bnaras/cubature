@@ -66,7 +66,7 @@
       <h1>Cubature Vectorization Results</h1>
                         <h4 class="author">Balasubramanian Narasimhan</h4>
             
-            <h4 class="date">2018-07-21</h4>
+            <h4 class="date">2018-07-22</h4>
       
       
       <div class="hidden name"><code>cubature.Rmd</code></div>
@@ -85,92 +85,70 @@
 <div id="a-timing-harness" class="section level2">
 <h2 class="hasAnchor">
 <a href="#a-timing-harness" class="anchor"></a>A Timing Harness</h2>
-<p>Our harness will provide timing results for <code>hcubature</code>, <code>pcubature</code> (where appropriate) and <code>R2Cuba</code> calls. We begin by creating a harness for these calls.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">loadedSuggested  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">benchr =</span> <span class="ot">FALSE</span>, <span class="dt">R2Cuba =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="cf">if</span> (<span class="kw">requireNamespace</span>(<span class="st">"benchr"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">    loadedSuggested[<span class="st">"benchr"</span>] &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">}</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="cf">if</span> (<span class="kw">requireNamespace</span>(<span class="st">"R2Cuba"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">    loadedSuggested[<span class="st">"R2Cuba"</span>] &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">}</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw">library</span>(cubature)</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">harness &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">which =</span> <span class="ot">NULL</span>,</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">                    f, fv, lowerLimit, upperLimit, <span class="dt">tol =</span> <span class="fl">1e-3</span>, <span class="dt">times =</span> <span class="dv">20</span>, ...) {</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">    fns &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">hc =</span> <span class="st">"Non-vectorized Hcubature"</span>,</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">             <span class="dt">hc.v =</span> <span class="st">"Vectorized Hcubature"</span>,</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">             <span class="dt">pc =</span> <span class="st">"Non-vectorized Pcubature"</span>,</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">             <span class="dt">pc.v =</span> <span class="st">"Vectorized Pcubature"</span>)</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19">    <span class="cf">if</span> (loadedSuggested[<span class="st">"R2Cuba"</span>]) {</a>
-<a class="sourceLine" id="cb1-20" data-line-number="20">        fns &lt;-<span class="st"> </span><span class="kw">c</span>(fns,</a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">                 <span class="dt">Rc =</span> <span class="st">"R2Cuba::cuhre"</span>,</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22">                 <span class="dt">cc =</span> <span class="st">"Non-vectorized cubature::cuhre"</span>,</a>
-<a class="sourceLine" id="cb1-23" data-line-number="23">                 <span class="dt">cc_v =</span> <span class="st">"Vectorized cubature::cuhre"</span>)</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24">        Rc &lt;-<span class="st"> </span><span class="cf">function</span>() R2Cuba<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/R2Cuba/topics/cuhre">cuhre</a></span>(<span class="dt">ndim =</span> ndim, <span class="dt">ncomp =</span> <span class="dv">1</span>, <span class="dt">integrand =</span> f,</a>
-<a class="sourceLine" id="cb1-25" data-line-number="25">                                       <span class="dt">lower =</span> lowerLimit, <span class="dt">upper =</span> upperLimit,</a>
-<a class="sourceLine" id="cb1-26" data-line-number="26">                                       <span class="dt">flags =</span> <span class="kw">list</span>(<span class="dt">verbose =</span> <span class="dv">0</span>, <span class="dt">final =</span> <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb1-27" data-line-number="27">                                       <span class="dt">rel.tol =</span> tol,</a>
-<a class="sourceLine" id="cb1-28" data-line-number="28">                                       <span class="dt">max.eval =</span> <span class="dv">10</span><span class="op">^</span><span class="dv">6</span>,</a>
-<a class="sourceLine" id="cb1-29" data-line-number="29">                                       ...)</a>
-<a class="sourceLine" id="cb1-30" data-line-number="30">        cc &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cubature/topics/cuhre">cuhre</a></span>(<span class="dt">f =</span> f,</a>
-<a class="sourceLine" id="cb1-31" data-line-number="31">                                         <span class="dt">lowerLimit =</span> lowerLimit, <span class="dt">upperLimit =</span> upperLimit,</a>
-<a class="sourceLine" id="cb1-32" data-line-number="32">                                         <span class="dt">relTol =</span> tol,</a>
-<a class="sourceLine" id="cb1-33" data-line-number="33">                                         ...)</a>
-<a class="sourceLine" id="cb1-34" data-line-number="34">        cc_v &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cubature/topics/cuhre">cuhre</a></span>(<span class="dt">f =</span> fv,</a>
-<a class="sourceLine" id="cb1-35" data-line-number="35">                                           <span class="dt">lowerLimit =</span> lowerLimit, <span class="dt">upperLimit =</span> upperLimit,</a>
-<a class="sourceLine" id="cb1-36" data-line-number="36">                                           <span class="dt">relTol =</span> tol,</a>
-<a class="sourceLine" id="cb1-37" data-line-number="37">                                           <span class="dt">nVec =</span> 100L,</a>
-<a class="sourceLine" id="cb1-38" data-line-number="38">                                           ...)</a>
-<a class="sourceLine" id="cb1-39" data-line-number="39">    }</a>
-<a class="sourceLine" id="cb1-40" data-line-number="40"></a>
-<a class="sourceLine" id="cb1-41" data-line-number="41">    hc &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cubature/topics/hcubature">hcubature</a></span>(<span class="dt">f =</span> f,</a>
-<a class="sourceLine" id="cb1-42" data-line-number="42">                                         <span class="dt">lowerLimit =</span> lowerLimit,</a>
-<a class="sourceLine" id="cb1-43" data-line-number="43">                                         <span class="dt">upperLimit =</span> upperLimit,</a>
-<a class="sourceLine" id="cb1-44" data-line-number="44">                                         <span class="dt">tol =</span> tol,</a>
-<a class="sourceLine" id="cb1-45" data-line-number="45">                                         ...)</a>
-<a class="sourceLine" id="cb1-46" data-line-number="46"></a>
-<a class="sourceLine" id="cb1-47" data-line-number="47">    hc.v &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cubature/topics/hcubature">hcubature</a></span>(<span class="dt">f =</span> fv,</a>
-<a class="sourceLine" id="cb1-48" data-line-number="48">                                           <span class="dt">lowerLimit =</span> lowerLimit,</a>
-<a class="sourceLine" id="cb1-49" data-line-number="49">                                           <span class="dt">upperLimit =</span> upperLimit,</a>
-<a class="sourceLine" id="cb1-50" data-line-number="50">                                           <span class="dt">tol =</span> tol,</a>
-<a class="sourceLine" id="cb1-51" data-line-number="51">                                           <span class="dt">vectorInterface =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb1-52" data-line-number="52">                                           ...)</a>
-<a class="sourceLine" id="cb1-53" data-line-number="53"></a>
-<a class="sourceLine" id="cb1-54" data-line-number="54">    pc &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw">pcubature</span>(<span class="dt">f =</span> f,</a>
-<a class="sourceLine" id="cb1-55" data-line-number="55">                                     <span class="dt">lowerLimit =</span> lowerLimit,</a>
-<a class="sourceLine" id="cb1-56" data-line-number="56">                                     <span class="dt">upperLimit =</span> upperLimit,</a>
-<a class="sourceLine" id="cb1-57" data-line-number="57">                                     <span class="dt">tol =</span> tol,</a>
-<a class="sourceLine" id="cb1-58" data-line-number="58">                                     ...)</a>
-<a class="sourceLine" id="cb1-59" data-line-number="59"></a>
-<a class="sourceLine" id="cb1-60" data-line-number="60">    pc.v &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw">pcubature</span>(<span class="dt">f =</span> fv,</a>
-<a class="sourceLine" id="cb1-61" data-line-number="61">                                           <span class="dt">lowerLimit =</span> lowerLimit,</a>
-<a class="sourceLine" id="cb1-62" data-line-number="62">                                           <span class="dt">upperLimit =</span> upperLimit,</a>
-<a class="sourceLine" id="cb1-63" data-line-number="63">                                           <span class="dt">tol =</span> tol,</a>
-<a class="sourceLine" id="cb1-64" data-line-number="64">                                           <span class="dt">vectorInterface =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb1-65" data-line-number="65">                                           ...)</a>
-<a class="sourceLine" id="cb1-66" data-line-number="66">    </a>
-<a class="sourceLine" id="cb1-67" data-line-number="67">    ndim =<span class="st"> </span><span class="kw">length</span>(lowerLimit)</a>
-<a class="sourceLine" id="cb1-68" data-line-number="68"></a>
-<a class="sourceLine" id="cb1-69" data-line-number="69">    <span class="cf">if</span> (<span class="kw">is.null</span>(which)) {</a>
-<a class="sourceLine" id="cb1-70" data-line-number="70">        fnIndices &lt;-<span class="st"> </span><span class="kw">seq_along</span>(fns)</a>
-<a class="sourceLine" id="cb1-71" data-line-number="71">    } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb1-72" data-line-number="72">        fnIndices &lt;-<span class="st"> </span><span class="kw">na.omit</span>(<span class="kw">match</span>(which, <span class="kw">names</span>(fns)))</a>
-<a class="sourceLine" id="cb1-73" data-line-number="73">    }</a>
-<a class="sourceLine" id="cb1-74" data-line-number="74">    fnList &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">names</span>(fns)[fnIndices], <span class="cf">function</span>(x) <span class="kw">call</span>(x))</a>
-<a class="sourceLine" id="cb1-75" data-line-number="75"></a>
-<a class="sourceLine" id="cb1-76" data-line-number="76">    <span class="cf">if</span> (loadedSuggested[<span class="st">"benchr"</span>]) {</a>
-<a class="sourceLine" id="cb1-77" data-line-number="77">        argList &lt;-<span class="st"> </span><span class="kw">c</span>(fnList, <span class="dt">times =</span> times, <span class="dt">progress =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-78" data-line-number="78">        result &lt;-<span class="st"> </span><span class="kw">do.call</span>(benchr<span class="op">::</span>benchmark, <span class="dt">args =</span> argList)</a>
-<a class="sourceLine" id="cb1-79" data-line-number="79">        d &lt;-<span class="st"> </span><span class="kw">summary</span>(result)[<span class="kw">seq_along</span>(fnIndices), ]</a>
-<a class="sourceLine" id="cb1-80" data-line-number="80">        d<span class="op">$</span>expr &lt;-<span class="st"> </span>fns[fnIndices]</a>
-<a class="sourceLine" id="cb1-81" data-line-number="81">        d</a>
-<a class="sourceLine" id="cb1-82" data-line-number="82">    } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb1-83" data-line-number="83">        d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">expr =</span> <span class="kw">names</span>(fns)[fnIndices], <span class="dt">timing =</span> <span class="ot">NA</span>)</a>
-<a class="sourceLine" id="cb1-84" data-line-number="84">    }</a>
-<a class="sourceLine" id="cb1-85" data-line-number="85">}</a></code></pre></div>
+<p>Our harness will provide timing results for <code>hcubature</code>, <code>pcubature</code> (where appropriate) and Cuba <code>cuhre</code> calls. We begin by creating a harness for these calls.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(benchr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(cubature)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">harness &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">which =</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">                    f, fv, lowerLimit, upperLimit, <span class="dt">tol =</span> <span class="fl">1e-3</span>, <span class="dt">times =</span> <span class="dv">20</span>, ...) {</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">    fns &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">hc =</span> <span class="st">"Non-vectorized Hcubature"</span>,</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">             <span class="dt">hc.v =</span> <span class="st">"Vectorized Hcubature"</span>,</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">             <span class="dt">pc =</span> <span class="st">"Non-vectorized Pcubature"</span>,</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">             <span class="dt">pc.v =</span> <span class="st">"Vectorized Pcubature"</span>,</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">             <span class="dt">cc =</span> <span class="st">"Non-vectorized cubature::cuhre"</span>,</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">             <span class="dt">cc_v =</span> <span class="st">"Vectorized cubature::cuhre"</span>)</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    cc &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cubature/topics/cuhre">cuhre</a></span>(<span class="dt">f =</span> f,</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">                                     <span class="dt">lowerLimit =</span> lowerLimit, <span class="dt">upperLimit =</span> upperLimit,</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">                                     <span class="dt">relTol =</span> tol,</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">                                     ...)</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">    cc_v &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cubature/topics/cuhre">cuhre</a></span>(<span class="dt">f =</span> fv,</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">                                       <span class="dt">lowerLimit =</span> lowerLimit, <span class="dt">upperLimit =</span> upperLimit,</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">                                       <span class="dt">relTol =</span> tol,</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">                                       <span class="dt">nVec =</span> 100L,</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">                                       ...)</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">    hc &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cubature/topics/hcubature">hcubature</a></span>(<span class="dt">f =</span> f,</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">                                         <span class="dt">lowerLimit =</span> lowerLimit,</a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">                                         <span class="dt">upperLimit =</span> upperLimit,</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">                                         <span class="dt">tol =</span> tol,</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">                                         ...)</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">    hc.v &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cubature/topics/hcubature">hcubature</a></span>(<span class="dt">f =</span> fv,</a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">                                           <span class="dt">lowerLimit =</span> lowerLimit,</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31">                                           <span class="dt">upperLimit =</span> upperLimit,</a>
+<a class="sourceLine" id="cb1-32" data-line-number="32">                                           <span class="dt">tol =</span> tol,</a>
+<a class="sourceLine" id="cb1-33" data-line-number="33">                                           <span class="dt">vectorInterface =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb1-34" data-line-number="34">                                           ...)</a>
+<a class="sourceLine" id="cb1-35" data-line-number="35"></a>
+<a class="sourceLine" id="cb1-36" data-line-number="36">    pc &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw">pcubature</span>(<span class="dt">f =</span> f,</a>
+<a class="sourceLine" id="cb1-37" data-line-number="37">                                     <span class="dt">lowerLimit =</span> lowerLimit,</a>
+<a class="sourceLine" id="cb1-38" data-line-number="38">                                     <span class="dt">upperLimit =</span> upperLimit,</a>
+<a class="sourceLine" id="cb1-39" data-line-number="39">                                     <span class="dt">tol =</span> tol,</a>
+<a class="sourceLine" id="cb1-40" data-line-number="40">                                     ...)</a>
+<a class="sourceLine" id="cb1-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb1-42" data-line-number="42">    pc.v &lt;-<span class="st"> </span><span class="cf">function</span>() cubature<span class="op">::</span><span class="kw">pcubature</span>(<span class="dt">f =</span> fv,</a>
+<a class="sourceLine" id="cb1-43" data-line-number="43">                                           <span class="dt">lowerLimit =</span> lowerLimit,</a>
+<a class="sourceLine" id="cb1-44" data-line-number="44">                                           <span class="dt">upperLimit =</span> upperLimit,</a>
+<a class="sourceLine" id="cb1-45" data-line-number="45">                                           <span class="dt">tol =</span> tol,</a>
+<a class="sourceLine" id="cb1-46" data-line-number="46">                                           <span class="dt">vectorInterface =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb1-47" data-line-number="47">                                           ...)</a>
+<a class="sourceLine" id="cb1-48" data-line-number="48">    </a>
+<a class="sourceLine" id="cb1-49" data-line-number="49">    ndim =<span class="st"> </span><span class="kw">length</span>(lowerLimit)</a>
+<a class="sourceLine" id="cb1-50" data-line-number="50"></a>
+<a class="sourceLine" id="cb1-51" data-line-number="51">    <span class="cf">if</span> (<span class="kw">is.null</span>(which)) {</a>
+<a class="sourceLine" id="cb1-52" data-line-number="52">        fnIndices &lt;-<span class="st"> </span><span class="kw">seq_along</span>(fns)</a>
+<a class="sourceLine" id="cb1-53" data-line-number="53">    } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb1-54" data-line-number="54">        fnIndices &lt;-<span class="st"> </span><span class="kw">na.omit</span>(<span class="kw">match</span>(which, <span class="kw">names</span>(fns)))</a>
+<a class="sourceLine" id="cb1-55" data-line-number="55">    }</a>
+<a class="sourceLine" id="cb1-56" data-line-number="56">    fnList &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">names</span>(fns)[fnIndices], <span class="cf">function</span>(x) <span class="kw">call</span>(x))</a>
+<a class="sourceLine" id="cb1-57" data-line-number="57"></a>
+<a class="sourceLine" id="cb1-58" data-line-number="58">    argList &lt;-<span class="st"> </span><span class="kw">c</span>(fnList, <span class="dt">times =</span> times, <span class="dt">progress =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-59" data-line-number="59">    result &lt;-<span class="st"> </span><span class="kw">do.call</span>(benchr<span class="op">::</span>benchmark, <span class="dt">args =</span> argList)</a>
+<a class="sourceLine" id="cb1-60" data-line-number="60">    d &lt;-<span class="st"> </span><span class="kw">summary</span>(result)[<span class="kw">seq_along</span>(fnIndices), ]</a>
+<a class="sourceLine" id="cb1-61" data-line-number="61">    d<span class="op">$</span>expr &lt;-<span class="st"> </span>fns[fnIndices]</a>
+<a class="sourceLine" id="cb1-62" data-line-number="62">    d</a>
+<a class="sourceLine" id="cb1-63" data-line-number="63">}</a></code></pre></div>
 <p>We reel off the timing runs.</p>
 </div>
 <div id="example-1-" class="section level2">
@@ -209,9 +187,9 @@
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.004</td>
-<td align="right">0.244</td>
-<td align="right">6.64</td>
+<td align="right">0.005</td>
+<td align="right">0.246</td>
+<td align="right">6.19</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -222,8 +200,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.001</td>
-<td align="right">0.039</td>
-<td align="right">1.13</td>
+<td align="right">0.038</td>
+<td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -232,10 +210,10 @@
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.008</td>
-<td align="right">0.008</td>
+<td align="right">0.009</td>
 <td align="right">0.013</td>
-<td align="right">0.754</td>
-<td align="right">21.40</td>
+<td align="right">0.791</td>
+<td align="right">19.80</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -245,23 +223,11 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.003</td>
+<td align="right">0.004</td>
 <td align="right">0.112</td>
-<td align="right">3.18</td>
+<td align="right">2.88</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">100</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.036</td>
-<td align="right">1.00</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">100</td>
 <td align="right">0.004</td>
@@ -270,10 +236,10 @@
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.006</td>
-<td align="right">0.409</td>
-<td align="right">11.40</td>
+<td align="right">0.434</td>
+<td align="right">10.80</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">100</td>
 <td align="right">0.001</td>
@@ -283,7 +249,7 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.066</td>
-<td align="right">1.93</td>
+<td align="right">1.74</td>
 </tr>
 </tbody>
 </table>
@@ -342,14 +308,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.887</td>
-<td align="right">0.892</td>
+<td align="right">0.890</td>
+<td align="right">0.894</td>
 <td align="right">0.900</td>
-<td align="right">0.900</td>
+<td align="right">0.904</td>
 <td align="right">0.906</td>
-<td align="right">0.914</td>
-<td align="right">9.000</td>
-<td align="right">585.00</td>
+<td align="right">0.937</td>
+<td align="right">9.042</td>
+<td align="right">620.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -359,28 +325,28 @@
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.023</td>
+<td align="right">0.004</td>
+<td align="right">0.022</td>
 <td align="right">1.39</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">10</td>
-<td align="right">0.384</td>
-<td align="right">0.387</td>
+<td align="right">0.383</td>
+<td align="right">0.388</td>
 <td align="right">0.391</td>
 <td align="right">0.397</td>
-<td align="right">0.397</td>
-<td align="right">0.427</td>
-<td align="right">3.970</td>
-<td align="right">254.00</td>
+<td align="right">0.398</td>
+<td align="right">0.434</td>
+<td align="right">3.972</td>
+<td align="right">269.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">10</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
+<td align="right">0.001</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
@@ -388,40 +354,28 @@
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">10</td>
-<td align="right">0.292</td>
-<td align="right">0.297</td>
-<td align="right">0.301</td>
-<td align="right">0.304</td>
-<td align="right">0.303</td>
-<td align="right">0.337</td>
-<td align="right">3.035</td>
-<td align="right">196.00</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.366</td>
+<td align="right">0.364</td>
+<td align="right">0.367</td>
 <td align="right">0.370</td>
-<td align="right">0.372</td>
-<td align="right">0.374</td>
 <td align="right">0.376</td>
-<td align="right">0.391</td>
-<td align="right">3.744</td>
-<td align="right">242.00</td>
+<td align="right">0.378</td>
+<td align="right">0.408</td>
+<td align="right">3.757</td>
+<td align="right">255.00</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
-<td align="right">0.008</td>
+<td align="right">0.007</td>
+<td align="right">0.007</td>
 <td align="right">0.008</td>
 <td align="right">0.009</td>
-<td align="right">0.010</td>
-<td align="right">0.081</td>
-<td align="right">5.26</td>
+<td align="right">0.074</td>
+<td align="right">4.98</td>
 </tr>
 </tbody>
 </table>
@@ -458,13 +412,13 @@
 <td align="left">g1()</td>
 <td align="right">20</td>
 <td align="right">0.001</td>
-<td align="right">0.003</td>
+<td align="right">0.002</td>
 <td align="right">0.003</td>
 <td align="right">0.002</td>
 <td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.049</td>
-<td align="right">1</td>
+<td align="right">0.005</td>
+<td align="right">0.048</td>
+<td align="right">1.02</td>
 </tr>
 <tr class="even">
 <td align="left">g2()</td>
@@ -474,21 +428,21 @@
 <td align="right">0.003</td>
 <td align="right">0.002</td>
 <td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.047</td>
-<td align="right">1</td>
+<td align="right">0.004</td>
+<td align="right">0.050</td>
+<td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">g3()</td>
 <td align="right">20</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
+<td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.002</td>
 <td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.049</td>
-<td align="right">1</td>
+<td align="right">0.003</td>
+<td align="right">0.048</td>
+<td align="right">1.00</td>
 </tr>
 </tbody>
 </table>
@@ -525,8 +479,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.204</td>
-<td align="right">2.34</td>
+<td align="right">0.208</td>
+<td align="right">2.55</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -536,8 +490,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.038</td>
-<td align="right">0.124</td>
+<td align="right">0.000</td>
+<td align="right">0.081</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
@@ -549,8 +503,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.292</td>
-<td align="right">3.34</td>
+<td align="right">0.296</td>
+<td align="right">3.65</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -561,22 +515,10 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.159</td>
-<td align="right">1.82</td>
+<td align="right">0.153</td>
+<td align="right">1.86</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">1000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.228</td>
-<td align="right">2.60</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">1000</td>
 <td align="right">0.002</td>
@@ -584,11 +526,11 @@
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.007</td>
-<td align="right">2.118</td>
-<td align="right">24.00</td>
+<td align="right">0.034</td>
+<td align="right">2.281</td>
+<td align="right">26.80</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">1000</td>
 <td align="right">0.000</td>
@@ -597,8 +539,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.382</td>
-<td align="right">4.42</td>
+<td align="right">0.385</td>
+<td align="right">4.64</td>
 </tr>
 </tbody>
 </table>
@@ -639,14 +581,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.014</td>
-<td align="right">0.014</td>
-<td align="right">0.014</td>
-<td align="right">0.015</td>
 <td align="right">0.015</td>
 <td align="right">0.016</td>
-<td align="right">0.146</td>
-<td align="right">69.30</td>
+<td align="right">0.017</td>
+<td align="right">0.017</td>
+<td align="right">0.017</td>
+<td align="right">0.017</td>
+<td align="right">0.165</td>
+<td align="right">79.20</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -656,9 +598,9 @@
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.006</td>
-<td align="right">0.043</td>
-<td align="right">19.30</td>
+<td align="right">0.004</td>
+<td align="right">0.039</td>
+<td align="right">18.80</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -669,8 +611,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.003</td>
-<td align="right">1.61</td>
+<td align="right">0.004</td>
+<td align="right">1.71</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -685,40 +627,28 @@
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">10</td>
-<td align="right">0.007</td>
-<td align="right">0.007</td>
-<td align="right">0.008</td>
-<td align="right">0.008</td>
-<td align="right">0.009</td>
-<td align="right">0.009</td>
-<td align="right">0.081</td>
-<td align="right">37.10</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.060</td>
-<td align="right">0.061</td>
-<td align="right">0.062</td>
-<td align="right">0.062</td>
-<td align="right">0.062</td>
+<td align="right">0.065</td>
+<td align="right">0.065</td>
 <td align="right">0.066</td>
-<td align="right">0.618</td>
-<td align="right">299.00</td>
+<td align="right">0.070</td>
+<td align="right">0.067</td>
+<td align="right">0.106</td>
+<td align="right">0.704</td>
+<td align="right">315.00</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.017</td>
-<td align="right">0.017</td>
 <td align="right">0.018</td>
 <td align="right">0.018</td>
 <td align="right">0.019</td>
-<td align="right">0.020</td>
-<td align="right">0.183</td>
-<td align="right">89.40</td>
+<td align="right">0.019</td>
+<td align="right">0.019</td>
+<td align="right">0.022</td>
+<td align="right">0.189</td>
+<td align="right">89.30</td>
 </tr>
 </tbody>
 </table>
@@ -736,7 +666,7 @@
 <a class="sourceLine" id="cb8-8" data-line-number="8">    <span class="kw">matrix</span>(<span class="kw">apply</span>(x, <span class="dv">2</span>, <span class="cf">function</span>(z) <span class="kw">ifelse</span>(<span class="kw">sum</span>(z <span class="op">*</span><span class="st"> </span>z) <span class="op">&lt;</span><span class="st"> </span>radius <span class="op">*</span><span class="st"> </span>radius, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="dt">ncol =</span> <span class="kw">ncol</span>(x))</a>
 <a class="sourceLine" id="cb8-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb8-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11">d &lt;-<span class="st"> </span><span class="kw">harness</span>(<span class="dt">which =</span> <span class="kw">c</span>(<span class="st">"hc"</span>, <span class="st">"hc.v"</span>, <span class="st">"cc"</span>),</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">d &lt;-<span class="st"> </span><span class="kw">harness</span>(<span class="dt">which =</span> <span class="kw">c</span>(<span class="st">"hc"</span>, <span class="st">"hc.v"</span>, <span class="st">"cc"</span>, <span class="st">"cc_v"</span>),</a>
 <a class="sourceLine" id="cb8-12" data-line-number="12">             <span class="dt">f =</span> testFn2, <span class="dt">fv =</span> testFn2_v,</a>
 <a class="sourceLine" id="cb8-13" data-line-number="13">             <span class="dt">lowerLimit =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>), <span class="dt">upperLimit =</span> <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">times =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb8-14" data-line-number="14">knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d, <span class="dt">digits =</span> <span class="dv">3</span>)</a></code></pre></div>
@@ -757,38 +687,50 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.184</td>
-<td align="right">0.187</td>
 <td align="right">0.192</td>
-<td align="right">0.191</td>
 <td align="right">0.194</td>
+<td align="right">0.197</td>
 <td align="right">0.198</td>
-<td align="right">1.911</td>
-<td align="right">4.79</td>
+<td align="right">0.202</td>
+<td align="right">0.206</td>
+<td align="right">1.984</td>
+<td align="right">5.01</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.037</td>
+<td align="right">0.039</td>
+<td align="right">0.039</td>
 <td align="right">0.039</td>
 <td align="right">0.040</td>
 <td align="right">0.040</td>
-<td align="right">0.041</td>
 <td align="right">0.042</td>
-<td align="right">0.400</td>
+<td align="right">0.398</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">3.181</td>
-<td align="right">3.195</td>
-<td align="right">3.222</td>
-<td align="right">3.216</td>
-<td align="right">3.234</td>
-<td align="right">3.247</td>
-<td align="right">32.164</td>
-<td align="right">80.20</td>
+<td align="right">3.206</td>
+<td align="right">3.258</td>
+<td align="right">3.279</td>
+<td align="right">3.277</td>
+<td align="right">3.304</td>
+<td align="right">3.325</td>
+<td align="right">32.774</td>
+<td align="right">83.20</td>
+</tr>
+<tr class="even">
+<td align="left">Vectorized cubature::cuhre</td>
+<td align="right">10</td>
+<td align="right">0.744</td>
+<td align="right">0.761</td>
+<td align="right">0.770</td>
+<td align="right">0.767</td>
+<td align="right">0.776</td>
+<td align="right">0.781</td>
+<td align="right">7.666</td>
+<td align="right">19.50</td>
 </tr>
 </tbody>
 </table>
@@ -824,9 +766,9 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.020</td>
-<td align="right">3.80</td>
+<td align="right">0.000</td>
+<td align="right">0.019</td>
+<td align="right">3.96</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -838,7 +780,7 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.005</td>
-<td align="right">1.08</td>
+<td align="right">1.09</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -850,7 +792,7 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.015</td>
-<td align="right">3.16</td>
+<td align="right">3.30</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -860,23 +802,11 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.007</td>
+<td align="right">0.005</td>
+<td align="right">0.010</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">50</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.019</td>
-<td align="right">3.93</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">50</td>
 <td align="right">0.004</td>
@@ -885,10 +815,10 @@
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.006</td>
-<td align="right">0.215</td>
-<td align="right">41.60</td>
+<td align="right">0.212</td>
+<td align="right">43.40</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">50</td>
 <td align="right">0.001</td>
@@ -897,8 +827,8 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.002</td>
-<td align="right">0.037</td>
-<td align="right">7.10</td>
+<td align="right">0.036</td>
+<td align="right">7.23</td>
 </tr>
 </tbody>
 </table>
@@ -948,8 +878,8 @@
 <td align="right">0.008</td>
 <td align="right">0.008</td>
 <td align="right">0.009</td>
-<td align="right">0.163</td>
-<td align="right">5.34</td>
+<td align="right">0.162</td>
+<td align="right">5.43</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -959,21 +889,21 @@
 <td align="right">0.001</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.007</td>
-<td align="right">0.038</td>
+<td align="right">0.003</td>
+<td align="right">0.032</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
 <td align="right">0.011</td>
-<td align="right">0.011</td>
+<td align="right">0.012</td>
 <td align="right">0.012</td>
 <td align="right">0.012</td>
 <td align="right">0.013</td>
-<td align="right">0.015</td>
-<td align="right">0.244</td>
-<td align="right">7.99</td>
+<td align="right">0.016</td>
+<td align="right">0.249</td>
+<td align="right">8.57</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -985,33 +915,21 @@
 <td align="right">0.002</td>
 <td align="right">0.004</td>
 <td align="right">0.045</td>
-<td align="right">1.42</td>
+<td align="right">1.44</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">20</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.039</td>
-<td align="right">1.28</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
+<td align="right">0.015</td>
 <td align="right">0.016</td>
 <td align="right">0.017</td>
 <td align="right">0.017</td>
-<td align="right">0.017</td>
 <td align="right">0.018</td>
-<td align="right">0.020</td>
-<td align="right">0.343</td>
-<td align="right">11.60</td>
+<td align="right">0.019</td>
+<td align="right">0.340</td>
+<td align="right">11.70</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
 <td align="right">0.003</td>
@@ -1020,8 +938,8 @@
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.005</td>
-<td align="right">0.066</td>
-<td align="right">2.15</td>
+<td align="right">0.064</td>
+<td align="right">2.14</td>
 </tr>
 </tbody>
 </table>
@@ -1065,86 +983,74 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">20</td>
-<td align="right">0.017</td>
-<td align="right">0.018</td>
-<td align="right">0.018</td>
 <td align="right">0.018</td>
 <td align="right">0.019</td>
-<td align="right">0.021</td>
-<td align="right">0.367</td>
-<td align="right">6.62</td>
+<td align="right">0.020</td>
+<td align="right">0.022</td>
+<td align="right">0.020</td>
+<td align="right">0.061</td>
+<td align="right">0.430</td>
+<td align="right">7.30</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">20</td>
-<td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.006</td>
-<td align="right">0.075</td>
-<td align="right">1.32</td>
+<td align="right">0.004</td>
+<td align="right">0.005</td>
+<td align="right">0.078</td>
+<td align="right">1.39</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.011</td>
+<td align="right">0.012</td>
 <td align="right">0.012</td>
 <td align="right">0.013</td>
 <td align="right">0.013</td>
-<td align="right">0.013</td>
 <td align="right">0.014</td>
-<td align="right">0.250</td>
-<td align="right">4.53</td>
+<td align="right">0.015</td>
+<td align="right">0.260</td>
+<td align="right">4.74</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.002</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.057</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
+<td align="right">0.054</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">20</td>
-<td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.006</td>
-<td align="right">0.006</td>
-<td align="right">0.099</td>
-<td align="right">1.72</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.029</td>
-<td align="right">0.030</td>
-<td align="right">0.031</td>
-<td align="right">0.031</td>
 <td align="right">0.032</td>
 <td align="right">0.033</td>
-<td align="right">0.620</td>
-<td align="right">11.40</td>
+<td align="right">0.033</td>
+<td align="right">0.034</td>
+<td align="right">0.035</td>
+<td align="right">0.037</td>
+<td align="right">0.672</td>
+<td align="right">12.40</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.006</td>
+<td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.009</td>
 <td align="right">0.142</td>
-<td align="right">2.47</td>
+<td align="right">2.60</td>
 </tr>
 </tbody>
 </table>
@@ -1183,14 +1089,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">20</td>
-<td align="right">0.009</td>
-<td align="right">0.009</td>
+<td align="right">0.010</td>
 <td align="right">0.010</td>
 <td align="right">0.010</td>
 <td align="right">0.011</td>
 <td align="right">0.012</td>
-<td align="right">0.205</td>
-<td align="right">5.74</td>
+<td align="right">0.013</td>
+<td align="right">0.218</td>
+<td align="right">5.63</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1200,69 +1106,57 @@
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.004</td>
+<td align="right">0.003</td>
 <td align="right">0.038</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.050</td>
-<td align="right">0.052</td>
-<td align="right">0.053</td>
-<td align="right">0.053</td>
-<td align="right">0.053</td>
-<td align="right">0.061</td>
-<td align="right">1.056</td>
-<td align="right">30.00</td>
+<td align="right">0.054</td>
+<td align="right">0.055</td>
+<td align="right">0.056</td>
+<td align="right">0.056</td>
+<td align="right">0.056</td>
+<td align="right">0.058</td>
+<td align="right">1.111</td>
+<td align="right">30.20</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.007</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
-<td align="right">0.011</td>
 <td align="right">0.009</td>
-<td align="right">0.059</td>
-<td align="right">0.216</td>
-<td align="right">4.57</td>
+<td align="right">0.009</td>
+<td align="right">0.010</td>
+<td align="right">0.011</td>
+<td align="right">0.181</td>
+<td align="right">4.77</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">20</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.005</td>
-<td align="right">0.055</td>
-<td align="right">1.43</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.021</td>
-<td align="right">0.022</td>
+<td align="right">0.023</td>
 <td align="right">0.024</td>
 <td align="right">0.025</td>
-<td align="right">0.024</td>
-<td align="right">0.038</td>
-<td align="right">0.492</td>
-<td align="right">13.60</td>
+<td align="right">0.026</td>
+<td align="right">0.026</td>
+<td align="right">0.033</td>
+<td align="right">0.519</td>
+<td align="right">13.80</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
 <td align="right">0.006</td>
-<td align="right">0.090</td>
-<td align="right">2.48</td>
+<td align="right">0.008</td>
+<td align="right">0.103</td>
+<td align="right">2.56</td>
 </tr>
 </tbody>
 </table>
@@ -1303,14 +1197,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">20</td>
-<td align="right">0.020</td>
-<td align="right">0.021</td>
 <td align="right">0.021</td>
 <td align="right">0.022</td>
-<td align="right">0.022</td>
+<td align="right">0.023</td>
+<td align="right">0.023</td>
+<td align="right">0.023</td>
 <td align="right">0.026</td>
-<td align="right">0.437</td>
-<td align="right">6.16</td>
+<td align="right">0.454</td>
+<td align="right">6.53</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1320,69 +1214,57 @@
 <td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.073</td>
+<td align="right">0.004</td>
+<td align="right">0.071</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.050</td>
-<td align="right">0.053</td>
-<td align="right">0.053</td>
-<td align="right">0.053</td>
 <td align="right">0.054</td>
-<td align="right">0.054</td>
-<td align="right">1.059</td>
-<td align="right">15.30</td>
+<td align="right">0.055</td>
+<td align="right">0.055</td>
+<td align="right">0.056</td>
+<td align="right">0.056</td>
+<td align="right">0.061</td>
+<td align="right">1.122</td>
+<td align="right">16.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.007</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
-<td align="right">0.009</td>
+<td align="right">0.008</td>
+<td align="right">0.008</td>
 <td align="right">0.010</td>
-<td align="right">0.168</td>
-<td align="right">2.35</td>
+<td align="right">0.167</td>
+<td align="right">2.30</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">20</td>
-<td align="right">0.021</td>
-<td align="right">0.023</td>
-<td align="right">0.023</td>
-<td align="right">0.023</td>
-<td align="right">0.024</td>
-<td align="right">0.025</td>
-<td align="right">0.469</td>
-<td align="right">6.75</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.212</td>
-<td align="right">0.217</td>
-<td align="right">0.224</td>
-<td align="right">0.225</td>
+<td align="right">0.219</td>
 <td align="right">0.227</td>
-<td align="right">0.257</td>
-<td align="right">4.504</td>
-<td align="right">64.60</td>
+<td align="right">0.230</td>
+<td align="right">0.231</td>
+<td align="right">0.233</td>
+<td align="right">0.258</td>
+<td align="right">4.624</td>
+<td align="right">66.00</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.039</td>
+<td align="right">0.040</td>
 <td align="right">0.041</td>
 <td align="right">0.042</td>
+<td align="right">0.044</td>
 <td align="right">0.042</td>
-<td align="right">0.043</td>
-<td align="right">0.046</td>
-<td align="right">0.842</td>
-<td align="right">12.10</td>
+<td align="right">0.083</td>
+<td align="right">0.879</td>
+<td align="right">12.00</td>
 </tr>
 </tbody>
 </table>
@@ -1426,8 +1308,8 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.103</td>
-<td align="right">59.90</td>
+<td align="right">0.116</td>
+<td align="right">62.40</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1439,7 +1321,7 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.022</td>
-<td align="right">13.00</td>
+<td align="right">12.90</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -1449,9 +1331,9 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.035</td>
-<td align="right">20.10</td>
+<td align="right">0.000</td>
+<td align="right">0.036</td>
+<td align="right">21.10</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1462,22 +1344,10 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.023</td>
-<td align="right">12.10</td>
+<td align="right">0.022</td>
+<td align="right">11.90</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">100</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.018</td>
-<td align="right">9.90</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">100</td>
 <td align="right">0.000</td>
@@ -1489,7 +1359,7 @@
 <td align="right">0.002</td>
 <td align="right">1.00</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">100</td>
 <td align="right">0.000</td>
@@ -1499,7 +1369,7 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">1.06</td>
+<td align="right">1.03</td>
 </tr>
 </tbody>
 </table>
@@ -1535,14 +1405,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">100</td>
-<td align="right">0.033</td>
 <td align="right">0.035</td>
 <td align="right">0.036</td>
 <td align="right">0.037</td>
+<td align="right">0.038</td>
 <td align="right">0.037</td>
-<td align="right">0.082</td>
-<td align="right">3.694</td>
-<td align="right">55.80</td>
+<td align="right">0.076</td>
+<td align="right">3.761</td>
+<td align="right">56.90</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1552,9 +1422,9 @@
 <td align="right">0.005</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
-<td align="right">0.007</td>
-<td align="right">0.486</td>
-<td align="right">7.45</td>
+<td align="right">0.010</td>
+<td align="right">0.500</td>
+<td align="right">7.36</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -1565,8 +1435,8 @@
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.005</td>
-<td align="right">0.307</td>
-<td align="right">4.55</td>
+<td align="right">0.325</td>
+<td align="right">4.72</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1577,34 +1447,22 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.002</td>
-<td align="right">0.070</td>
+<td align="right">0.068</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
-<td align="left">R2Cuba::cuhre</td>
-<td align="right">100</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.077</td>
-<td align="right">1.14</td>
-</tr>
-<tr class="even">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">100</td>
 <td align="right">0.007</td>
-<td align="right">0.007</td>
-<td align="right">0.007</td>
+<td align="right">0.008</td>
+<td align="right">0.008</td>
 <td align="right">0.008</td>
 <td align="right">0.009</td>
-<td align="right">0.010</td>
-<td align="right">0.784</td>
-<td align="right">11.60</td>
+<td align="right">0.011</td>
+<td align="right">0.819</td>
+<td align="right">12.00</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">100</td>
 <td align="right">0.001</td>
@@ -1613,8 +1471,8 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.136</td>
-<td align="right">2.06</td>
+<td align="right">0.137</td>
+<td align="right">2.05</td>
 </tr>
 </tbody>
 </table>
@@ -1623,13 +1481,6 @@
 <h2 class="hasAnchor">
 <a href="#an-implementation-note" class="anchor"></a>An implementation note</h2>
 <p>About the only real modification we have made to the underlying <code>cubature-1.0.2</code> library is that we use <code>M = 16</code> rather than the default <code>M = 19</code> suggested by the original author for <code>pcubature</code>. This allows us to comply with CRAN package size limits and seems to work reasonably well for the above tests. Future versions will allow for such customization on demand.</p>
-<div id="apropos-the-cuba-library" class="section level3">
-<h3 class="hasAnchor">
-<a href="#apropos-the-cuba-library" class="anchor"></a>Apropos the <code>Cuba</code> library</h3>
-<p>The package <a href="https://cran.r-project.org/package=R2Cuba"><code>R2Cuba</code></a> provides a suite of cubature and other useful Monte Carlo integration routines linked against version 1.6 of the C library. The authors of <code>R2Cuba</code> have obviously put a lot of work has into it since it uses C-style R API. This approach also means that it is harder to keep the R package in sync with new versions of the underlying C library. In fact, the Cuba C library has marched on now to version 4.2.</p>
-<p>In a matter of a couple of hours, I was able to link the latest version (4.2) of the <a href="https://directory.fsf.org/wiki/Cuba">Cuba libraries</a> (canonical web link now seems dead) with R using Rcpp; you can see it on the <code>Cuba</code> branch of my <a href="https://github.com/bnaras/cubature">Github repo</a>. This branch package builds and installs in R on my Mac and Ubuntu machines and gives correct answers at least for <code>cuhre</code>. The 4.2 version of the Cuba library also has vectorized versions of the routines that can be gainfully exploited (not implemented in the branch). As of this writing, I have also not yet carefully considered the issue of parallel execution (via <code>fork()</code>) which might be problematic in the Windows version. In addition, my timing benchmarks showed very disappointing results.</p>
-<p>For the above reasons, I decided not to bother with Cuba for now, but if there is enough interest, I might consider rolling <code>Cuba-4.2+</code> into this <code>cubature</code> package in the future.</p>
-</div>
 </div>
 <div id="summary" class="section level2">
 <h2 class="hasAnchor">
@@ -1660,19 +1511,19 @@
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] mvtnorm_1.0-8 cubature_2.0 
+## [1] mvtnorm_1.0-8 cubature_2.0  benchr_0.2.2 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.17       R2Cuba_1.1-0       knitr_1.20        
-##  [4] xml2_1.2.0         magrittr_1.5       roxygen2_6.0.1    
-##  [7] MASS_7.3-50        R6_2.2.2           rlang_0.2.1       
-## [10] highr_0.7          stringr_1.3.1      RcppProgress_0.4.1
-## [13] tools_3.5.1        htmltools_0.3.6    commonmark_1.5    
-## [16] yaml_2.1.19        rprojroot_1.3-2    digest_0.6.15     
-## [19] assertthat_0.2.0   pkgdown_1.1.0.9000 crayon_1.3.4      
-## [22] benchr_0.2.2       fs_1.2.3           memoise_1.1.0     
-## [25] evaluate_0.10.1    rmarkdown_1.10     stringi_1.2.3     
-## [28] compiler_3.5.1     desc_1.2.0         backports_1.1.2</code></pre>
+##  [1] Rcpp_0.12.17       knitr_1.20         xml2_1.2.0        
+##  [4] magrittr_1.5       roxygen2_6.0.1     MASS_7.3-50       
+##  [7] R6_2.2.2           rlang_0.2.1        highr_0.7         
+## [10] stringr_1.3.1      RcppProgress_0.4.1 tools_3.5.1       
+## [13] htmltools_0.3.6    commonmark_1.5     yaml_2.1.19       
+## [16] rprojroot_1.3-2    digest_0.6.15      assertthat_0.2.0  
+## [19] pkgdown_1.1.0.9000 crayon_1.3.4       fs_1.2.3          
+## [22] memoise_1.1.0      evaluate_0.10.1    rmarkdown_1.10    
+## [25] stringi_1.2.3      compiler_3.5.1     desc_1.2.0        
+## [28] backports_1.1.2</code></pre>
 </div>
   </div>
 

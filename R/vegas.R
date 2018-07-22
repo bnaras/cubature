@@ -13,10 +13,10 @@
 #'
 #' @param f The function (integrand) to be integrated. Optionally, the
 #'     function can take two additional arguments in addition to the
-#'     variable being integrated: - \code{vegas_weight} which is the
-#'     weight of the point being sampled, - \code{vegas_iter} the
-#'     current iteration number. The function may choose to use these
-#'     in any appropriate way or ignore them altogether
+#'     variable being integrated: - \code{cuba_weight} which is the
+#'     weight of the point being sampled, - \code{cuba_iter} the
+#'     current iteration number. The function author may choose to use
+#'     these in any appropriate way or ignore them altogether.
 #' @param nComp The number of components of the integrand, default 1,
 #'     bears no relation to the dimension of the hypercube over which
 #'     integration is performed
@@ -157,46 +157,27 @@ vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     for (x in names(flags)) all_flags[[x]] <- flags[[x]]
 
     f <- match.fun(f)
-    vegas_params_exist <- length(intersect(c("vegas_weight", "vegas_iter"), names(formals(f)))) == 2L
+    cuba_params_exist <- length(intersect(c("cuba_weight", "cuba_iter"), names(formals(f)))) == 2L
 
     if (all(is.finite(c(lowerLimit, upperLimit)))) {
         r <- upperLimit - lowerLimit
         prodR <- prod(r)
-        if (vegas_params_exist) {
-            fnF <- function(x, vegas_weight, vegas_iter) prodR * f(lowerLimit + r * x, vegas_weight = vegas_weight, vegas_iter = vegas_iter, ...)
-        } else {
-            fnF <- function(x) prodR * f(lowerLimit + r * x, ...)
-        }
+        fnF <- function(x) prodR * f(lowerLimit + r * x, ...)
     } else {
         lowerLimit <- atan(lowerLimit)
         upperLimit <- atan(upperLimit)
         r <- upperLimit - lowerLimit
         prodR <- prod(r)
         fnF <- if (nVec > 1L)
-                   if (vegas_params_exist) {
-                       function(x, vegas_weight, vegas_iter) {
-                           y <- lowerLimit + r * x
-                           prodR * f(tan(y), vegas_weight, vegas_iter, ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
-                       }
-                   } else {
-                       function(x) {
-                           y <- lowerLimit + r * x
-                           prodR * f(tan(y), vegas_weight, vegas_iter, ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
-                       }
+                   function(x) {
+                       y <- lowerLimit + r * x
+                       prodR * f(tan(y), ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
                    }
-               else
-                   if (vegas_params_exist) {
-                       function(x, vegas_weight, vegas_iter) {
-                           y <- lowerLimit + r * x
-                           prodR * f(tan(y), vegas_weight, vegas_iter, ...) / prod(cos(y))^2
-                       }
-                   } else {
-                       function(x) {
-                           y <- lowerLimit + r * x
-                           prodR * f(tan(y), ...) / prod(cos(y))^2
-                       }
-                   }
-
+        else
+            function(x) {
+                y <- lowerLimit + r * x
+                prodR * f(tan(y), ...) / prod(cos(y))^2
+            }
     }
 
     flag_code <- all_flags$verbose + 2^2 * all_flags$final + 2^3 * all_flags$smooth +
@@ -209,7 +190,7 @@ vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
           absTol, relTol, nStart,
           nIncrease, nBatch, gridNo,
           stateFile, all_flags$rngSeed, flag_code,
-          vegas_params_exist)
+          cuba_params_exist)
 }
 
 

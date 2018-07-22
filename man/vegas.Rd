@@ -13,10 +13,10 @@ vegas(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
 \arguments{
 \item{f}{The function (integrand) to be integrated. Optionally, the
 function can take two additional arguments in addition to the
-variable being integrated: - \code{vegas_weight} which is the
-weight of the point being sampled, - \code{vegas_iter} the
-current iteration number. The function may choose to use these
-in any appropriate way or ignore them altogether}
+variable being integrated: - \code{cuba_weight} which is the
+weight of the point being sampled, - \code{cuba_iter} the
+current iteration number. The function author may choose to use
+these in any appropriate way or ignore them altogether.}
 
 \item{nComp}{The number of components of the integrand, default 1,
 bears no relation to the dimension of the hypercube over which

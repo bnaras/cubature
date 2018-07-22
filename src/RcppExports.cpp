@@ -28,8 +28,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // doVegas
-Rcpp::List doVegas(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int nVec, int minEval, int maxEval, double absTol, double relTol, int nStart, int nIncrease, int nBatch, int gridNo, SEXP stateFile, int seed, int flag, int vegas_args);
-RcppExport SEXP _cubature_doVegas(SEXP nCompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP nStartSEXP, SEXP nIncreaseSEXP, SEXP nBatchSEXP, SEXP gridNoSEXP, SEXP stateFileSEXP, SEXP seedSEXP, SEXP flagSEXP, SEXP vegas_argsSEXP) {
+Rcpp::List doVegas(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int nVec, int minEval, int maxEval, double absTol, double relTol, int nStart, int nIncrease, int nBatch, int gridNo, SEXP stateFile, int seed, int flag, int cuba_args);
+RcppExport SEXP _cubature_doVegas(SEXP nCompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP nStartSEXP, SEXP nIncreaseSEXP, SEXP nBatchSEXP, SEXP gridNoSEXP, SEXP stateFileSEXP, SEXP seedSEXP, SEXP flagSEXP, SEXP cuba_argsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -49,14 +49,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type stateFile(stateFileSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
     Rcpp::traits::input_parameter< int >::type flag(flagSEXP);
-    Rcpp::traits::input_parameter< int >::type vegas_args(vegas_argsSEXP);
-    rcpp_result_gen = Rcpp::wrap(doVegas(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nStart, nIncrease, nBatch, gridNo, stateFile, seed, flag, vegas_args));
+    Rcpp::traits::input_parameter< int >::type cuba_args(cuba_argsSEXP);
+    rcpp_result_gen = Rcpp::wrap(doVegas(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nStart, nIncrease, nBatch, gridNo, stateFile, seed, flag, cuba_args));
     return rcpp_result_gen;
 END_RCPP
 }
 // doSuave
-Rcpp::List doSuave(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int nVec, int minEval, int maxEval, double absTol, double relTol, int nNew, int nMin, double flatness, SEXP stateFile, int seed, int flag, int suave_args);
-RcppExport SEXP _cubature_doSuave(SEXP nCompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP nNewSEXP, SEXP nMinSEXP, SEXP flatnessSEXP, SEXP stateFileSEXP, SEXP seedSEXP, SEXP flagSEXP, SEXP suave_argsSEXP) {
+Rcpp::List doSuave(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int nVec, int minEval, int maxEval, double absTol, double relTol, int nNew, int nMin, double flatness, SEXP stateFile, int seed, int flag, int cuba_args);
+RcppExport SEXP _cubature_doSuave(SEXP nCompSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP nNewSEXP, SEXP nMinSEXP, SEXP flatnessSEXP, SEXP stateFileSEXP, SEXP seedSEXP, SEXP flagSEXP, SEXP cuba_argsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -75,8 +75,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type stateFile(stateFileSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
     Rcpp::traits::input_parameter< int >::type flag(flagSEXP);
-    Rcpp::traits::input_parameter< int >::type suave_args(suave_argsSEXP);
-    rcpp_result_gen = Rcpp::wrap(doSuave(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nNew, nMin, flatness, stateFile, seed, flag, suave_args));
+    Rcpp::traits::input_parameter< int >::type cuba_args(cuba_argsSEXP);
+    rcpp_result_gen = Rcpp::wrap(doSuave(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nNew, nMin, flatness, stateFile, seed, flag, cuba_args));
     return rcpp_result_gen;
 END_RCPP
 }

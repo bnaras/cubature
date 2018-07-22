@@ -42,18 +42,11 @@ makes. My recommendations are below in the summary section.
 ## A Timing Harness
 
 Our harness will provide timing results for `hcubature`, `pcubature`
-(where appropriate) and `R2Cuba` calls.  We begin by creating a
+(where appropriate) and Cuba `cuhre` calls.  We begin by creating a
 harness for these calls.
 
 ```{r}
-loadedSuggested  <- c(benchr = FALSE, R2Cuba = FALSE)
-if (requireNamespace("benchr", quietly = TRUE)) {
-    loadedSuggested["benchr"] <- TRUE
-}
-if (requireNamespace("R2Cuba", quietly = TRUE)) {
-    loadedSuggested["R2Cuba"] <- TRUE
-}
-
+library(benchr)
 library(cubature)
 
 harness <- function(which = NULL,
@@ -62,29 +55,18 @@ harness <- function(which = NULL,
     fns <- c(hc = "Non-vectorized Hcubature",
              hc.v = "Vectorized Hcubature",
              pc = "Non-vectorized Pcubature",
-             pc.v = "Vectorized Pcubature")
-
-    if (loadedSuggested["R2Cuba"]) {
-        fns <- c(fns,
-                 Rc = "R2Cuba::cuhre",
-                 cc = "Non-vectorized cubature::cuhre",
-                 cc_v = "Vectorized cubature::cuhre")
-        Rc <- function() R2Cuba::cuhre(ndim = ndim, ncomp = 1, integrand = f,
-                                       lower = lowerLimit, upper = upperLimit,
-                                       flags = list(verbose = 0, final = 1),
-                                       rel.tol = tol,
-                                       max.eval = 10^6,
+             pc.v = "Vectorized Pcubature",
+             cc = "Non-vectorized cubature::cuhre",
+             cc_v = "Vectorized cubature::cuhre")
+    cc <- function() cubature::cuhre(f = f,
+                                     lowerLimit = lowerLimit, upperLimit = upperLimit,
+                                     relTol = tol,
+                                     ...)
+    cc_v <- function() cubature::cuhre(f = fv,
+                                       lowerLimit = lowerLimit, upperLimit = upperLimit,
+                                       relTol = tol,
+                                       nVec = 100L,
                                        ...)
-        cc <- function() cubature::cuhre(f = f,
-                                         lowerLimit = lowerLimit, upperLimit = upperLimit,
-                                         relTol = tol,
-                                         ...)
-        cc_v <- function() cubature::cuhre(f = fv,
-                                           lowerLimit = lowerLimit, upperLimit = upperLimit,
-                                           relTol = tol,
-                                           nVec = 100L,
-                                           ...)
-    }
 
     hc <- function() cubature::hcubature(f = f,
                                          lowerLimit = lowerLimit,
@@ -121,15 +103,11 @@ harness <- function(which = NULL,
     }
     fnList <- lapply(names(fns)[fnIndices], function(x) call(x))
 
-    if (loadedSuggested["benchr"]) {
-        argList <- c(fnList, times = times, progress = FALSE)
-        result <- do.call(benchr::benchmark, args = argList)
-        d <- summary(result)[seq_along(fnIndices), ]
-        d$expr <- fns[fnIndices]
-        d
-    } else {
-        d <- data.frame(expr = names(fns)[fnIndices], timing = NA)
-    }
+    argList <- c(fnList, times = times, progress = FALSE)
+    result <- do.call(benchr::benchmark, args = argList)
+    d <- summary(result)[seq_along(fnIndices), ]
+    d$expr <- fns[fnIndices]
+    d
 }
 ```
 
@@ -273,7 +251,7 @@ testFn2_v <- function(x) {
     matrix(apply(x, 2, function(z) ifelse(sum(z * z) < radius * radius, 1, 0)), ncol = ncol(x))
 }
 
-d <- harness(which = c("hc", "hc.v", "cc"),
+d <- harness(which = c("hc", "hc.v", "cc", "cc_v"),
              f = testFn2, fv = testFn2_v,
              lowerLimit = rep(0, 2), upperLimit = rep(1, 2), times = 10)
 knitr::kable(d, digits = 3)
@@ -423,33 +401,6 @@ default `M = 19` suggested by the original author for
 and seems to work reasonably well for the above tests. Future versions
 will allow for such customization on demand.
 
-### Apropos the `Cuba` library
-
-The package [`R2Cuba`](https://cran.r-project.org/package=R2Cuba)
-provides a suite of cubature and other useful Monte Carlo integration
-routines linked against version 1.6 of the C library. The authors of
-`R2Cuba` have obviously put a lot of work has into it since it uses
-C-style R API. This approach also means that it is harder to keep the
-R package in sync with new versions of the underlying C library. In
-fact, the Cuba C library has marched on now to version 4.2.
-
-In a matter of a couple of hours, I was able to link the latest
-version (4.2) of the [Cuba
-libraries](https://directory.fsf.org/wiki/Cuba) (canonical web link
-now seems dead) with R using Rcpp; you can see it on the `Cuba` branch
-of my [Github repo](https://github.com/bnaras/cubature). This branch
-package builds and installs in R on my Mac and Ubuntu machines and
-gives correct answers at least for `cuhre`. The 4.2 version of the
-Cuba library also has vectorized versions of the routines that can be
-gainfully exploited (not implemented in the branch). As of this
-writing, I have also not yet carefully considered the issue of
-parallel execution (via `fork()`) which might be problematic in the
-Windows version. In addition, my timing benchmarks showed very
-disappointing results.
-
-For the above reasons, I decided not to bother with Cuba for now, but
-if there is enough interest, I might consider rolling `Cuba-4.2+` into
-this `cubature` package in the future.
 
 ## Summary
 

@@ -13,8 +13,8 @@ suave(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
 \arguments{
 \item{f}{The function (integrand) to be integrated. Optionally, the
 function can take two additional arguments in addition to the
-variable being integrated: - \code{suave_weight} which is the
-weight of the point being sampled, - \code{suave_iter} the
+variable being integrated: - \code{cuba_weight} which is the
+weight of the point being sampled, - \code{cuba_iter} the
 current iteration number. The function may choose to use these
 in any appropriate way or ignore them altogether}
 

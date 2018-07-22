@@ -3,7 +3,7 @@ SUFFIX =
 CFLAGS = -Wall -g -O2  -I../../inst/include -fPIC -DR_PACKAGE=1 -DHAVE_CONFIG_H -DREALSIZE=8 -I$(common) -I. -I$(srcdir)
 MCFLAGS = 
 FC = gfortran
-FCFLAGS = -g -O2 -DREALSIZE=8
+FCFLAGS = -Wall -g -O2  -DREALSIZE=8
 LIBS = -lm
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644

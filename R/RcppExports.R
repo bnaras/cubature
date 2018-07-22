@@ -5,12 +5,12 @@ doCuhre <- function(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, 
     .Call('_cubature_doCuhre', PACKAGE = 'cubature', nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, key, flag)
 }
 
-doVegas <- function(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nStart, nIncrease, nBatch, gridNo, stateFile, seed, flag, vegas_args) {
-    .Call('_cubature_doVegas', PACKAGE = 'cubature', nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nStart, nIncrease, nBatch, gridNo, stateFile, seed, flag, vegas_args)
+doVegas <- function(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nStart, nIncrease, nBatch, gridNo, stateFile, seed, flag, cuba_args) {
+    .Call('_cubature_doVegas', PACKAGE = 'cubature', nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nStart, nIncrease, nBatch, gridNo, stateFile, seed, flag, cuba_args)
 }
 
-doSuave <- function(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nNew, nMin, flatness, stateFile, seed, flag, suave_args) {
-    .Call('_cubature_doSuave', PACKAGE = 'cubature', nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nNew, nMin, flatness, stateFile, seed, flag, suave_args)
+doSuave <- function(nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nNew, nMin, flatness, stateFile, seed, flag, cuba_args) {
+    .Call('_cubature_doSuave', PACKAGE = 'cubature', nComp, f, xLL, xUL, nVec, minEval, maxEval, absTol, relTol, nNew, nMin, flatness, stateFile, seed, flag, cuba_args)
 }
 
 doHCubature <- function(fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm) {

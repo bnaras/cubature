@@ -68,10 +68,10 @@ Rcpp::List doCuhre(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
 
     // Create a structure to hold integrand function and initialize it
     integrand_info II;
-    // II.count = 0;               /* Zero count */
+    II.count = 0;               /* Zero count */
     II.fun = f;                 /* R function */
 
-    int nregions, neval, fail;
+    int nregions, fail;
 
     // Set cores to be zero.
     cubacores(0, 0);
@@ -83,14 +83,14 @@ Rcpp::List doCuhre(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
               relTol, absTol, flag,
               minEval, maxEval, key,
               NULL, NULL,
-              &nregions, &neval, &fail,
+              &nregions, &(II.count), &fail,
               integral.begin(), errVals.begin(), prob.begin());
     } else {
         Cuhre(nDim, nComp, (integrand_t) cuhre_fWrapper, (void *) &II, nVec,
               relTol, absTol, flag,
               minEval, maxEval, key,
               NULL, NULL,
-              &nregions, &neval, &fail,
+              &nregions, &(II.count), &fail,
               integral.begin(), errVals.begin(), prob.begin());
     }
     
@@ -100,7 +100,7 @@ Rcpp::List doCuhre(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
 			    Rcpp::_["integral"] = integral,
 			    Rcpp::_["error"] = errVals,
 			    Rcpp::_["nregions"] = nregions,
-			    Rcpp::_["neval"] = neval,
+			    Rcpp::_["neval"] = II.count,
                             Rcpp::_["prob"] = prob,
 			    Rcpp::_["returnCode"] = fail);
 }
@@ -120,16 +120,15 @@ int vegas_fWrapper(const int *nDim, const double x[],
     Rcpp::NumericVector fx;
 
     //Rcpp::Rcout<<"before call" <<std::endl;        
-    if (iip -> vegas_args) {
+    if (iip -> cuba_args) {
         Rcpp::NumericVector weightVal = Rcpp::NumericVector(weight, weight + (*nVec));  /* The weight argument for the R function f */
         //    Rcpp::Rcout<<"after weightVal" <<std::endl;    
         Rcpp::IntegerVector iterVal = Rcpp::IntegerVector(iter, iter + 1);  /* The iter argument for the R function f */        
         //    Rcpp::Rcout<<"before call" <<std::endl;
-        fx = Rcpp::Function(iip -> fun)(xVal, weightVal, iterVal);
+        fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["cuba_weight"] = weightVal, Rcpp::_["cuba_iter"] = iterVal);
     } else {
         fx = Rcpp::Function(iip -> fun)(xVal);
     }
-    //Rcpp::NumericVector fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["vegas_weight"] = weightVal, Rcpp::_["vegas_iter"] = iterVal);
 
     //    Rcpp::Rcout<<"after call" <<std::endl;
     
@@ -153,10 +152,10 @@ int vegas_fWrapper_v(const int *nDim, const double x[],
     Rcpp::NumericVector fx;
 
     //Rcpp::Rcout<<"before call" <<std::endl;    
-    if (iip -> vegas_args) {
+    if (iip -> cuba_args) {
         Rcpp::NumericVector weightVal = Rcpp::NumericVector(weight, weight + (*nVec));  /* The weight argument for the R function f */
         Rcpp::IntegerVector iterVal = Rcpp::IntegerVector(iter, iter + 1);  /* The iter argument for the R function f */        
-        fx = Rcpp::Function(iip -> fun)(xVal, weightVal, iterVal);
+        fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["cuba_weight"] = weightVal, Rcpp::_["cuba_iter"] = iterVal);
     } else {
         fx = Rcpp::Function(iip -> fun)(xVal);
     }
@@ -175,7 +174,7 @@ Rcpp::List doVegas(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
 		   int nVec, int minEval, int maxEval, double absTol, double relTol,
                    int nStart, int nIncrease, int nBatch, int gridNo,
                    SEXP stateFile,
-                   int seed, int flag, int vegas_args) {
+                   int seed, int flag, int cuba_args) {
 
     
     // Rcpp::Rcout<<"Entering" <<std::endl;
@@ -186,10 +185,11 @@ Rcpp::List doVegas(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
 
     // Create a structure to hold integrand function and initialize it
     integrand_info II;
-    II.vegas_args = vegas_args; /* vegas specific args */
+    II.cuba_args = cuba_args;   /* vegas specific args */
+    II.count = 0;
     II.fun = f;                 /* R function */
 
-    int neval, fail;
+    int fail;
 
     // Set cores to be zero.
     cubacores(0, 0);
@@ -210,7 +210,7 @@ Rcpp::List doVegas(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
               nStart, nIncrease, nBatch, gridNo, 
               filename,
               NULL,
-              &neval, &fail,
+              &(II.count), &fail,
               integral.begin(), errVals.begin(), prob.begin());
     } else {
         // Rcpp::Rcout<<"Call Integrator nVec = " << nVec << std::endl;        
@@ -220,7 +220,7 @@ Rcpp::List doVegas(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
               nStart, nIncrease, nBatch, gridNo, 
               filename,
               NULL,
-              &neval, &fail,
+              &(II.count), &fail,
               integral.begin(), errVals.begin(), prob.begin());
     }
     
@@ -229,7 +229,7 @@ Rcpp::List doVegas(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
   return Rcpp::List::create(
 			    Rcpp::_["integral"] = integral,
 			    Rcpp::_["error"] = errVals,
-			    Rcpp::_["neval"] = neval,
+			    Rcpp::_["neval"] = II.count,
                             Rcpp::_["prob"] = prob,
 			    Rcpp::_["returnCode"] = fail);
 }
@@ -249,17 +249,16 @@ int suave_fWrapper(const int *nDim, const double x[],
     Rcpp::NumericVector fx;
 
     //    Rcpp::Rcout<<"before call" <<std::endl;        
-    if (iip -> suave_args) {
+    if (iip -> cuba_args) {
         Rcpp::NumericVector weightVal = Rcpp::NumericVector(weight, weight + (*nVec));  /* The weight argument for the R function f */
         //    Rcpp::Rcout<<"after weightVal" <<std::endl;    
         Rcpp::IntegerVector iterVal = Rcpp::IntegerVector(iter, iter + 1);  /* The iter argument for the R function f */        
         //    Rcpp::Rcout<<"before call" <<std::endl;
-        fx = Rcpp::Function(iip -> fun)(xVal, weightVal, iterVal);
+        fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["cuba_weight"] = weightVal, Rcpp::_["cuba_iter"] = iterVal);
     } else {
         //        Rcpp::Rcout<<"No args" <<std::endl;                
         fx = Rcpp::Function(iip -> fun)(xVal);
     }
-    //Rcpp::NumericVector fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["suave_weight"] = weightVal, Rcpp::_["suave_iter"] = iterVal);
 
     //    Rcpp::Rcout<<"after call" <<std::endl;
     
@@ -283,10 +282,10 @@ int suave_fWrapper_v(const int *nDim, const double x[],
     Rcpp::NumericVector fx;
 
     //Rcpp::Rcout<<"before call" <<std::endl;    
-    if (iip -> suave_args) {
+    if (iip -> cuba_args) {
         Rcpp::NumericVector weightVal = Rcpp::NumericVector(weight, weight + (*nVec));  /* The weight argument for the R function f */
         Rcpp::IntegerVector iterVal = Rcpp::IntegerVector(iter, iter + 1);  /* The iter argument for the R function f */        
-        fx = Rcpp::Function(iip -> fun)(xVal, weightVal, iterVal);
+        fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["cuba_weight"] = weightVal, Rcpp::_["cuba_iter"] = iterVal);
     } else {
         fx = Rcpp::Function(iip -> fun)(xVal);
     }
@@ -305,10 +304,10 @@ Rcpp::List doSuave(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
 		   int nVec, int minEval, int maxEval, double absTol, double relTol,
                    int nNew, int nMin, double flatness, 
                    SEXP stateFile,
-                   int seed, int flag, int suave_args) {
+                   int seed, int flag, int cuba_args) {
 
     
-    Rcpp::Rcout<<"Entering" <<std::endl;
+    //Rcpp::Rcout<<"Entering" <<std::endl;
     int nDim = xLL.size();
     Rcpp::NumericVector integral(nComp);
     Rcpp::NumericVector errVals(nComp);
@@ -316,10 +315,11 @@ Rcpp::List doSuave(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
 
     // Create a structure to hold integrand function and initialize it
     integrand_info II;
-    II.suave_args = suave_args; /* suave specific args */
+    II.cuba_args = cuba_args; /* suave specific args */
+    II.count = 0;
     II.fun = f;                 /* R function */
 
-    int nregions, neval, fail;
+    int nregions, fail;
 
     // Set cores to be zero.
     cubacores(0, 0);
@@ -341,7 +341,7 @@ Rcpp::List doSuave(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
               nNew, nMin, flatness, 
               filename,
               NULL,
-              &nregions, &neval, &fail,              
+              &nregions, &(II.count), &fail,              
               integral.begin(), errVals.begin(), prob.begin());
     } else {
         // Rcpp::Rcout<<"Call Integrator nVec = " << nVec << std::endl;        
@@ -351,7 +351,7 @@ Rcpp::List doSuave(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
               nNew, nMin, flatness,               
               filename,
               NULL,
-              &nregions, &neval, &fail,
+              &nregions, &(II.count), &fail,
               integral.begin(), errVals.begin(), prob.begin());
     }
     
@@ -360,7 +360,7 @@ Rcpp::List doSuave(int nComp, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVect
   return Rcpp::List::create(
 			    Rcpp::_["integral"] = integral,
 			    Rcpp::_["error"] = errVals,
-			    Rcpp::_["neval"] = neval,
+			    Rcpp::_["neval"] = II.count,
                             Rcpp::_["prob"] = prob,
 			    Rcpp::_["returnCode"] = fail);
 }
