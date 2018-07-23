@@ -181,8 +181,8 @@
 #'   ff <- sin(x)*cos(y)*exp(z);
 #' return(ff)
 #' }
-#' divonne(NDIM, NCOMP, integrand, rel.tol=1e-3,  abs.tol=1e-12,
-#'         flags=list(verbose=2),  key1= 47)
+#' divonne(integrand, relTol=1e-3,  absTol=1e-12, lowerLimit = rep(0, 3), upperLimit = rep(1, 3),
+#'         flags=list(verbose = 2),  key1= 47)
 #'
 #' # Example with a peak-finder function
 #' nDim <- 3L
@@ -191,7 +191,7 @@
 #'   x <- matrix(0, ncol = nMax, nrow = nDim)
 #'    pas <- 1 / (nMax - 1)
 #'    # 1ier point
-#'    x[, 1] <- rep(0, NDIM)
+#'    x[, 1] <- rep(0, nDim)
 #'    # Les autres points
 #'    for (i in 2L:nMax) {
 #'       x[, i] <- x[, (i - 1)] + pas
