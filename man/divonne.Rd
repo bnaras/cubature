@@ -9,7 +9,7 @@ divonne(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
   final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed =
   12345L), nVec = 1L, key1 = 47L, key2 = 1L, key3 = 1L, maxPass = 5L,
   border = 0, maxChisq = 10, minDeviation = 0.25, xGiven = NULL,
-  nExtra = 0L, peakfinder = NULL, stateFile = NULL)
+  nExtra = 0L, peakFinder = NULL, stateFile = NULL)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated. Optionally, the
@@ -148,6 +148,15 @@ such peaks is known, this can considerably speed up convergence.}
 will return. If \code{nextra} is zero, \code{peakfinder} is not called and
 an arbitrary object may be passed in its place, e.g. just 0.}
 
+\item{peakFinder}{the peak-finder subroutine. This R function is called
+whenever a region is up for subdivision and is supposed to point out
+possible peaks lying in the region, thus acting as the dynamic counterpart
+of the static list of points supplied in \code{xgiven}. It is expected to be
+declared as \code{peakFinder <- function(bounds, nMax)} where \code{bounds} is a matrix of dimension (\code{2, nDim}) which contains
+the lower (row 1) and upper (row 2) bounds of the subregion.
+The returned value should be a matrix (\code{nX, nDim}) where \code{nX} is
+the actual number of points (should be less or equal to \code{nMax}).}
+
 \item{stateFile}{the name of an external file. Vegas can store its
 entire internal state (i.e. all the information to resume an
 interrupted integration) in an external file.
@@ -160,15 +169,6 @@ results. Once the integration finishes successfully, i.e. the prescribed
 accuracy is attained, the state file is removed. This feature is useful
 mainly to define \sQuote{check-points} in long-running integrations from
 which the calculation can be restarted.}
-
-\item{peakFinder}{the peak-finder subroutine. This R function is called
-whenever a region is up for subdivision and is supposed to point out
-possible peaks lying in the region, thus acting as the dynamic counterpart
-of the static list of points supplied in \code{xgiven}. It is expected to be
-declared as \code{peakFinder <- function(bounds, nMax)} where \code{bounds} is a matrix of dimension (\code{2, nDim}) which contains
-the lower (row 1) and upper (row 2) bounds of the subregion.
-The returned value should be a matrix (\code{nX, nDim}) where \code{nX} is
-the actual number of points (should be less or equal to \code{nMax}).}
 }
 \value{
 A list with components:

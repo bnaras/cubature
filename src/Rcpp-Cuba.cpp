@@ -38,29 +38,6 @@ int cuhre_fWrapper(const int *nDim, const double x[],
     return 0;
 }
 
-// int cuhre_fWrapper_v(const int *nDim, const double x[],
-//                      const int *nComp, double f[], void *userdata, const int *nVec,
-//                      const int *core) {
-
-//     //Rcpp::Rcout << "In Wrapper: nVec = " << (*nVec) << std::endl;
-
-//     Rcpp::NumericMatrix xVal(*nDim, *nVec, x);   /* The x argument for the R function f */
-
-//     //Rcpp::Rcout<<"before call" <<std::endl;
-
-//     ii_ptr iip = (ii_ptr) userdata;
-//     Rcpp::NumericMatrix fx = Rcpp::Function(iip -> fun)(xVal);
-
-//     //Rcpp::Rcout<<"after call" <<std::endl;
-
-//     double* fxp = fx.begin();         /* The ptr to f(x) (real) matrix */
-//     for (int i = 0; i < (*nComp) * (*nVec); ++i) {
-//         f[i] = fxp[i];
-//     }
-
-//     return 0;
-// }
-
 // [[Rcpp::export]]
 Rcpp::List doCuhre(int nComp, SEXP f, int nDim,
 		   int nVec, int minEval, int maxEval, double absTol, double relTol,
@@ -137,35 +114,6 @@ int vegas_or_suave_fWrapper(const int *nDim, const double x[],
     return 0;
 }
 
-// int vegas_fWrapper_v(const int *nDim, const double x[],
-//                      const int *nComp, double f[], void *userdata, const int *nVec,
-//                      const int *core, const double weight[], const int *iter) {
-
-//     //Rcpp::Rcout << "In Wrapper: nVec = " << (*nVec) << std::endl;
-
-//     Rcpp::NumericMatrix xVal(*nDim, *nVec, x);   /* The x argument for the R function f */
-
-//     ii_ptr iip = (ii_ptr) userdata;
-//     Rcpp::NumericVector fx;
-
-//     //Rcpp::Rcout<<"before call" <<std::endl;    
-//     if (iip -> cuba_args) {
-//         Rcpp::NumericVector weightVal = Rcpp::NumericVector(weight, weight + (*nVec));  /* The weight argument for the R function f */
-//         Rcpp::IntegerVector iterVal = Rcpp::IntegerVector(iter, iter + 1);  /* The iter argument for the R function f */        
-//         fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["cuba_weight"] = weightVal, Rcpp::_["cuba_iter"] = iterVal);
-//     } else {
-//         fx = Rcpp::Function(iip -> fun)(xVal);
-//     }
-//     //Rcpp::Rcout<<"after call" <<std::endl;
-
-//     double* fxp = fx.begin();         /* The ptr to f(x) (real) matrix */
-//     for (int i = 0; i < (*nComp) * (*nVec); ++i) {
-//         f[i] = fxp[i];
-//     }
-
-//     return 0;
-// }
-
 // [[Rcpp::export]]
 Rcpp::List doVegas(int nComp, SEXP f, int nDim,
 		   int nVec, int minEval, int maxEval, double absTol, double relTol,
@@ -216,74 +164,6 @@ Rcpp::List doVegas(int nComp, SEXP f, int nDim,
 			    Rcpp::_["returnCode"] = fail);
 }
 
-// Suave
-
-// int suave_fWrapper(const int *nDim, const double x[],
-//                    const int *nComp, double f[], void *userdata, const int *nVec,
-//                    const int *core, const double weight[], const int *iter) {
-
-//     //    Rprintf("In Wrapper: nVec = %i\n", nVec);
-
-//     Rcpp::NumericVector xVal = Rcpp::NumericVector(x, x + (*nDim) * (*nVec));  /* The x argument for the R function f */
-//     //    Rcpp::Rcout<<"after xVal" <<std::endl;    
-//     if (*nVec > 1) {
-//         // Make the argument vector appear as a matrix for R
-//         xVal.attr("dim") = Rcpp::Dimension(*nDim, *nVec);
-//     }
-
-//     ii_ptr iip = (ii_ptr) userdata;
-//     Rcpp::NumericVector fx;
-
-//     //    Rcpp::Rcout<<"before call" <<std::endl;        
-//     if (iip -> cuba_args) {
-//         Rcpp::NumericVector weightVal = Rcpp::NumericVector(weight, weight + (*nVec));  /* The weight argument for the R function f */
-//         //    Rcpp::Rcout<<"after weightVal" <<std::endl;    
-//         Rcpp::IntegerVector iterVal = Rcpp::IntegerVector(iter, iter + 1);  /* The iter argument for the R function f */        
-//         //    Rcpp::Rcout<<"before call" <<std::endl;
-//         fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["cuba_weight"] = weightVal, Rcpp::_["cuba_iter"] = iterVal);
-//     } else {
-//         //        Rcpp::Rcout<<"No args" <<std::endl;                
-//         fx = Rcpp::Function(iip -> fun)(xVal);
-//     }
-
-//     //    Rcpp::Rcout<<"after call" <<std::endl;
-    
-//     double* fxp = fx.begin();         /* The ptr to f(x) (real) vector */
-//     for (int i = 0; i < (*nComp) * (*nVec); ++i) {
-//         f[i] = fxp[i];
-//         //        Rcpp::Rcout<< f[i] <<std::endl;
-//     }
-//     return 0;
-// }
-
-// int suave_fWrapper_v(const int *nDim, const double x[],
-//                      const int *nComp, double f[], void *userdata, const int *nVec,
-//                      const int *core, const double weight[], const int *iter) {
-
-//     //Rcpp::Rcout << "In Wrapper: nVec = " << (*nVec) << std::endl;
-
-//     Rcpp::NumericMatrix xVal(*nDim, *nVec, x);   /* The x argument for the R function f */
-
-//     ii_ptr iip = (ii_ptr) userdata;
-//     Rcpp::NumericVector fx;
-
-//     //Rcpp::Rcout<<"before call" <<std::endl;    
-//     if (iip -> cuba_args) {
-//         Rcpp::NumericVector weightVal = Rcpp::NumericVector(weight, weight + (*nVec));  /* The weight argument for the R function f */
-//         Rcpp::IntegerVector iterVal = Rcpp::IntegerVector(iter, iter + 1);  /* The iter argument for the R function f */        
-//         fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["cuba_weight"] = weightVal, Rcpp::_["cuba_iter"] = iterVal);
-//     } else {
-//         fx = Rcpp::Function(iip -> fun)(xVal);
-//     }
-//     //Rcpp::Rcout<<"after call" <<std::endl;
-
-//     double* fxp = fx.begin();         /* The ptr to f(x) (real) matrix */
-//     for (int i = 0; i < (*nComp) * (*nVec); ++i) {
-//         f[i] = fxp[i];
-//     }
-
-//     return 0;
-// }
 
 // [[Rcpp::export]]
 Rcpp::List doSuave(int nComp, SEXP f, int nDim,
