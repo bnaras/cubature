@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Integration with SUbregion-Adaptive Vegas Algorithm — suave • cubature</title>
+<title>Integration by a Monte Carlo Algorithm — divonne • cubature</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,14 +30,14 @@
 
 
 
-<meta property="og:title" content="Integration with SUbregion-Adaptive Vegas Algorithm — suave" />
+<meta property="og:title" content="Integration by a Monte Carlo Algorithm — divonne" />
 
-<meta property="og:description" content="Suave uses vegas-like importance sampling combined with a
-globally adaptive subdivision strategy: Until the requested accuracy is
-reached, the region with the largest error at the time is bisected in the
-dimension in which the fluctuations of the integrand are reduced most. The
-number of new samples in each half is prorated for the fluctuation in that
-half." />
+<meta property="og:description" content="Implement a Monte Carlo algorithm for multidimensional numerical
+integration.  This algorithm uses importance sampling as a
+variance-reduction technique. Vegas iteratively builds up a
+piecewise constant weight function, represented on a rectangular
+grid. Each iteration consists of a sampling step followed by a
+refinement of the grid." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -103,27 +103,28 @@ half." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Integration with SUbregion-Adaptive Vegas Algorithm</h1>
+    <h1>Integration by a Monte Carlo Algorithm</h1>
     
-    <div class="hidden name"><code>suave.Rd</code></div>
+    <div class="hidden name"><code>divonne.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Suave uses <code><a href='vegas.html'>vegas</a></code>-like importance sampling combined with a
-globally adaptive subdivision strategy: Until the requested accuracy is
-reached, the region with the largest error at the time is bisected in the
-dimension in which the fluctuations of the integrand are reduced most. The
-number of new samples in each half is prorated for the fluctuation in that
-half.</p>
+    <p>Implement a Monte Carlo algorithm for multidimensional numerical
+integration.  This algorithm uses importance sampling as a
+variance-reduction technique. Vegas iteratively builds up a
+piecewise constant weight function, represented on a rectangular
+grid. Each iteration consists of a sampling step followed by a
+refinement of the grid.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>suave</span>(<span class='no'>f</span>, <span class='kw'>nComp</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>lowerLimit</span>, <span class='no'>upperLimit</span>, <span class='no'>...</span>, <span class='kw'>relTol</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>,
+    <pre class="usage"><span class='fu'>divonne</span>(<span class='no'>f</span>, <span class='kw'>nComp</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>lowerLimit</span>, <span class='no'>upperLimit</span>, <span class='no'>...</span>, <span class='kw'>relTol</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>,
   <span class='kw'>absTol</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>minEval</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>maxEval</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>6</span>, <span class='kw'>flags</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>final</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>keep_state</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>load_state</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>rngSeed</span> <span class='kw'>=</span>
-  <span class='fl'>12345L</span>), <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>nNew</span> <span class='kw'>=</span> <span class='fl'>1000L</span>, <span class='kw'>nMin</span> <span class='kw'>=</span> <span class='fl'>50L</span>, <span class='kw'>flatness</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='fl'>12345L</span>), <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>key1</span> <span class='kw'>=</span> <span class='fl'>47L</span>, <span class='kw'>key2</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>key3</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>maxPass</span> <span class='kw'>=</span> <span class='fl'>5L</span>,
+  <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>maxChisq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>minDeviation</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>xGiven</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>nExtra</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>peakfinder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -131,11 +132,20 @@ half.</p>
     <tr>
       <th>f</th>
       <td><p>The function (integrand) to be integrated. Optionally, the
-function can take two additional arguments in addition to the
-variable being integrated: - <code>cuba_weight</code> which is the
-weight of the point being sampled, - <code>cuba_iter</code> the
-current iteration number. The function may choose to use these
-in any appropriate way or ignore them altogether</p></td>
+function can take one additional argument in addition to the
+variable being integrated: - <code>cuba_phase</code> which indicates
+the integration phase: <code>0</code>: sampling of the points in
+<code>xgiven</code>, <code>1</code>: partitioning phase, <code>2</code>: final
+integration phase, <code>3</code>: refinement phase. This information
+might be useful if the integrand takes long to compute and a
+sufficiently accurate approximation of the integrand is
+available. The actual value of the integrand is only of minor
+importance in the partitioning phase, which is instead much
+more dependent on the peak structure of the integrand to find
+an appropriate tessellation. An approximation which reproduces
+the peak structure while leaving out the fine details might
+hence be a perfectly viable and much faster substitute when
+<code>cuba_phase &lt; 2</code>.</p></td>
     </tr>
     <tr>
       <th>nComp</th>
@@ -209,43 +219,111 @@ and the function f above needs to handle the vector of points
 appropriately</p></td>
     </tr>
     <tr>
-      <th>nNew</th>
-      <td><p>the number of new integrand evaluations in each
-subdivision.</p></td>
+      <th>key1</th>
+      <td><p>integer that determines sampling in the partitioning phase:</p>
+<p><code>key1 = 7, 9, 11, 13</code> selects the cubature rule of degree <code>key1</code>.
+Note that the degree-11 rule is available only in 3 dimensions, the
+degree-13 rule only in 2 dimensions. For other values of <code>key1</code>, a
+quasi-random sample of \(n=|key1|\) points is used, where
+the sign of <code>key1</code> determines the type of sample, <code>key1 = 0</code>, use the default rule. <code>key1 &gt; 0</code>, use a Korobov quasi-random sample, <code>key1 &lt; 0</code>, use a Sobol
+quasi-random sample if <code>flags$seed</code> is zero, otherwise a &#8220;standard&#8221; sample (Mersenne Twister)
+pseudo-random sample</p></td>
     </tr>
     <tr>
-      <th>nMin</th>
-      <td><p>the minimum number of samples a former pass must
-contribute to a subregion to be considered in that region’s
-compound integral value. Increasing nmin may reduce jumps in
-the \(\Chi^2\) value.</p></td>
+      <th>key2</th>
+      <td><p>integer that determines sampling in the final integration phase:
+same as <code>key1</code>, but here \($n=|key2|$\) determines
+the number of points, \(n &gt; 39\), sample \(n\) points,
+\(n &lt; 40\), sample \(n\) <code>nneed</code> points,
+where <code>nneed</code> is the number of points needed to reach the prescribed
+accuracy, as estimated by Divonne from the results of the partitioning
+phase.</p></td>
     </tr>
     <tr>
-      <th>flatness</th>
-      <td><p>the parameter p, or the type of norm used to
-compute the fluctuation of a sample. This determines how
-prominently ‘outliers,’ i.e. individual samples with a large
-fluctuation, figure in the total fluctuation, which in turn
-determines how a region is split up. As suggested by its name,
-flatness should be chosen large for ‘flat’ integrands and small
-for ‘volatile’ integrands with high peaks. Note that since
-flatness appears in the exponent, one should not use too large
-values (say, no more than a few hundred) lest terms be
-truncated internally to prevent overflow.</p></td>
+      <th>key3</th>
+      <td><p>integer that sets the strategy for the refinement phase:</p>
+<p><code>key3 = 0</code>, do not treat the subregion any further.</p>
+<p><code>key3 = 1</code>, split the subregion up once more.</p>
+<p>Otherwise, the subregion is sampled a third time with <code>key3</code> specifying
+the sampling parameters exactly as <code>key2</code> above.</p></td>
+    </tr>
+    <tr>
+      <th>maxPass</th>
+      <td><p>integer that controls the thoroughness of the partitioning
+phase: The partitioning phase terminates when the estimated total number of
+integrand evaluations (partitioning plus final integration) does not
+decrease for <code>maxPass</code> successive iterations.</p>
+<p>A decrease in points generally indicates that Divonne discovered new
+structures of the integrand and was able to find a more effective
+partitioning. <code>maxPass</code> can be understood as the number of
+&#8220;safety&#8221; iterations that are performed before the partition is
+accepted as final and counting consequently restarts at zero whenever new
+structures are found.</p></td>
+    </tr>
+    <tr>
+      <th>border</th>
+      <td><p>the relative width of the border of the integration region.
+Points falling into the border region will not be sampled directly, but will
+be extrapolated from two samples from the interior. Use a non-zero
+<code>border</code> if the integrand subroutine cannot produce values directly on
+the integration boundary. The relative width of the border is identical in
+all the dimensions. For example, set <code>border=0.1</code> for a border of width
+equal to 10% of the width of the integration region.</p></td>
+    </tr>
+    <tr>
+      <th>maxChisq</th>
+      <td><p>the maximum \($\chi^2$\) value a single subregion
+is allowed to have in the final integration phase. Regions which fail this
+\($\chi^2$\) test and whose sample averages differ by more than
+<code>min.deviation</code> move on to the refinement phase.</p></td>
+    </tr>
+    <tr>
+      <th>minDeviation</th>
+      <td><p>a bound, given as the fraction of the requested error
+of the entire integral, which determines whether it is worthwhile further
+examining a region that failed the \($\chi^2$\) test.  Only if the
+two sampling averages obtained for the region differ by more than this bound
+is the region further treated.</p></td>
+    </tr>
+    <tr>
+      <th>xGiven</th>
+      <td><p>a matrix ( <code>nDim</code>, <code>nGiven</code>).  A list of
+<code>nGiven</code> points where the integrand might have peaks.
+Divonne will consider these points when partitioning the integration region.
+The idea here is to help the integrator find the extrema of the integrand in
+the presence of very narrow peaks. Even if only the approximate location of
+such peaks is known, this can considerably speed up convergence.</p></td>
+    </tr>
+    <tr>
+      <th>nExtra</th>
+      <td><p>the maximum number of extra points the peak-finder subroutine
+will return. If <code>nextra</code> is zero, <code>peakfinder</code> is not called and
+an arbitrary object may be passed in its place, e.g. just 0.</p></td>
     </tr>
     <tr>
       <th>stateFile</th>
-      <td><p>the name of an external file. Suave can store its
+      <td><p>the name of an external file. Vegas can store its
 entire internal state (i.e. all the information to resume an
 interrupted integration) in an external file.</p>
 <p>The state file is updated after every iteration. If, on a subsequent
-invocation, Suave finds a file of the specified name, it loads the internal
+invocation, Vegas finds a file of the specified name, it loads the internal
 state and continues from the point it left off. Needless to say, using an
 existing state file with a different integrand generally leads to wrong
 results. Once the integration finishes successfully, i.e. the prescribed
 accuracy is attained, the state file is removed. This feature is useful
 mainly to define &#8216;check-points&#8217; in long-running integrations from
 which the calculation can be restarted.</p></td>
+    </tr>
+    <tr>
+      <th>peakFinder</th>
+      <td><p>the peak-finder subroutine. This R function is called
+whenever a region is up for subdivision and is supposed to point out
+possible peaks lying in the region, thus acting as the dynamic counterpart
+of the static list of points supplied in <code>xgiven</code>. It is expected to be
+declared as <code>peakFinder &lt;- function(bounds, nMax)</code> where <code>bounds</code> is a matrix of dimension (<code>2, nDim</code>) which contains
+the lower (row 1) and upper (row 2) bounds of the subregion.
+The returned value should be a matrix (<code>nX, nDim</code>) where <code>nX</code> is
+the actual number of points (should be less or equal to <code>nMax</code>).</p></td>
     </tr>
     </table>
     
@@ -254,9 +332,11 @@ which the calculation can be restarted.</p></td>
     <p>A list with components:</p>
 <dt>neval </dt><dd><p>the actual number of integrand evaluations needed</p></dd>
 <dt>returnCode</dt><dd><p>return code: <code>0</code> , the desired accuracy was
-reached, <code>-1</code>, dimension out of range, <code>1</code>, the accuracy
+reached, <code>-1</code>, dimension out of range, <code>&gt;1</code>, the accuracy
 goal was not met within the allowed maximum number of integrand
-evaluations.</p></dd>  itemintegralvector of length <code>nComp</code>; the
+evaluations.Divonne can estimate the number of points by which
+<code>maxEval</code> needs to be increased to reach the desired accuracy and
+returns this value.</p></dd>  itemintegralvector of length <code>nComp</code>; the
 integral of <code>integrand</code> over the hypercube.
 <dt>error</dt><dd><p>vector of length <code>nComp</code>; the presumed absolute
 error of <code>integral</code></p></dd> <dt>prob</dt><dd><p>vector of length
@@ -271,27 +351,19 @@ reliable estimate of the true integration error.</p></dd>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>T. Hahn (2005) CUBA-a library for multidimensional numerical
-integration. <em>Computer Physics Communications</em>, <b>168</b>, 78-95.</p>
+    <p>J. H. Friedman, M. H. Wright (1981) A nested partitioning
+procedure for numerical multiple integration. <em>ACM Trans. Math.
+Software</em>, <b>7</b>(1), 76-92.</p>
+<p>J. H. Friedman, M. H. Wright (1981) User's guide for DIVONNE. SLAC Report
+CGTM-193-REV, CGTM-193, Stanford University.</p>
+<p>T. Hahn (2005) CUBA-a library for multidimensional numerical integration.
+<em>Computer Physics Communications</em>, <b>168</b>, 78-95.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='cuhre.html'>cuhre</a></code>, <code><a href='divonne.html'>divonne</a></code>, <code><a href='vegas.html'>vegas</a></code></p></div>
+    <div class='dont-index'><p><code><a href='cuhre.html'>cuhre</a></code>, <code><a href='suave.html'>suave</a></code>, <code><a href='vegas.html'>vegas</a></code></p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>integrand</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>arg</span>) {
-  <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>arg</span>[<span class='fl'>1</span>]
-  <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>arg</span>[<span class='fl'>2</span>]
-  <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='no'>arg</span>[<span class='fl'>3</span>]
-  <span class='no'>ff</span> <span class='kw'>&lt;-</span> <span class='fu'>sin</span>(<span class='no'>x</span>)*<span class='fu'>cos</span>(<span class='no'>y</span>)*<span class='fu'>exp</span>(<span class='no'>z</span>);
-<span class='fu'>return</span>(<span class='no'>ff</span>)
-} <span class='co'># end integrand</span>
-<span class='fu'>suave</span>(<span class='no'>integrand</span>, <span class='kw'>lowerLimit</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>0</span>, <span class='fl'>3</span>), <span class='kw'>upperLimit</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>, <span class='fl'>3</span>),
-             <span class='kw'>relTol</span><span class='kw'>=</span><span class='fl'>1e-3</span>,  <span class='kw'>absTol</span><span class='kw'>=</span><span class='fl'>1e-12</span>,
-             <span class='kw'>flags</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>2</span>, <span class='kw'>final</span><span class='kw'>=</span><span class='fl'>0</span>))</div><div class='output co'>#&gt; <span class='error'>Error in .Call("_cubature_doSuave", PACKAGE = "cubature", nComp, fnF,     nL, nVec, minEval, maxEval, absTol, relTol, nNew, nMin, flatness,     stateFile, all_flags$rngSeed, flag_code, cuba_params_exist): Incorrect number of arguments (15), expecting 16 for '_cubature_doSuave'</span></div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -305,9 +377,7 @@ integration. <em>Computer Physics Communications</em>, <b>168</b>, 78-95.</p>
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

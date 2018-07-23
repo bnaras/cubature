@@ -167,8 +167,7 @@ suave <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
         2^4 * all_flags$keep_state + 2^5 * all_flags$load_state + 2^8 * all_flags$level
 
     .Call('_cubature_doSuave', PACKAGE = 'cubature',
-          nComp, fnF,
-          lowerLimit, upperLimit,
+          nComp, fnF, nL,
           nVec, minEval, maxEval,
           absTol, relTol,
           nNew, nMin, flatness,

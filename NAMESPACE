@@ -2,6 +2,7 @@
 
 export(adaptIntegrate)
 export(cuhre)
+export(divonne)
 export(hcubature)
 export(pcubature)
 export(suave)
