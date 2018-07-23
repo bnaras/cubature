@@ -13,26 +13,18 @@ int cuhre_fWrapper(const int *nDim, const double x[],
                   const int *nComp, double f[], void *userdata, const int *nVec,
                   const int *core) {
 
-    //Rprintf("In Wrapper: nVec = %i\n", nVec);
-    
     Rcpp::NumericVector xVal = Rcpp::NumericVector(x, x + (*nDim) * (*nVec));  /* The x argument for the R function f */
-    //    Rcpp::Rcout<<"after xVal" <<std::endl;    
     if (*nVec > 1) {
         // Make the argument vector appear as a matrix for R
         xVal.attr("dim") = Rcpp::Dimension(*nDim, *nVec);
     }
 
-    //Rcpp::Rcout<<"before call" <<std::endl;
-
     ii_ptr iip = (ii_ptr) userdata;
     Rcpp::NumericVector fx = Rcpp::Function(iip -> fun)(xVal);
 
-    //Rcpp::Rcout<<"after call" <<std::endl;
-    
     double* fxp = fx.begin();         /* The ptr to f(x) (real) vector */
     for (int i = 0; i < (*nComp) * (*nVec); ++i) {
         f[i] = fxp[i];
-        // Rcpp::Rcout<< fval[i] <<std::endl;
     }
     // (iip -> count)++;
     return 0;
@@ -56,15 +48,12 @@ Rcpp::List doCuhre(int nComp, SEXP f, int nDim,
     // Set cores to be zero.
     cubacores(0, 0);
     
-    //Rcpp::Rcout<<"Call Integrator" <<std::endl;
-    //Rcpp::Rcout<<"Call Integrator nVec = " << nVec << std::endl;        
     Cuhre(nDim, nComp, (integrand_t) cuhre_fWrapper, (void *) &II, nVec,
           relTol, absTol, flag,
           minEval, maxEval, key,
           NULL, NULL,
           &nregions, &(II.count), &fail,
           integral.begin(), errVals.begin(), prob.begin());
-    //Rcpp::Rcout<<"After Call Integrator" <<std::endl;
 
   return Rcpp::List::create(
 			    Rcpp::_["integral"] = integral,
@@ -81,10 +70,7 @@ int vegas_or_suave_fWrapper(const int *nDim, const double x[],
                             const int *nComp, double f[], void *userdata, const int *nVec,
                             const int *core, const double weight[], const int *iter) {
 
-    //    Rprintf("In Wrapper: nVec = %i\n", nVec);
-
     Rcpp::NumericVector xVal = Rcpp::NumericVector(x, x + (*nDim) * (*nVec));  /* The x argument for the R function f */
-    //    Rcpp::Rcout<<"after xVal" <<std::endl;    
     if (*nVec > 1) {
         // Make the argument vector appear as a matrix for R
         xVal.attr("dim") = Rcpp::Dimension(*nDim, *nVec);
@@ -93,23 +79,18 @@ int vegas_or_suave_fWrapper(const int *nDim, const double x[],
     ii_ptr iip = (ii_ptr) userdata;
     Rcpp::NumericVector fx;
 
-    //Rcpp::Rcout<<"before call" <<std::endl;        
     if (iip -> cuba_args) {
         Rcpp::NumericVector weightVal = Rcpp::NumericVector(weight, weight + (*nVec));  /* The weight argument for the R function f */
-        //    Rcpp::Rcout<<"after weightVal" <<std::endl;    
         Rcpp::IntegerVector iterVal = Rcpp::IntegerVector(iter, iter + 1);  /* The iter argument for the R function f */        
-        //    Rcpp::Rcout<<"before call" <<std::endl;
         fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["cuba_weight"] = weightVal, Rcpp::_["cuba_iter"] = iterVal);
     } else {
         fx = Rcpp::Function(iip -> fun)(xVal);
     }
 
-    //    Rcpp::Rcout<<"after call" <<std::endl;
     
     double* fxp = fx.begin();         /* The ptr to f(x) (real) vector */
     for (int i = 0; i < (*nComp) * (*nVec); ++i) {
         f[i] = fxp[i];
-        //        Rcpp::Rcout<< f[i] <<std::endl;
     }
     return 0;
 }
@@ -122,7 +103,6 @@ Rcpp::List doVegas(int nComp, SEXP f, int nDim,
                    int seed, int flag, int cuba_args) {
 
     
-    // Rcpp::Rcout<<"Entering" <<std::endl;
     Rcpp::NumericVector integral(nComp);
     Rcpp::NumericVector errVals(nComp);
     Rcpp::NumericVector prob(nComp);
@@ -142,10 +122,7 @@ Rcpp::List doVegas(int nComp, SEXP f, int nDim,
     if (!Rf_isNull(stateFile)) {
         sv = Rcpp::StringVector(stateFile);
         filename = sv(0);
-        // Rcpp::Rcout << filename << std::endl;
     }
-    //    Rcpp::Rcout<<"Call Integrator" <<std::endl;
-    //        Rcpp::Rcout<<"Call Integrator nVec = " << nVec << std::endl;        
     Vegas(nDim, nComp, (integrand_t) vegas_or_suave_fWrapper, (void *) &II, nVec,
           relTol, absTol, flag,
           seed, minEval, maxEval,
@@ -154,7 +131,6 @@ Rcpp::List doVegas(int nComp, SEXP f, int nDim,
           NULL,
           &(II.count), &fail,
           integral.begin(), errVals.begin(), prob.begin());
-    //    Rcpp::Rcout<<"After Call Integrator" <<std::endl;
 
   return Rcpp::List::create(
 			    Rcpp::_["integral"] = integral,
@@ -173,7 +149,6 @@ Rcpp::List doSuave(int nComp, SEXP f, int nDim,
                    int seed, int flag, int cuba_args) {
 
     
-    //Rcpp::Rcout<<"Entering" <<std::endl;
     Rcpp::NumericVector integral(nComp);
     Rcpp::NumericVector errVals(nComp);
     Rcpp::NumericVector prob(nComp);
@@ -190,14 +165,10 @@ Rcpp::List doSuave(int nComp, SEXP f, int nDim,
     
     char *filename = NULL;
     Rcpp::StringVector sv;
-    //Rcpp::Rcout << filename << std::endl;    
     if (!Rf_isNull(stateFile)) {
         sv = Rcpp::StringVector(stateFile);
         filename = sv(0);
-        // Rcpp::Rcout << filename << std::endl;
     }
-    //    Rcpp::Rcout<<"Call Integrator" <<std::endl;
-    //        Rcpp::Rcout<<"Call Integrator nVec = " << nVec << std::endl;        
     Suave(nDim, nComp, (integrand_t) vegas_or_suave_fWrapper, (void *) &II, nVec,
           relTol, absTol, flag,
           seed, minEval, maxEval,
@@ -206,7 +177,6 @@ Rcpp::List doSuave(int nComp, SEXP f, int nDim,
           NULL,
           &nregions, &(II.count), &fail,              
           integral.begin(), errVals.begin(), prob.begin());
-    //    Rcpp::Rcout<<"After Call Integrator" <<std::endl;
 
   return Rcpp::List::create(
 			    Rcpp::_["integral"] = integral,
@@ -222,14 +192,12 @@ void peak_finder(const int *nDim, const double b[],
                  int *n, double x[], void *userdata) {
 
     ii_ptr iip = (ii_ptr) userdata;
-        
     Rcpp::NumericMatrix bVal = Rcpp::NumericMatrix(2, *nDim, b); /* The b for the peakFinder */
     Rcpp::IntegerVector nVal = Rcpp::IntegerVector(n, n + 1);    /* The max number of pts to write */
     Rcpp::NumericMatrix fx = Rcpp::Function(iip -> peakFinder)(bVal, nVal);
 
     /* Update the actual number of points */
     *n = fx.nrow();
-    
     double* fxp = fx.begin();         /* The ptr to f(x) (real) vector */
     for (int i = 0; i < (*n) * (*nDim); ++i) {
         x[i] = fxp[i];
@@ -240,10 +208,7 @@ int divonne_fWrapper(const int *nDim, const double x[],
                    const int *nComp, double f[], void *userdata, const int *nVec,
                    const int *core, const int *phase) {
 
-    //    Rprintf("In Wrapper: nVec = %i\n", nVec);
-
     Rcpp::NumericVector xVal = Rcpp::NumericVector(x, x + (*nDim) * (*nVec));  /* The x argument for the R function f */
-    //    Rcpp::Rcout<<"after xVal" <<std::endl;    
     if (*nVec > 1) {
         // Make the argument vector appear as a matrix for R
         xVal.attr("dim") = Rcpp::Dimension(*nDim, *nVec);
@@ -252,7 +217,6 @@ int divonne_fWrapper(const int *nDim, const double x[],
     ii_ptr iip = (ii_ptr) userdata;
     Rcpp::NumericVector fx;
 
-    //    Rcpp::Rcout<<"before call" <<std::endl;        
     if (iip -> cuba_args) {
         Rcpp::IntegerVector phaseVal = Rcpp::IntegerVector(phase, phase + 1);  /* The phase argument for the R function f */        
         fx = Rcpp::Function(iip -> fun)(xVal, Rcpp::_["cuba_phase"] = phaseVal);
@@ -268,7 +232,8 @@ int divonne_fWrapper(const int *nDim, const double x[],
 
 // [[Rcpp::export]]
 Rcpp::List doDivonne(int nComp, SEXP f, int nDim,
-                     int nVec, int minEval, int maxEval, double absTol, double relTol,
+                     int nVec, int minEval, int maxEval,
+                     double absTol, double relTol,
                      int key1, int key2, int key3,
                      int maxPass, double border,
                      double maxChisq, double minDeviation,
@@ -288,7 +253,7 @@ Rcpp::List doDivonne(int nComp, SEXP f, int nDim,
     II.fun = f;                 /* R function */
     int peak_finder_null = Rf_isNull(peakFinder);
     if (!peak_finder_null) {
-        II.fun = peakFinder;
+        II.peakFinder = peakFinder;
     }
     
     int nregions, fail;
@@ -298,11 +263,9 @@ Rcpp::List doDivonne(int nComp, SEXP f, int nDim,
     
     char *filename = NULL;
     Rcpp::StringVector sv;
-    //Rcpp::Rcout << filename << std::endl;    
     if (!Rf_isNull(stateFile)) {
         sv = Rcpp::StringVector(stateFile);
         filename = sv(0);
-        // Rcpp::Rcout << filename << std::endl;
     }
 
     double* xGivenPtr = NULL; /* Ptr to xGiven start */
@@ -312,7 +275,6 @@ Rcpp::List doDivonne(int nComp, SEXP f, int nDim,
         xGivenPtr = xGivenVal.begin();
     }
 
-    //    Rcpp::Rcout<<"Call Integrator" <<std::endl;
     Divonne(nDim, nComp, (integrand_t) divonne_fWrapper, (void *) &II, nVec,
             relTol, absTol, flag,
             seed, minEval, maxEval,
@@ -325,7 +287,6 @@ Rcpp::List doDivonne(int nComp, SEXP f, int nDim,
             NULL,
             &nregions, &(II.count), &fail,              
             integral.begin(), errVals.begin(), prob.begin());
-    //    Rcpp::Rcout<<"After Call Integrator" <<std::endl;
     
     return Rcpp::List::create(
                               Rcpp::_["integral"] = integral,

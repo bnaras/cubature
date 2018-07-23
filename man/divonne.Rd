@@ -197,6 +197,36 @@ refinement of the grid.
 \details{
 See details in the documentation.
 }
+\examples{
+integrand <- function(arg, phase) {
+  x <- arg[1]
+  y <- arg[2]
+  z <- arg[3]
+  ff <- sin(x)*cos(y)*exp(z);
+return(ff)
+}
+divonne(NDIM, NCOMP, integrand, rel.tol=1e-3,  abs.tol=1e-12,
+        flags=list(verbose=2),  key1= 47)
+
+# Example with a peak-finder function
+nDim <- 3L
+peakf <- function(bounds, nMax) {
+#  print(bounds) # matrix (ndim,2)
+  x <- matrix(0, ncol = nMax, nrow = nDim)
+   pas <- 1 / (nMax - 1)
+   # 1ier point
+   x[, 1] <- rep(0, NDIM)
+   # Les autres points
+   for (i in 2L:nMax) {
+      x[, i] <- x[, (i - 1)] + pas
+    }
+  x
+} #end peakf
+
+divonne(integrand, relTol=1e-3,  absTol=1e-12,
+        lowerLimit = rep(0, 3), upperLimit = rep(1, 3),
+        flags=list(verbose = 2),  peakFinder = peakf, nExtra = 4L)
+}
 \references{
 J. H. Friedman, M. H. Wright (1981) A nested partitioning
 procedure for numerical multiple integration. \emph{ACM Trans. Math.

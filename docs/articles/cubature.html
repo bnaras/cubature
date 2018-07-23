@@ -66,7 +66,7 @@
       <h1>Cubature Vectorization Results</h1>
                         <h4 class="author">Balasubramanian Narasimhan</h4>
             
-            <h4 class="date">2018-07-22</h4>
+            <h4 class="date">2018-07-23</h4>
       
       
       <div class="hidden name"><code>cubature.Rmd</code></div>
@@ -185,11 +185,11 @@
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
+<td align="right">0.003</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.004</td>
-<td align="right">0.247</td>
-<td align="right">6.01</td>
+<td align="right">0.008</td>
+<td align="right">0.252</td>
+<td align="right">6.02</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -200,7 +200,7 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.041</td>
+<td align="right">0.042</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
@@ -208,12 +208,12 @@
 <td align="right">100</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
+<td align="right">0.007</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
-<td align="right">0.009</td>
-<td align="right">0.010</td>
-<td align="right">0.788</td>
-<td align="right">19.60</td>
+<td align="right">0.012</td>
+<td align="right">0.763</td>
+<td align="right">19.10</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -223,9 +223,9 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.007</td>
-<td align="right">0.122</td>
-<td align="right">2.81</td>
+<td align="right">0.003</td>
+<td align="right">0.111</td>
+<td align="right">2.79</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -236,8 +236,8 @@
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.006</td>
-<td align="right">0.420</td>
-<td align="right">10.30</td>
+<td align="right">0.422</td>
+<td align="right">10.40</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -248,7 +248,7 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.069</td>
+<td align="right">0.070</td>
 <td align="right">1.71</td>
 </tr>
 </tbody>
@@ -308,14 +308,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.928</td>
-<td align="right">0.946</td>
-<td align="right">0.949</td>
-<td align="right">0.957</td>
-<td align="right">0.970</td>
-<td align="right">0.993</td>
-<td align="right">9.567</td>
-<td align="right">621.00</td>
+<td align="right">0.903</td>
+<td align="right">0.910</td>
+<td align="right">0.923</td>
+<td align="right">0.929</td>
+<td align="right">0.941</td>
+<td align="right">0.972</td>
+<td align="right">9.285</td>
+<td align="right">609.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -324,28 +324,28 @@
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.025</td>
-<td align="right">1.50</td>
+<td align="right">0.002</td>
+<td align="right">0.002</td>
+<td align="right">0.020</td>
+<td align="right">1.31</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">10</td>
-<td align="right">0.395</td>
-<td align="right">0.397</td>
-<td align="right">0.403</td>
-<td align="right">0.407</td>
-<td align="right">0.410</td>
-<td align="right">0.446</td>
-<td align="right">4.067</td>
-<td align="right">263.00</td>
+<td align="right">0.385</td>
+<td align="right">0.387</td>
+<td align="right">0.392</td>
+<td align="right">0.396</td>
+<td align="right">0.399</td>
+<td align="right">0.423</td>
+<td align="right">3.958</td>
+<td align="right">258.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">10</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
+<td align="right">0.001</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
@@ -356,26 +356,26 @@
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.373</td>
-<td align="right">0.377</td>
+<td align="right">0.367</td>
+<td align="right">0.379</td>
+<td align="right">0.380</td>
 <td align="right">0.382</td>
-<td align="right">0.396</td>
-<td align="right">0.418</td>
-<td align="right">0.437</td>
-<td align="right">3.963</td>
-<td align="right">250.00</td>
+<td align="right">0.384</td>
+<td align="right">0.400</td>
+<td align="right">3.816</td>
+<td align="right">251.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
+<td align="right">0.007</td>
+<td align="right">0.007</td>
 <td align="right">0.008</td>
-<td align="right">0.008</td>
-<td align="right">0.008</td>
-<td align="right">0.010</td>
-<td align="right">0.079</td>
-<td align="right">5.08</td>
+<td align="right">0.009</td>
+<td align="right">0.075</td>
+<td align="right">4.72</td>
 </tr>
 </tbody>
 </table>
@@ -412,37 +412,37 @@
 <td align="left">g1()</td>
 <td align="right">20</td>
 <td align="right">0.001</td>
+<td align="right">0.002</td>
 <td align="right">0.003</td>
+<td align="right">0.002</td>
 <td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.005</td>
-<td align="right">0.051</td>
+<td align="right">0.004</td>
+<td align="right">0.047</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
 <td align="left">g2()</td>
 <td align="right">20</td>
 <td align="right">0.001</td>
+<td align="right">0.001</td>
+<td align="right">0.003</td>
+<td align="right">0.002</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.053</td>
-<td align="right">1.03</td>
+<td align="right">0.045</td>
+<td align="right">1.01</td>
 </tr>
 <tr class="odd">
 <td align="left">g3()</td>
 <td align="right">20</td>
 <td align="right">0.001</td>
+<td align="right">0.002</td>
 <td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
+<td align="right">0.002</td>
 <td align="right">0.003</td>
 <td align="right">0.004</td>
-<td align="right">0.050</td>
-<td align="right">1.00</td>
+<td align="right">0.048</td>
+<td align="right">1.02</td>
 </tr>
 </tbody>
 </table>
@@ -478,9 +478,9 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.005</td>
-<td align="right">0.230</td>
-<td align="right">2.52</td>
+<td align="right">0.002</td>
+<td align="right">0.210</td>
+<td align="right">2.53</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -490,8 +490,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.087</td>
+<td align="right">0.000</td>
+<td align="right">0.081</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
@@ -502,9 +502,9 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.297</td>
-<td align="right">3.55</td>
+<td align="right">0.036</td>
+<td align="right">0.336</td>
+<td align="right">3.63</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -515,8 +515,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.163</td>
-<td align="right">1.85</td>
+<td align="right">0.153</td>
+<td align="right">1.86</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -526,9 +526,9 @@
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.039</td>
-<td align="right">2.257</td>
-<td align="right">26.30</td>
+<td align="right">0.008</td>
+<td align="right">2.202</td>
+<td align="right">26.50</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -539,8 +539,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.395</td>
-<td align="right">4.69</td>
+<td align="right">0.381</td>
+<td align="right">4.61</td>
 </tr>
 </tbody>
 </table>
@@ -581,14 +581,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.015</td>
+<td align="right">0.014</td>
 <td align="right">0.015</td>
 <td align="right">0.015</td>
 <td align="right">0.016</td>
 <td align="right">0.017</td>
-<td align="right">0.017</td>
+<td align="right">0.019</td>
 <td align="right">0.157</td>
-<td align="right">86.30</td>
+<td align="right">86.20</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -598,9 +598,9 @@
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.006</td>
-<td align="right">0.043</td>
-<td align="right">23.30</td>
+<td align="right">0.004</td>
+<td align="right">0.039</td>
+<td align="right">21.90</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -612,7 +612,7 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.004</td>
-<td align="right">2.01</td>
+<td align="right">2.11</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -629,26 +629,26 @@
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
+<td align="right">0.063</td>
 <td align="right">0.064</td>
 <td align="right">0.065</td>
-<td align="right">0.066</td>
-<td align="right">0.071</td>
+<td align="right">0.072</td>
 <td align="right">0.067</td>
-<td align="right">0.115</td>
-<td align="right">0.709</td>
-<td align="right">376.00</td>
+<td align="right">0.112</td>
+<td align="right">0.721</td>
+<td align="right">372.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
 <td align="right">0.018</td>
-<td align="right">0.018</td>
-<td align="right">0.019</td>
 <td align="right">0.019</td>
 <td align="right">0.020</td>
-<td align="right">0.022</td>
-<td align="right">0.194</td>
-<td align="right">109.00</td>
+<td align="right">0.020</td>
+<td align="right">0.020</td>
+<td align="right">0.026</td>
+<td align="right">0.202</td>
+<td align="right">112.00</td>
 </tr>
 </tbody>
 </table>
@@ -687,50 +687,50 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.183</td>
-<td align="right">0.194</td>
+<td align="right">0.189</td>
 <td align="right">0.197</td>
 <td align="right">0.199</td>
-<td align="right">0.200</td>
-<td align="right">0.235</td>
+<td align="right">0.199</td>
+<td align="right">0.201</td>
+<td align="right">0.206</td>
 <td align="right">1.989</td>
-<td align="right">4.98</td>
+<td align="right">4.73</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.037</td>
-<td align="right">0.039</td>
 <td align="right">0.040</td>
-<td align="right">0.044</td>
 <td align="right">0.041</td>
-<td align="right">0.081</td>
-<td align="right">0.437</td>
+<td align="right">0.042</td>
+<td align="right">0.046</td>
+<td align="right">0.044</td>
+<td align="right">0.083</td>
+<td align="right">0.463</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">3.271</td>
-<td align="right">3.289</td>
-<td align="right">3.321</td>
-<td align="right">3.316</td>
-<td align="right">3.330</td>
-<td align="right">3.387</td>
-<td align="right">33.159</td>
-<td align="right">83.80</td>
+<td align="right">3.299</td>
+<td align="right">3.335</td>
+<td align="right">3.362</td>
+<td align="right">3.411</td>
+<td align="right">3.382</td>
+<td align="right">3.945</td>
+<td align="right">34.107</td>
+<td align="right">79.90</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.741</td>
-<td align="right">0.773</td>
-<td align="right">0.784</td>
-<td align="right">0.780</td>
-<td align="right">0.790</td>
-<td align="right">0.808</td>
-<td align="right">7.805</td>
-<td align="right">19.80</td>
+<td align="right">0.757</td>
+<td align="right">0.783</td>
+<td align="right">0.788</td>
+<td align="right">0.788</td>
+<td align="right">0.797</td>
+<td align="right">0.819</td>
+<td align="right">7.883</td>
+<td align="right">18.70</td>
 </tr>
 </tbody>
 </table>
@@ -766,9 +766,9 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.018</td>
-<td align="right">3.91</td>
+<td align="right">0.002</td>
+<td align="right">0.020</td>
+<td align="right">3.87</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -780,7 +780,7 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.005</td>
-<td align="right">1.08</td>
+<td align="right">1.11</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -790,9 +790,9 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.015</td>
-<td align="right">3.16</td>
+<td align="right">0.002</td>
+<td align="right">0.018</td>
+<td align="right">3.21</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -815,8 +815,8 @@
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.006</td>
-<td align="right">0.207</td>
-<td align="right">42.20</td>
+<td align="right">0.208</td>
+<td align="right">41.80</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -826,9 +826,9 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.035</td>
-<td align="right">7.20</td>
+<td align="right">0.001</td>
+<td align="right">0.033</td>
+<td align="right">7.01</td>
 </tr>
 </tbody>
 </table>
@@ -872,14 +872,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">20</td>
-<td align="right">0.007</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
-<td align="right">0.009</td>
+<td align="right">0.008</td>
+<td align="right">0.008</td>
 <td align="right">0.010</td>
-<td align="right">0.168</td>
-<td align="right">5.33</td>
+<td align="right">0.165</td>
+<td align="right">5.26</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -889,8 +889,8 @@
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.032</td>
+<td align="right">0.002</td>
+<td align="right">0.031</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
@@ -902,8 +902,8 @@
 <td align="right">0.013</td>
 <td align="right">0.013</td>
 <td align="right">0.014</td>
-<td align="right">0.257</td>
-<td align="right">8.39</td>
+<td align="right">0.254</td>
+<td align="right">8.32</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -913,21 +913,21 @@
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.043</td>
-<td align="right">1.42</td>
+<td align="right">0.004</td>
+<td align="right">0.049</td>
+<td align="right">1.44</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
 <td align="right">0.016</td>
 <td align="right">0.017</td>
-<td align="right">0.017</td>
 <td align="right">0.018</td>
 <td align="right">0.018</td>
-<td align="right">0.021</td>
-<td align="right">0.354</td>
-<td align="right">11.50</td>
+<td align="right">0.018</td>
+<td align="right">0.020</td>
+<td align="right">0.353</td>
+<td align="right">11.90</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -938,8 +938,8 @@
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.005</td>
-<td align="right">0.067</td>
-<td align="right">2.06</td>
+<td align="right">0.066</td>
+<td align="right">2.13</td>
 </tr>
 </tbody>
 </table>
@@ -988,57 +988,57 @@
 <td align="right">0.019</td>
 <td align="right">0.019</td>
 <td align="right">0.019</td>
-<td align="right">0.023</td>
-<td align="right">0.375</td>
-<td align="right">7.24</td>
+<td align="right">0.020</td>
+<td align="right">0.374</td>
+<td align="right">7.08</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">20</td>
 <td align="right">0.003</td>
-<td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.006</td>
-<td align="right">0.074</td>
-<td align="right">1.40</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
+<td align="right">0.075</td>
+<td align="right">1.41</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
+<td align="right">0.011</td>
 <td align="right">0.012</td>
-<td align="right">0.012</td>
 <td align="right">0.013</td>
 <td align="right">0.013</td>
-<td align="right">0.013</td>
+<td align="right">0.014</td>
 <td align="right">0.015</td>
-<td align="right">0.259</td>
-<td align="right">5.07</td>
+<td align="right">0.263</td>
+<td align="right">4.89</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">20</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.051</td>
+<td align="right">0.003</td>
+<td align="right">0.053</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.030</td>
 <td align="right">0.031</td>
 <td align="right">0.032</td>
-<td align="right">0.032</td>
 <td align="right">0.033</td>
-<td align="right">0.034</td>
-<td align="right">0.638</td>
-<td align="right">12.60</td>
+<td align="right">0.033</td>
+<td align="right">0.033</td>
+<td align="right">0.037</td>
+<td align="right">0.654</td>
+<td align="right">12.30</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -1049,8 +1049,8 @@
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.009</td>
-<td align="right">0.140</td>
-<td align="right">2.63</td>
+<td align="right">0.142</td>
+<td align="right">2.61</td>
 </tr>
 </tbody>
 </table>
@@ -1089,14 +1089,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">20</td>
-<td align="right">0.009</td>
+<td align="right">0.010</td>
 <td align="right">0.010</td>
 <td align="right">0.011</td>
-<td align="right">0.013</td>
+<td align="right">0.011</td>
 <td align="right">0.012</td>
-<td align="right">0.051</td>
-<td align="right">0.255</td>
-<td align="right">6.08</td>
+<td align="right">0.016</td>
+<td align="right">0.225</td>
+<td align="right">5.95</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1106,21 +1106,21 @@
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.036</td>
+<td align="right">0.004</td>
+<td align="right">0.038</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.050</td>
-<td align="right">0.052</td>
 <td align="right">0.053</td>
-<td align="right">0.055</td>
-<td align="right">0.054</td>
-<td align="right">0.074</td>
-<td align="right">1.097</td>
-<td align="right">29.90</td>
+<td align="right">0.056</td>
+<td align="right">0.057</td>
+<td align="right">0.058</td>
+<td align="right">0.057</td>
+<td align="right">0.098</td>
+<td align="right">1.169</td>
+<td align="right">31.60</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1130,21 +1130,21 @@
 <td align="right">0.008</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
-<td align="right">0.013</td>
+<td align="right">0.010</td>
 <td align="right">0.168</td>
-<td align="right">4.52</td>
+<td align="right">4.60</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
 <td align="right">0.023</td>
-<td align="right">0.024</td>
-<td align="right">0.024</td>
-<td align="right">0.024</td>
 <td align="right">0.025</td>
+<td align="right">0.026</td>
+<td align="right">0.025</td>
+<td align="right">0.026</td>
 <td align="right">0.027</td>
-<td align="right">0.490</td>
-<td align="right">13.70</td>
+<td align="right">0.506</td>
+<td align="right">14.40</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -1152,11 +1152,11 @@
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.004</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
-<td align="right">0.087</td>
-<td align="right">2.36</td>
+<td align="right">0.006</td>
+<td align="right">0.091</td>
+<td align="right">2.49</td>
 </tr>
 </tbody>
 </table>
@@ -1197,14 +1197,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">20</td>
-<td align="right">0.021</td>
-<td align="right">0.022</td>
+<td align="right">0.020</td>
 <td align="right">0.023</td>
-<td align="right">0.023</td>
-<td align="right">0.023</td>
+<td align="right">0.024</td>
+<td align="right">0.026</td>
 <td align="right">0.025</td>
-<td align="right">0.450</td>
-<td align="right">6.43</td>
+<td align="right">0.065</td>
+<td align="right">0.521</td>
+<td align="right">6.71</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1214,57 +1214,57 @@
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.077</td>
+<td align="right">0.007</td>
+<td align="right">0.075</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.052</td>
-<td align="right">0.055</td>
-<td align="right">0.056</td>
-<td align="right">0.055</td>
+<td align="right">0.053</td>
 <td align="right">0.056</td>
 <td align="right">0.058</td>
-<td align="right">1.107</td>
-<td align="right">15.70</td>
+<td align="right">0.066</td>
+<td align="right">0.064</td>
+<td align="right">0.106</td>
+<td align="right">1.321</td>
+<td align="right">16.40</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">20</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
-<td align="right">0.008</td>
 <td align="right">0.009</td>
 <td align="right">0.010</td>
-<td align="right">0.011</td>
-<td align="right">0.177</td>
-<td align="right">2.35</td>
+<td align="right">0.010</td>
+<td align="right">0.018</td>
+<td align="right">0.190</td>
+<td align="right">2.47</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.220</td>
-<td align="right">0.228</td>
-<td align="right">0.229</td>
+<td align="right">0.225</td>
+<td align="right">0.232</td>
 <td align="right">0.234</td>
-<td align="right">0.235</td>
-<td align="right">0.284</td>
-<td align="right">4.688</td>
-<td align="right">64.50</td>
+<td align="right">0.245</td>
+<td align="right">0.237</td>
+<td align="right">0.451</td>
+<td align="right">4.895</td>
+<td align="right">66.20</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.041</td>
-<td align="right">0.042</td>
 <td align="right">0.042</td>
 <td align="right">0.042</td>
 <td align="right">0.043</td>
-<td align="right">0.045</td>
-<td align="right">0.847</td>
-<td align="right">11.90</td>
+<td align="right">0.043</td>
+<td align="right">0.044</td>
+<td align="right">0.047</td>
+<td align="right">0.866</td>
+<td align="right">12.20</td>
 </tr>
 </tbody>
 </table>
@@ -1307,9 +1307,9 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.007</td>
+<td align="right">0.006</td>
 <td align="right">0.117</td>
-<td align="right">63.80</td>
+<td align="right">60.50</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1320,8 +1320,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.022</td>
-<td align="right">13.40</td>
+<td align="right">0.024</td>
+<td align="right">12.70</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -1332,8 +1332,8 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.037</td>
-<td align="right">21.60</td>
+<td align="right">0.040</td>
+<td align="right">20.30</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1343,9 +1343,9 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.020</td>
-<td align="right">12.20</td>
+<td align="right">0.002</td>
+<td align="right">0.023</td>
+<td align="right">11.60</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -1357,7 +1357,7 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">1.02</td>
+<td align="right">1.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -1369,7 +1369,7 @@
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">1.00</td>
+<td align="right">1.01</td>
 </tr>
 </tbody>
 </table>
@@ -1405,14 +1405,14 @@
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">100</td>
-<td align="right">0.033</td>
-<td align="right">0.036</td>
+<td align="right">0.034</td>
 <td align="right">0.036</td>
 <td align="right">0.037</td>
 <td align="right">0.037</td>
-<td align="right">0.083</td>
-<td align="right">3.698</td>
-<td align="right">55.90</td>
+<td align="right">0.037</td>
+<td align="right">0.072</td>
+<td align="right">3.731</td>
+<td align="right">55.60</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1422,9 +1422,9 @@
 <td align="right">0.005</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
-<td align="right">0.007</td>
-<td align="right">0.494</td>
-<td align="right">7.35</td>
+<td align="right">0.011</td>
+<td align="right">0.510</td>
+<td align="right">7.39</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -1434,9 +1434,9 @@
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.007</td>
-<td align="right">0.317</td>
-<td align="right">4.60</td>
+<td align="right">0.006</td>
+<td align="right">0.325</td>
+<td align="right">4.58</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1447,7 +1447,7 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.002</td>
-<td align="right">0.070</td>
+<td align="right">0.069</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
@@ -1456,11 +1456,11 @@
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.008</td>
-<td align="right">0.008</td>
 <td align="right">0.009</td>
-<td align="right">0.048</td>
-<td align="right">0.844</td>
-<td align="right">11.80</td>
+<td align="right">0.009</td>
+<td align="right">0.054</td>
+<td align="right">0.867</td>
+<td align="right">11.90</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -1471,8 +1471,8 @@
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.140</td>
-<td align="right">2.05</td>
+<td align="right">0.146</td>
+<td align="right">2.03</td>
 </tr>
 </tbody>
 </table>

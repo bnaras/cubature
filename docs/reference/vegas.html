@@ -307,7 +307,21 @@ program. Research Report CLNS-80/447. Cornell University, Ithaca, N.-Y.</p>
 } <span class='co'># end integrand</span>
 <span class='fu'>vegas</span>(<span class='no'>integrand</span>, <span class='kw'>lowerLimit</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>0</span>, <span class='fl'>3</span>), <span class='kw'>upperLimit</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>, <span class='fl'>3</span>),
              <span class='kw'>relTol</span><span class='kw'>=</span><span class='fl'>1e-3</span>,  <span class='kw'>absTol</span><span class='kw'>=</span><span class='fl'>1e-12</span>,
-             <span class='kw'>flags</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>2</span>, <span class='kw'>final</span><span class='kw'>=</span><span class='fl'>0</span>))</div><div class='output co'>#&gt; <span class='error'>Error in .Call("_cubature_doVegas", PACKAGE = "cubature", nComp, fnF,     nL, nVec, minEval, maxEval, absTol, relTol, nStart, nIncrease,     nBatch, gridNo, stateFile, all_flags$rngSeed, flag_code,     cuba_params_exist): Incorrect number of arguments (16), expecting 17 for '_cubature_doVegas'</span></div><div class='input'>
+             <span class='kw'>flags</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>2</span>, <span class='kw'>final</span><span class='kw'>=</span><span class='fl'>0</span>))</div><div class='output co'>#&gt; $integral
+#&gt; [1] 0.6651902
+#&gt; 
+#&gt; $error
+#&gt; [1] 0.0006337537
+#&gt; 
+#&gt; $neval
+#&gt; [1] 13500
+#&gt; 
+#&gt; $prob
+#&gt; [1] 0.6603586
+#&gt; 
+#&gt; $returnCode
+#&gt; [1] 0
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

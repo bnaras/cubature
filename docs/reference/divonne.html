@@ -124,7 +124,7 @@ refinement of the grid.</p>
   <span class='kw'>final</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>keep_state</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>load_state</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>rngSeed</span> <span class='kw'>=</span>
   <span class='fl'>12345L</span>), <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>key1</span> <span class='kw'>=</span> <span class='fl'>47L</span>, <span class='kw'>key2</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>key3</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>maxPass</span> <span class='kw'>=</span> <span class='fl'>5L</span>,
   <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>maxChisq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>minDeviation</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>xGiven</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nExtra</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>peakfinder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>nExtra</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>peakFinder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -301,6 +301,17 @@ will return. If <code>nextra</code> is zero, <code>peakfinder</code> is not call
 an arbitrary object may be passed in its place, e.g. just 0.</p></td>
     </tr>
     <tr>
+      <th>peakFinder</th>
+      <td><p>the peak-finder subroutine. This R function is called
+whenever a region is up for subdivision and is supposed to point out
+possible peaks lying in the region, thus acting as the dynamic counterpart
+of the static list of points supplied in <code>xgiven</code>. It is expected to be
+declared as <code>peakFinder &lt;- function(bounds, nMax)</code> where <code>bounds</code> is a matrix of dimension (<code>2, nDim</code>) which contains
+the lower (row 1) and upper (row 2) bounds of the subregion.
+The returned value should be a matrix (<code>nX, nDim</code>) where <code>nX</code> is
+the actual number of points (should be less or equal to <code>nMax</code>).</p></td>
+    </tr>
+    <tr>
       <th>stateFile</th>
       <td><p>the name of an external file. Vegas can store its
 entire internal state (i.e. all the information to resume an
@@ -313,17 +324,6 @@ results. Once the integration finishes successfully, i.e. the prescribed
 accuracy is attained, the state file is removed. This feature is useful
 mainly to define &#8216;check-points&#8217; in long-running integrations from
 which the calculation can be restarted.</p></td>
-    </tr>
-    <tr>
-      <th>peakFinder</th>
-      <td><p>the peak-finder subroutine. This R function is called
-whenever a region is up for subdivision and is supposed to point out
-possible peaks lying in the region, thus acting as the dynamic counterpart
-of the static list of points supplied in <code>xgiven</code>. It is expected to be
-declared as <code>peakFinder &lt;- function(bounds, nMax)</code> where <code>bounds</code> is a matrix of dimension (<code>2, nDim</code>) which contains
-the lower (row 1) and upper (row 2) bounds of the subregion.
-The returned value should be a matrix (<code>nX, nDim</code>) where <code>nX</code> is
-the actual number of points (should be less or equal to <code>nMax</code>).</p></td>
     </tr>
     </table>
     
@@ -364,6 +364,34 @@ CGTM-193-REV, CGTM-193, Stanford University.</p>
     <div class='dont-index'><p><code><a href='cuhre.html'>cuhre</a></code>, <code><a href='suave.html'>suave</a></code>, <code><a href='vegas.html'>vegas</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>integrand</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>arg</span>, <span class='no'>phase</span>) {
+  <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>arg</span>[<span class='fl'>1</span>]
+  <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>arg</span>[<span class='fl'>2</span>]
+  <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='no'>arg</span>[<span class='fl'>3</span>]
+  <span class='no'>ff</span> <span class='kw'>&lt;-</span> <span class='fu'>sin</span>(<span class='no'>x</span>)*<span class='fu'>cos</span>(<span class='no'>y</span>)*<span class='fu'>exp</span>(<span class='no'>z</span>);
+<span class='fu'>return</span>(<span class='no'>ff</span>)
+}
+<span class='fu'>divonne</span>(<span class='no'>NDIM</span>, <span class='no'>NCOMP</span>, <span class='no'>integrand</span>, <span class='kw'>rel.tol</span><span class='kw'>=</span><span class='fl'>1e-3</span>,  <span class='kw'>abs.tol</span><span class='kw'>=</span><span class='fl'>1e-12</span>,
+        <span class='kw'>flags</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>2</span>),  <span class='kw'>key1</span><span class='kw'>=</span> <span class='fl'>47</span>)</div><div class='output co'>#&gt; <span class='error'>Error in divonne(NDIM, NCOMP, integrand, rel.tol = 0.001, abs.tol = 1e-12,     flags = list(verbose = 2), key1 = 47): argument "upperLimit" is missing, with no default</span></div><div class='input'>
+<span class='co'># Example with a peak-finder function</span>
+<span class='no'>nDim</span> <span class='kw'>&lt;-</span> <span class='fl'>3L</span>
+<span class='no'>peakf</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>bounds</span>, <span class='no'>nMax</span>) {
+<span class='co'>#  print(bounds) # matrix (ndim,2)</span>
+  <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='no'>nMax</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='no'>nDim</span>)
+   <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> / (<span class='no'>nMax</span> - <span class='fl'>1</span>)
+   <span class='co'># 1ier point</span>
+   <span class='no'>x</span>[, <span class='fl'>1</span>] <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fl'>0</span>, <span class='no'>NDIM</span>)
+   <span class='co'># Les autres points</span>
+   <span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>2L</span>:<span class='no'>nMax</span>) {
+      <span class='no'>x</span>[, <span class='no'>i</span>] <span class='kw'>&lt;-</span> <span class='no'>x</span>[, (<span class='no'>i</span> - <span class='fl'>1</span>)] + <span class='no'>pas</span>
+    }
+  <span class='no'>x</span>
+} <span class='co'>#end peakf</span>
+
+<span class='fu'>divonne</span>(<span class='no'>integrand</span>, <span class='kw'>relTol</span><span class='kw'>=</span><span class='fl'>1e-3</span>,  <span class='kw'>absTol</span><span class='kw'>=</span><span class='fl'>1e-12</span>,
+        <span class='kw'>lowerLimit</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>0</span>, <span class='fl'>3</span>), <span class='kw'>upperLimit</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>, <span class='fl'>3</span>),
+        <span class='kw'>flags</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>),  <span class='kw'>peakFinder</span> <span class='kw'>=</span> <span class='no'>peakf</span>, <span class='kw'>nExtra</span> <span class='kw'>=</span> <span class='fl'>4L</span>)</div><div class='output co'>#&gt; <span class='error'>Error in divonne(integrand, relTol = 0.001, absTol = 1e-12, lowerLimit = rep(0,     3), upperLimit = rep(1, 3), flags = list(verbose = 2), peakFinder = peakf,     nExtra = 4L): Evaluation error: object 'NDIM' not found.</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -377,7 +405,9 @@ CGTM-193-REV, CGTM-193, Stanford University.</p>
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
