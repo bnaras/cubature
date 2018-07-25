@@ -1,11 +1,12 @@
-#' Integration by a Monte Carlo Algorithm
+#' Integration by Stratified Sampling for Variance Reduction
 #'
-#' Implement a Monte Carlo algorithm for multidimensional numerical
-#' integration.  This algorithm uses importance sampling as a
-#' variance-reduction technique. Vegas iteratively builds up a
-#' piecewise constant weight function, represented on a rectangular
-#' grid. Each iteration consists of a sampling step followed by a
-#' refinement of the grid.
+#' Divonne works by stratified sampling, where the partioning of the
+#' integration region is aided by methods from numerical optimization.
+#'
+#' Divonne uses stratified sampling for variance reduction, that is, it
+#' partitions the integration region such that all subregions have an
+#' approximately equal value of a quantity called the spread (volume times
+#' half-range).
 #'
 #' See details in the documentation.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/divonne.R
 \name{divonne}
 \alias{divonne}
-\title{Integration by a Monte Carlo Algorithm}
+\title{Integration by Stratified Sampling for Variance Reduction}
 \usage{
 divonne(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
   absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose = 1,
@@ -187,14 +187,15 @@ error of \code{integral}} \item{prob}{vector of length
 reliable estimate of the true integration error.}
 }
 \description{
-Implement a Monte Carlo algorithm for multidimensional numerical
-integration.  This algorithm uses importance sampling as a
-variance-reduction technique. Vegas iteratively builds up a
-piecewise constant weight function, represented on a rectangular
-grid. Each iteration consists of a sampling step followed by a
-refinement of the grid.
+Divonne works by stratified sampling, where the partioning of the
+integration region is aided by methods from numerical optimization.
 }
 \details{
+Divonne uses stratified sampling for variance reduction, that is, it
+partitions the integration region such that all subregions have an
+approximately equal value of a quantity called the spread (volume times
+half-range).
+
 See details in the documentation.
 }
 \examples{

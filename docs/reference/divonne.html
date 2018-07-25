@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Integration by a Monte Carlo Algorithm — divonne • cubature</title>
+<title>Integration by Stratified Sampling for Variance Reduction — divonne • cubature</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,14 +30,10 @@
 
 
 
-<meta property="og:title" content="Integration by a Monte Carlo Algorithm — divonne" />
+<meta property="og:title" content="Integration by Stratified Sampling for Variance Reduction — divonne" />
 
-<meta property="og:description" content="Implement a Monte Carlo algorithm for multidimensional numerical
-integration.  This algorithm uses importance sampling as a
-variance-reduction technique. Vegas iteratively builds up a
-piecewise constant weight function, represented on a rectangular
-grid. Each iteration consists of a sampling step followed by a
-refinement of the grid." />
+<meta property="og:description" content="Divonne works by stratified sampling, where the partioning of the
+integration region is aided by methods from numerical optimization." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -103,19 +99,15 @@ refinement of the grid." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Integration by a Monte Carlo Algorithm</h1>
+    <h1>Integration by Stratified Sampling for Variance Reduction</h1>
     
     <div class="hidden name"><code>divonne.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Implement a Monte Carlo algorithm for multidimensional numerical
-integration.  This algorithm uses importance sampling as a
-variance-reduction technique. Vegas iteratively builds up a
-piecewise constant weight function, represented on a rectangular
-grid. Each iteration consists of a sampling step followed by a
-refinement of the grid.</p>
+    <p>Divonne works by stratified sampling, where the partioning of the
+integration region is aided by methods from numerical optimization.</p>
     
     </div>
 
@@ -347,7 +339,11 @@ reliable estimate of the true integration error.</p></dd>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>See details in the documentation.</p>
+    <p>Divonne uses stratified sampling for variance reduction, that is, it
+partitions the integration region such that all subregions have an
+approximately equal value of a quantity called the spread (volume times
+half-range).</p>
+<p>See details in the documentation.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -372,8 +368,22 @@ CGTM-193-REV, CGTM-193, Stanford University.</p>
   <span class='no'>ff</span> <span class='kw'>&lt;-</span> <span class='fu'>sin</span>(<span class='no'>x</span>)*<span class='fu'>cos</span>(<span class='no'>y</span>)*<span class='fu'>exp</span>(<span class='no'>z</span>);
 <span class='fu'>return</span>(<span class='no'>ff</span>)
 }
-<span class='fu'>divonne</span>(<span class='no'>NDIM</span>, <span class='no'>NCOMP</span>, <span class='no'>integrand</span>, <span class='kw'>rel.tol</span><span class='kw'>=</span><span class='fl'>1e-3</span>,  <span class='kw'>abs.tol</span><span class='kw'>=</span><span class='fl'>1e-12</span>,
-        <span class='kw'>flags</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>2</span>),  <span class='kw'>key1</span><span class='kw'>=</span> <span class='fl'>47</span>)</div><div class='output co'>#&gt; <span class='error'>Error in divonne(NDIM, NCOMP, integrand, rel.tol = 0.001, abs.tol = 1e-12,     flags = list(verbose = 2), key1 = 47): argument "upperLimit" is missing, with no default</span></div><div class='input'>
+<span class='fu'>divonne</span>(<span class='no'>integrand</span>, <span class='kw'>relTol</span><span class='kw'>=</span><span class='fl'>1e-3</span>,  <span class='kw'>absTol</span><span class='kw'>=</span><span class='fl'>1e-12</span>, <span class='kw'>lowerLimit</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>0</span>, <span class='fl'>3</span>), <span class='kw'>upperLimit</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>, <span class='fl'>3</span>),
+        <span class='kw'>flags</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>),  <span class='kw'>key1</span><span class='kw'>=</span> <span class='fl'>47</span>)</div><div class='output co'>#&gt; $integral
+#&gt; [1] 0.6646098
+#&gt; 
+#&gt; $error
+#&gt; [1] 0.0006505917
+#&gt; 
+#&gt; $neval
+#&gt; [1] 3052
+#&gt; 
+#&gt; $prob
+#&gt; [1] 1.110223e-16
+#&gt; 
+#&gt; $returnCode
+#&gt; [1] 0
+#&gt; </div><div class='input'>
 <span class='co'># Example with a peak-finder function</span>
 <span class='no'>nDim</span> <span class='kw'>&lt;-</span> <span class='fl'>3L</span>
 <span class='no'>peakf</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>bounds</span>, <span class='no'>nMax</span>) {
@@ -381,7 +391,7 @@ CGTM-193-REV, CGTM-193, Stanford University.</p>
   <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fl'>0</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='no'>nMax</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='no'>nDim</span>)
    <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> / (<span class='no'>nMax</span> - <span class='fl'>1</span>)
    <span class='co'># 1ier point</span>
-   <span class='no'>x</span>[, <span class='fl'>1</span>] <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fl'>0</span>, <span class='no'>NDIM</span>)
+   <span class='no'>x</span>[, <span class='fl'>1</span>] <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fl'>0</span>, <span class='no'>nDim</span>)
    <span class='co'># Les autres points</span>
    <span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>2L</span>:<span class='no'>nMax</span>) {
       <span class='no'>x</span>[, <span class='no'>i</span>] <span class='kw'>&lt;-</span> <span class='no'>x</span>[, (<span class='no'>i</span> - <span class='fl'>1</span>)] + <span class='no'>pas</span>
@@ -391,7 +401,21 @@ CGTM-193-REV, CGTM-193, Stanford University.</p>
 
 <span class='fu'>divonne</span>(<span class='no'>integrand</span>, <span class='kw'>relTol</span><span class='kw'>=</span><span class='fl'>1e-3</span>,  <span class='kw'>absTol</span><span class='kw'>=</span><span class='fl'>1e-12</span>,
         <span class='kw'>lowerLimit</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>0</span>, <span class='fl'>3</span>), <span class='kw'>upperLimit</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>, <span class='fl'>3</span>),
-        <span class='kw'>flags</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>),  <span class='kw'>peakFinder</span> <span class='kw'>=</span> <span class='no'>peakf</span>, <span class='kw'>nExtra</span> <span class='kw'>=</span> <span class='fl'>4L</span>)</div><div class='output co'>#&gt; <span class='error'>Error in divonne(integrand, relTol = 0.001, absTol = 1e-12, lowerLimit = rep(0,     3), upperLimit = rep(1, 3), flags = list(verbose = 2), peakFinder = peakf,     nExtra = 4L): Evaluation error: object 'NDIM' not found.</span></div></pre>
+        <span class='kw'>flags</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>2</span>),  <span class='kw'>peakFinder</span> <span class='kw'>=</span> <span class='no'>peakf</span>, <span class='kw'>nExtra</span> <span class='kw'>=</span> <span class='fl'>4L</span>)</div><div class='output co'>#&gt; $integral
+#&gt; [1] 0.6646098
+#&gt; 
+#&gt; $error
+#&gt; [1] 0.0006505917
+#&gt; 
+#&gt; $neval
+#&gt; [1] 3109
+#&gt; 
+#&gt; $prob
+#&gt; [1] 1.110223e-16
+#&gt; 
+#&gt; $returnCode
+#&gt; [1] 0
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -414,7 +438,7 @@ CGTM-193-REV, CGTM-193, Stanford University.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://statistics.stanford.edu/people/balasubramanian-narasimhan'>Balasubramanian Narasimhan</a>, <a href='https://math.mit.edu/~stevenj/'>Steven G. Johnson</a>, <a href='https://wwwth.mpp.mpg.de/members/hahn/'>Thomas Hahn</a>.</p>
+  <p>Developed by <a href='https://statistics.stanford.edu/people/balasubramanian-narasimhan'>Balasubramanian Narasimhan</a>, <a href='https://math.mit.edu/~stevenj/'>Steven G. Johnson</a>, <a href='https://wwwth.mpp.mpg.de/members/hahn/'>Thomas Hahn</a>, Annie Bouvier,  Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">
