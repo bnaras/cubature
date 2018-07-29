@@ -32,5 +32,4 @@ RoxygenNote: 6.0.1
 Suggests: testthat,
 	  knitr,
 	  mvtnorm,
-	  R2Cuba,
     	  benchr
