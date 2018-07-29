@@ -6,24 +6,24 @@
 \usage{
 cuhre(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
   absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose = 0,
-  final = 1), key = 0L, nVec = 1L)
+  final = 1), key = 0L, nVec = 1L, stateFile = NULL)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated. For cuhre, it
 can be something as simple as a function of a single argument,
 say x.}
 
-\item{nComp}{The number of components of the integrand, default 1,
-bears no relation to the dimension of the hypercube over which
-integration is performed}
+\item{nComp}{The number of components of f, default 1, bears no
+relation to the dimension of the hypercube over which
+integration is performed.}
 
 \item{lowerLimit}{The lower limit of integration, a vector for
-hypercubes}
+hypercubes.}
 
 \item{upperLimit}{The upper limit of integration, a vector for
-hypercubes}
+hypercubes.}
 
-\item{...}{All other arguments passed to the function f}
+\item{...}{All other arguments passed to the function f.}
 
 \item{relTol}{The maximum tolerance, default 1e-5.}
 
@@ -36,44 +36,59 @@ default 10^6.  Note that the actual number of function
 evaluations performed is only approximately guaranteed not to
 exceed this number.}
 
-\item{flags}{flags governing the integration. A list with components:
-\itemize{
-\item \code{verbose}: \code{verbose} encodes the verbosity level, from 0 (default) to 3.
-Level 0 does not print any output, level 1 prints \dQuote{reasonable}
-information on the progress of the integration, level 2 also echoes the
-input parameters, and level 3 further prints the subregion results.
-\item \code{final}: when \code{ 0}, all sets of samples collected on a subregion
-during the various iterations or phases contribute to the final result.
-When \code{ 1}, only the last (largest) set of samples is used in the final
-result.
-}}
+\item{flags}{flags governing the integration. A list with
+components: - \code{verbose}: \code{verbose} encodes the
+verbosity level, from 0 (default) to 3.  Level 0 does not print
+any output, level 1 prints \dQuote{reasonable} information on
+the progress of the integration, level 2 also echoes the input
+parameters, and level 3 further prints the subregion results.
+- \code{final}: when \code{ 0}, all sets of samples collected
+on a subregion during the various iterations or phases
+contribute to the final result.  When \code{ 1}, only the last
+(largest) set of samples is used in the final result.  -
+\code{keep_state}: when nonzero, retain state file if argument
+\code{stateFile} is non-null.  - \code{load_state}: when zero,
+load state file if found; if nonzero, reset state regardless.}
 
 \item{key}{the quadrature rule key: \code{key = 7, 9, 11, 13}
 selects the cubature rule of degree key. Note that the
 degree-11 rule is available only in 3 dimensions, the degree-13
-rule only in 2 dimensions.
-For other values, including the default 0, the rule is the degree-13
-rule in 2 dimensions, the degree-11 rule in 3 dimensions, and the
-degree-9 rule otherwise.}
+rule only in 2 dimensions.  For other values, including the
+default 0, the rule is the degree-13 rule in 2 dimensions, the
+degree-11 rule in 3 dimensions, and the degree-9 rule
+otherwise.}
 
 \item{nVec}{the number of vectorization points, default 1, but can
 be set to an integer > 1 for vectorization, for example, 1024
 and the function f above needs to handle the vector of points
-appropriately}
+appropriately. See vignette examples.}
+
+\item{stateFile}{the name of an external file. Vegas can store its
+entire internal state (i.e. all the information to resume an
+interrupted integration) in an external file.  The state file
+is updated after every iteration. If, on a subsequent
+invocation, Vegas finds a file of the specified name, it loads
+the internal state and continues from the point it left
+off. Needless to say, using an existing state file with a
+different integrand generally leads to wrong results. Once the
+integration finishes successfully, i.e. the prescribed accuracy
+is attained, the state file is removed. This feature is useful
+mainly to define \sQuote{check-points} in long-running
+integrations from which the calculation can be restarted.}
 }
 \value{
-A list with components:
-\item{nregions }{the actual number of subregions needed}
-\item{neval }{the actual number of integrand evaluations needed}
-\item{returnCode}{return code: \code{0} , the desired accuracy was
-reached, \code{-1}, dimension out of range, \code{1}, the accuracy
-goal was not met within the allowed maximum number of integrand
-evaluations.}  item{integral}{vector of length \code{nComp}; the
-integral of \code{integrand} over the hypercube.}
-\item{error}{vector of length \code{nComp}; the presumed absolute
-error of \code{integral}} \item{prob}{vector of length
-\code{nComp}; the \eqn{$\chi^2$}{Chi2}-probability (not the
-\eqn{$\chi^2$}{Chi2}-value itself!) that \code{error} is not a
+A list with components: \item{nregions }{the actual number
+of subregions needed} \item{neval }{the actual number of
+integrand evaluations needed} \item{returnCode}{return code:
+\code{0} , the desired accuracy was reached, \code{-1},
+dimension out of range, \code{1}, the accuracy goal was not met
+within the allowed maximum number of integrand evaluations.}
+item{integral}{vector of length \code{nComp}; the integral of
+\code{integrand} over the hypercube.}  \item{error}{vector of
+length \code{nComp}; the presumed absolute error of
+\code{integral}} \item{prob}{vector of length \code{nComp}; the
+\eqn{\chi^2}{Chi2}-probability (not the
+\eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
 reliable estimate of the true integration error.}
 }
 \description{

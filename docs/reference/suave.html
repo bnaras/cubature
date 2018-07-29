@@ -130,32 +130,32 @@ half.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>f</th>
-      <td><p>The function (integrand) to be integrated. Optionally, the
+      <td><p>The function (integrand) to be integrated as in <code><a href='cuhre.html'>cuhre</a></code>. Optionally, the
 function can take two additional arguments in addition to the
 variable being integrated: - <code>cuba_weight</code> which is the
 weight of the point being sampled, - <code>cuba_iter</code> the
-current iteration number. The function may choose to use these
-in any appropriate way or ignore them altogether</p></td>
+current iteration number. The function author may choose to use
+these in any appropriate way or ignore them altogether.</p></td>
     </tr>
     <tr>
       <th>nComp</th>
-      <td><p>The number of components of the integrand, default 1,
-bears no relation to the dimension of the hypercube over which
-integration is performed</p></td>
+      <td><p>The number of components of f, default 1, bears no
+relation to the dimension of the hypercube over which
+integration is performed.</p></td>
     </tr>
     <tr>
       <th>lowerLimit</th>
       <td><p>The lower limit of integration, a vector for
-hypercubes</p></td>
+hypercubes.</p></td>
     </tr>
     <tr>
       <th>upperLimit</th>
       <td><p>The upper limit of integration, a vector for
-hypercubes</p></td>
+hypercubes.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>All other arguments passed to the function f</p></td>
+      <td><p>All other arguments passed to the function f.</p></td>
     </tr>
     <tr>
       <th>relTol</th>
@@ -206,7 +206,7 @@ indicated by <code>level</code>.</p></td>
       <td><p>the number of vectorization points, default 1, but can
 be set to an integer &gt; 1 for vectorization, for example, 1024
 and the function f above needs to handle the vector of points
-appropriately</p></td>
+appropriately. See vignette examples.</p></td>
     </tr>
     <tr>
       <th>nNew</th>
@@ -218,7 +218,7 @@ subdivision.</p></td>
       <td><p>the minimum number of samples a former pass must
 contribute to a subregion to be considered in that region’s
 compound integral value. Increasing nmin may reduce jumps in
-the \(\Chi^2\) value.</p></td>
+the \(\chi^2\) value.</p></td>
     </tr>
     <tr>
       <th>flatness</th>
@@ -235,35 +235,20 @@ truncated internally to prevent overflow.</p></td>
     </tr>
     <tr>
       <th>stateFile</th>
-      <td><p>the name of an external file. Suave can store its
+      <td><p>the name of an external file. Vegas can store its
 entire internal state (i.e. all the information to resume an
-interrupted integration) in an external file.</p>
-<p>The state file is updated after every iteration. If, on a subsequent
-invocation, Suave finds a file of the specified name, it loads the internal
-state and continues from the point it left off. Needless to say, using an
-existing state file with a different integrand generally leads to wrong
-results. Once the integration finishes successfully, i.e. the prescribed
-accuracy is attained, the state file is removed. This feature is useful
-mainly to define &#8216;check-points&#8217; in long-running integrations from
-which the calculation can be restarted.</p></td>
+interrupted integration) in an external file.  The state file
+is updated after every iteration. If, on a subsequent
+invocation, Vegas finds a file of the specified name, it loads
+the internal state and continues from the point it left
+off. Needless to say, using an existing state file with a
+different integrand generally leads to wrong results. Once the
+integration finishes successfully, i.e. the prescribed accuracy
+is attained, the state file is removed. This feature is useful
+mainly to define &#8216;check-points&#8217; in long-running
+integrations from which the calculation can be restarted.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A list with components:</p>
-<dt>neval </dt><dd><p>the actual number of integrand evaluations needed</p></dd>
-<dt>returnCode</dt><dd><p>return code: <code>0</code> , the desired accuracy was
-reached, <code>-1</code>, dimension out of range, <code>1</code>, the accuracy
-goal was not met within the allowed maximum number of integrand
-evaluations.</p></dd>  itemintegralvector of length <code>nComp</code>; the
-integral of <code>integrand</code> over the hypercube.
-<dt>error</dt><dd><p>vector of length <code>nComp</code>; the presumed absolute
-error of <code>integral</code></p></dd> <dt>prob</dt><dd><p>vector of length
-<code>nComp</code>; the \($\chi^2$\)-probability (not the
-\($\chi^2$\)-value itself!) that <code>error</code> is not a
-reliable estimate of the true integration error.</p></dd>
-
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -312,8 +297,6 @@ integration. <em>Computer Physics Communications</em>, <b>168</b>, 78-95.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>

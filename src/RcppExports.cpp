@@ -7,8 +7,8 @@
 using namespace Rcpp;
 
 // doCuhre
-Rcpp::List doCuhre(int nComp, SEXP f, int nDim, int nVec, int minEval, int maxEval, double absTol, double relTol, int key, int flag);
-RcppExport SEXP _cubature_doCuhre(SEXP nCompSEXP, SEXP fSEXP, SEXP nDimSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP keySEXP, SEXP flagSEXP) {
+Rcpp::List doCuhre(int nComp, SEXP f, int nDim, int nVec, int minEval, int maxEval, double absTol, double relTol, SEXP stateFile, int key, int flag);
+RcppExport SEXP _cubature_doCuhre(SEXP nCompSEXP, SEXP fSEXP, SEXP nDimSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP stateFileSEXP, SEXP keySEXP, SEXP flagSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,9 +20,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type maxEval(maxEvalSEXP);
     Rcpp::traits::input_parameter< double >::type absTol(absTolSEXP);
     Rcpp::traits::input_parameter< double >::type relTol(relTolSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type stateFile(stateFileSEXP);
     Rcpp::traits::input_parameter< int >::type key(keySEXP);
     Rcpp::traits::input_parameter< int >::type flag(flagSEXP);
-    rcpp_result_gen = Rcpp::wrap(doCuhre(nComp, f, nDim, nVec, minEval, maxEval, absTol, relTol, key, flag));
+    rcpp_result_gen = Rcpp::wrap(doCuhre(nComp, f, nDim, nVec, minEval, maxEval, absTol, relTol, stateFile, key, flag));
     return rcpp_result_gen;
 END_RCPP
 }

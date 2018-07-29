@@ -65,7 +65,7 @@ harness <- function(which = NULL,
     cc_v <- function() cubature::cuhre(f = fv,
                                        lowerLimit = lowerLimit, upperLimit = upperLimit,
                                        relTol = tol,
-                                       nVec = 128L,
+                                       nVec = 1024L,
                                        ...)
 
     hc <- function() cubature::hcubature(f = f,

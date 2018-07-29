@@ -11,24 +11,24 @@ vegas(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
   gridNo = 0L, stateFile = NULL)
 }
 \arguments{
-\item{f}{The function (integrand) to be integrated. Optionally, the
+\item{f}{The function (integrand) to be integrated as in \code{\link{cuhre}}. Optionally, the
 function can take two additional arguments in addition to the
 variable being integrated: - \code{cuba_weight} which is the
 weight of the point being sampled, - \code{cuba_iter} the
 current iteration number. The function author may choose to use
 these in any appropriate way or ignore them altogether.}
 
-\item{nComp}{The number of components of the integrand, default 1,
-bears no relation to the dimension of the hypercube over which
-integration is performed}
+\item{nComp}{The number of components of f, default 1, bears no
+relation to the dimension of the hypercube over which
+integration is performed.}
 
 \item{lowerLimit}{The lower limit of integration, a vector for
-hypercubes}
+hypercubes.}
 
 \item{upperLimit}{The upper limit of integration, a vector for
-hypercubes}
+hypercubes.}
 
-\item{...}{All other arguments passed to the function f}
+\item{...}{All other arguments passed to the function f.}
 
 \item{relTol}{The maximum tolerance, default 1e-5.}
 
@@ -67,7 +67,7 @@ indicated by \code{level}.}
 \item{nVec}{the number of vectorization points, default 1, but can
 be set to an integer > 1 for vectorization, for example, 1024
 and the function f above needs to handle the vector of points
-appropriately}
+appropriately. See vignette examples.}
 
 \item{nStart}{the number of integrand evaluations per iteration to
 start with.}
@@ -101,30 +101,16 @@ indicated slot.}
 
 \item{stateFile}{the name of an external file. Vegas can store its
 entire internal state (i.e. all the information to resume an
-interrupted integration) in an external file.
-
-The state file is updated after every iteration. If, on a subsequent
-invocation, Vegas finds a file of the specified name, it loads the internal
-state and continues from the point it left off. Needless to say, using an
-existing state file with a different integrand generally leads to wrong
-results. Once the integration finishes successfully, i.e. the prescribed
-accuracy is attained, the state file is removed. This feature is useful
-mainly to define \sQuote{check-points} in long-running integrations from
-which the calculation can be restarted.}
-}
-\value{
-A list with components:
-\item{neval }{the actual number of integrand evaluations needed}
-\item{returnCode}{return code: \code{0} , the desired accuracy was
-reached, \code{-1}, dimension out of range, \code{1}, the accuracy
-goal was not met within the allowed maximum number of integrand
-evaluations.}  item{integral}{vector of length \code{nComp}; the
-integral of \code{integrand} over the hypercube.}
-\item{error}{vector of length \code{nComp}; the presumed absolute
-error of \code{integral}} \item{prob}{vector of length
-\code{nComp}; the \eqn{$\chi^2$}{Chi2}-probability (not the
-\eqn{$\chi^2$}{Chi2}-value itself!) that \code{error} is not a
-reliable estimate of the true integration error.}
+interrupted integration) in an external file.  The state file
+is updated after every iteration. If, on a subsequent
+invocation, Vegas finds a file of the specified name, it loads
+the internal state and continues from the point it left
+off. Needless to say, using an existing state file with a
+different integrand generally leads to wrong results. Once the
+integration finishes successfully, i.e. the prescribed accuracy
+is attained, the state file is removed. This feature is useful
+mainly to define \sQuote{check-points} in long-running
+integrations from which the calculation can be restarted.}
 }
 \description{
 Implement a Monte Carlo algorithm for multidimensional numerical

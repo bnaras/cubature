@@ -11,27 +11,13 @@
 #'
 #' @importFrom Rcpp evalCpp
 #'
-#' @param f The function (integrand) to be integrated. Optionally, the
+#' @inheritParams cuhre
+#' @param f The function (integrand) to be integrated as in \code{\link{cuhre}}. Optionally, the
 #'     function can take two additional arguments in addition to the
 #'     variable being integrated: - \code{cuba_weight} which is the
 #'     weight of the point being sampled, - \code{cuba_iter} the
 #'     current iteration number. The function author may choose to use
 #'     these in any appropriate way or ignore them altogether.
-#' @param nComp The number of components of the integrand, default 1,
-#'     bears no relation to the dimension of the hypercube over which
-#'     integration is performed
-#' @param lowerLimit The lower limit of integration, a vector for
-#'     hypercubes
-#' @param upperLimit The upper limit of integration, a vector for
-#'     hypercubes
-#' @param ...  All other arguments passed to the function f
-#' @param relTol The maximum tolerance, default 1e-5.
-#' @param absTol the absolute tolerance, default 0.
-#' @param minEval the minimum number of function evaluations required
-#' @param maxEval The maximum number of function evaluations needed,
-#'     default 10^6.  Note that the actual number of function
-#'     evaluations performed is only approximately guaranteed not to
-#'     exceed this number.
 #' @param flags flags governing the integration. A list with
 #'     components: - \code{verbose}: \code{verbose} encodes the
 #'     verbosity level, from 0 (default) to 3.  Level 0 does not print
@@ -59,10 +45,6 @@
 #' @param nIncrease the increase in the number of integrand
 #'     evaluations per iteration. The j-th iteration evaluates the
 #'     integrand at nStart+(j-1)*nincrease points.
-#' @param nVec the number of vectorization points, default 1, but can
-#'     be set to an integer > 1 for vectorization, for example, 1024
-#'     and the function f above needs to handle the vector of points
-#'     appropriately
 #' @param nBatch Vegas samples points not all at once, but in batches
 #'     of a predetermined size, to avoid excessive memory
 #'     consumption. \code{nbatch} is the number of points sampled in
@@ -84,31 +66,6 @@
 #'     restore the grid number to its positive value, such that at the
 #'     end of the integration the grid is again stored in the
 #'     indicated slot.
-#' @param stateFile the name of an external file. Vegas can store its
-#'     entire internal state (i.e. all the information to resume an
-#'     interrupted integration) in an external file.
-#'
-#' The state file is updated after every iteration. If, on a subsequent
-#' invocation, Vegas finds a file of the specified name, it loads the internal
-#' state and continues from the point it left off. Needless to say, using an
-#' existing state file with a different integrand generally leads to wrong
-#' results. Once the integration finishes successfully, i.e. the prescribed
-#' accuracy is attained, the state file is removed. This feature is useful
-#' mainly to define \sQuote{check-points} in long-running integrations from
-#' which the calculation can be restarted.
-#' @return A list with components:
-#' \item{neval }{the actual number of integrand evaluations needed}
-#' \item{returnCode}{return code: \code{0} , the desired accuracy was
-#' reached, \code{-1}, dimension out of range, \code{1}, the accuracy
-#' goal was not met within the allowed maximum number of integrand
-#' evaluations.}  item{integral}{vector of length \code{nComp}; the
-#' integral of \code{integrand} over the hypercube.}
-#' \item{error}{vector of length \code{nComp}; the presumed absolute
-#' error of \code{integral}} \item{prob}{vector of length
-#' \code{nComp}; the \eqn{$\chi^2$}{Chi2}-probability (not the
-#' \eqn{$\chi^2$}{Chi2}-value itself!) that \code{error} is not a
-#' reliable estimate of the true integration error.}
-#'
 #' @seealso \code{\link{cuhre}}, \code{\link{suave}}, \code{\link{divonne}}
 #'
 #' @references G. P. Lepage (1978) A new algorithm for adaptive

@@ -117,7 +117,7 @@ adaptive subdivision scheme.  The subdivision algorithm is similar to
 
     <pre class="usage"><span class='fu'>cuhre</span>(<span class='no'>f</span>, <span class='kw'>nComp</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>lowerLimit</span>, <span class='no'>upperLimit</span>, <span class='no'>...</span>, <span class='kw'>relTol</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>,
   <span class='kw'>absTol</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>minEval</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>maxEval</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>6</span>, <span class='kw'>flags</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>final</span> <span class='kw'>=</span> <span class='fl'>1</span>), <span class='kw'>key</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>)</pre>
+  <span class='kw'>final</span> <span class='kw'>=</span> <span class='fl'>1</span>), <span class='kw'>key</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,23 +130,23 @@ say x.</p></td>
     </tr>
     <tr>
       <th>nComp</th>
-      <td><p>The number of components of the integrand, default 1,
-bears no relation to the dimension of the hypercube over which
-integration is performed</p></td>
+      <td><p>The number of components of f, default 1, bears no
+relation to the dimension of the hypercube over which
+integration is performed.</p></td>
     </tr>
     <tr>
       <th>lowerLimit</th>
       <td><p>The lower limit of integration, a vector for
-hypercubes</p></td>
+hypercubes.</p></td>
     </tr>
     <tr>
       <th>upperLimit</th>
       <td><p>The upper limit of integration, a vector for
-hypercubes</p></td>
+hypercubes.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>All other arguments passed to the function f</p></td>
+      <td><p>All other arguments passed to the function f.</p></td>
     </tr>
     <tr>
       <th>relTol</th>
@@ -169,50 +169,69 @@ exceed this number.</p></td>
     </tr>
     <tr>
       <th>flags</th>
-      <td><p>flags governing the integration. A list with components:</p><ul>
-<li><p><code>verbose</code>: <code>verbose</code> encodes the verbosity level, from 0 (default) to 3.
-Level 0 does not print any output, level 1 prints &#8220;reasonable&#8221;
-information on the progress of the integration, level 2 also echoes the
-input parameters, and level 3 further prints the subregion results.</p></li>
-<li><p><code>final</code>: when <code> 0</code>, all sets of samples collected on a subregion
-during the various iterations or phases contribute to the final result.
-When <code> 1</code>, only the last (largest) set of samples is used in the final
-result.</p></li>
-</ul></td>
+      <td><p>flags governing the integration. A list with
+components: - <code>verbose</code>: <code>verbose</code> encodes the
+verbosity level, from 0 (default) to 3.  Level 0 does not print
+any output, level 1 prints &#8220;reasonable&#8221; information on
+the progress of the integration, level 2 also echoes the input
+parameters, and level 3 further prints the subregion results.
+- <code>final</code>: when <code> 0</code>, all sets of samples collected
+on a subregion during the various iterations or phases
+contribute to the final result.  When <code> 1</code>, only the last
+(largest) set of samples is used in the final result.  -
+<code>keep_state</code>: when nonzero, retain state file if argument
+<code>stateFile</code> is non-null.  - <code>load_state</code>: when zero,
+load state file if found; if nonzero, reset state regardless.</p></td>
     </tr>
     <tr>
       <th>key</th>
       <td><p>the quadrature rule key: <code>key = 7, 9, 11, 13</code>
 selects the cubature rule of degree key. Note that the
 degree-11 rule is available only in 3 dimensions, the degree-13
-rule only in 2 dimensions.
-For other values, including the default 0, the rule is the degree-13
-rule in 2 dimensions, the degree-11 rule in 3 dimensions, and the
-degree-9 rule otherwise.</p></td>
+rule only in 2 dimensions.  For other values, including the
+default 0, the rule is the degree-13 rule in 2 dimensions, the
+degree-11 rule in 3 dimensions, and the degree-9 rule
+otherwise.</p></td>
     </tr>
     <tr>
       <th>nVec</th>
       <td><p>the number of vectorization points, default 1, but can
 be set to an integer &gt; 1 for vectorization, for example, 1024
 and the function f above needs to handle the vector of points
-appropriately</p></td>
+appropriately. See vignette examples.</p></td>
+    </tr>
+    <tr>
+      <th>stateFile</th>
+      <td><p>the name of an external file. Vegas can store its
+entire internal state (i.e. all the information to resume an
+interrupted integration) in an external file.  The state file
+is updated after every iteration. If, on a subsequent
+invocation, Vegas finds a file of the specified name, it loads
+the internal state and continues from the point it left
+off. Needless to say, using an existing state file with a
+different integrand generally leads to wrong results. Once the
+integration finishes successfully, i.e. the prescribed accuracy
+is attained, the state file is removed. This feature is useful
+mainly to define &#8216;check-points&#8217; in long-running
+integrations from which the calculation can be restarted.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list with components:</p>
-<dt>nregions </dt><dd><p>the actual number of subregions needed</p></dd>
-<dt>neval </dt><dd><p>the actual number of integrand evaluations needed</p></dd>
-<dt>returnCode</dt><dd><p>return code: <code>0</code> , the desired accuracy was
-reached, <code>-1</code>, dimension out of range, <code>1</code>, the accuracy
-goal was not met within the allowed maximum number of integrand
-evaluations.</p></dd>  itemintegralvector of length <code>nComp</code>; the
-integral of <code>integrand</code> over the hypercube.
-<dt>error</dt><dd><p>vector of length <code>nComp</code>; the presumed absolute
-error of <code>integral</code></p></dd> <dt>prob</dt><dd><p>vector of length
-<code>nComp</code>; the \($\chi^2$\)-probability (not the
-\($\chi^2$\)-value itself!) that <code>error</code> is not a
+<dt>nregions </dt><dd><p>the actual number
+of subregions needed</p></dd> <dt>neval </dt><dd><p>the actual number of
+integrand evaluations needed</p></dd> <dt>returnCode</dt><dd><p>return code:
+<code>0</code> , the desired accuracy was reached, <code>-1</code>,
+dimension out of range, <code>1</code>, the accuracy goal was not met
+within the allowed maximum number of integrand evaluations.</p></dd>
+itemintegralvector of length <code>nComp</code>; the integral of
+<code>integrand</code> over the hypercube.  <dt>error</dt><dd><p>vector of
+length <code>nComp</code>; the presumed absolute error of
+<code>integral</code></p></dd> <dt>prob</dt><dd><p>vector of length <code>nComp</code>; the
+\(\chi^2\)-probability (not the
+\(\chi^2\)-value itself!) that <code>error</code> is not a
 reliable estimate of the true integration error.</p></dd>
 
     

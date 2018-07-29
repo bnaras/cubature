@@ -1,33 +1,33 @@
-CC = /usr/local/clang6/bin/clang
-SUFFIX = 
-CFLAGS = -Wall -g -O2  -I../../inst/include -fPIC -DR_PACKAGE=1 -DHAVE_CONFIG_H -DREALSIZE=8 -I$(common) -I. -I$(srcdir)
-MCFLAGS = 
-FC = gfortran
-FCFLAGS = -Wall -g -O2  -DREALSIZE=8
-LIBS = -lm
-INSTALL = /usr/bin/install -c
-INSTALL_DATA = ${INSTALL} -m 644
-INSTALL_PROGRAM = ${INSTALL}
-RANLIB = ranlib
-EXE = 
+CC = @CC@
+SUFFIX = @SUFFIX@
+CFLAGS = @CFLAGS@ @DEFS@ -DREALSIZE=@REALSIZE@ -I$(common) -I. -I$(srcdir)
+MCFLAGS = @MCFLAGS@
+FC = @FC@
+FCFLAGS = @FCFLAGS@ -DREALSIZE=@REALSIZE@
+LIBS = @LIBS@
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+RANLIB = @RANLIB@
+EXE = @EXEEXT@
 
-prefix = /usr/local
-exec_prefix = ${prefix}
-srcdir = .
-bindir = ${exec_prefix}/bin
-libdir = ${exec_prefix}/lib
-includedir = ${prefix}/include
-datarootdir = ${prefix}/share
-datadir = ${datarootdir}
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+srcdir = @srcdir@
+bindir = @bindir@
+libdir = @libdir@
+includedir = @includedir@
+datarootdir = @datarootdir@
+datadir = @datadir@
 
-MATH_DEFAULT = 
-TOOLS_DEFAULT = 
-DEMO_FORTRAN_DEFAULT = demo-fortran$(EXE)
+MATH_DEFAULT = @MATH_DEFAULT@
+TOOLS_DEFAULT = @TOOLS_DEFAULT@
+DEMO_FORTRAN_DEFAULT = @DEMO_FORTRAN_DEFAULT@$(EXE)
 
-MCC = CC="$(tools)/fcc" CXX="$(tools)/fcc -stdlib=libstdc++" \
+MCC = CC="$(tools)/fcc" CXX="$(tools)/fcc @MCSTDCPP@" \
   REALCC="$(CC)" PATH="$(PATH):$(tools)" mcc
 
-TARDIR = Cuba-4.2
+TARDIR = @PACKAGE_NAME@-@PACKAGE_VERSION@
 TARFILE = $(TARDIR).tar.gz
 
 
@@ -277,13 +277,9 @@ $(LIB)(Data.o): $(common)/Data.c $(common)/stddecl.h
 
 
 $(LIB): $(LIB)(Vegas.o)     $(LIB)(Vegas_.o)     \
-	$(LIB)(llVegas.o)   $(LIB)(llVegas_.o)   \
 	$(LIB)(Suave.o)     $(LIB)(Suave_.o)     \
-	$(LIB)(llSuave.o)   $(LIB)(llSuave_.o)   \
 	$(LIB)(Divonne.o)   $(LIB)(Divonne_.o)   \
-	$(LIB)(llDivonne.o) $(LIB)(llDivonne_.o) \
 	$(LIB)(Cuhre.o)     $(LIB)(Cuhre_.o)     \
-	$(LIB)(llCuhre.o)   $(LIB)(llCuhre_.o)   \
 	$(LIB)(Fork.o)      $(LIB)(Fork_.o)      \
 	$(LIB)(Global.o)    $(LIB)(Global_.o)    \
 	$(LIB)(Data.o)

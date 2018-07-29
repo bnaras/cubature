@@ -33,6 +33,7 @@ int cuhre_fWrapper(const int *nDim, const double x[],
 // [[Rcpp::export]]
 Rcpp::List doCuhre(int nComp, SEXP f, int nDim,
 		   int nVec, int minEval, int maxEval, double absTol, double relTol,
+                   SEXP stateFile,
                    int key, int flag) {
 
     Rcpp::NumericVector integral(nComp);
@@ -47,11 +48,19 @@ Rcpp::List doCuhre(int nComp, SEXP f, int nDim,
 
     // Set cores to be zero.
     cubacores(0, 0);
+
+    char *filename = NULL;
+    Rcpp::StringVector sv;
+    if (!Rf_isNull(stateFile)) {
+        sv = Rcpp::StringVector(stateFile);
+        filename = sv(0);
+    }
     
     Cuhre(nDim, nComp, (integrand_t) cuhre_fWrapper, (void *) &II, nVec,
           relTol, absTol, flag,
           minEval, maxEval, key,
-          NULL, NULL,
+          filename,
+          NULL,
           &nregions, &(II.count), &fail,
           integral.begin(), errVals.begin(), prob.begin());
 
