@@ -64,7 +64,7 @@ points in a single call." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cubature</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.0</span>
       </span>
     </div>
 
@@ -88,12 +88,7 @@ points in a single call." />
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/bnaras/cubature">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -107,7 +102,7 @@ points in a single call." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Adaptive multivariate integration over hypercubes (hcubature and pcubature)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/bnaras/cubature/blob/master/R/hcubature.R'><code>R/hcubature.R</code></a></small>
+    
     <div class="hidden name"><code>hcubature.Rd</code></div>
     </div>
 
@@ -139,11 +134,13 @@ points in a single call.</p>
     </tr>
     <tr>
       <th>lowerLimit</th>
-      <td><p>The lower limit of integration, a vector for hypercubes</p></td>
+      <td><p>The lower limit of integration, a vector for
+hypercubes</p></td>
     </tr>
     <tr>
       <th>upperLimit</th>
-      <td><p>The upper limit of integration, a vector for hypercubes</p></td>
+      <td><p>The upper limit of integration, a vector for
+hypercubes</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -155,14 +152,15 @@ points in a single call.</p>
     </tr>
     <tr>
       <th>fDim</th>
-      <td><p>The dimension of the integrand, default 1, bears no relation to
-the dimension of the hypercube</p></td>
+      <td><p>The dimension of the integrand, default 1, bears no
+relation to the dimension of the hypercube</p></td>
     </tr>
     <tr>
       <th>maxEval</th>
-      <td><p>The maximum number of function evaluations needed, default 0
-implying no limit. Note that the actual number of function evaluations
-performed is only approximately guaranteed not to exceed this number.</p></td>
+      <td><p>The maximum number of function evaluations needed,
+default 0 implying no limit. Note that the actual number of
+function evaluations performed is only approximately guaranteed
+not to exceed this number.</p></td>
     </tr>
     <tr>
       <th>absError</th>
@@ -170,29 +168,29 @@ performed is only approximately guaranteed not to exceed this number.</p></td>
     </tr>
     <tr>
       <th>doChecking</th>
-      <td><p>A flag to be a bit anal about checking inputs to C
-routines. A FALSE value results in approximately 9 percent speed gain in our
-experiments. Your mileage will of course vary. Default value is FALSE.</p></td>
+      <td><p>As of version 2.0, this flag is ignored and will
+be dropped in forthcoming versions</p></td>
     </tr>
     <tr>
       <th>vectorInterface</th>
-      <td><p>A flag that indicates whether to use the vector interface
-and is by default FALSE. See details below</p></td>
+      <td><p>A flag that indicates whether to use the
+vector interface and is by default FALSE. See details below</p></td>
     </tr>
     <tr>
       <th>norm</th>
-      <td><p>For vector-valued integrands, <code>norm</code> specifies the norm that is
-used to measure the error and determine convergence properties. See below.</p></td>
+      <td><p>For vector-valued integrands, <code>norm</code> specifies the
+norm that is used to measure the error and determine
+convergence properties. See below.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The returned value is a list of three items:</p>
-<dt>integral</dt><dd><p>the
-value of the integral</p></dd> <dt>error</dt><dd><p>the estimated relative error</p></dd>
-<dt>functionEvaluations</dt><dd><p>the number of times the function was evaluated</p></dd>
-<dt>returnCode</dt><dd><p>the actual integer return code of the C routine</p></dd>
+<dt>integral</dt><dd><p>the value of the integral</p></dd> <dt>error</dt><dd><p>the
+estimated relative error</p></dd> <dt>functionEvaluations</dt><dd><p>the number
+of times the function was evaluated</p></dd> <dt>returnCode</dt><dd><p>the
+actual integer return code of the C routine</p></dd>
 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -207,7 +205,7 @@ iterations is reached (see parameter info below), whichever is earlier.</p>
 is an alias for the underlying <code>hcubature</code> function which uses h-adaptive
 integration. Otherwise, the calling conventions are the same.</p>
 <p>We highly recommend referring to the vignette to achieve the best results!</p>
-    <p>The <code>hcubature</code> function is the h-adaptive version that recursively partitions
+<p>The <code>hcubature</code> function is the h-adaptive version that recursively partitions
 the integration domain into smaller subdomains, applying the same integration
 rule to each, until convergence is achieved.</p>
 <p>The p-adaptive version, <code>pcubature</code>, repeatedly doubles the degree
@@ -224,19 +222,19 @@ advise vectorization; see vignette.</p>
 <p>The <code>norm</code> argument is irrelevant for scalar integrands and is ignored.
 Given vectors \(v\) and \(e\) of estimated integrals and errors therein,
 respectively, the <code>norm</code> argument takes on one of the following values:</p><dl class='dl-horizontal'>
-  <dt><code>INDIVIDUAL</code></dt><dd><p>Convergence is achieved only when each integrand
-  (each component of \(v\) and \(e\)) individually satisfies the requested
-  error tolerances</p></dd>
-  <dt><code>L1</code>, <code>L2</code>, <code>LINF</code></dt><dd><p>The absolute error is measured as
-  \(|e|\) and the relative error as \(|e|/|v|\), where \(|...|\) is the
-  \(L_1\), \(L_2\), or \(\L_{\infty}\) norm, respectively</p></dd>
-  <dt><code>PAIRED</code></dt><dd><p>Like <code>INDIVIDUAL</code>, except that the integrands are
-  grouped into consecutive pairs, with the error tolerance applied in an
-  \(L_2\) sense to each pair. This option is mainly useful for integrating
-  vectors of complex numbers, where each consecutive pair of real integrands
-  is the real and imaginary parts of a single complex integrand, and the concern
-  is only the error in the complex plane rather than the error in the real and
-  imaginary parts separately</p></dd>
+<dt><code>INDIVIDUAL</code></dt><dd><p>Convergence is achieved only when each integrand
+(each component of \(v\) and \(e\)) individually satisfies the requested
+error tolerances</p></dd>
+<dt><code>L1</code>, <code>L2</code>, <code>LINF</code></dt><dd><p>The absolute error is measured as
+\(|e|\) and the relative error as \(|e|/|v|\), where \(|...|\) is the
+\(L_1\), \(L_2\), or \(\L_{\infty}\) norm, respectively</p></dd>
+<dt><code>PAIRED</code></dt><dd><p>Like <code>INDIVIDUAL</code>, except that the integrands are
+grouped into consecutive pairs, with the error tolerance applied in an
+\(L_2\) sense to each pair. This option is mainly useful for integrating
+vectors of complex numbers, where each consecutive pair of real integrands
+is the real and imaginary parts of a single complex integrand, and the concern
+is only the error in the complex plane rather than the error in the real and
+imaginary parts separately</p></dd>
 </dl>
     
 
@@ -493,7 +491,7 @@ Balasubramanian Narasimhan
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://statistics.stanford.edu/people/balasubramanian-narasimhan'>Balasubramanian Narasimhan</a>, <a href='https://math.mit.edu/~stevenj/'>Steven G. Johnson</a>.</p>
+  <p>Developed by <a href='https://statistics.stanford.edu/people/balasubramanian-narasimhan'>Balasubramanian Narasimhan</a>, <a href='https://math.mit.edu/~stevenj/'>Steven G. Johnson</a>, <a href='https://wwwth.mpp.mpg.de/members/hahn/'>Thomas Hahn</a>, Annie Bouvier,  Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">

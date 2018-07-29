@@ -1,3 +1,11 @@
+# cubature 2.0
+
+- Major update. Integrates [Cuba 4.2](http://www.feynarts.de/cuba/)
+  library
+- Allows for finite or infinite limits of integration (courtesy of
+  Simon Gaure)
+- Deprecates `doChecking` argument. Now it does nothing and will be
+  removed in future versions.
 
 # cubature 1.4
 

@@ -12,14 +12,13 @@ output: github_document
 Status](https://img.shields.io/codecov/c/github/bnaras/cubature/master.svg)](https://codecov.io/github/bnaras/cubature?branch=master)
 
 Cubature is an R package for adaptive multivariate integration over
-hypercubes. The core of the package is the cubature C library
-of [Steven G. Johnson](https://math.mit.edu/~stevenj/).
+hypercubes using deterministic and Monte Carlo methods. The package
+provides wrappers around two C libraries:
 
-The package provides both `hcubature` and `pcubature` routines in
-addition to a vector interface. 
+- The cubature C library  of [Steven G. Johnson](https://math.mit.edu/~stevenj/)
+- The Cuba C library of [Thomas Hahn](https://wwwth.mpp.mpg.de/members/hahn/)
 
-R users will gain a lot by using the vector interace. Writing
-functions to take advantage of the vector interface is quite
-easy. Refer to the vignette that provides timing comparisons and
-vectorization examples to emulate.
+Both scalar and vectorized interfaces are available for all
+routines. R users will gain a lot by using the vectorization as
+demonstrated in the included vignette.
 	

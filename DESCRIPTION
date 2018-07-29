@@ -1,23 +1,33 @@
 Package: cubature
 Type: Package
 Title: Adaptive Multivariate Integration over Hypercubes
-Version: 1.4
+Version: 2.0
 VignetteBuilder: knitr
-URL: https://github.com/bnaras/cubature
+URL: https://bnaras.github.io/cubature
 BugReports: https://github.com/bnaras/cubature/issues
 Authors@R: c(person("Balasubramanian", "Narasimhan", role=c("aut", "cre"),
 	   	   email = "naras@stat.stanford.edu"),
 	     person("Manuel", "Koller", role=c("ctb"),
 	           email = "koller.manuel@gmail.com"),
-           person(c("Steven", "G."), "Johnson", role=c("aut")))
-Description: R wrapper around the cubature C library of
-    Steven G. Johnson for adaptive multivariate integration over hypercubes.
-    This version provides both hcubature and pcubature routines in addition
-    to a vector interface that results in substantial speed gains.
+             person(c("Steven", "G."), "Johnson", role=c("aut")),
+             person("Thomas", "Hahn", role=c("aut")),
+	     person("Annie", "Bouvier", role=c("aut")),
+	     person(" Kiên", "Kiêu", role=c("aut")),
+	     person("Simen", "Gaure", role=c("ctb"),
+	           email = "simen.gaure@frisch.uio.no"))
+Description: R wrappers around the cubature C library of Steven
+    G. Johnson for adaptive multivariate integration over hypercubes
+    and the Cuba C library of Thomas Hahn for deterministic and
+    Monte Carlo integration. Scalar and vectorized versions of
+    cubature and Cuba routines are provided; the vectorized versions
+    are highly recommended as demonstrated convincingly in the package
+    vignette.
 License: GPL-3
+Encoding: UTF-8
 LinkingTo: Rcpp
 Imports: Rcpp
 NeedsCompilation: yes
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
 Suggests: testthat,
 	  knitr,

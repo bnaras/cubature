@@ -4,4 +4,9 @@
 .Rhistory
 src/*.o
 src/cubature.so
-*.so
+src/Cuba-4.2/config.log
+src/Cuba-4.2/config.status
+src/Cuba-4.2/config.h.in
+src/Cuba-4.2/cuba.ts
+src/Cuba-4.2/libcuba.a
+src/*.so

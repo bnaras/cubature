@@ -3,24 +3,13 @@
 //
 // We need both R and C/C++ interfaces!
 
-#include <Rcpp.h>      // need to include the main Rcpp header file only
-
+#include <rcubature.h>
 #include <cubature.h>
-
-typedef struct integrand_info {
-    SEXP fun;                   /* The function itself */
-    int count;                  /* Count of function evaluations */
-} *ii_ptr;
-
 
 int fWrapper(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fval) {
     //     Rcpp::Rcout<<"In Wrapper" <<std::endl;
 
-    Rcpp::NumericVector xVal(ndim);   /* The x argument for the R function f */
-    double* xp = xVal.begin();        /* The ptr to x (real) vector */
-    for (unsigned i = 0; i < ndim; ++i) {
-        xp[i] = x[i];
-    }
+    Rcpp::NumericVector xVal(x, x + ndim);   /* The x argument for the R function f */
 
     // Rcpp::Rcout<<"before call" <<std::endl;
 
@@ -41,11 +30,7 @@ int fWrapper_v(unsigned ndim, size_t npts, const double *x, void *fdata,
                unsigned fdim, double *fval) {
     //     Rcpp::Rcout<<"In Wrapper" <<std::endl;
 
-    Rcpp::NumericMatrix xVal(ndim, npts);   /* The x argument for the R function f */
-    double* xp = xVal.begin();        /* The ptr to x (real) matrix */
-    for (unsigned i = 0; i < ndim * npts; ++i) {
-        xp[i] = x[i];
-    }
+    Rcpp::NumericMatrix xVal(ndim, npts, x);   /* The x argument for the R function f */
 
     //    Rcpp::Rcout<<"before call" <<std::endl;
 
@@ -72,7 +57,6 @@ Rcpp::List doHCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericV
 
     // Create a structure to hold integrand function and initialize it
     integrand_info II;
-    II.count = 0;               /* Zero count */
     II.fun = f;                 /* R function */
 
     // Rcpp::Rcout<<"Call Integrator" <<std::endl;

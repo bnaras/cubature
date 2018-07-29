@@ -23,27 +23,31 @@
 #' @aliases adaptIntegrate pcubature
 #'
 #' @param f The function (integrand) to be integrated
-#' @param lowerLimit The lower limit of integration, a vector for hypercubes
-#' @param upperLimit The upper limit of integration, a vector for hypercubes
+#' @param lowerLimit The lower limit of integration, a vector for
+#'     hypercubes
+#' @param upperLimit The upper limit of integration, a vector for
+#'     hypercubes
 #' @param ...  All other arguments passed to the function f
 #' @param tol The maximum tolerance, default 1e-5.
-#' @param fDim The dimension of the integrand, default 1, bears no relation to
-#' the dimension of the hypercube
-#' @param maxEval The maximum number of function evaluations needed, default 0
-#' implying no limit. Note that the actual number of function evaluations
-#' performed is only approximately guaranteed not to exceed this number.
+#' @param fDim The dimension of the integrand, default 1, bears no
+#'     relation to the dimension of the hypercube
+#' @param maxEval The maximum number of function evaluations needed,
+#'     default 0 implying no limit. Note that the actual number of
+#'     function evaluations performed is only approximately guaranteed
+#'     not to exceed this number.
 #' @param absError The maximum absolute error tolerated
-#' @param doChecking A flag to be a bit anal about checking inputs to C
-#' routines. A FALSE value results in approximately 9 percent speed gain in our
-#' experiments. Your mileage will of course vary. Default value is FALSE.
-#' @param vectorInterface A flag that indicates whether to use the vector interface
-#' and is by default FALSE. See details below
-#' @param norm For vector-valued integrands, \code{norm} specifies the norm that is
-#' used to measure the error and determine convergence properties. See below.
-#' @return The returned value is a list of three items: \item{integral}{the
-#' value of the integral} \item{error}{the estimated relative error}
-#' \item{functionEvaluations}{the number of times the function was evaluated}
-#' \item{returnCode}{the actual integer return code of the C routine}
+#' @param doChecking As of version 2.0, this flag is ignored and will
+#'     be dropped in forthcoming versions
+#' @param vectorInterface A flag that indicates whether to use the
+#'     vector interface and is by default FALSE. See details below
+#' @param norm For vector-valued integrands, \code{norm} specifies the
+#'     norm that is used to measure the error and determine
+#'     convergence properties. See below.
+#' @return The returned value is a list of three items:
+#'     \item{integral}{the value of the integral} \item{error}{the
+#'     estimated relative error} \item{functionEvaluations}{the number
+#'     of times the function was evaluated} \item{returnCode}{the
+#'     actual integer return code of the C routine}
 #'
 #' @details
 #'
@@ -343,19 +347,17 @@ hcubature <- adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e
 
     f <- match.fun(f)
 
-    if (doChecking) {
-        fnF <- function(x) {
-            fx <- f(x, ...)
-            if(!is.numeric(fx) || length(fx) != fDim) {
-                cat("hcubature: Error in evaluation function f(x) for x = ", x, "\n")
-                stop("hcubature: Result f(x) is not numeric or has wrong dimension")
-            }
-            fx
-        }
-    } else {
+    if (all(is.finite(c(lowerLimit, upperLimit)))) {
         fnF <- function(x) {
             f(x, ...)
         }
+    } else {
+        lowerLimit <- atan(lowerLimit)
+        upperLimit <- atan(upperLimit)
+        fnF <- if (!vectorInterface)
+                   function(x) f(tan(x), ...) / prod(cos(x))^2
+               else
+                   function(x) f(tan(x), ...) / rep(apply(cos(x), 2, prod)^2, each = fDim)
     }
 
     .Call("_cubature_doHCubature", as.integer(fDim), fnF, as.double(lowerLimit),
@@ -394,19 +396,17 @@ pcubature <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
 
     f <- match.fun(f)
 
-    if (doChecking) {
-        fnF <- function(x) {
-            fx <- f(x, ...)
-            if(!is.numeric(fx) || length(fx) != fDim) {
-                cat("pcubature: Error in evaluation function f(x) for x = ", x, "\n")
-                stop("pcubature: Result f(x) is not numeric or has wrong dimension")
-            }
-            fx
-        }
-    } else {
+    if (all(is.finite(c(lowerLimit, upperLimit)))) {
         fnF <- function(x) {
             f(x, ...)
         }
+    } else {
+        lowerLimit <- atan(lowerLimit)
+        upperLimit <- atan(upperLimit)
+        fnF <- if (vectorInterface)
+                   function(x) f(tan(x), ...) / rep(apply(cos(x), 2, prod)^2, each = fDim)
+               else
+                   function(x) f(tan(x), ...) / prod(cos(x))^2
     }
 
     .Call("_cubature_doPCubature", as.integer(fDim), fnF, as.double(lowerLimit),
