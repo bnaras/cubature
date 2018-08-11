@@ -14,12 +14,14 @@ int cuhre_fWrapper(const int *nDim, const double x[],
                   const int *core) {
 
     Rcpp::NumericVector xVal = Rcpp::NumericVector(x, x + (*nDim) * (*nVec));  /* The x argument for the R function f */
-    if (*nVec > 1) {
+    ii_ptr iip = (ii_ptr) userdata;
+    
+    if (iip -> vector_intf) {
         // Make the argument vector appear as a matrix for R
         xVal.attr("dim") = Rcpp::Dimension(*nDim, *nVec);
     }
 
-    ii_ptr iip = (ii_ptr) userdata;
+
     Rcpp::NumericVector fx = Rcpp::Function(iip -> fun)(xVal);
 
     double* fxp = fx.begin();         /* The ptr to f(x) (real) vector */
@@ -43,7 +45,8 @@ Rcpp::List doCuhre(int nComp, SEXP f, int nDim,
     // Create a structure to hold integrand function and initialize it
     integrand_info II;
     II.fun = f;                 /* R function */
-
+    II.count = 0;
+    II.vector_intf = (nVec > 1);
     int nregions, fail;
 
     // Set cores to be zero.
@@ -80,12 +83,12 @@ int vegas_or_suave_fWrapper(const int *nDim, const double x[],
                             const int *core, const double weight[], const int *iter) {
 
     Rcpp::NumericVector xVal = Rcpp::NumericVector(x, x + (*nDim) * (*nVec));  /* The x argument for the R function f */
-    if (*nVec > 1) {
+    ii_ptr iip = (ii_ptr) userdata;
+    if (iip -> vector_intf) {
         // Make the argument vector appear as a matrix for R
         xVal.attr("dim") = Rcpp::Dimension(*nDim, *nVec);
     }
 
-    ii_ptr iip = (ii_ptr) userdata;
     Rcpp::NumericVector fx;
 
     if (iip -> cuba_args) {
@@ -120,7 +123,9 @@ Rcpp::List doVegas(int nComp, SEXP f, int nDim,
     integrand_info II;
     II.cuba_args = cuba_args;   /* vegas specific args */
     II.fun = f;                 /* R function */
-
+    II.count = 0;
+    II.vector_intf = (nVec > 1);
+    
     int fail;
 
     // Set cores to be zero.
@@ -166,7 +171,9 @@ Rcpp::List doSuave(int nComp, SEXP f, int nDim,
     integrand_info II;
     II.cuba_args = cuba_args; /* suave specific args */
     II.fun = f;                 /* R function */
-
+    II.count = 0;
+    II.vector_intf = (nVec > 1);
+    
     int nregions, fail;
 
     // Set cores to be zero.
@@ -218,12 +225,12 @@ int divonne_fWrapper(const int *nDim, const double x[],
                    const int *core, const int *phase) {
 
     Rcpp::NumericVector xVal = Rcpp::NumericVector(x, x + (*nDim) * (*nVec));  /* The x argument for the R function f */
-    if (*nVec > 1) {
+    ii_ptr iip = (ii_ptr) userdata;
+    if (iip -> vector_intf) {
         // Make the argument vector appear as a matrix for R
         xVal.attr("dim") = Rcpp::Dimension(*nDim, *nVec);
     }
 
-    ii_ptr iip = (ii_ptr) userdata;
     Rcpp::NumericVector fx;
 
     if (iip -> cuba_args) {
@@ -260,10 +267,12 @@ Rcpp::List doDivonne(int nComp, SEXP f, int nDim,
     integrand_info II;
     II.cuba_args = cuba_args;   /* cuba specific args */
     II.fun = f;                 /* R function */
+    II.count = 0;
     int peak_finder_null = Rf_isNull(peakFinder);
     if (!peak_finder_null) {
         II.peakFinder = peakFinder;
     }
+    II.vector_intf = (nVec > 1);
     
     int nregions, fail;
 

@@ -5,10 +5,10 @@
 \title{Integration with SUbregion-Adaptive Vegas Algorithm}
 \usage{
 suave(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
-  absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose = 1,
-  final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed =
-  12345L), nVec = 1L, nNew = 1000L, nMin = 50L, flatness = 50,
-  stateFile = NULL)
+  absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose =
+  1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0,
+  rngSeed = 12345L), nVec = 1L, nNew = 1000L, nMin = 50L,
+  flatness = 50, stateFile = NULL)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated as in \code{\link{cuhre}}. Optionally, the

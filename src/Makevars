@@ -10,23 +10,21 @@ $(SHLIB): Rcpp-cubature.o Rcpp-Cuba.o RcppExports.o cubature_init.o
 
 Rcpp-cubature.o: cubature.ts
 RcppExports.o: cubature.ts
-rcubature.o: cubature.ts cuba.ts
-
 Rcpp-Cuba.o: cuba.ts
 
 cubature.ts:
-	(cp -f $(CUBA_DIR_NONWIN)/makefile.in $(CUBATURE_DIR) &&\
-	cd $(CUBATURE_DIR) && \
+	(cd $(CUBATURE_DIR) && \
 	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS) -DR_PACKAGE=1" AR="$(AR)" RANLIB="$(RANLIB)") && \
 	touch $@)
 
 cuba.ts:
-	(cd $(CUBA_DIR) && \
+	(cp -f $(CUBA_DIR_NONWIN)/makefile.in $(CUBA_DIR) && \
+	cd $(CUBA_DIR) && \
 	(CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS) -DR_PACKAGE=1" AR="$(AR)" ARFLAGS="-U" RANLIB="$(RANLIB)" ./configure && $(MAKE) libcuba.a) && \
 	touch $@)
 
 clean:
-	rm -f Rcpp-cubature.o RcppExports.o rcubature.o cubature.so Rcpp-Cuba.o cubature_init.o
+	rm -f Rcpp-cubature.o RcppExports.o cubature.so Rcpp-Cuba.o cubature_init.o
 	rm -f $(CUBATURE_DIR)/*.o
 	rm -f $(CUBATURE_DIR)/libcubature.a $(CUBATURE_DIR)/cubature.ts
 	rm -f $(CUBA_DIR)/*.o

@@ -82,15 +82,29 @@ suave <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
         r <- upperLimit - lowerLimit
         prodR <- prod(r)
         fnF <- if (nVec > 1L)
-                   function(x) {
-                       y <- lowerLimit + r * x
-                       prodR * f(tan(y), ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
+                   if (cuba_params_exist) {
+                       function(x, cuba_weight, cuba_iter) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), cuba_weight = cuba_weight, cuba_iter = cuba_iter, ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
+                       }
+                   } else {
+                       function(x) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
+                       }
                    }
-        else
-            function(x) {
-                y <- lowerLimit + r * x
-                prodR * f(tan(y), ...) / prod(cos(y))^2
-            }
+               else
+                   if (cuba_params_exist) {
+                       function(x, cuba_weight, cuba_iter) {
+                       y <- lowerLimit + r * x
+                       prodR * f(tan(y), cuba_weight = cuba_weight, cuba_iter = cuba_iter, ...) / prod(cos(y))^2
+                       }
+                   } else {
+                       function(x) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), ...) / prod(cos(y))^2
+                       }
+                   }
     }
 
     flag_code <- all_flags$verbose + 2^2 * all_flags$final + 2^3 * all_flags$smooth +

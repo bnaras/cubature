@@ -5,8 +5,8 @@
 \title{Integration by a Deterministic Iterative Adaptive Algorithm}
 \usage{
 cuhre(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
-  absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose = 0,
-  final = 1), key = 0L, nVec = 1L, stateFile = NULL)
+  absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose =
+  0, final = 1), key = 0L, nVec = 1L, stateFile = NULL)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated. For cuhre, it

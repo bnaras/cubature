@@ -112,23 +112,35 @@ integration region is aided by methods from numerical optimization.</p>
     </div>
 
     <pre class="usage"><span class='fu'>divonne</span>(<span class='no'>f</span>, <span class='kw'>nComp</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>lowerLimit</span>, <span class='no'>upperLimit</span>, <span class='no'>...</span>, <span class='kw'>relTol</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>,
-  <span class='kw'>absTol</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>minEval</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>maxEval</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>6</span>, <span class='kw'>flags</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>final</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>keep_state</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>load_state</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>rngSeed</span> <span class='kw'>=</span>
-  <span class='fl'>12345L</span>), <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>key1</span> <span class='kw'>=</span> <span class='fl'>47L</span>, <span class='kw'>key2</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>key3</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>maxPass</span> <span class='kw'>=</span> <span class='fl'>5L</span>,
-  <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>maxChisq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>minDeviation</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>xGiven</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nExtra</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>peakFinder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>absTol</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>minEval</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>maxEval</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>6</span>, <span class='kw'>flags</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>verbose</span> <span class='kw'>=</span>
+  <span class='fl'>1</span>, <span class='kw'>final</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>keep_state</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>load_state</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>rngSeed</span> <span class='kw'>=</span> <span class='fl'>12345L</span>), <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>key1</span> <span class='kw'>=</span> <span class='fl'>47L</span>, <span class='kw'>key2</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>key3</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>maxPass</span> <span class='kw'>=</span> <span class='fl'>5L</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>maxChisq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>minDeviation</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
+  <span class='kw'>xGiven</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nExtra</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>peakFinder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>f</th>
-      <td><p>The function (integrand) to be integrated as in <code><a href='cuhre.html'>cuhre</a></code>. Optionally, the
-function can take two additional arguments in addition to the
-variable being integrated: - <code>cuba_weight</code> which is the
-weight of the point being sampled, - <code>cuba_iter</code> the
-current iteration number. The function author may choose to use
-these in any appropriate way or ignore them altogether.</p></td>
+      <td><p>The function (integrand) to be integrated as in
+<code><a href='cuhre.html'>cuhre</a></code>. Optionally, the function can take an
+additional arguments in addition to the variable being
+integrated: - <code>cuba_phase</code>. The last argument, phase,
+indicates the integration phase: 0. sampling of the points in
+<code>xgiven</code>, 1. partitioning phase, 2. final integration
+phase, 3. refinement phase. This information might be useful if
+the integrand takes long to compute and a sufficiently accurate
+approximation of the integrand is available. The actual value
+of the integral is only of minor importance in the partitioning
+phase, which is instead much more dependent on the peak
+structure of the integrand to find an appropriate
+tessellation. An approximation which reproduces the peak
+structure while leaving out the fine details might hence be a
+perfectly viable and much faster substitute when
+<code>cuba_phase</code> &lt; 2. In all other instances, phase can be
+ignored and it is entirely admissible to define the integrand
+without it. which is the</p></td>
     </tr>
     <tr>
       <th>nComp</th>

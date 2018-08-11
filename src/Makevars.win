@@ -5,12 +5,10 @@ PKG_CFLAGS=-DRCPP_USE_UNWIND_PROTECT -DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUB
 PKG_CPPFLAGS=-DRCPP_USE_UNWIND_PROTECT -DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I./$(CUBA_DIR) -I../inst/include
 PKG_LIBS=-L$(CUBATURE_DIR) -L$(CUBA_DIR) -lcubature -lcuba
 
-$(SHLIB): Rcpp-cubature.o Rcpp-cuba.o RcppExports.o rcubature.o
+$(SHLIB): Rcpp-cubature.o Rcpp-cuba.o RcppExports.o
 
 Rcpp-cubature.o: cubature.ts
 RcppExports.o: cubature.ts
-rcubature.o: cubature.ts cuba.ts
-
 Rcpp-Cuba.o: cuba.ts
 
 cubature.ts:
@@ -26,8 +24,8 @@ cuba.ts:
 	touch $@
 
 clean:
-	rm -f Rcpp-cubature.o Rcpp-cuba.o RcppExports.o rcubature.o
+	rm -f Rcpp-cubature.o RcppExports.o cubature.so Rcpp-Cuba.o cubature_init.o
 	rm -f $(CUBATURE_DIR)/*.o
 	rm -f $(CUBATURE_DIR)/libcubature.a $(CUBATURE_DIR)/cubature.ts
-	cd $(CUBA_DIR) && make clean
+	rm -f $(CUBA_DIR)/*.o
 	rm -f $(CUBA_DIR)/libcuba.a $(CUBA_DIR)/cuba.ts

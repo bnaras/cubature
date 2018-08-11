@@ -12,7 +12,7 @@ Authors@R: c(person("Balasubramanian", "Narasimhan", role=c("aut", "cre"),
              person(c("Steven", "G."), "Johnson", role=c("aut")),
              person("Thomas", "Hahn", role=c("aut")),
 	     person("Annie", "Bouvier", role=c("aut")),
-	     person(" Kiên", "Kiêu", role=c("aut")),
+	     person(" Kiên", "Kiêu", role=c("aut"), email = "Kien.Kieu@jouy.inra.fr"),
 	     person("Simen", "Gaure", role=c("ctb"),
 	           email = "simen.gaure@frisch.uio.no"))
 Description: R wrappers around the cubature C library of Steven
@@ -28,7 +28,7 @@ LinkingTo: Rcpp
 Imports: Rcpp
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Suggests: testthat,
 	  knitr,
 	  mvtnorm,

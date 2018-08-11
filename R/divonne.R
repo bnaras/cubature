@@ -13,6 +13,24 @@
 #' @importFrom Rcpp evalCpp
 #'
 #' @inheritParams vegas
+#' @param f The function (integrand) to be integrated as in
+#'     \code{\link{cuhre}}. Optionally, the function can take an
+#'     additional arguments in addition to the variable being
+#'     integrated: - \code{cuba_phase}. The last argument, phase,
+#'     indicates the integration phase: 0. sampling of the points in
+#'     \code{xgiven}, 1. partitioning phase, 2. final integration
+#'     phase, 3. refinement phase. This information might be useful if
+#'     the integrand takes long to compute and a sufficiently accurate
+#'     approximation of the integrand is available. The actual value
+#'     of the integral is only of minor importance in the partitioning
+#'     phase, which is instead much more dependent on the peak
+#'     structure of the integrand to find an appropriate
+#'     tessellation. An approximation which reproduces the peak
+#'     structure while leaving out the fine details might hence be a
+#'     perfectly viable and much faster substitute when
+#'     \code{cuba_phase} < 2. In all other instances, phase can be
+#'     ignored and it is entirely admissible to define the integrand
+#'     without it. which is the
 #' @param key1 integer that determines sampling in the partitioning
 #'     phase: \code{key1 = 7, 9, 11, 13} selects the cubature rule of
 #'     degree \code{key1}.  Note that the degree-11 rule is available
@@ -194,7 +212,11 @@ divonne <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     if (all(is.finite(c(lowerLimit, upperLimit)))) {
         r <- upperLimit - lowerLimit
         prodR <- prod(r)
-        fnF <- function(x) prodR * f(lowerLimit + r * x, ...)
+        fnF <- if (cuba_params_exist) {
+                   function(x, cuba_phase) prodR * f(lowerLimit + r * x, cuba_phase = cuba_phase, ...)
+               } else {
+                   function(x) prodR * f(lowerLimit + r * x, ...)
+               }
         if (!is.null(xGiven)) {
             xGiven <- apply(xGiven, 1, function(x) x / r)
         }
@@ -206,16 +228,31 @@ divonne <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
             xGiven <- tan(xGiven)
         }
         prodR <- prod(r)
-        fnF <- if (nVec > 1L)
-                   function(x) {
-                       y <- lowerLimit + r * x
-                       prodR * f(tan(y), ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
+        fnF <- if (nVec > 1L) {
+                   if (cuba_params_exist) {
+                       function(x, cuba_phase) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), cuba_phase = cuba_phase, ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
+                       }
+                   } else {
+                       function(x) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), ...) / rep(apply(cos(y), 2, prod)^2, each = nComp)
+                       }
                    }
-        else
-            function(x) {
-                y <- lowerLimit + r * x
-                prodR * f(tan(y), ...) / prod(cos(y))^2
-            }
+               } else {
+                   if (cuba_params_exist) {
+                       function(x, cuba_phase) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), cuba_phase = cuba_phase, ...) / prod(cos(y))^2
+                       }
+                   } else {
+                       function(x) {
+                           y <- lowerLimit + r * x
+                           prodR * f(tan(y), ...) / prod(cos(y))^2
+                       }
+                   }
+               }
     }
 
     flag_code <- all_flags$verbose + 2^2 * all_flags$final + 2^3 * all_flags$smooth +

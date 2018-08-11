@@ -5,19 +5,31 @@
 \title{Integration by Stratified Sampling for Variance Reduction}
 \usage{
 divonne(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
-  absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose = 1,
-  final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed =
-  12345L), nVec = 1L, key1 = 47L, key2 = 1L, key3 = 1L, maxPass = 5L,
-  border = 0, maxChisq = 10, minDeviation = 0.25, xGiven = NULL,
-  nExtra = 0L, peakFinder = NULL, stateFile = NULL)
+  absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose =
+  1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0,
+  rngSeed = 12345L), nVec = 1L, key1 = 47L, key2 = 1L, key3 = 1L,
+  maxPass = 5L, border = 0, maxChisq = 10, minDeviation = 0.25,
+  xGiven = NULL, nExtra = 0L, peakFinder = NULL, stateFile = NULL)
 }
 \arguments{
-\item{f}{The function (integrand) to be integrated as in \code{\link{cuhre}}. Optionally, the
-function can take two additional arguments in addition to the
-variable being integrated: - \code{cuba_weight} which is the
-weight of the point being sampled, - \code{cuba_iter} the
-current iteration number. The function author may choose to use
-these in any appropriate way or ignore them altogether.}
+\item{f}{The function (integrand) to be integrated as in
+\code{\link{cuhre}}. Optionally, the function can take an
+additional arguments in addition to the variable being
+integrated: - \code{cuba_phase}. The last argument, phase,
+indicates the integration phase: 0. sampling of the points in
+\code{xgiven}, 1. partitioning phase, 2. final integration
+phase, 3. refinement phase. This information might be useful if
+the integrand takes long to compute and a sufficiently accurate
+approximation of the integrand is available. The actual value
+of the integral is only of minor importance in the partitioning
+phase, which is instead much more dependent on the peak
+structure of the integrand to find an appropriate
+tessellation. An approximation which reproduces the peak
+structure while leaving out the fine details might hence be a
+perfectly viable and much faster substitute when
+\code{cuba_phase} < 2. In all other instances, phase can be
+ignored and it is entirely admissible to define the integrand
+without it. which is the}
 
 \item{nComp}{The number of components of f, default 1, bears no
 relation to the dimension of the hypercube over which

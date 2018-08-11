@@ -4,7 +4,6 @@
 \alias{hcubature}
 \alias{adaptIntegrate}
 \alias{pcubature}
-\alias{pcubature}
 \title{Adaptive multivariate integration over hypercubes (hcubature and pcubature)}
 \usage{
 hcubature(f, lowerLimit, upperLimit, ..., tol = 1e-05, fDim = 1,
