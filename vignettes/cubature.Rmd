@@ -153,19 +153,19 @@ We construct a scalar function (`my_dmvnorm`) and a vector analog
 
 ```{r}
 m <- 3
-sigma <- diag(3)
+sigma <- diag(m)
 sigma[2,1] <- sigma[1, 2] <- 3/5 ; sigma[3,1] <- sigma[1, 3] <- 1/3
 sigma[3,2] <- sigma[2, 3] <- 11/15
 logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
 my_dmvnorm <- function (x, mean, sigma, logdet) {
     x <- matrix(x, ncol = length(x))
     distval <- stats::mahalanobis(x, center = mean, cov = sigma)
-    exp(-(3 * log(2 * pi) + logdet + distval)/2)
+    exp(-(length(mean) * log(2 * pi) + logdet + distval)/2)
 }
 
 my_dmvnorm_v <- function (x, mean, sigma, logdet) {
     distval <- stats::mahalanobis(t(x), center = mean, cov = sigma)
-    exp(matrix(-(3 * log(2 * pi) + logdet + distval)/2, ncol = ncol(x)))
+    exp(matrix(-(length(mean) * log(2 * pi) + logdet + distval)/2, ncol = ncol(x)))
 }
 ```
 
