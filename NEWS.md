@@ -7,6 +7,12 @@
 - Deprecates `doChecking` argument. Now it does nothing and will be
   removed in future versions.
 
+# cubature 1.4-1
+
+- Fixed up `scale` argument to tests to conform to pass checks.
+- Removed any reference to orphaned package `R2Cuba` and updated
+  vignette with information on imminent 2.0 release.
+
 # cubature 1.4
 
 - Fixed up the C call so that it is re-entrant (brought to my
