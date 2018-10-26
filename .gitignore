@@ -4,4 +4,5 @@
 .Rhistory
 src/*.o
 src/cubature.so
+src/cubature.ts
 *.so

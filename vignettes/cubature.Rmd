@@ -41,17 +41,14 @@ makes. My recommendations are below in the summary section.
 
 ## A Timing Harness
 
-Our harness will provide timing results for `hcubature`, `pcubature`
-(where appropriate) and `R2Cuba` calls.  We begin by creating a
-harness for these calls.
+Our harness will provide timing results for `hcubature` and
+`pcubature` (where appropriate). We begin by creating a harness for
+these calls.
 
 ```{r}
-loadedSuggested  <- c(benchr = FALSE, R2Cuba = FALSE)
+loadedSuggested  <- c(benchr = FALSE)
 if (requireNamespace("benchr", quietly = TRUE)) {
     loadedSuggested["benchr"] <- TRUE
-}
-if (requireNamespace("R2Cuba", quietly = TRUE)) {
-    loadedSuggested["R2Cuba"] <- TRUE
 }
 
 library(cubature)
@@ -63,16 +60,6 @@ harness <- function(which = NULL,
              hc.v = "Vectorized Hcubature",
              pc = "Non-vectorized Pcubature",
              pc.v = "Vectorized Pcubature")
-
-    if (loadedSuggested["R2Cuba"]) {
-        fns <- c(fns, cc = "R2Cuba::cuhre")
-        cc <- function() R2Cuba::cuhre(ndim = ndim, ncomp = 1, integrand = f,
-                                       lower = lowerLimit, upper = upperLimit,
-                                       flags = list(verbose = 0, final = 1),
-                                       rel.tol = tol,
-                                       max.eval = 10^6,
-                                       ...)
-    }
 
     hc <- function() cubature::hcubature(f = f,
                                          lowerLimit = lowerLimit,
@@ -201,19 +188,21 @@ and `pcubature` are quite competitive if you compare the table above
 to the one below.
 
 ```{r}
-library(mvtnorm)
-g1 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
-                                  upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
-                                  alg = Miwa(), abseps = 1e-5, releps = 1e-5)
-g2 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
-                                  upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
-                                  alg = GenzBretz(), abseps = 1e-5, releps = 1e-5)
-g3 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
-                                  upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
-                                  alg = TVPACK(), abseps = 1e-5, releps = 1e-5)
-
-knitr::kable(summary(benchr::benchmark(g1(), g2(), g3(), times = 20, progress = FALSE)),
-             digits = 3, row.names = FALSE)
+if (requireNamespace("mvtnorm", quietly = TRUE)) {
+    g1 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
+                                      upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                                      alg = Miwa(), abseps = 1e-5, releps = 1e-5)
+    g2 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
+                                      upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                                      alg = GenzBretz(), abseps = 1e-5, releps = 1e-5)
+    g3 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
+                                      upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                                      alg = TVPACK(), abseps = 1e-5, releps = 1e-5)
+    knitr::kable(summary(benchr::benchmark(g1(), g2(), g3(), times = 20, progress = FALSE)),
+                 digits = 3, row.names = FALSE)
+} else {
+    cat("NOTE: Package mvtnorm not available for comparison\n")
+}
 ```
 
 ## Product of cosines
@@ -413,35 +402,19 @@ will allow for such customization on demand.
 
 ### Apropos the `Cuba` library
 
-The package [`R2Cuba`](https://cran.r-project.org/package=R2Cuba)
-provides a suite of cubature and other useful Monte Carlo integration
-routines linked against version 1.6 of the C library. The authors of
-`R2Cuba` have obviously put a lot of work has into it since it uses
-C-style R API. This approach also means that it is harder to keep the
-R package in sync with new versions of the underlying C library. In
-fact, the Cuba C library has marched on now to version 4.2.
-
-In a matter of a couple of hours, I was able to link the latest
+The package `R2Cuba` is no longer available on CRAN. Fear not, for
+[version 2.0](https://bnaras.github.io/cubature) integrates the latest
 version (4.2) of the [Cuba
-libraries](https://directory.fsf.org/wiki/Cuba) (canonical web link
-now seems dead) with R using Rcpp; you can see it on the `Cuba` branch
-of my [Github repo](https://github.com/bnaras/cubature). This branch
-package builds and installs in R on my Mac and Ubuntu machines and
-gives correct answers at least for `cuhre`. The 4.2 version of the
-Cuba library also has vectorized versions of the routines that can be
-gainfully exploited (not implemented in the branch). As of this
-writing, I have also not yet carefully considered the issue of
-parallel execution (via `fork()`) which might be problematic in the
-Windows version. In addition, my timing benchmarks showed very
-disappointing results.
+libraries](https://directory.fsf.org/wiki/Cuba) (canonical web link is
+not secure) with R using `Rcpp`. In fact, you can install the
+development version from the master branch of my [Github
+repo](https://github.com/bnaras/cubature). Vectorization may be used
+with these routiness too.
 
-For the above reasons, I decided not to bother with Cuba for now, but
-if there is enough interest, I might consider rolling `Cuba-4.2+` into
-this `cubature` package in the future.
 
 ## Summary
 
-The following is therefore my recommendation.
+My recommendations are:
 
 1. _Vectorize_ your function. The time spent in so doing pays back
    enormously. This is easy to do and the examples above show how.

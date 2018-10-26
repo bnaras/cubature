@@ -12,7 +12,7 @@ test_that("Test a product of Cosine functions", {
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -29,7 +29,7 @@ test_that("Test a product of Cosine functions", {
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Vector mode Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                            info = "Relative error not reached in vector mode")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -53,7 +53,7 @@ test_that("Test a Gaussian integral remapped to [0, infinity] limits", {
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -71,7 +71,7 @@ test_that("Test a Gaussian integral remapped to [0, infinity] limits", {
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Vector mode Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached in vector mode")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -93,7 +93,7 @@ test_that("Test volume of a hypersphere (integrating a discountinuous function)"
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -110,7 +110,7 @@ test_that("Test volume of a hypersphere (integrating a discountinuous function)"
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Vector mode Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached in vector mode")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -129,7 +129,7 @@ test_that("Test a simple polynomial (product of coordinates)", {
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -143,7 +143,7 @@ test_that("Test a simple polynomial (product of coordinates)", {
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Vector mode Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached in vector mode")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -166,7 +166,7 @@ test_that("Test Gaussian centered at 1/2", {
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -187,7 +187,7 @@ test_that("Test Gaussian centered at 1/2", {
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -211,7 +211,7 @@ test_that("Test double Gaussian", {
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -233,7 +233,7 @@ test_that("Test double Gaussian", {
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -256,7 +256,7 @@ test_that("Test Tsuda's example", {
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -275,7 +275,7 @@ test_that("Test Tsuda's example", {
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -297,7 +297,7 @@ test_that("Test Morokoff & Calflish example", {
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -317,7 +317,7 @@ test_that("Test Morokoff & Calflish example", {
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -334,7 +334,7 @@ test_that("Test cubature web example", {
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -349,7 +349,7 @@ test_that("Test cubature web example", {
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -376,7 +376,7 @@ test_that("Test Wang-Landau sampling 1d example", {
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -395,7 +395,7 @@ test_that("Test Wang-Landau sampling 1d example", {
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -423,7 +423,7 @@ test_that("Test Wang-Landau sampling 2d example", {
                                        tol = tol)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -446,7 +446,7 @@ test_that("Test Wang-Landau sampling 2d example", {
                                        vectorInterface = TRUE)
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
@@ -479,7 +479,7 @@ test_that("Test Multivariate Normal", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = tol, scale = abs(result$integral),
                  info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = tol, scale = 1,
