@@ -1,13 +1,13 @@
 #! /bin/sh
 # script to compile C programs that are linked 
 # against Fortran libraries
-# last modified 3 Feb 15 th
+# last modified 31 Jan 18 th
 
 args=
 compileonly=
 objs=
 ldflags=
-fldflags=
+fldflags=-lpthread
 
 cc="${REALCC:-cc}"
 cxx="${REALCXX:-c++}"
@@ -38,7 +38,7 @@ while test $# -gt 0 ; do
 	*-m32*) mldir=`echo "$mldir" | sed 's/-x86-64//g'` ;;
 	esac
 	test -f "$mldir/libuuid.a" && {
-	  ldflags="$ldflads '-L$mldir'"
+	  ldflags="$ldflags '-L$mldir'"
 	  fldflags="$fldflags -luuid"
 	}
 	;;

@@ -23,7 +23,7 @@ test_that("Test Factorial Function", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -36,7 +36,7 @@ test_that("Test Factorial Function", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -49,7 +49,7 @@ test_that("Test Factorial Function", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -62,7 +62,7 @@ test_that("Test Factorial Function", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -76,7 +76,7 @@ test_that("Test Factorial Function", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -90,7 +90,7 @@ test_that("Test Factorial Function", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -104,7 +104,7 @@ test_that("Test Factorial Function", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -118,7 +118,7 @@ test_that("Test Factorial Function", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -154,7 +154,7 @@ test_that("Test based on an example of Pierre de Villemereuil", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -165,7 +165,7 @@ test_that("Test based on an example of Pierre de Villemereuil", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -176,7 +176,7 @@ test_that("Test based on an example of Pierre de Villemereuil", {
 
     ## testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
     ##                        info = "Relative error not reached")
 
     ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -187,7 +187,7 @@ test_that("Test based on an example of Pierre de Villemereuil", {
 
     ## testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
     ##                        info = "Relative error not reached")
 
     ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -197,7 +197,7 @@ test_that("Test based on an example of Pierre de Villemereuil", {
     ##                 relTol = relTol, absTol = absTol, maxEval = 10000L)
 
     ## testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
-    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
     ##                        info = "Relative error not reached")
 
     ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -208,7 +208,7 @@ test_that("Test based on an example of Pierre de Villemereuil", {
 
     ## testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
     ##                        info = "Relative error not reached")
 
     ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -219,7 +219,7 @@ test_that("Test based on an example of Pierre de Villemereuil", {
 
     ## testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
     ##                        info = "Relative error not reached")
 
     ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -230,7 +230,7 @@ test_that("Test based on an example of Pierre de Villemereuil", {
 
     ## testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
     ##                        info = "Relative error not reached")
 
     ## testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -261,7 +261,7 @@ test_that("Test displacement of origin", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -281,7 +281,7 @@ test_that("Test displacement of origin", {
 
     testthat::expect_equal(1, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -296,7 +296,7 @@ test_that("Test displacement of origin", {
 
     testthat::expect_equal(1, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
@@ -310,7 +310,7 @@ test_that("Test displacement of origin", {
 
     testthat::expect_equal(0, result$returnCode, info = "Integration unsuccessful!")
 
-    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = result$integral,
+    testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = abs(result$integral),
                            info = "Relative error not reached")
 
     testthat::expect_equal(expected, result$integral, tolerance = relTol, scale = 1,
