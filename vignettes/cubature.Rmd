@@ -27,14 +27,17 @@ knitr::opts_chunk$set(
 ## Introduction
 
 This R `cubature` package exposes both the `hcubature` and `pcubature`
-routines of the underlying C library, including the vectorized
-interfaces.
+routines of the underlying C `cubature` library, including the
+vectorized interfaces. 
 
 Per the documentation, use of `pcubature` is advisable only for smooth
 integrands in dimensions up to three at most. In fact, the `pcubature`
 routines perform significantly worse than the vectorized `hcubature`
 in inappropriate cases. So when in doubt, you are better off using
 `hcubature`.
+
+Version 2.0 of this package integrates the `Cuba` library as well,
+once again providing vectorized interfaces. 
 
 The main point of this note is to examine the difference vectorization
 makes. My recommendations are below in the summary section.
@@ -392,7 +395,7 @@ knitr::kable(d, digits = 3)
 ```
 
 
-## An implementation note
+## Implementation Notes
 
 About the only real modification we have made to the underlying
 `cubature-1.0.2` library is that we use `M = 16` rather than the
@@ -401,10 +404,13 @@ default `M = 19` suggested by the original author for
 and seems to work reasonably well for the above tests. Future versions
 will allow for such customization on demand.
 
+The changes made to the `Cuba-4.2` library are separated out so that
+the original source is left pristine and the changes (a small number)
+applied only during the building process.
 
 ## Summary
 
-The following is therefore my recommendation.
+My recommendations are:
 
 1. _Vectorize_ your function. The time spent in so doing pays back
    enormously. This is easy to do and the examples above show how.
@@ -413,7 +419,7 @@ The following is therefore my recommendation.
 
 3. For smooth integrands in low dimensions ($\leq 3$), `pcubature` might be
    worth trying out. Experiment before using in a production package.
-
+   
 ## Session Info
 
 ```{r}

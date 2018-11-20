@@ -3,7 +3,7 @@
 .RData
 .Rhistory
 src/*.o
-src/cubature.so
+src/*.ts
 src/Cuba-4.2/config.log
 src/Cuba-4.2/config.status
 src/Cuba-4.2/config.h.in
