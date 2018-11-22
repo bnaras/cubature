@@ -32,19 +32,52 @@
 #'     default 0, the rule is the degree-13 rule in 2 dimensions, the
 #'     degree-11 rule in 3 dimensions, and the degree-9 rule
 #'     otherwise.
-#' @param flags flags governing the integration. A list with
-#'     components: - \code{verbose}: \code{verbose} encodes the
-#'     verbosity level, from 0 (default) to 3.  Level 0 does not print
-#'     any output, level 1 prints \dQuote{reasonable} information on
-#'     the progress of the integration, level 2 also echoes the input
-#'     parameters, and level 3 further prints the subregion results.
-#'     - \code{final}: when \code{ 0}, all sets of samples collected
-#'     on a subregion during the various iterations or phases
-#'     contribute to the final result.  When \code{ 1}, only the last
-#'     (largest) set of samples is used in the final result.  -
-#'     \code{keep_state}: when nonzero, retain state file if argument
-#'     \code{stateFile} is non-null.  - \code{load_state}: when zero,
-#'     load state file if found; if nonzero, reset state regardless.
+#' @param flags flags governing the integration. The list here is
+#'     exhaustive to keep the documentation and invocation uniform,
+#'     but not all flags may be used for a particular method as noted
+#'     below.  List components: \describe{
+#'     \item{\code{verbose}}{
+#'     encodes the verbosity level, from 0 (default) to 3.  Level 0
+#'     does not print any output, level 1 prints reasonable
+#'     information on the progress of the integration, level 2 also
+#'     echoes the input parameters, and level 3 further prints the
+#'     subregion results.}
+#'     \item{\code{final}}{when 0, all sets of
+#'     samples collected on a subregion during the various iterations
+#'     or phases contribute to the final result.  When 1, only
+#'     the last (largest) set of samples is used in the final result.}
+#'     \item{\code{smooth}}{when 0, apply additional
+#'     smoothing to the importance function, this moderately improves
+#'     convergence for many integrands.  When 1, use
+#'     the importance function without smoothing, this should be
+#'     chosen if the integrand has sharp edges.}
+#'     \item{\code{keep_state}}{when nonzero, retain state file if argument \code{stateFile} is
+#'     non-null, else delete \code{stateFile} if specified.}
+#'     \item{\code{load_state}}{Applies to Vegas only. Reset the
+#'     integrator’s state even if a state file is present, i.e. keep
+#'     only the grid. Together with \code{keep_state} this allows a
+#'     grid adapted by one integration to be used for another
+#'     integrand.}
+#'     \item{\code{level}}{applies only to
+#'     Divonne, Suave and Vegas. When \code{0}, Mersenne Twister
+#'     random numbers are used. When nonzero Ranlux random numbers are
+#'     used, except when \code{rngSeed} is zero which forces use of
+#'     Sobol quasi-random numbers. Ranlux implements Marsaglia and
+#'     Zaman’s 24-bit RCARRY algorithm with generation period p,
+#'     i.e. for every 24 generated numbers used, another p − 24 are
+#'     skipped. The luxury level for the Ranlux generator may be
+#'     encoded in \code{level} as follows: \describe{
+#'     \item{Level 1 (p = 48)}{gives very
+#'     long period, passes the gap test but fails spectral test}
+#'     \item{Level 2 (p = 97)}{passes all known tests, but theoretically
+#'     still defective} \item{Level 3 (p = 223)}{any theoretically
+#'     possible correlations have very small chance of being
+#'     observed} \item{Level 4 (p = 389)}{highest possible luxury, all 24
+#'     bits chaotic} \item{Levels 5–23}{default to 3, values above 24
+#'     directly specify the period p.}}
+#'     Note that Ranlux’s original
+#'     level 0, (mis)used for selecting Mersenne Twister in Cuba, is
+#'     equivalent to \code{level} = 24.}}
 #' @param nVec the number of vectorization points, default 1, but can
 #'     be set to an integer > 1 for vectorization, for example, 1024
 #'     and the function f above needs to handle the vector of points
@@ -61,19 +94,19 @@
 #'     is attained, the state file is removed. This feature is useful
 #'     mainly to define \sQuote{check-points} in long-running
 #'     integrations from which the calculation can be restarted.
-#' @return A list with components: \item{nregions }{the actual number
-#'     of subregions needed} \item{neval }{the actual number of
-#'     integrand evaluations needed} \item{returnCode}{return code:
-#'     \code{0} , the desired accuracy was reached, \code{-1},
-#'     dimension out of range, \code{1}, the accuracy goal was not met
+#' @return A list with components: \describe{\item{nregions}{the actual
+#'     number of subregions needed} \item{neval}{the actual number
+#'     of integrand evaluations needed} \item{returnCode}{if zero,
+#'     the desired accuracy was reached, if -1,
+#'     dimension out of range, if 1, the accuracy goal was not met
 #'     within the allowed maximum number of integrand evaluations.}
-#'     item{integral}{vector of length \code{nComp}; the integral of
-#'     \code{integrand} over the hypercube.}  \item{error}{vector of
+#'     \item{integral}{vector of length \code{nComp}; the integral of
+#'     \code{integrand} over the hypercube} \item{error}{vector of
 #'     length \code{nComp}; the presumed absolute error of
-#'     \code{integral}} \item{prob}{vector of length \code{nComp}; the
-#'     \eqn{\chi^2}{Chi2}-probability (not the
+#'     \code{integral}} \item{prob}{vector of length \code{nComp};
+#'     the \eqn{\chi^2}{Chi2}-probability (not the
 #'     \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
-#'     reliable estimate of the true integration error.}
+#'     reliable estimate of the true integration error.}}
 #'
 #' @seealso \code{\link{vegas}}, \code{\link{suave}}, \code{\link{divonne}}
 #'
@@ -110,7 +143,12 @@
 cuhre <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
                   relTol = 1e-5, absTol = 0,
                   minEval = 0L, maxEval = 10^6,
-                  flags = list(verbose = 0, final = 1),
+                  flags = list(verbose = 0L,
+                               final = 1L,
+                               smooth = 1L,
+                               keep_state = 0L,
+                               load_state = 0L,
+                               level = 0L),
                   key = 0L, nVec = 1L, stateFile = NULL) {
 
     nL <- length(lowerLimit); nU <- length(upperLimit)
@@ -127,7 +165,7 @@ cuhre <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     }
     f <- match.fun(f)
 
-    all_flags <- list(verbose = 1, final = 1, keep_state = 0, load_state = 0)
+    all_flags <- cuba_all_flags
     for (x in names(flags)) all_flags[[x]] <- flags[[x]]
 
     if (all(is.finite(c(lowerLimit, upperLimit)))) {

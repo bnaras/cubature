@@ -110,20 +110,19 @@
 #'     returned value should be a matrix (\code{nX, nDim}) where
 #'     \code{nX} is the actual number of points (should be less or
 #'     equal to \code{nMax}).
-#' @return A list with components:
-#' \item{neval }{the actual number of integrand evaluations needed}
-#' \item{returnCode}{return code: \code{0} , the desired accuracy was
-#' reached, \code{-1}, dimension out of range, \code{>1}, the accuracy
-#' goal was not met within the allowed maximum number of integrand
-#' evaluations. Divonne can estimate the number of points by which
-#' \code{maxEval} needs to be increased to reach the desired accuracy and
-#' returns this value.}  item{integral}{vector of length \code{nComp}; the
-#' integral of \code{integrand} over the hypercube.}
-#' \item{error}{vector of length \code{nComp}; the presumed absolute
-#' error of \code{integral}} \item{prob}{vector of length
-#' \code{nComp}; the \eqn{\chi^2}{Chi2}-probability (not the
-#' \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
-#' reliable estimate of the true integration error.}
+#' @return A list with components: \describe{\item{nregions}{the actual
+#'     number of subregions needed} \item{neval}{the actual number
+#'     of integrand evaluations needed} \item{returnCode}{if zero,
+#'     the desired accuracy was reached, if -1,
+#'     dimension out of range, if 1, the accuracy goal was not met
+#'     within the allowed maximum number of integrand evaluations.}
+#'     \item{integral}{vector of length \code{nComp}; the integral of
+#'     \code{integrand} over the hypercube} \item{error}{vector of
+#'     length \code{nComp}; the presumed absolute error of
+#'     \code{integral}} \item{prob}{vector of length \code{nComp};
+#'     the \eqn{\chi^2}{Chi2}-probability (not the
+#'     \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
+#'     reliable estimate of the true integration error.}}
 #'
 #' @seealso \code{\link{cuhre}}, \code{\link{suave}}, \code{\link{vegas}}
 #' @references J. H. Friedman, M. H. Wright (1981) A nested partitioning
@@ -169,7 +168,13 @@
 divonne <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
                     relTol = 1e-5, absTol = 0,
                     minEval = 0L, maxEval = 10^6,
-                    flags = list(verbose = 1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed = 12345L),
+                    flags = list(verbose = 0L,
+                                 final = 1L,
+                                 smooth = 1L,
+                                 keep_state = 0L,
+                                 load_state = 0L,
+                                 level = 0L),
+                    rngSeed = 12345L,
                     nVec = 1L,
                     key1 = 47L, key2 = 1L, key3 = 1L,
                     maxPass = 5L, border = 0, maxChisq = 10,
@@ -203,7 +208,7 @@ divonne <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
         nGiven <- 0
         ldxGiven <- nL
     }
-    all_flags <- list(verbose = 1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed = 12345L)
+    all_flags <- cuba_all_flags
     for (x in names(flags)) all_flags[[x]] <- flags[[x]]
 
     f <- match.fun(f)
@@ -269,7 +274,7 @@ divonne <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
           xGiven, nExtra,
           peakFinder,
           stateFile,
-          all_flags$rngSeed, flag_code, cuba_params_exist)
+          rngSeed, flag_code, cuba_params_exist)
 }
 
 

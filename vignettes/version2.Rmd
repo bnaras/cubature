@@ -1,0 +1,130 @@
+---
+title: "Version 2.0 Notes"
+author: "Balasubramanian Narasimhan"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+  fig_caption: yes
+  theme: cerulean
+  toc: yes
+  toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Version 2.0 Notes}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(
+    message = FALSE,
+    warning = FALSE,
+    error = FALSE,
+    tidy = FALSE,
+    cache = FALSE
+)
+```
+
+## What's new
+
+Version 2.0 integrates two well-known cubature libraries in one place:
+
+- The cubature C library  of [Steven G. Johnson](https://math.mit.edu/~stevenj/)
+- The Cuba C library of [Thomas Hahn](https://wwwth.mpp.mpg.de/members/hahn/)
+
+It also provides a single function `cubintegrate` that allows one to
+call all methods in a uniform fashion, as I explain below.
+
+__N.B.__ One has to be aware that there are cases where one library
+will integrate a function while the other won't. Where possible, I
+have brought such
+[problems](https://github.com/stevengj/cubature/issues/7) to the
+notice of the authors underlying C library and I encourage you to do
+the same, by providing reproducible examples.
+
+## Unified Interface
+
+Following a suggestion by Simen Guare, we now have a function
+`cubintegrate` that can be used to try out various integration methods
+easily. Some examples. 
+
+```{r}
+library(cubature)
+m <- 3
+sigma <- diag(3)
+sigma[2,1] <- sigma[1, 2] <- 3/5 ; sigma[3,1] <- sigma[1, 3] <- 1/3
+sigma[3,2] <- sigma[2, 3] <- 11/15
+logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
+my_dmvnorm <- function (x, mean, sigma, logdet) {
+    x <- matrix(x, ncol = length(x))
+    distval <- stats::mahalanobis(x, center = mean, cov = sigma)
+    exp(-(3 * log(2 * pi) + logdet + distval)/2)
+}
+```
+
+First we try the scalar invocation with `hcubature`.
+
+```{r}
+cubintegrate(f = my_dmvnorm, lower = rep(-0.5, 3), upper = c(1, 4, 2), method = "pcubature",
+             mean = rep(0, m), sigma = sigma, logdet = logdet)
+```
+
+We can compare that with Cuba's `cuhre`. 
+
+```{r}
+cubintegrate(f = my_dmvnorm, lower = rep(-0.5, 3), upper = c(1, 4, 2), method = "cuhre",
+             mean = rep(0, m), sigma = sigma, logdet = logdet)
+```
+
+The Cuba routine can take various further arguments; see for example,
+the help on `cuhre`. Such arguments can be directly passed to
+`cubintegrate`. 
+
+```{r}
+cubintegrate(f = my_dmvnorm, lower = rep(-0.5, 3), upper = c(1, 4, 2), method = "cuhre",
+             mean = rep(0, m), sigma = sigma, logdet = logdet,
+             flags = list(verbose = 2))
+```
+
+As there are many such method-specific arguments, you may find the
+function `default_args()` useful.
+
+```{r}
+default_args()
+```
+
+## Vectorization 
+
+`cubintegrate` provides vector intefaces too: the parameter `nVec` is
+by default 1, indicating a scalar interface. Any value > 1 results in
+a vectorized call. So `f` has to be constructed appropriately, thus:
+```{r}
+my_dmvnorm_v <- function (x, mean, sigma, logdet) {
+    distval <- stats::mahalanobis(t(x), center = mean, cov = sigma)
+    exp(matrix(-(3 * log(2 * pi) + logdet + distval)/2, ncol = ncol(x)))
+}
+```
+
+Here, the two underlying C libraries differ. The cubature library
+manages the number of points used in vectorization dynamically and
+this number can even vary from call to call. So any value of `nVec`
+greater than 1 is merely a flag to use vectorization. The Cuba C
+library on the other hand, will use the actual value of `nVec`. 
+
+```{r}
+cubintegrate(f = my_dmvnorm_v, lower = rep(-0.5, 3), upper = c(1, 4, 2), method = "pcubature",
+             mean = rep(0, m), sigma = sigma, logdet = logdet,
+             nVec = 128)
+```
+
+```{r}
+cubintegrate(f = my_dmvnorm_v, lower = rep(-0.5, 3), upper = c(1, 4, 2), method = "cuhre",
+             mean = rep(0, m), sigma = sigma, logdet = logdet,
+             nVec = 128)
+```
+
+## Session Info
+
+
+```{r}
+sessionInfo()
+```

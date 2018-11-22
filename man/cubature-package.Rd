@@ -4,15 +4,16 @@
 \name{cubature-package}
 \alias{cubature-package}
 \alias{cubature}
-\title{Cubature is a package for adaptive multidimensional integration over
-hypercubes}
+\title{Cubature is a package for adaptive and monte-carlo multidimensional
+integration over hypercubes}
 \description{
-Cubature is a package for adaptive multidimensional integration over
-hypercubes. It is a wrapper around the pure C, GPLed implementation by
-Steven G. Johnson available.
+Cubature is a package for adaptive and monte-carlo multidimensional
+integration over hypercubes. It is a wrapper around the pure C,
+GPLed implementations by Steven G. Johnson (cubature) and Thomas
+Hahn (Cuba) libraries.
 }
 \author{
-C code by Steven G. Johnson, R by Balasubramanian Narasimhan
+C code by Steven G. Johnson and Thomas Hahn, R by Balasubramanian Narasimhan, Manuel Koller, Simen Gaure, Kiên Kiêu, and Annie Bouvier
 
 Maintainer: Balasubramanian Narasimhan\href{mailto:naras@stat.stanford.edu}{naras@stat.stanford.edu}
 }

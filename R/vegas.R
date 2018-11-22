@@ -12,34 +12,16 @@
 #' @importFrom Rcpp evalCpp
 #'
 #' @inheritParams cuhre
-#' @param f The function (integrand) to be integrated as in \code{\link{cuhre}}. Optionally, the
-#'     function can take two additional arguments in addition to the
-#'     variable being integrated: - \code{cuba_weight} which is the
-#'     weight of the point being sampled, - \code{cuba_iter} the
-#'     current iteration number. The function author may choose to use
-#'     these in any appropriate way or ignore them altogether.
-#' @param flags flags governing the integration. A list with
-#'     components: - \code{verbose}: \code{verbose} encodes the
-#'     verbosity level, from 0 (default) to 3.  Level 0 does not print
-#'     any output, level 1 prints \dQuote{reasonable} information on
-#'     the progress of the integration, levels 2 and 3 echo the input
-#'     parameters.  - \code{final}: when \code{ 0}, all sets of
-#'     samples collected on a subregion during the various iterations
-#'     or phases contribute to the final result.  When \code{ 1}, only
-#'     the last (largest) set of samples is used in the final result.
-#'     - \code{smooth}. When \code{smooth = 0}, apply additional
-#'     smoothing to the importance function, this moderately improves
-#'     convergence for many integrands.  When \code{smooth = 1} , use
-#'     the importance function without smoothing, this should be
-#'     chosen if the integrand has sharp edges.  - \code{keep_state}:
-#'     when nonzero, retain state file if argument \code{stateFile} is
-#'     non-null.  - \code{load_state}: when zero, load state file if
-#'     found; if nonzero, reset state regardless - \code{level}: when
-#'     \code{0}, Mersenne Twister random numbers are used. When
-#'     nonzero Ranlux random numbers are used.  - \code{rngSeed}: When
-#'     zero, Sobol quasi-random numbers are used for
-#'     sampling. Otherwise the seed is used for the generator
-#'     indicated by \code{level}.
+#' @param f The function (integrand) to be integrated as in
+#'     \code{\link{cuhre}}. Optionally, the function can take two
+#'     additional arguments in addition to the variable being
+#'     integrated: - \code{cuba_weight} which is the weight of the
+#'     point being sampled, - \code{cuba_iter} the current iteration
+#'     number. The function author may choose to use these in any
+#'     appropriate way or ignore them altogether.
+#' @param rngSeed seed, default 12345, for the random number
+#'     generator. Note the articulation with \code{level} settings for
+#'     \code{flag}
 #' @param nStart the number of integrand evaluations per iteration to
 #'     start with.
 #' @param nIncrease the increase in the number of integrand
@@ -66,6 +48,20 @@
 #'     restore the grid number to its positive value, such that at the
 #'     end of the integration the grid is again stored in the
 #'     indicated slot.
+#' @return A list with components: \describe{\item{nregions}{the actual
+#'     number of subregions needed} \item{neval}{the actual number
+#'     of integrand evaluations needed} \item{returnCode}{if zero,
+#'     the desired accuracy was reached, if -1,
+#'     dimension out of range, if 1, the accuracy goal was not met
+#'     within the allowed maximum number of integrand evaluations.}
+#'     \item{integral}{vector of length \code{nComp}; the integral of
+#'     \code{integrand} over the hypercube} \item{error}{vector of
+#'     length \code{nComp}; the presumed absolute error of
+#'     \code{integral}} \item{prob}{vector of length \code{nComp};
+#'     the \eqn{\chi^2}{Chi2}-probability (not the
+#'     \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
+#'     reliable estimate of the true integration error.}}
+#'
 #' @seealso \code{\link{cuhre}}, \code{\link{suave}}, \code{\link{divonne}}
 #'
 #' @references G. P. Lepage (1978) A new algorithm for adaptive
@@ -94,7 +90,13 @@
 vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
                   relTol = 1e-5, absTol = 0,
                   minEval = 0L, maxEval = 10^6,
-                  flags = list(verbose = 1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed = 12345L),
+                  flags = list(verbose = 0L,
+                               final = 1L,
+                               smooth = 1L,
+                               keep_state = 0L,
+                               load_state = 0L,
+                               level = 0L),
+                  rngSeed = 12345L,
                   nVec = 1L, nStart = 1000L, nIncrease = 500L,
                   nBatch = 1000L, gridNo = 0L, stateFile = NULL) {
 
@@ -110,7 +112,7 @@ vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     if (relTol <= 0) {
         stop("tol should be positive!")
     }
-    all_flags <- list(verbose = 1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed = 12345L)
+    all_flags <- cuba_all_flags
     for (x in names(flags)) all_flags[[x]] <- flags[[x]]
 
     f <- match.fun(f)
@@ -159,7 +161,7 @@ vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
           nVec, minEval, maxEval,
           absTol, relTol, nStart,
           nIncrease, nBatch, gridNo,
-          stateFile, all_flags$rngSeed, flag_code,
+          stateFile, rngSeed, flag_code,
           cuba_params_exist)
 }
 
