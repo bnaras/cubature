@@ -11,6 +11,7 @@ do_test <- function(info_string,
     test_that(info_string, {
         method_names <- names(methods)
         names(expected) <- method_names
+        browser()
         for (name in method_names) {
             method <- methods[[name]]
             expect <- expected[[name]]
@@ -73,18 +74,18 @@ do_test(
     }
 )
 
-do_test(
-    info_string = "Displacement of Origin",
-    ## Suave and Vegas don't return code of 0!
-    expected = list(cuhre = list(code = 0, value = -0.02460334),
-                    divonne = list(code = 0, value = -0.02460334),
-                    suave = list(code = 1, value = -0.02460334),
-                    vegas = list(code = 1, value = -0.02460334)),
-    scalar_f = function(x) sin(x[1] - 3) * cos(x[2] - 2) * exp(x[3] - 1),
-    vector_f = function(x) {
-        apply(x, 2, function(z) sin(z[1] - 3) * cos(z[2] - 2) * exp(z[3] - 1))
-    }
-)
+## do_test(
+##     info_string = "Displacement of Origin",
+##     ## Suave and Vegas don't return code of 0!
+##     expected = list(cuhre = list(code = 0, value = -0.02460334),
+##                     divonne = list(code = 0, value = -0.02460334),
+##                     suave = list(code = 0, value = -0.02460334),
+##                     vegas = list(code = 1, value = -0.02460334)),
+##     scalar_f = function(x) sin(x[1] - 3) * cos(x[2] - 2) * exp(x[3] - 1),
+##     vector_f = function(x) {
+##         apply(x, 2, function(z) sin(z[1] - 3) * cos(z[2] - 2) * exp(z[3] - 1))
+##     }
+## )
 
 do_test(
     info_string = "Phase and Shift",

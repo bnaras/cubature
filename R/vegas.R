@@ -19,7 +19,7 @@
 #'     point being sampled, - \code{cuba_iter} the current iteration
 #'     number. The function author may choose to use these in any
 #'     appropriate way or ignore them altogether.
-#' @param rngSeed seed, default 12345, for the random number
+#' @param rngSeed seed, default 0, for the random number
 #'     generator. Note the articulation with \code{level} settings for
 #'     \code{flag}
 #' @param nStart the number of integrand evaluations per iteration to
@@ -88,11 +88,11 @@
 #'
 #' @export vegas
 vegas <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
-                  relTol = 1e-5, absTol = 0,
+                  relTol = 1e-5, absTol = 1e-12,
                   minEval = 0L, maxEval = 10^6,
                   flags = list(verbose = 0L,
                                final = 1L,
-                               smooth = 1L,
+                               smooth = 0L,
                                keep_state = 0L,
                                load_state = 0L,
                                level = 0L),

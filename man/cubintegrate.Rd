@@ -6,7 +6,7 @@
 \usage{
 cubintegrate(f, lower, upper, fDim = 1, method = c("hcubature",
   "pcubature", "cuhre", "divonne", "suave", "vegas"), relTol = 1e-05,
-  absTol = 0, maxEval = 10^6, nVec = 1L, ...)
+  absTol = 1e-12, maxEval = 10^6, nVec = 1L, ...)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated. Can be
@@ -25,9 +25,12 @@ hypercubes.}
 relation to the dimension of the hypercube over which
 integration is performed.}
 
+\item{method}{the method to use should be one of "hcubature",
+"pcubature", "cuhre", "divonne", "suave" or "vegas".}
+
 \item{relTol}{The maximum tolerance, default 1e-5.}
 
-\item{absTol}{the absolute tolerance, default 0.}
+\item{absTol}{the absolute tolerance, default 1e-12.}
 
 \item{maxEval}{The maximum number of function evaluations needed,
 default 10^6.  Note that the actual number of function

@@ -5,9 +5,9 @@
 \title{Integration with SUbregion-Adaptive Vegas Algorithm}
 \usage{
 suave(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
-  absTol = 0, minEval = 0L, maxEval = 10^6, flags = list(verbose =
-  0L, final = 1L, smooth = 1L, keep_state = 0L, load_state = 0L, level =
-  0L), rngSeed = 12345L, nVec = 1L, nNew = 1000L, nMin = 50L,
+  absTol = 1e-12, minEval = 0L, maxEval = 10^6,
+  flags = list(verbose = 0L, final = 1L, smooth = 0L, keep_state = 0L,
+  level = 0L), rngSeed = 0L, nVec = 1L, nNew = 1000L, nMin = 50L,
   flatness = 50, stateFile = NULL)
 }
 \arguments{
@@ -33,7 +33,7 @@ hypercubes.}
 
 \item{relTol}{The maximum tolerance, default 1e-5.}
 
-\item{absTol}{the absolute tolerance, default 0.}
+\item{absTol}{the absolute tolerance, default 1e-12.}
 
 \item{minEval}{the minimum number of function evaluations required}
 
@@ -45,51 +45,47 @@ exceed this number.}
 \item{flags}{flags governing the integration. The list here is
 exhaustive to keep the documentation and invocation uniform,
 but not all flags may be used for a particular method as noted
-below.  List components: \describe{
-\item{\code{verbose}}{
+below.  List components: \describe{ \item{\code{verbose}}{
 encodes the verbosity level, from 0 (default) to 3.  Level 0
 does not print any output, level 1 prints reasonable
 information on the progress of the integration, level 2 also
 echoes the input parameters, and level 3 further prints the
-subregion results.}
-\item{\code{final}}{when 0, all sets of
+subregion results.}  \item{\code{final}}{when 0, all sets of
 samples collected on a subregion during the various iterations
-or phases contribute to the final result.  When 1, only
-the last (largest) set of samples is used in the final result.}
-\item{\code{smooth}}{when 0, apply additional
-smoothing to the importance function, this moderately improves
-convergence for many integrands.  When 1, use
-the importance function without smoothing, this should be
+or phases contribute to the final result.  When 1, only the
+last (largest) set of samples is used in the final result.}
+\item{\code{smooth}}{Applies to Suave and Vegas only. When 0,
+apply additional smoothing to the importance function, this
+moderately improves convergence for many integrands.  When 1,
+use the importance function without smoothing, this should be
 chosen if the integrand has sharp edges.}
-\item{\code{keep_state}}{when nonzero, retain state file if argument \code{stateFile} is
-non-null, else delete \code{stateFile} if specified.}
+\item{\code{keep_state}}{when nonzero, retain state file if
+argument \code{stateFile} is non-null, else delete
+\code{stateFile} if specified.}
 \item{\code{load_state}}{Applies to Vegas only. Reset the
 integrator’s state even if a state file is present, i.e. keep
 only the grid. Together with \code{keep_state} this allows a
 grid adapted by one integration to be used for another
-integrand.}
-\item{\code{level}}{applies only to
-Divonne, Suave and Vegas. When \code{0}, Mersenne Twister
-random numbers are used. When nonzero Ranlux random numbers are
-used, except when \code{rngSeed} is zero which forces use of
-Sobol quasi-random numbers. Ranlux implements Marsaglia and
-Zaman’s 24-bit RCARRY algorithm with generation period p,
-i.e. for every 24 generated numbers used, another p − 24 are
-skipped. The luxury level for the Ranlux generator may be
-encoded in \code{level} as follows: \describe{
-\item{Level 1 (p = 48)}{gives very
-long period, passes the gap test but fails spectral test}
-\item{Level 2 (p = 97)}{passes all known tests, but theoretically
-still defective} \item{Level 3 (p = 223)}{any theoretically
-possible correlations have very small chance of being
-observed} \item{Level 4 (p = 389)}{highest possible luxury, all 24
-bits chaotic} \item{Levels 5–23}{default to 3, values above 24
-directly specify the period p.}}
-Note that Ranlux’s original
+integrand.}  \item{\code{level}}{applies only to Divonne, Suave
+and Vegas. When \code{0}, Mersenne Twister random numbers are
+used. When nonzero Ranlux random numbers are used, except when
+\code{rngSeed} is zero which forces use of Sobol quasi-random
+numbers. Ranlux implements Marsaglia and Zaman’s 24-bit RCARRY
+algorithm with generation period p, i.e. for every 24 generated
+numbers used, another p − 24 are skipped. The luxury level for
+the Ranlux generator may be encoded in \code{level} as follows:
+\describe{ \item{Level 1 (p = 48)}{gives very long period,
+passes the gap test but fails spectral test} \item{Level 2 (p =
+97)}{passes all known tests, but theoretically still defective}
+\item{Level 3 (p = 223)}{any theoretically possible
+correlations have very small chance of being observed}
+\item{Level 4 (p = 389)}{highest possible luxury, all 24 bits
+chaotic} \item{Levels 5–23}{default to 3, values above 24
+directly specify the period p.}}  Note that Ranlux’s original
 level 0, (mis)used for selecting Mersenne Twister in Cuba, is
 equivalent to \code{level} = 24.}}}
 
-\item{rngSeed}{seed, default 12345, for the random number
+\item{rngSeed}{seed, default 0, for the random number
 generator. Note the articulation with \code{level} settings for
 \code{flag}}
 

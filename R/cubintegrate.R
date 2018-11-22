@@ -14,14 +14,10 @@ cuba_common_defaults <- list(
     stateFile = NULL
 )
 
-cuba_rngSeed_default <- list(
-    rngSeed = 12345L
-)
-
 cuba_all_flags <- list(
     verbose = 0L,
     final = 1L,
-    smooth = 1L,
+    smooth = 0L,
     keep_state = 0L,
     load_state = 0L,
     level = 0L
@@ -49,7 +45,7 @@ default_args <- function() {
         divonne = c(cuba_common_defaults,
                     flags = list(cuba_all_flags),
                     list(
-                        rngSeed = 12345L,
+                        rngSeed = 0L,
                         key1 = 47L,
                         key2 = 1L,
                         key3 = 1L,
@@ -64,7 +60,7 @@ default_args <- function() {
         sauve = c(cuba_common_defaults,
                   flags = list(cuba_all_flags),
                   list(
-                      rngSeed = 12345L,
+                      rngSeed = 0L,
                       nNew = 1000L,
                       nMin = 50L,
                       flatness = 50)
@@ -72,7 +68,7 @@ default_args <- function() {
         vegas = c(cuba_common_defaults,
                   flags = list(cuba_all_flags),
                   list(
-                      rngSeed = 12345L,
+                      rngSeed = 0L,
                       nStart = 1000L,
                       nIncrease = 500L,
                       nBatch = 1000L,
@@ -101,7 +97,7 @@ default_args <- function() {
 #' @param upper The upper limit of integration, a vector for
 #'     hypercubes.
 #' @param relTol The maximum tolerance, default 1e-5.
-#' @param absTol the absolute tolerance, default 0.
+#' @param absTol the absolute tolerance, default 1e-12.
 #' @param maxEval The maximum number of function evaluations needed,
 #'     default 10^6.  Note that the actual number of function
 #'     evaluations performed is only approximately guaranteed not to
@@ -114,6 +110,8 @@ default_args <- function() {
 #'     its own and can vary between calls. Therefore, any value for
 #'     nVec greater than one implies vectorization for a cubature
 #'     method.
+#' @param method the method to use should be one of "hcubature",
+#'     "pcubature", "cuhre", "divonne", "suave" or "vegas".
 #' @param ...  All other arguments which may include integration
 #'     method specific parameters and those for f. Unrecognized
 #'     parameters for integration method are presumed to be intended
@@ -159,7 +157,7 @@ cubintegrate <- function(f, lower, upper, fDim = 1,
                                     'suave',
                                     'vegas'),
                          relTol = 1e-5,
-                         absTol = 0,
+                         absTol = 1e-12,
                          maxEval = 10^6,
                          nVec = 1L,
                          ...) {

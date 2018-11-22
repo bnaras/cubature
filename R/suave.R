@@ -61,15 +61,14 @@
 #'
 #' @export suave
 suave <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
-                  relTol = 1e-5, absTol = 0,
+                  relTol = 1e-5, absTol = 1e-12,
                   minEval = 0L, maxEval = 10^6,
                   flags = list(verbose = 0L,
                                final = 1L,
-                               smooth = 1L,
+                               smooth = 0L,
                                keep_state = 0L,
-                               load_state = 0L,
                                level = 0L),
-                  rngSeed = 12345L,
+                  rngSeed = 0L,
                   nVec = 1L, nNew = 1000L, nMin = 50L,
                   flatness = 50, stateFile = NULL) {
 
@@ -127,7 +126,7 @@ suave <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     }
 
     flag_code <- all_flags$verbose + 2^2 * all_flags$final + 2^3 * all_flags$smooth +
-        2^4 * all_flags$keep_state + 2^5 * all_flags$load_state + 2^8 * all_flags$level
+        2^4 * all_flags$keep_state + 2^8 * all_flags$level
 
     .Call('_cubature_doSuave', PACKAGE = 'cubature',
           nComp, fnF, nL,

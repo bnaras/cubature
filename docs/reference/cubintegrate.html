@@ -131,7 +131,7 @@ help on the method or <code><a href='default_args.html'>default_args</a></code>'
 
     <pre class="usage"><span class='fu'>cubintegrate</span>(<span class='no'>f</span>, <span class='no'>lower</span>, <span class='no'>upper</span>, <span class='kw'>fDim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"hcubature"</span>,
   <span class='st'>"pcubature"</span>, <span class='st'>"cuhre"</span>, <span class='st'>"divonne"</span>, <span class='st'>"suave"</span>, <span class='st'>"vegas"</span>), <span class='kw'>relTol</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>,
-  <span class='kw'>absTol</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>maxEval</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>6</span>, <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>absTol</span> <span class='kw'>=</span> <span class='fl'>1e-12</span>, <span class='kw'>maxEval</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>6</span>, <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,12 +161,17 @@ relation to the dimension of the hypercube over which
 integration is performed.</p></td>
     </tr>
     <tr>
+      <th>method</th>
+      <td><p>the method to use should be one of "hcubature",
+"pcubature", "cuhre", "divonne", "suave" or "vegas".</p></td>
+    </tr>
+    <tr>
       <th>relTol</th>
       <td><p>The maximum tolerance, default 1e-5.</p></td>
     </tr>
     <tr>
       <th>absTol</th>
-      <td><p>the absolute tolerance, default 0.</p></td>
+      <td><p>the absolute tolerance, default 1e-12.</p></td>
     </tr>
     <tr>
       <th>maxEval</th>

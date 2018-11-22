@@ -130,9 +130,9 @@ adaptive subdivision scheme.  The subdivision algorithm is similar to
     </div>
 
     <pre class="usage"><span class='fu'>cuhre</span>(<span class='no'>f</span>, <span class='kw'>nComp</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>lowerLimit</span>, <span class='no'>upperLimit</span>, <span class='no'>...</span>, <span class='kw'>relTol</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>,
-  <span class='kw'>absTol</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>minEval</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>maxEval</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>6</span>, <span class='kw'>flags</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>verbose</span> <span class='kw'>=</span>
-  <span class='fl'>0L</span>, <span class='kw'>final</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>keep_state</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>load_state</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>level</span> <span class='kw'>=</span>
-  <span class='fl'>0L</span>), <span class='kw'>key</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>absTol</span> <span class='kw'>=</span> <span class='fl'>1e-12</span>, <span class='kw'>minEval</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>maxEval</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>6</span>,
+  <span class='kw'>flags</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>final</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>keep_state</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0L</span>),
+  <span class='kw'>key</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>nVec</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>stateFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,7 +169,7 @@ hypercubes.</p></td>
     </tr>
     <tr>
       <th>absTol</th>
-      <td><p>the absolute tolerance, default 0.</p></td>
+      <td><p>the absolute tolerance, default 1e-12.</p></td>
     </tr>
     <tr>
       <th>minEval</th>
@@ -192,41 +192,39 @@ below.  List components:</p><dl class='dl-horizontal'>
 does not print any output, level 1 prints reasonable
 information on the progress of the integration, level 2 also
 echoes the input parameters, and level 3 further prints the
-subregion results.</p></dd>
-<dt><code>final</code></dt><dd><p>when 0, all sets of
+subregion results.</p></dd>  <dt><code>final</code></dt><dd><p>when 0, all sets of
 samples collected on a subregion during the various iterations
-or phases contribute to the final result.  When 1, only
-the last (largest) set of samples is used in the final result.</p></dd>
-<dt><code>smooth</code></dt><dd><p>when 0, apply additional
-smoothing to the importance function, this moderately improves
-convergence for many integrands.  When 1, use
-the importance function without smoothing, this should be
+or phases contribute to the final result.  When 1, only the
+last (largest) set of samples is used in the final result.</p></dd>
+<dt><code>smooth</code></dt><dd><p>Applies to Suave and Vegas only. When 0,
+apply additional smoothing to the importance function, this
+moderately improves convergence for many integrands.  When 1,
+use the importance function without smoothing, this should be
 chosen if the integrand has sharp edges.</p></dd>
-<dt><code>keep_state</code></dt><dd><p>when nonzero, retain state file if argument <code>stateFile</code> is
-non-null, else delete <code>stateFile</code> if specified.</p></dd>
+<dt><code>keep_state</code></dt><dd><p>when nonzero, retain state file if
+argument <code>stateFile</code> is non-null, else delete
+<code>stateFile</code> if specified.</p></dd>
 <dt><code>load_state</code></dt><dd><p>Applies to Vegas only. Reset the
 integrator’s state even if a state file is present, i.e. keep
 only the grid. Together with <code>keep_state</code> this allows a
 grid adapted by one integration to be used for another
-integrand.</p></dd>
-<dt><code>level</code></dt><dd><p>applies only to
-Divonne, Suave and Vegas. When <code>0</code>, Mersenne Twister
-random numbers are used. When nonzero Ranlux random numbers are
-used, except when <code>rngSeed</code> is zero which forces use of
-Sobol quasi-random numbers. Ranlux implements Marsaglia and
-Zaman’s 24-bit RCARRY algorithm with generation period p,
-i.e. for every 24 generated numbers used, another p − 24 are
-skipped. The luxury level for the Ranlux generator may be
-encoded in <code>level</code> as follows: <dl class='dl-horizontal'>
-<dt>Level 1 (p = 48)</dt><dd><p>gives very
-long period, passes the gap test but fails spectral test</p></dd>
-<dt>Level 2 (p = 97)</dt><dd><p>passes all known tests, but theoretically
-still defective</p></dd> <dt>Level 3 (p = 223)</dt><dd><p>any theoretically
-possible correlations have very small chance of being
-observed</p></dd> <dt>Level 4 (p = 389)</dt><dd><p>highest possible luxury, all 24
-bits chaotic</p></dd> <dt>Levels 5–23</dt><dd><p>default to 3, values above 24
-directly specify the period p.</p></dd></dl>
-Note that Ranlux’s original
+integrand.</p></dd>  <dt><code>level</code></dt><dd><p>applies only to Divonne, Suave
+and Vegas. When <code>0</code>, Mersenne Twister random numbers are
+used. When nonzero Ranlux random numbers are used, except when
+<code>rngSeed</code> is zero which forces use of Sobol quasi-random
+numbers. Ranlux implements Marsaglia and Zaman’s 24-bit RCARRY
+algorithm with generation period p, i.e. for every 24 generated
+numbers used, another p − 24 are skipped. The luxury level for
+the Ranlux generator may be encoded in <code>level</code> as follows:
+<dl class='dl-horizontal'>
+<dt>Level 1 (p = 48)</dt><dd><p>gives very long period,
+passes the gap test but fails spectral test</p></dd> <dt>Level 2 (p =
+97)</dt><dd><p>passes all known tests, but theoretically still defective</p></dd>
+<dt>Level 3 (p = 223)</dt><dd><p>any theoretically possible
+correlations have very small chance of being observed</p></dd>
+<dt>Level 4 (p = 389)</dt><dd><p>highest possible luxury, all 24 bits
+chaotic</p></dd> <dt>Levels 5–23</dt><dd><p>default to 3, values above 24
+directly specify the period p.</p></dd></dl>  Note that Ranlux’s original
 level 0, (mis)used for selecting Mersenne Twister in Cuba, is
 equivalent to <code>level</code> = 24.</p></dd></dl></td>
     </tr>
@@ -267,16 +265,16 @@ integrations from which the calculation can be restarted.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list with components:</p><dl class='dl-horizontal'>
- <dt>neval</dt><dd><p>the actual number
-of integrand evaluations needed</p></dd> <dt>returnCode</dt><dd><p>if zero,
-the desired accuracy was reached, if -1,
-dimension out of range, if 1, the accuracy goal was not met
-within the allowed maximum number of integrand evaluations.</p></dd>
+ <dt>neval</dt><dd><p>the actual
+number of integrand evaluations needed</p></dd> <dt>returnCode</dt><dd><p>if
+zero, the desired accuracy was reached, if -1, dimension out of
+range, if 1, the accuracy goal was not met within the allowed
+maximum number of integrand evaluations.</p></dd>
 <dt>integral</dt><dd><p>vector of length <code>nComp</code>; the integral of
 <code>integrand</code> over the hypercube</p></dd> <dt>error</dt><dd><p>vector of
 length <code>nComp</code>; the presumed absolute error of
-<code>integral</code></p></dd> <dt>prob</dt><dd><p>vector of length <code>nComp</code>;
-the \(\chi^2\)-probability (not the
+<code>integral</code></p></dd> <dt>prob</dt><dd><p>vector of length <code>nComp</code>; the
+\(\chi^2\)-probability (not the
 \(\chi^2\)-value itself!) that <code>error</code> is not a
 reliable estimate of the true integration error.</p></dd></dl>
 
