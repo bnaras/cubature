@@ -28,7 +28,7 @@ LinkingTo: Rcpp
 Imports: Rcpp
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Suggests: testthat,
 	  knitr,
 	  mvtnorm,

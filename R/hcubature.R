@@ -43,7 +43,7 @@
 #' @param norm For vector-valued integrands, \code{norm} specifies the
 #'     norm that is used to measure the error and determine
 #'     convergence properties. See below.
-#' @return The returned value is a list of three items:
+#' @return The returned value is a list of four items:
 #'     \item{integral}{the value of the integral} \item{error}{the
 #'     estimated relative error} \item{functionEvaluations}{the number
 #'     of times the function was evaluated} \item{returnCode}{the

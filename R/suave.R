@@ -28,6 +28,19 @@
 #'     flatness appears in the exponent, one should not use too large
 #'     values (say, no more than a few hundred) lest terms be
 #'     truncated internally to prevent overflow.
+#' @return A list with components: \describe{\item{nregions}{the actual
+#'     number of subregions needed} \item{neval}{the actual number
+#'     of integrand evaluations needed} \item{returnCode}{if zero,
+#'     the desired accuracy was reached, if -1,
+#'     dimension out of range, if 1, the accuracy goal was not met
+#'     within the allowed maximum number of integrand evaluations.}
+#'     \item{integral}{vector of length \code{nComp}; the integral of
+#'     \code{integrand} over the hypercube} \item{error}{vector of
+#'     length \code{nComp}; the presumed absolute error of
+#'     \code{integral}} \item{prob}{vector of length \code{nComp};
+#'     the \eqn{\chi^2}{Chi2}-probability (not the
+#'     \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
+#'     reliable estimate of the true integration error.}}
 #'
 #' @seealso \code{\link{cuhre}}, \code{\link{divonne}}, \code{\link{vegas}}
 #' @references T. Hahn (2005) CUBA-a library for multidimensional numerical
@@ -48,9 +61,14 @@
 #'
 #' @export suave
 suave <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
-                  relTol = 1e-5, absTol = 0,
+                  relTol = 1e-5, absTol = 1e-12,
                   minEval = 0L, maxEval = 10^6,
-                  flags = list(verbose = 1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed = 12345L),
+                  flags = list(verbose = 0L,
+                               final = 1L,
+                               smooth = 0L,
+                               keep_state = 0L,
+                               level = 0L),
+                  rngSeed = 0L,
                   nVec = 1L, nNew = 1000L, nMin = 50L,
                   flatness = 50, stateFile = NULL) {
 
@@ -66,7 +84,7 @@ suave <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     if (relTol <= 0) {
         stop("tol should be positive!")
     }
-    all_flags <- list(verbose = 1, final = 1, smooth = 1, keep_state = 0, load_state = 0, level = 0, rngSeed = 12345L)
+    all_flags <- cuba_all_flags
     for (x in names(flags)) all_flags[[x]] <- flags[[x]]
 
     f <- match.fun(f)
@@ -108,14 +126,14 @@ suave <- function(f, nComp = 1L, lowerLimit, upperLimit, ...,
     }
 
     flag_code <- all_flags$verbose + 2^2 * all_flags$final + 2^3 * all_flags$smooth +
-        2^4 * all_flags$keep_state + 2^5 * all_flags$load_state + 2^8 * all_flags$level
+        2^4 * all_flags$keep_state + 2^8 * all_flags$level
 
     .Call('_cubature_doSuave', PACKAGE = 'cubature',
           nComp, fnF, nL,
           nVec, minEval, maxEval,
           absTol, relTol,
           nNew, nMin, flatness,
-          stateFile, all_flags$rngSeed, flag_code,
+          stateFile, rngSeed, flag_code,
           cuba_params_exist)
 }
 

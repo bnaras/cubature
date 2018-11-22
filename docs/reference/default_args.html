@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • cubature</title>
+<title>Default arguments for each integration method — default_args • cubature</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,12 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Default arguments for each integration method — default_args" />
+
+<meta property="og:description" content="Since each method has a different set of parameters, this function
+returns the default values of all parameters that can be modified
+and passed to integration routines." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +52,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -107,85 +112,224 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Default arguments for each integration method</h1>
+    
+    <div class="hidden name"><code>default_args.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Since each method has a different set of parameters, this function
+returns the default values of all parameters that can be modified
+and passed to integration routines.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>default_args</span>()</pre>
+        
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="cubature-package.html">cubature-package</a></code> </p>
-        </td>
-        <td><p>Cubature is a package for adaptive and monte-carlo multidimensional
-integration over hypercubes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cubintegrate.html">cubintegrate()</a></code> </p>
-        </td>
-        <td><p>Unified Cubature Integration Interface</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cuhre.html">cuhre()</a></code> </p>
-        </td>
-        <td><p>Integration by a Deterministic Iterative Adaptive Algorithm</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="default_args.html">default_args()</a></code> </p>
-        </td>
-        <td><p>Default arguments for each integration method</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="divonne.html">divonne()</a></code> </p>
-        </td>
-        <td><p>Integration by Stratified Sampling for Variance Reduction</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="hcubature.html">hcubature()</a></code> <code><a href="hcubature.html">pcubature()</a></code> </p>
-        </td>
-        <td><p>Adaptive multivariate integration over hypercubes (hcubature and pcubature)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="suave.html">suave()</a></code> </p>
-        </td>
-        <td><p>Integration with SUbregion-Adaptive Vegas Algorithm</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="vegas.html">vegas()</a></code> </p>
-        </td>
-        <td><p>Integration by a Monte Carlo Algorithm</p></td>
-      </tr>
-    </tbody>
-    </table>
+    <p>a named list of parameters for each method.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>default_args</span>()</div><div class='output co'>#&gt; $hcubature
+#&gt; $hcubature$norm
+#&gt; [1] "INDIVIDUAL" "PAIRED"     "L2"         "L1"         "LINF"      
+#&gt; 
+#&gt; 
+#&gt; $pcubature
+#&gt; $pcubature$norm
+#&gt; [1] "INDIVIDUAL" "PAIRED"     "L2"         "L1"         "LINF"      
+#&gt; 
+#&gt; 
+#&gt; $cuhre
+#&gt; $cuhre$minEval
+#&gt; [1] 0
+#&gt; 
+#&gt; $cuhre$stateFile
+#&gt; NULL
+#&gt; 
+#&gt; $cuhre$flags
+#&gt; $cuhre$flags$verbose
+#&gt; [1] 0
+#&gt; 
+#&gt; $cuhre$flags$final
+#&gt; [1] 1
+#&gt; 
+#&gt; $cuhre$flags$smooth
+#&gt; [1] 0
+#&gt; 
+#&gt; $cuhre$flags$keep_state
+#&gt; [1] 0
+#&gt; 
+#&gt; $cuhre$flags$load_state
+#&gt; [1] 0
+#&gt; 
+#&gt; $cuhre$flags$level
+#&gt; [1] 0
+#&gt; 
+#&gt; 
+#&gt; $cuhre$key
+#&gt; [1] 0
+#&gt; 
+#&gt; 
+#&gt; $divonne
+#&gt; $divonne$minEval
+#&gt; [1] 0
+#&gt; 
+#&gt; $divonne$stateFile
+#&gt; NULL
+#&gt; 
+#&gt; $divonne$flags
+#&gt; $divonne$flags$verbose
+#&gt; [1] 0
+#&gt; 
+#&gt; $divonne$flags$final
+#&gt; [1] 1
+#&gt; 
+#&gt; $divonne$flags$smooth
+#&gt; [1] 0
+#&gt; 
+#&gt; $divonne$flags$keep_state
+#&gt; [1] 0
+#&gt; 
+#&gt; $divonne$flags$load_state
+#&gt; [1] 0
+#&gt; 
+#&gt; $divonne$flags$level
+#&gt; [1] 0
+#&gt; 
+#&gt; 
+#&gt; $divonne$rngSeed
+#&gt; [1] 0
+#&gt; 
+#&gt; $divonne$key1
+#&gt; [1] 47
+#&gt; 
+#&gt; $divonne$key2
+#&gt; [1] 1
+#&gt; 
+#&gt; $divonne$key3
+#&gt; [1] 1
+#&gt; 
+#&gt; $divonne$maxPass
+#&gt; [1] 5
+#&gt; 
+#&gt; $divonne$border
+#&gt; [1] 0
+#&gt; 
+#&gt; $divonne$maxChisq
+#&gt; [1] 10
+#&gt; 
+#&gt; $divonne$minDeviation
+#&gt; [1] 0.25
+#&gt; 
+#&gt; $divonne$xGiven
+#&gt; NULL
+#&gt; 
+#&gt; $divonne$nExtra
+#&gt; [1] 0
+#&gt; 
+#&gt; $divonne$peakFinder
+#&gt; NULL
+#&gt; 
+#&gt; 
+#&gt; $sauve
+#&gt; $sauve$minEval
+#&gt; [1] 0
+#&gt; 
+#&gt; $sauve$stateFile
+#&gt; NULL
+#&gt; 
+#&gt; $sauve$flags
+#&gt; $sauve$flags$verbose
+#&gt; [1] 0
+#&gt; 
+#&gt; $sauve$flags$final
+#&gt; [1] 1
+#&gt; 
+#&gt; $sauve$flags$smooth
+#&gt; [1] 0
+#&gt; 
+#&gt; $sauve$flags$keep_state
+#&gt; [1] 0
+#&gt; 
+#&gt; $sauve$flags$load_state
+#&gt; [1] 0
+#&gt; 
+#&gt; $sauve$flags$level
+#&gt; [1] 0
+#&gt; 
+#&gt; 
+#&gt; $sauve$rngSeed
+#&gt; [1] 0
+#&gt; 
+#&gt; $sauve$nNew
+#&gt; [1] 1000
+#&gt; 
+#&gt; $sauve$nMin
+#&gt; [1] 50
+#&gt; 
+#&gt; $sauve$flatness
+#&gt; [1] 50
+#&gt; 
+#&gt; 
+#&gt; $vegas
+#&gt; $vegas$minEval
+#&gt; [1] 0
+#&gt; 
+#&gt; $vegas$stateFile
+#&gt; NULL
+#&gt; 
+#&gt; $vegas$flags
+#&gt; $vegas$flags$verbose
+#&gt; [1] 0
+#&gt; 
+#&gt; $vegas$flags$final
+#&gt; [1] 1
+#&gt; 
+#&gt; $vegas$flags$smooth
+#&gt; [1] 0
+#&gt; 
+#&gt; $vegas$flags$keep_state
+#&gt; [1] 0
+#&gt; 
+#&gt; $vegas$flags$load_state
+#&gt; [1] 0
+#&gt; 
+#&gt; $vegas$flags$level
+#&gt; [1] 0
+#&gt; 
+#&gt; 
+#&gt; $vegas$rngSeed
+#&gt; [1] 0
+#&gt; 
+#&gt; $vegas$nStart
+#&gt; [1] 1000
+#&gt; 
+#&gt; $vegas$nIncrease
+#&gt; [1] 500
+#&gt; 
+#&gt; $vegas$nBatch
+#&gt; [1] 1000
+#&gt; 
+#&gt; $vegas$gridNo
+#&gt; [1] 0
+#&gt; 
+#&gt; </div></pre>
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

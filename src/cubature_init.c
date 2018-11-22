@@ -2,6 +2,7 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 #include <cubature.h>
+#include <cuba.h>
 
 
 /* .Call entry points */
@@ -38,4 +39,11 @@ void R_init_cubature(DllInfo *dll) {
   R_RegisterCCallable("cubature", "hcubature_v", (DL_FUNC) hcubature_v);
   R_RegisterCCallable("cubature", "pcubature", (DL_FUNC) pcubature);
   R_RegisterCCallable("cubature", "pcubature_v", (DL_FUNC) pcubature_v);
+
+  /* For future if people need it */
+  /* R_RegisterCCallable("cubature", "Cuhre", (DL_FUNC) Cuhre); */
+  /* R_RegisterCCallable("cubature", "Divonne", (DL_FUNC) Divonne); */
+  /* R_RegisterCCallable("cubature", "Suave", (DL_FUNC) Suave); */
+  /* R_RegisterCCallable("cubature", "Vegas", (DL_FUNC) Vegas); */
+
 }

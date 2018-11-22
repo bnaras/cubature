@@ -7,6 +7,14 @@
 #include <cuba.h>
 
 // Cuhre
+// int my_Integrand(const int *ndim, const cubareal xx[],
+//   const int *ncomp, cubareal ff[], void *userdata) {
+
+// #define Y (4*xx[0]-2)
+//     ff[0] = 4*sin(4*Y) * Y * ((Y * ( Y * (Y*Y-4) + 1) - 1));  
+//     Rcpp::Rcout<< ff[0] <<std::endl;
+//     return 0;
+// }
 
 // REMINDER nDim is 3, nComp = 1
 int cuhre_fWrapper(const int *nDim, const double x[],
@@ -58,7 +66,17 @@ Rcpp::List doCuhre(int nComp, SEXP f, int nDim,
         sv = Rcpp::StringVector(stateFile);
         filename = sv(0);
     }
-    
+
+    // int count = 0;
+    // Cuhre(nDim, nComp, (integrand_t) my_Integrand, NULL, nVec,
+    //       relTol, absTol, flag,
+    //       minEval, maxEval, key,
+    //       filename,
+    //       NULL,
+    //       &nregions, &count, &fail,
+    //       integral.begin(), errVals.begin(), prob.begin());
+
+
     Cuhre(nDim, nComp, (integrand_t) cuhre_fWrapper, (void *) &II, nVec,
           relTol, absTol, flag,
           minEval, maxEval, key,
