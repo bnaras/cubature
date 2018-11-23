@@ -12,8 +12,10 @@
 #include "config.h"
 #endif
 
-#define _BSD_SOURCE
-#define _SVID_SOURCE
+/* #define _BSD_SOURCE */
+/* #define _SVID_SOURCE */
+
+#define _DEFAULT_SOURCE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -470,7 +472,7 @@ typedef struct {
       count n24, i24, j24, nskip;
       int carry, state[24];
     } ranlux;
-  };
+  } rng_union;
 } RNGState;
 
 
