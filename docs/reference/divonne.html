@@ -218,16 +218,16 @@ chosen if the integrand has sharp edges.</p></dd>
 argument <code>stateFile</code> is non-null, else delete
 <code>stateFile</code> if specified.</p></dd>
 <dt><code>load_state</code></dt><dd><p>Applies to Vegas only. Reset the
-integrator’s state even if a state file is present, i.e. keep
+integrator's state even if a state file is present, i.e. keep
 only the grid. Together with <code>keep_state</code> this allows a
 grid adapted by one integration to be used for another
 integrand.</p></dd>  <dt><code>level</code></dt><dd><p>applies only to Divonne, Suave
 and Vegas. When <code>0</code>, Mersenne Twister random numbers are
 used. When nonzero Ranlux random numbers are used, except when
 <code>rngSeed</code> is zero which forces use of Sobol quasi-random
-numbers. Ranlux implements Marsaglia and Zaman’s 24-bit RCARRY
+numbers. Ranlux implements Marsaglia and Zaman's 24-bit RCARRY
 algorithm with generation period p, i.e. for every 24 generated
-numbers used, another p − 24 are skipped. The luxury level for
+numbers used, another p-24 are skipped. The luxury level for
 the Ranlux generator may be encoded in <code>level</code> as follows:
 <dl class='dl-horizontal'>
 <dt>Level 1 (p = 48)</dt><dd><p>gives very long period,
@@ -236,8 +236,8 @@ passes the gap test but fails spectral test</p></dd> <dt>Level 2 (p =
 <dt>Level 3 (p = 223)</dt><dd><p>any theoretically possible
 correlations have very small chance of being observed</p></dd>
 <dt>Level 4 (p = 389)</dt><dd><p>highest possible luxury, all 24 bits
-chaotic</p></dd> <dt>Levels 5–23</dt><dd><p>default to 3, values above 24
-directly specify the period p.</p></dd></dl>  Note that Ranlux’s original
+chaotic</p></dd> <dt>Levels 5-23</dt><dd><p>default to 3, values above 24
+directly specify the period p.</p></dd></dl>  Note that Ranlux's original
 level 0, (mis)used for selecting Mersenne Twister in Cuba, is
 equivalent to <code>level</code> = 24.</p></dd></dl></td>
     </tr>
@@ -498,7 +498,7 @@ CGTM-193-REV, CGTM-193, Stanford University.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://statistics.stanford.edu/people/balasubramanian-narasimhan'>Balasubramanian Narasimhan</a>, <a href='https://math.mit.edu/~stevenj/'>Steven G. Johnson</a>, <a href='https://wwwth.mpp.mpg.de/members/hahn/'>Thomas Hahn</a>, Annie Bouvier,  Kiên Kiêu.</p>
+  <p>Developed by <a href='https://statistics.stanford.edu/people/balasubramanian-narasimhan'>Balasubramanian Narasimhan</a>, <a href='https://math.mit.edu/~stevenj/'>Steven G. Johnson</a>, <a href='https://wwwth.mpp.mpg.de/members/hahn/'>Thomas Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">

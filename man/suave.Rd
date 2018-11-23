@@ -63,16 +63,16 @@ chosen if the integrand has sharp edges.}
 argument \code{stateFile} is non-null, else delete
 \code{stateFile} if specified.}
 \item{\code{load_state}}{Applies to Vegas only. Reset the
-integrator’s state even if a state file is present, i.e. keep
+integrator's state even if a state file is present, i.e. keep
 only the grid. Together with \code{keep_state} this allows a
 grid adapted by one integration to be used for another
 integrand.}  \item{\code{level}}{applies only to Divonne, Suave
 and Vegas. When \code{0}, Mersenne Twister random numbers are
 used. When nonzero Ranlux random numbers are used, except when
 \code{rngSeed} is zero which forces use of Sobol quasi-random
-numbers. Ranlux implements Marsaglia and Zaman’s 24-bit RCARRY
+numbers. Ranlux implements Marsaglia and Zaman's 24-bit RCARRY
 algorithm with generation period p, i.e. for every 24 generated
-numbers used, another p − 24 are skipped. The luxury level for
+numbers used, another p-24 are skipped. The luxury level for
 the Ranlux generator may be encoded in \code{level} as follows:
 \describe{ \item{Level 1 (p = 48)}{gives very long period,
 passes the gap test but fails spectral test} \item{Level 2 (p =
@@ -80,8 +80,8 @@ passes the gap test but fails spectral test} \item{Level 2 (p =
 \item{Level 3 (p = 223)}{any theoretically possible
 correlations have very small chance of being observed}
 \item{Level 4 (p = 389)}{highest possible luxury, all 24 bits
-chaotic} \item{Levels 5–23}{default to 3, values above 24
-directly specify the period p.}}  Note that Ranlux’s original
+chaotic} \item{Levels 5-23}{default to 3, values above 24
+directly specify the period p.}}  Note that Ranlux's original
 level 0, (mis)used for selecting Mersenne Twister in Cuba, is
 equivalent to \code{level} = 24.}}}
 
@@ -98,17 +98,17 @@ appropriately. See vignette examples.}
 subdivision.}
 
 \item{nMin}{the minimum number of samples a former pass must
-contribute to a subregion to be considered in that region’s
+contribute to a subregion to be considered in that region's
 compound integral value. Increasing nmin may reduce jumps in
 the \eqn{\chi^2}{Chi2} value.}
 
 \item{flatness}{the parameter p, or the type of norm used to
 compute the fluctuation of a sample. This determines how
-prominently ‘outliers,’ i.e. individual samples with a large
+prominently "outliers," i.e. individual samples with a large
 fluctuation, figure in the total fluctuation, which in turn
 determines how a region is split up. As suggested by its name,
-flatness should be chosen large for ‘flat’ integrands and small
-for ‘volatile’ integrands with high peaks. Note that since
+flatness should be chosen large for "flat" integrands and small
+for "volatile" integrands with high peaks. Note that since
 flatness appears in the exponent, one should not use too large
 values (say, no more than a few hundred) lest terms be
 truncated internally to prevent overflow.}

@@ -15,16 +15,16 @@
 #' @param nNew the number of new integrand evaluations in each
 #'     subdivision.
 #' @param nMin the minimum number of samples a former pass must
-#'     contribute to a subregion to be considered in that region’s
+#'     contribute to a subregion to be considered in that region's
 #'     compound integral value. Increasing nmin may reduce jumps in
 #'     the \eqn{\chi^2}{Chi2} value.
 #' @param flatness the parameter p, or the type of norm used to
 #'     compute the fluctuation of a sample. This determines how
-#'     prominently ‘outliers,’ i.e. individual samples with a large
+#'     prominently "outliers," i.e. individual samples with a large
 #'     fluctuation, figure in the total fluctuation, which in turn
 #'     determines how a region is split up. As suggested by its name,
-#'     flatness should be chosen large for ‘flat’ integrands and small
-#'     for ‘volatile’ integrands with high peaks. Note that since
+#'     flatness should be chosen large for "flat" integrands and small
+#'     for "volatile" integrands with high peaks. Note that since
 #'     flatness appears in the exponent, one should not use too large
 #'     values (say, no more than a few hundred) lest terms be
 #'     truncated internally to prevent overflow.

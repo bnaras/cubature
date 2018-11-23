@@ -53,16 +53,16 @@
 #'     argument \code{stateFile} is non-null, else delete
 #'     \code{stateFile} if specified.}
 #'     \item{\code{load_state}}{Applies to Vegas only. Reset the
-#'     integrator’s state even if a state file is present, i.e. keep
+#'     integrator's state even if a state file is present, i.e. keep
 #'     only the grid. Together with \code{keep_state} this allows a
 #'     grid adapted by one integration to be used for another
 #'     integrand.}  \item{\code{level}}{applies only to Divonne, Suave
 #'     and Vegas. When \code{0}, Mersenne Twister random numbers are
 #'     used. When nonzero Ranlux random numbers are used, except when
 #'     \code{rngSeed} is zero which forces use of Sobol quasi-random
-#'     numbers. Ranlux implements Marsaglia and Zaman’s 24-bit RCARRY
+#'     numbers. Ranlux implements Marsaglia and Zaman's 24-bit RCARRY
 #'     algorithm with generation period p, i.e. for every 24 generated
-#'     numbers used, another p − 24 are skipped. The luxury level for
+#'     numbers used, another p-24 are skipped. The luxury level for
 #'     the Ranlux generator may be encoded in \code{level} as follows:
 #'     \describe{ \item{Level 1 (p = 48)}{gives very long period,
 #'     passes the gap test but fails spectral test} \item{Level 2 (p =
@@ -70,8 +70,8 @@
 #'     \item{Level 3 (p = 223)}{any theoretically possible
 #'     correlations have very small chance of being observed}
 #'     \item{Level 4 (p = 389)}{highest possible luxury, all 24 bits
-#'     chaotic} \item{Levels 5–23}{default to 3, values above 24
-#'     directly specify the period p.}}  Note that Ranlux’s original
+#'     chaotic} \item{Levels 5-23}{default to 3, values above 24
+#'     directly specify the period p.}}  Note that Ranlux's original
 #'     level 0, (mis)used for selecting Mersenne Twister in Cuba, is
 #'     equivalent to \code{level} = 24.}}
 #' @param nVec the number of vectorization points, default 1, but can
