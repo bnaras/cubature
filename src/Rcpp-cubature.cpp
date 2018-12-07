@@ -57,6 +57,7 @@ Rcpp::List doHCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericV
 
     // Create a structure to hold integrand function and initialize it
     integrand_info II;
+    II.count = 0;               /* Zero count */    
     II.fun = f;                 /* R function */
 
     // Rcpp::Rcout<<"Call Integrator" <<std::endl;

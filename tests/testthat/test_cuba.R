@@ -11,7 +11,6 @@ do_test <- function(info_string,
     test_that(info_string, {
         method_names <- names(methods)
         names(expected) <- method_names
-        browser()
         for (name in method_names) {
             method <- methods[[name]]
             expect <- expected[[name]]
