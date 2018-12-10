@@ -67,14 +67,18 @@ static inline void DoSampleParallel(This *t, number n, creal *x, real *f
   SHM_ONLY(slice.shmid = t->shmid;)
 #endif
 
+#ifdef FRAMECOPY    
   SHM_ONLY(if( t->shmid != -1 ) {
     slice.m = n;
-#ifdef FRAMECOPY
     VES_ONLY(Copy(t->frame, w, n);)
     Copy(t->frame + n*NW, x, n*t->ndim);
-#endif
+    })
+#else
+  SHM_ONLY(if( t->shmid != -1 ) {
+    slice.m = n;
   })
-
+#endif
+    
 #define PutSamples(fd) do { \
   slice.n = IMin(slice.n, n); \
   MASTER("sending samples (sli:%lu[+" VES_ONLY(NUMBER "w:%lu+") \
@@ -390,7 +394,7 @@ static void Worker(This *t, const size_t alloc, cint core, cint fd)
 #endif
   }
 
-  WORKER("worker wrapping up");
+  WORKER("worker wrapping up", 0);
 }
 
 /*********************************************************************/

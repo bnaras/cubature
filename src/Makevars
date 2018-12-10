@@ -2,8 +2,10 @@ CUBATURE_DIR=cubature-1.0.3
 CUBA_DIR=Cuba-4.2
 CUBA_DIR_NONWIN=Cuba-4.2-nonwin
 
-PKG_CFLAGS=-DRCPP_USE_UNWIND_PROTECT -DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I./$(CUBA_DIR) -I../inst/include
-PKG_CPPFLAGS=-DRCPP_USE_UNWIND_PROTECT -DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I$(CUBA_DIR) -I../inst/include
+SOLARIS=$(shell $(R_HOME)/bin/Rscript -e 'if(grepl("SunOS", Sys.info()["sysname"])) q(status=1) else q(status=0)'; echo $$?)
+
+PKG_CFLAGS=-DSOLARIS=$(SOLARIS) -DRCPP_USE_UNWIND_PROTECT -DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I./$(CUBA_DIR) -I../inst/include
+PKG_CPPFLAGS=-DSOLARIS=$(SOLARIS) -DRCPP_USE_UNWIND_PROTECT -DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I$(CUBA_DIR) -I../inst/include
 PKG_LIBS=-L$(CUBATURE_DIR) -L$(CUBA_DIR) -lcubature -lcuba
 
 $(SHLIB): Rcpp-cubature.o Rcpp-Cuba.o RcppExports.o cubature_init.o

@@ -220,11 +220,20 @@ enum { uninitialized = 0x61627563 };
   }
 
 #undef ShmFree
-#define ShmFree(t, who) \
+
+#ifdef SOLARIS
+#define ShmFree(t, who)	 \
+  if( t->shmid != -1 ) { \
+    shmdt((char *)(t->frame));		\
+    who##Free(t); \
+  }
+#else 
+#define ShmFree(t, who)	 \
   if( t->shmid != -1 ) { \
     shmdt(t->frame); \
     who##Free(t); \
   }
+#endif
 
 #endif
 #endif
@@ -554,7 +563,10 @@ static inline void Print(MLCONST char *s)
 
 #else
 
-#define Print(s) puts(s); fflush(stdout)
+#define Print(s) do { \
+    puts(s); \
+    fflush(stdout); \
+} while (0)
 
 #endif
 

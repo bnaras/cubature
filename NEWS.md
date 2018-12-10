@@ -1,3 +1,26 @@
+# cubature 2.0.2
+
+- Fixed up uninitialized count for `hcubature` (Thanks, Ehsan
+  Masoudi)
+- Tentative fix of infinite value for `minfluct` in
+  `Cuba-4.2/src/suave/Integrate.c` in lines 197--205. (Thanks,
+  Prof. Brian Ripley) 
+- Miscellaneous fixes for compilation on various platforms.
+  * Tentative fix for solaris in `Makevars` and
+    `Cuba-4.2/src/common/stddecl.c`.
+  * Added `ret_code` for return value in call to `getloadavg` in
+    `Cuba-4.2/src/common/Fork.c`. 
+  * Fixed up call to `MASTER` variadic macro by including dummy argument
+    0 in `Cuba-4.2/src/common/Fork.c`, line 146.
+  * Replaced multi-statement macro with a `do { } while(0)` hack.
+  * Reworked code around `Cuba-4.2/src/divonne/Rule.c` checks for
+    key values (lines 593 to 600).
+  * Fixed up call to `WORKER` variadic macro by including dummy argument
+    0 in `Cuba-4.2/src/common/Parallel.c`, line 393.
+  * Moved `#ifdef FRAMECOPY` outside in
+    `Cuba-4.2/src/common/Parallel.c` to avoid embedding directives in
+    macro args, lines 70-80.
+
 # cubature 2.0
 
 - Major update. Integrates [Cuba 4.2](http://www.feynarts.de/cuba/)

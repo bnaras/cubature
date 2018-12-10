@@ -590,11 +590,13 @@ static inline void RuleAlloc(This *t)
     t->rule11.first = NULL;
   else Rule11Alloc(t);
 
-  if( (t->key1 - 9)*(t->key2 - 9)*(t->key3 - 9) )
+  int code = (t->key1 - 9)*(t->key2 - 9)*(t->key3 - 9);
+  if( code )
     t->rule9.first = NULL;
   else Rule9Alloc(t);
 
-  if( (t->key1 - 7)*(t->key2 - 7)*(t->key3 - 7) )
+  code = (t->key1 - 7)*(t->key2 - 7)*(t->key3 - 7);
+  if( code ) 
     t->rule7.first = NULL;
   else Rule7Alloc(t);
 }

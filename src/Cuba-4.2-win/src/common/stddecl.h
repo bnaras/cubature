@@ -557,7 +557,10 @@ static inline void Print(MLCONST char *s)
 
 #else
 
-#define Print(s) puts(s); fflush(stdout)
+#define Print(s) do { \
+    puts(s); \
+    fflush(stdout); \
+} while (0)
 
 #endif
 
