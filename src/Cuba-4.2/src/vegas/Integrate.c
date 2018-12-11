@@ -36,15 +36,14 @@ static int Integrate(This *t, real *integral, real *error, real *prob)
       "  flags %d\n  seed %d\n"
       "  mineval " NUMBER "\n  maxeval " NUMBER "\n"
       "  nstart " NUMBER "\n  nincrease " NUMBER "\n"
-      "  nbatch " NUMBER "\n  gridno %d\n"
-      "  statefile \"%s\"",
+	    "  nbatch " NUMBER "\n  gridno %d\n",
       t->ndim, t->ncomp,
       ML_NOT(t->nvec,)
       SHOW(t->epsrel), SHOW(t->epsabs),
       t->flags, t->seed,
       t->mineval, t->maxeval,
       t->nstart, t->nincrease, t->nbatch,
-      t->gridno, t->statefile);
+	    t->gridno);
     Print(out);
   }
 

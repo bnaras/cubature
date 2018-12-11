@@ -48,14 +48,12 @@ static int Integrate(This *t, real *integral, real *error, real *prob)
       ML_NOT("  nvec " NUMBER "\n")
       "  epsrel " REAL "\n  epsabs " REAL "\n"
       "  flags %d\n  mineval " NUMBER "\n  maxeval " NUMBER "\n"
-      "  key " COUNT "\n"
-      "  statefile \"%s\"",
+	    "  key " COUNT "\n",
       t->ndim, t->ncomp,
       ML_NOT(t->nvec,)
       SHOW(t->epsrel), SHOW(t->epsabs),
       t->flags, t->mineval, t->maxeval,
-      t->key,
-      t->statefile);
+	    t->key);
     Print(out);
   }
 

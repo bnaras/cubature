@@ -44,8 +44,7 @@ static int Integrate(This *t, real *integral, real *error, real *prob)
       "  mineval " NUMBER "\n  maxeval " NUMBER "\n"
       "  key1 %d\n  key2 %d\n  key3 %d\n  maxpass " COUNT "\n"
       "  border " REAL "\n  maxchisq " REAL "\n  mindeviation " REAL "\n"
-      "  ngiven " NUMBER "\n  nextra " NUMBER "\n"
-      "  statefile \"%s\"",
+	    "  ngiven " NUMBER "\n  nextra " NUMBER "\n",
       t->ndim, t->ncomp,
       ML_NOT(t->nvec,)
       SHOW(t->epsrel), SHOW(t->epsabs),
@@ -53,8 +52,7 @@ static int Integrate(This *t, real *integral, real *error, real *prob)
       t->mineval, t->maxeval,
       t->key1, t->key2, t->key3, t->maxpass,
       SHOW(t->border.lower), SHOW(t->maxchisq), SHOW(t->mindeviation),
-      t->ngiven, t->nextra,
-      t->statefile);
+	    t->ngiven, t->nextra);
     Print(out);
   }
 

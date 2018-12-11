@@ -12,6 +12,10 @@
 
 #ifdef HAVE_FORK
 
+#ifdef SOLARIS
+#include <sys/loadavg.h>
+#endif
+
 #include "sock.h"
 
 #define MINCORES 1

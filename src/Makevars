@@ -2,35 +2,40 @@ CUBATURE_DIR=cubature-1.0.3
 CUBA_DIR=Cuba-4.2
 CUBA_DIR_NONWIN=Cuba-4.2-nonwin
 
-SOLARIS=$(shell $(R_HOME)/bin/Rscript -e 'if(grepl("SunOS", Sys.info()["sysname"])) q(status=1) else q(status=0)'; echo $$?)
+SOLARIS=$(shell $(R_HOME)/bin/Rscript -e 'cat(grepl("SunOS", Sys.info()["sysname"]))')
+ifeq ($(SOLARIS),TRUE)
+   SOLARIS_FLAG=-DSOLARIS
+else
+   SOLARIS_FLAG=-USOLARIS
+endif
 
-PKG_CFLAGS=-DSOLARIS=$(SOLARIS) -DRCPP_USE_UNWIND_PROTECT -DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I./$(CUBA_DIR) -I../inst/include
-PKG_CPPFLAGS=-DSOLARIS=$(SOLARIS) -DRCPP_USE_UNWIND_PROTECT -DR_PACKAGE=1 -DTEST_INTEGRATOR=0 -I./$(CUBATURE_DIR) -I$(CUBA_DIR) -I../inst/include
+PKG_CFLAGS=$(SOLARIS_FLAG) -DRCPP_USE_UNWIND_PROTECT -I./$(CUBATURE_DIR) -I./$(CUBA_DIR) -I../inst/include
+PKG_CPPFLAGS=$(SOLARIS_FLAG) -DRCPP_USE_UNWIND_PROTECT -I./$(CUBATURE_DIR) -I$(CUBA_DIR) -I../inst/include
 PKG_LIBS=-L$(CUBATURE_DIR) -L$(CUBA_DIR) -lcubature -lcuba
 
 $(SHLIB): Rcpp-cubature.o Rcpp-Cuba.o RcppExports.o cubature_init.o
 
 Rcpp-cubature.o: cubature.ts
-RcppExports.o: cubature.ts
+RcppExports.o: cuba.ts cubature.ts
 Rcpp-Cuba.o: cuba.ts
 
 cubature.ts:
-	(cd $(CUBATURE_DIR) && \
-	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS) -DR_PACKAGE=1" AR="$(AR)" RANLIB="$(RANLIB)") && \
+	((cd $(CUBATURE_DIR) && \
+	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS) $(SOLARIS_FLAG)" AR="$(AR)" RANLIB="$(RANLIB)")) && \
 	touch $@)
 
 cuba.ts:
 	(cp -f $(CUBA_DIR_NONWIN)/makefile.in $(CUBA_DIR_NONWIN)/cuba.h $(CUBA_DIR) && \
 	cp -f $(CUBA_DIR_NONWIN)/src/common/* $(CUBA_DIR)/src/common && \
 	cp -f $(CUBA_DIR_NONWIN)/src/cuhre/common.c $(CUBA_DIR)/src/cuhre && \
-	cd $(CUBA_DIR) && \
-	(CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS) -DR_PACKAGE=1" AR="$(AR)" ARFLAGS="-U" RANLIB="$(RANLIB)" ./configure && $(MAKE) libcuba.a) && \
+	(cd $(CUBA_DIR) && \
+	(CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS) $(SOLARIS_FLAG)" AR="$(AR)" ARFLAGS="-U" RANLIB="$(RANLIB)" ./configure && $(MAKE) libcuba.a)) && \
 	touch $@)
 
 clean:
 	rm -f Rcpp-cubature.o RcppExports.o cubature.so Rcpp-Cuba.o cubature_init.o
 	rm -f $(CUBATURE_DIR)/*.o
-	rm -f $(CUBATURE_DIR)/libcubature.a $(CUBATURE_DIR)/cubature.ts
+	rm -f $(CUBATURE_DIR)/libcubature.a cubature.ts
 	rm -f $(CUBA_DIR)/*.o
-	rm -f $(CUBA_DIR)/libcuba.a $(CUBA_DIR)/cuba.ts
+	rm -f $(CUBA_DIR)/libcuba.a cuba.ts
 

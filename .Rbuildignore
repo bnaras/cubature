@@ -12,6 +12,7 @@
 ^NOTES\.md$
 ^CRAN-RELEASE$
 ^src/*\.o$
+^src/*\.ts$
 ^src/*\.so$
 ^src/*\.dll$
 ^src/*\.a$

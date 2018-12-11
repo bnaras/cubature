@@ -6,10 +6,14 @@
   `Cuba-4.2/src/suave/Integrate.c` in lines 197--205. (Thanks,
   Prof. Brian Ripley) 
 - Miscellaneous fixes for compilation on various platforms.
-  * Tentative fix for solaris in `Makevars` and
+  * Cleaned up `Makevars` and `Makevars.win` to remove some unused
+    flags. Tentative fix for solaris in `Makevars` and
     `Cuba-4.2/src/common/stddecl.c`.
+  * Removed printing of `statefile` in all the `src/*/Integrate.c`
+    routines to avoid segfault on solaris.
   * Added `ret_code` for return value in call to `getloadavg` in
-    `Cuba-4.2/src/common/Fork.c`. 
+    `Cuba-4.2/src/common/Fork.c`. Also added an `#ifdef SOLARIS` for
+    including appropriate header under solaris.
   * Fixed up call to `MASTER` variadic macro by including dummy argument
     0 in `Cuba-4.2/src/common/Fork.c`, line 146.
   * Replaced multi-statement macro with a `do { } while(0)` hack.
