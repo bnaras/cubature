@@ -79,7 +79,7 @@
       <h1>Cubature Vectorization Results</h1>
                         <h4 class="author">Balasubramanian Narasimhan</h4>
             
-            <h4 class="date">2018-12-10</h4>
+            <h4 class="date">2018-12-15</h4>
       
       
       <div class="hidden name"><code>cubature.Rmd</code></div>
@@ -197,13 +197,13 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">100</td>
 <td align="right">0.000</td>
+<td align="right">0.000</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.057</td>
-<td align="right">1.57</td>
+<td align="right">0.053</td>
+<td align="right">1.56</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -213,21 +213,21 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.001</td>
-<td align="right">0.036</td>
+<td align="right">0.002</td>
+<td align="right">0.035</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">100</td>
-<td align="right">0.001</td>
+<td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.004</td>
-<td align="right">0.173</td>
-<td align="right">4.89</td>
+<td align="right">0.168</td>
+<td align="right">4.94</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -238,8 +238,8 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.108</td>
-<td align="right">2.96</td>
+<td align="right">0.102</td>
+<td align="right">2.94</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -249,21 +249,21 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.004</td>
+<td align="right">0.003</td>
 <td align="right">0.102</td>
-<td align="right">2.87</td>
+<td align="right">2.85</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">100</td>
 <td align="right">0.000</td>
+<td align="right">0.000</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.056</td>
-<td align="right">1.55</td>
+<td align="right">0.052</td>
+<td align="right">1.53</td>
 </tr>
 </tbody>
 </table>
@@ -322,14 +322,14 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.905</td>
-<td align="right">0.924</td>
-<td align="right">0.929</td>
-<td align="right">0.931</td>
-<td align="right">0.932</td>
-<td align="right">0.961</td>
-<td align="right">9.305</td>
-<td align="right">643.00</td>
+<td align="right">0.867</td>
+<td align="right">0.880</td>
+<td align="right">0.881</td>
+<td align="right">0.881</td>
+<td align="right">0.882</td>
+<td align="right">0.890</td>
+<td align="right">8.807</td>
+<td align="right">610.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -338,22 +338,22 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
+<td align="right">0.002</td>
 <td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.025</td>
-<td align="right">1.40</td>
+<td align="right">0.023</td>
+<td align="right">1.48</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">10</td>
-<td align="right">0.397</td>
-<td align="right">0.399</td>
-<td align="right">0.401</td>
-<td align="right">0.407</td>
-<td align="right">0.413</td>
-<td align="right">0.430</td>
-<td align="right">4.070</td>
-<td align="right">278.00</td>
+<td align="right">0.374</td>
+<td align="right">0.377</td>
+<td align="right">0.379</td>
+<td align="right">0.381</td>
+<td align="right">0.380</td>
+<td align="right">0.404</td>
+<td align="right">3.807</td>
+<td align="right">262.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -361,7 +361,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
+<td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.015</td>
@@ -370,26 +370,26 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.378</td>
-<td align="right">0.384</td>
-<td align="right">0.384</td>
-<td align="right">0.386</td>
-<td align="right">0.386</td>
-<td align="right">0.396</td>
-<td align="right">3.856</td>
-<td align="right">266.00</td>
+<td align="right">0.362</td>
+<td align="right">0.364</td>
+<td align="right">0.367</td>
+<td align="right">0.370</td>
+<td align="right">0.373</td>
+<td align="right">0.394</td>
+<td align="right">3.699</td>
+<td align="right">254.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.039</td>
-<td align="right">2.61</td>
+<td align="right">0.035</td>
+<td align="right">2.44</td>
 </tr>
 </tbody>
 </table>
@@ -426,24 +426,24 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="left">g1()</td>
 <td align="right">20</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
+<td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.004</td>
-<td align="right">0.039</td>
-<td align="right">1.27</td>
+<td align="right">0.041</td>
+<td align="right">1.01</td>
 </tr>
 <tr class="even">
 <td align="left">g2()</td>
 <td align="right">20</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.004</td>
-<td align="right">0.038</td>
+<td align="right">0.002</td>
+<td align="right">0.003</td>
+<td align="right">0.040</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
@@ -454,9 +454,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.004</td>
-<td align="right">0.045</td>
-<td align="right">1.29</td>
+<td align="right">0.003</td>
+<td align="right">0.040</td>
+<td align="right">1.01</td>
 </tr>
 </tbody>
 </table>
@@ -492,7 +492,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
+<td align="right">0.002</td>
 <td align="right">0.068</td>
 <td align="right">1.00</td>
 </tr>
@@ -505,8 +505,8 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.072</td>
-<td align="right">1.02</td>
+<td align="right">0.070</td>
+<td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -517,8 +517,8 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.093</td>
-<td align="right">1.32</td>
+<td align="right">0.090</td>
+<td align="right">1.33</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -529,8 +529,8 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.123</td>
-<td align="right">1.75</td>
+<td align="right">0.115</td>
+<td align="right">1.73</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -540,9 +540,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.003</td>
-<td align="right">0.584</td>
-<td align="right">8.58</td>
+<td align="right">0.037</td>
+<td align="right">0.604</td>
+<td align="right">8.48</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -552,9 +552,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.036</td>
-<td align="right">0.388</td>
-<td align="right">5.03</td>
+<td align="right">0.002</td>
+<td align="right">0.332</td>
+<td align="right">4.97</td>
 </tr>
 </tbody>
 </table>
@@ -599,10 +599,10 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.004</td>
 <td align="right">0.005</td>
-<td align="right">0.043</td>
-<td align="right">29.90</td>
+<td align="right">0.006</td>
+<td align="right">0.045</td>
+<td align="right">32.30</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -611,10 +611,10 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.005</td>
+<td align="right">0.004</td>
 <td align="right">0.006</td>
-<td align="right">0.045</td>
-<td align="right">28.50</td>
+<td align="right">0.042</td>
+<td align="right">29.40</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -638,30 +638,30 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">1.13</td>
+<td align="right">1.26</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.019</td>
+<td align="right">0.018</td>
 <td align="right">0.019</td>
 <td align="right">0.019</td>
 <td align="right">0.019</td>
 <td align="right">0.020</td>
 <td align="right">0.021</td>
-<td align="right">0.195</td>
-<td align="right">132.00</td>
+<td align="right">0.192</td>
+<td align="right">144.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
 <td align="right">0.015</td>
 <td align="right">0.016</td>
+<td align="right">0.016</td>
 <td align="right">0.017</td>
 <td align="right">0.017</td>
-<td align="right">0.018</td>
-<td align="right">0.019</td>
-<td align="right">0.173</td>
+<td align="right">0.021</td>
+<td align="right">0.170</td>
 <td align="right">121.00</td>
 </tr>
 </tbody>
@@ -701,50 +701,50 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.057</td>
+<td align="right">0.054</td>
+<td align="right">0.056</td>
+<td align="right">0.058</td>
+<td align="right">0.059</td>
 <td align="right">0.061</td>
-<td align="right">0.061</td>
-<td align="right">0.061</td>
-<td align="right">0.063</td>
 <td align="right">0.065</td>
-<td align="right">0.614</td>
-<td align="right">1.52</td>
+<td align="right">0.586</td>
+<td align="right">1.47</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.037</td>
+<td align="right">0.034</td>
+<td align="right">0.038</td>
+<td align="right">0.039</td>
 <td align="right">0.039</td>
 <td align="right">0.040</td>
-<td align="right">0.040</td>
-<td align="right">0.041</td>
-<td align="right">0.041</td>
-<td align="right">0.400</td>
+<td align="right">0.042</td>
+<td align="right">0.386</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">1.019</td>
-<td align="right">1.048</td>
-<td align="right">1.052</td>
-<td align="right">1.054</td>
-<td align="right">1.061</td>
-<td align="right">1.100</td>
-<td align="right">10.544</td>
+<td align="right">0.991</td>
+<td align="right">1.014</td>
+<td align="right">1.024</td>
+<td align="right">1.028</td>
+<td align="right">1.050</td>
+<td align="right">1.066</td>
+<td align="right">10.276</td>
 <td align="right">26.10</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.723</td>
-<td align="right">0.739</td>
-<td align="right">0.748</td>
-<td align="right">0.749</td>
-<td align="right">0.754</td>
-<td align="right">0.776</td>
-<td align="right">7.487</td>
-<td align="right">18.50</td>
+<td align="right">0.693</td>
+<td align="right">0.736</td>
+<td align="right">0.740</td>
+<td align="right">0.735</td>
+<td align="right">0.742</td>
+<td align="right">0.777</td>
+<td align="right">7.350</td>
+<td align="right">18.80</td>
 </tr>
 </tbody>
 </table>
@@ -782,7 +782,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.005</td>
-<td align="right">1.30</td>
+<td align="right">1.34</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -794,7 +794,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.004</td>
-<td align="right">1.07</td>
+<td align="right">1.08</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -806,7 +806,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.005</td>
-<td align="right">1.12</td>
+<td align="right">1.15</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -828,9 +828,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.003</td>
-<td align="right">0.053</td>
-<td align="right">13.00</td>
+<td align="right">0.001</td>
+<td align="right">0.052</td>
+<td align="right">13.20</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -840,9 +840,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.027</td>
-<td align="right">6.77</td>
+<td align="right">0.002</td>
+<td align="right">0.030</td>
+<td align="right">6.94</td>
 </tr>
 </tbody>
 </table>
@@ -889,11 +889,11 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
+<td align="right">0.004</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.043</td>
-<td align="right">1.61</td>
+<td align="right">0.039</td>
+<td align="right">0.079</td>
+<td align="right">1.58</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -904,7 +904,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.002</td>
-<td align="right">0.026</td>
+<td align="right">0.027</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
@@ -916,8 +916,8 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.005</td>
-<td align="right">0.063</td>
-<td align="right">2.36</td>
+<td align="right">0.065</td>
+<td align="right">2.39</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -925,23 +925,23 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.004</td>
 <td align="right">0.002</td>
-<td align="right">0.039</td>
-<td align="right">0.081</td>
-<td align="right">1.49</td>
+<td align="right">0.002</td>
+<td align="right">0.004</td>
+<td align="right">0.041</td>
+<td align="right">1.47</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
 <td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
-<td align="right">0.007</td>
-<td align="right">0.094</td>
-<td align="right">3.46</td>
+<td align="right">0.005</td>
+<td align="right">0.005</td>
+<td align="right">0.006</td>
+<td align="right">0.098</td>
+<td align="right">3.54</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -951,9 +951,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.058</td>
-<td align="right">2.23</td>
+<td align="right">0.005</td>
+<td align="right">0.061</td>
+<td align="right">2.18</td>
 </tr>
 </tbody>
 </table>
@@ -1003,8 +1003,8 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.005</td>
 <td align="right">0.005</td>
 <td align="right">0.007</td>
-<td align="right">0.108</td>
-<td align="right">2.08</td>
+<td align="right">0.107</td>
+<td align="right">2.11</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1012,9 +1012,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
+<td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.005</td>
 <td align="right">0.070</td>
 <td align="right">1.39</td>
 </tr>
@@ -1026,9 +1026,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.076</td>
-<td align="right">1.48</td>
+<td align="right">0.006</td>
+<td align="right">0.075</td>
+<td align="right">1.46</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1045,26 +1045,26 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.008</td>
 <td align="right">0.009</td>
 <td align="right">0.009</td>
+<td align="right">0.010</td>
 <td align="right">0.010</td>
 <td align="right">0.010</td>
 <td align="right">0.011</td>
-<td align="right">0.191</td>
-<td align="right">3.73</td>
+<td align="right">0.196</td>
+<td align="right">3.87</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
 <td align="right">0.006</td>
 <td align="right">0.006</td>
-<td align="right">0.006</td>
+<td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.008</td>
 <td align="right">0.132</td>
-<td align="right">2.59</td>
+<td align="right">2.61</td>
 </tr>
 </tbody>
 </table>
@@ -1110,7 +1110,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.055</td>
-<td align="right">1.62</td>
+<td align="right">1.60</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1120,21 +1120,21 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.004</td>
-<td align="right">0.039</td>
+<td align="right">0.003</td>
+<td align="right">0.035</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
+<td align="right">0.012</td>
 <td align="right">0.013</td>
-<td align="right">0.013</td>
 <td align="right">0.014</td>
 <td align="right">0.014</td>
-<td align="right">0.014</td>
-<td align="right">0.016</td>
-<td align="right">0.279</td>
-<td align="right">8.15</td>
+<td align="right">0.015</td>
+<td align="right">0.017</td>
+<td align="right">0.278</td>
+<td align="right">8.38</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1142,35 +1142,35 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.007</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
-<td align="right">0.009</td>
-<td align="right">0.009</td>
-<td align="right">0.013</td>
-<td align="right">0.172</td>
-<td align="right">4.88</td>
+<td align="right">0.008</td>
+<td align="right">0.008</td>
+<td align="right">0.012</td>
+<td align="right">0.167</td>
+<td align="right">4.82</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
 <td align="right">0.006</td>
-<td align="right">0.007</td>
+<td align="right">0.006</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.008</td>
-<td align="right">0.138</td>
-<td align="right">4.07</td>
+<td align="right">0.131</td>
+<td align="right">3.94</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
 <td align="right">0.003</td>
-<td align="right">0.004</td>
+<td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.006</td>
-<td align="right">0.079</td>
-<td align="right">2.32</td>
+<td align="right">0.076</td>
+<td align="right">2.14</td>
 </tr>
 </tbody>
 </table>
@@ -1212,13 +1212,13 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">20</td>
 <td align="right">0.005</td>
+<td align="right">0.005</td>
 <td align="right">0.006</td>
 <td align="right">0.006</td>
 <td align="right">0.006</td>
-<td align="right">0.006</td>
-<td align="right">0.006</td>
-<td align="right">0.114</td>
-<td align="right">1.73</td>
+<td align="right">0.008</td>
+<td align="right">0.118</td>
+<td align="right">1.76</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1226,59 +1226,59 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
 <td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.006</td>
-<td align="right">0.074</td>
+<td align="right">0.066</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
 <td align="right">0.013</td>
+<td align="right">0.013</td>
 <td align="right">0.014</td>
 <td align="right">0.014</td>
 <td align="right">0.014</td>
-<td align="right">0.015</td>
 <td align="right">0.017</td>
-<td align="right">0.289</td>
-<td align="right">4.28</td>
+<td align="right">0.280</td>
+<td align="right">4.19</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">20</td>
 <td align="right">0.007</td>
-<td align="right">0.008</td>
+<td align="right">0.007</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
 <td align="right">0.009</td>
 <td align="right">0.010</td>
-<td align="right">0.167</td>
-<td align="right">2.39</td>
+<td align="right">0.162</td>
+<td align="right">2.36</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
+<td align="right">0.058</td>
 <td align="right">0.060</td>
 <td align="right">0.062</td>
+<td align="right">0.061</td>
 <td align="right">0.063</td>
-<td align="right">0.063</td>
-<td align="right">0.064</td>
-<td align="right">0.070</td>
-<td align="right">1.265</td>
-<td align="right">18.80</td>
+<td align="right">0.066</td>
+<td align="right">1.230</td>
+<td align="right">18.70</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.033</td>
+<td align="right">0.031</td>
+<td align="right">0.034</td>
+<td align="right">0.035</td>
+<td align="right">0.035</td>
 <td align="right">0.036</td>
-<td align="right">0.036</td>
-<td align="right">0.037</td>
-<td align="right">0.038</td>
-<td align="right">0.039</td>
-<td align="right">0.731</td>
-<td align="right">10.90</td>
+<td align="right">0.046</td>
+<td align="right">0.709</td>
+<td align="right">10.70</td>
 </tr>
 </tbody>
 </table>
@@ -1318,35 +1318,35 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">100</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.026</td>
-<td align="right">2.50</td>
+<td align="right">0.024</td>
+<td align="right">2.51</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">100</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.022</td>
-<td align="right">1.95</td>
+<td align="right">0.018</td>
+<td align="right">1.92</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">100</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.011</td>
+<td align="right">0.010</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -1354,36 +1354,36 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">100</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.017</td>
-<td align="right">1.60</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.002</td>
+<td align="right">0.016</td>
+<td align="right">1.53</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">100</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0.001</td>
-<td align="right">0.043</td>
-<td align="right">4.21</td>
+<td align="right">0.040</td>
+<td align="right">4.22</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">100</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0.002</td>
-<td align="right">0.053</td>
-<td align="right">5.01</td>
+<td align="right">0.048</td>
+<td align="right">4.85</td>
 </tr>
 </tbody>
 </table>
@@ -1419,26 +1419,26 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">100</td>
+<td align="right">0.007</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
 <td align="right">0.009</td>
-<td align="right">0.009</td>
-<td align="right">0.011</td>
-<td align="right">0.852</td>
-<td align="right">14.90</td>
+<td align="right">0.010</td>
+<td align="right">0.835</td>
+<td align="right">15.10</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">100</td>
 <td align="right">0.004</td>
-<td align="right">0.005</td>
+<td align="right">0.004</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
 <td align="right">0.007</td>
-<td align="right">0.488</td>
-<td align="right">8.46</td>
+<td align="right">0.473</td>
+<td align="right">8.31</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -1448,9 +1448,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.003</td>
-<td align="right">0.077</td>
-<td align="right">1.34</td>
+<td align="right">0.002</td>
+<td align="right">0.078</td>
+<td align="right">1.36</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1460,7 +1460,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
+<td align="right">0.002</td>
 <td align="right">0.057</td>
 <td align="right">1.00</td>
 </tr>
@@ -1473,7 +1473,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.004</td>
-<td align="right">0.204</td>
+<td align="right">0.199</td>
 <td align="right">3.58</td>
 </tr>
 <tr class="even">
@@ -1485,8 +1485,8 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.128</td>
-<td align="right">2.19</td>
+<td align="right">0.126</td>
+<td align="right">2.15</td>
 </tr>
 </tbody>
 </table>
@@ -1513,7 +1513,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/sessionInfo">sessionInfo</a></span>()</code></pre></div>
 <pre><code>## R version 3.5.1 (2018-07-02)
 ## Platform: x86_64-apple-darwin17.7.0 (64-bit)
-## Running under: macOS  10.14.1
+## Running under: macOS  10.14.2
 ## 
 ## Matrix products: default
 ## BLAS/LAPACK: /usr/local/Cellar/openblas/0.3.3/lib/libopenblasp-r0.3.3.dylib
