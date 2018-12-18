@@ -9,8 +9,8 @@ else
    SOLARIS_FLAG=-USOLARIS
 endif
 
-PKG_CFLAGS=$(SOLARIS_FLAG) -DRCPP_USE_UNWIND_PROTECT -I./$(CUBATURE_DIR) -I./$(CUBA_DIR) -I../inst/include
-PKG_CPPFLAGS=$(SOLARIS_FLAG) -DRCPP_USE_UNWIND_PROTECT -I./$(CUBATURE_DIR) -I$(CUBA_DIR) -I../inst/include
+PKG_CFLAGS=$(SOLARIS_FLAG) -DRCPP_USE_UNWIND_PROTECT -I. -I../inst/include
+PKG_CPPFLAGS=$(PKG_CFLAGS)
 PKG_LIBS=-L$(CUBATURE_DIR) -L$(CUBA_DIR) -lcubature -lcuba
 
 $(SHLIB): Rcpp-cubature.o Rcpp-Cuba.o RcppExports.o cubature_init.o
@@ -21,7 +21,7 @@ Rcpp-Cuba.o: cuba.ts
 
 cubature.ts:
 	((cd $(CUBATURE_DIR) && \
-	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS) $(SOLARIS_FLAG)" AR="$(AR)" RANLIB="$(RANLIB)")) && \
+	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)" AR="$(AR)" RANLIB="$(RANLIB)")) && \
 	touch $@)
 
 cuba.ts:
@@ -29,7 +29,7 @@ cuba.ts:
 	cp -f $(CUBA_DIR_NONWIN)/src/common/* $(CUBA_DIR)/src/common && \
 	cp -f $(CUBA_DIR_NONWIN)/src/cuhre/common.c $(CUBA_DIR)/src/cuhre && \
 	(cd $(CUBA_DIR) && \
-	(CC="$(CC)" CFLAGS="$(CFLAGS) -I../../inst/include $(CPICFLAGS) $(SOLARIS_FLAG)" AR="$(AR)" ARFLAGS="-U" RANLIB="$(RANLIB)" ./configure && $(MAKE) libcuba.a)) && \
+	(CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)" AR="$(AR)" ARFLAGS="-U" RANLIB="$(RANLIB)" ./configure && $(MAKE) libcuba.a)) && \
 	touch $@)
 
 clean:

@@ -116,12 +116,14 @@ static inline void SolveEqs(Cut *cut, count ncuts,
 
   last = Div(c->lhs - last, r);
 
-  for( ; c >= cut; last += (--c)->lhs ) {
+  for(int first_time = 1 ; c >= cut; --c) {
     creal delmin = -(c->delta = delta[c->i]);
     creal delmax = FRACT*(delmin + c->save);
+    if (!first_time) last = c->lhs;
     c->sol = Div(last, c->df);
     if( c->sol > delmax ) c->sol = .75*delmax;
     if( c->sol < delmin ) c->sol = .75*delmin;
+    first_time = 0;
   }
 }
 
