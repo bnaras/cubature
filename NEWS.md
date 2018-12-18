@@ -1,3 +1,9 @@
+# cubature 2.0.3
+
+- Fixed up stack overrun in `Cuba-4.2/src/divonne/Split.c` (lines
+  119--128 utilizing a flag for first time through loop
+- More cleanup of `Makevars`
+
 # cubature 2.0.2
 
 - Fixed up uninitialized count for `hcubature` (Thanks, Ehsan
