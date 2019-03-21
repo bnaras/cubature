@@ -115,7 +115,7 @@
 
     <div id="cubature-2-0-3" class="section level1">
 <h1 class="page-header">
-<a href="#cubature-2-0-3" class="anchor"></a>cubature 2.0.3<small> Unreleased </small>
+<a href="#cubature-2-0-3" class="anchor"></a>cubature 2.0.3<small> 2018-12-18 </small>
 </h1>
 <ul>
 <li>Fixed up stack overrun in <code>Cuba-4.2/src/divonne/Split.c</code> (lines 119–128 utilizing a flag for first time through loop</li>
@@ -130,8 +130,7 @@
 <ul>
 <li>Fixed up uninitialized count for <code>hcubature</code> (Thanks, Ehsan Masoudi)</li>
 <li>Tentative fix of infinite value for <code>minfluct</code> in <code>Cuba-4.2/src/suave/Integrate.c</code> in lines 197–205. (Thanks, Prof. Brian Ripley)</li>
-<li>Miscellaneous fixes for compilation on various platforms.
-<ul>
+<li>Miscellaneous fixes for compilation on various platforms.</li>
 <li>Cleaned up <code>Makevars</code> and <code>Makevars.win</code> to remove some unused flags. Tentative fix for solaris in <code>Makevars</code> and <code>Cuba-4.2/src/common/stddecl.c</code>.</li>
 <li>Removed printing of <code>statefile</code> in all the <code>src/*/Integrate.c</code> routines to avoid segfault on solaris.</li>
 <li>Added <code>ret_code</code> for return value in call to <code>getloadavg</code> in <code>Cuba-4.2/src/common/Fork.c</code>. Also added an <code>#ifdef SOLARIS</code> for including appropriate header under solaris.</li>
@@ -140,8 +139,6 @@
 <li>Reworked code around <code>Cuba-4.2/src/divonne/Rule.c</code> checks for key values (lines 593 to 600).</li>
 <li>Fixed up call to <code>WORKER</code> variadic macro by including dummy argument 0 in <code>Cuba-4.2/src/common/Parallel.c</code>, line 393.</li>
 <li>Moved <code>#ifdef FRAMECOPY</code> outside in <code>Cuba-4.2/src/common/Parallel.c</code> to avoid embedding directives in macro args, lines 70-80.</li>
-</ul>
-</li>
 </ul>
 </div>
     <div id="cubature-2-0" class="section level1">
