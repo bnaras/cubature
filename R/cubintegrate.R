@@ -161,6 +161,7 @@ cubintegrate <- function(f, lower, upper, fDim = 1,
                          maxEval = 10^6,
                          nVec = 1L,
                          ...) {
+    method <- match.arg(method)
     other_args <- list(...)
     result <-
         if (grepl("cubature", method)) {

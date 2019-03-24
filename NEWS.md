@@ -1,3 +1,8 @@
+# cubature 2.0.4
+
+- `cubintegrate` now matches method via `match.arg` ([Issue
+  25](https://github.com/bnaras/cubature/issues/25))
+
 # cubature 2.0.3
 
 - Fixed up stack overrun in `Cuba-4.2/src/divonne/Split.c` (lines
