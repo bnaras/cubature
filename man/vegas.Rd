@@ -4,12 +4,26 @@
 \alias{vegas}
 \title{Integration by a Monte Carlo Algorithm}
 \usage{
-vegas(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
-  absTol = 1e-12, minEval = 0L, maxEval = 10^6,
-  flags = list(verbose = 0L, final = 1L, smooth = 0L, keep_state = 0L,
-  load_state = 0L, level = 0L), rngSeed = 12345L, nVec = 1L,
-  nStart = 1000L, nIncrease = 500L, nBatch = 1000L, gridNo = 0L,
-  stateFile = NULL)
+vegas(
+  f,
+  nComp = 1L,
+  lowerLimit,
+  upperLimit,
+  ...,
+  relTol = 1e-05,
+  absTol = 1e-12,
+  minEval = 0L,
+  maxEval = 10^6,
+  flags = list(verbose = 0L, final = 1L, smooth = 0L, keep_state = 0L, load_state = 0L,
+    level = 0L),
+  rngSeed = 12345L,
+  nVec = 1L,
+  nStart = 1000L,
+  nIncrease = 500L,
+  nBatch = 1000L,
+  gridNo = 0L,
+  stateFile = NULL
+)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated as in

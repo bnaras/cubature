@@ -4,10 +4,21 @@
 \alias{cuhre}
 \title{Integration by a Deterministic Iterative Adaptive Algorithm}
 \usage{
-cuhre(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
-  absTol = 1e-12, minEval = 0L, maxEval = 10^6,
+cuhre(
+  f,
+  nComp = 1L,
+  lowerLimit,
+  upperLimit,
+  ...,
+  relTol = 1e-05,
+  absTol = 1e-12,
+  minEval = 0L,
+  maxEval = 10^6,
   flags = list(verbose = 0L, final = 1L, keep_state = 0L, level = 0L),
-  key = 0L, nVec = 1L, stateFile = NULL)
+  key = 0L,
+  nVec = 1L,
+  stateFile = NULL
+)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated. For cuhre, it

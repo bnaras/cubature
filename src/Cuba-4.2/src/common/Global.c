@@ -9,7 +9,9 @@
 #include "stddecl.h"
 
 
-coreinit cubafun_;
+/* Commented out for gcc 10.0 -fno-common default */
+/* coreinit cubafun_; */
+
 extern int cubaverb_;
 
 #ifdef HAVE_FORK

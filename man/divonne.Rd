@@ -4,12 +4,31 @@
 \alias{divonne}
 \title{Integration by Stratified Sampling for Variance Reduction}
 \usage{
-divonne(f, nComp = 1L, lowerLimit, upperLimit, ..., relTol = 1e-05,
-  absTol = 1e-12, minEval = 0L, maxEval = 10^6,
+divonne(
+  f,
+  nComp = 1L,
+  lowerLimit,
+  upperLimit,
+  ...,
+  relTol = 1e-05,
+  absTol = 1e-12,
+  minEval = 0L,
+  maxEval = 10^6,
   flags = list(verbose = 0L, final = 1L, keep_state = 0L, level = 0L),
-  rngSeed = 0L, nVec = 1L, key1 = 47L, key2 = 1L, key3 = 1L,
-  maxPass = 5L, border = 0, maxChisq = 10, minDeviation = 0.25,
-  xGiven = NULL, nExtra = 0L, peakFinder = NULL, stateFile = NULL)
+  rngSeed = 0L,
+  nVec = 1L,
+  key1 = 47L,
+  key2 = 1L,
+  key3 = 1L,
+  maxPass = 5L,
+  border = 0,
+  maxChisq = 10,
+  minDeviation = 0.25,
+  xGiven = NULL,
+  nExtra = 0L,
+  peakFinder = NULL,
+  stateFile = NULL
+)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated as in
@@ -154,7 +173,7 @@ from the interior. Use a non-zero \code{border} if the
 integrand subroutine cannot produce values directly on the
 integration boundary. The relative width of the border is
 identical in all the dimensions. For example, set
-\code{border=0.1} for a border of width equal to 10\% of the
+\code{border=0.1} for a border of width equal to 10\\% of the
 width of the integration region.}
 
 \item{maxChisq}{the maximum \eqn{\chi^2}{Chi2} value a single

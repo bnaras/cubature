@@ -4,9 +4,18 @@
 \alias{cubintegrate}
 \title{Unified Cubature Integration Interface}
 \usage{
-cubintegrate(f, lower, upper, fDim = 1, method = c("hcubature",
-  "pcubature", "cuhre", "divonne", "suave", "vegas"), relTol = 1e-05,
-  absTol = 1e-12, maxEval = 10^6, nVec = 1L, ...)
+cubintegrate(
+  f,
+  lower,
+  upper,
+  fDim = 1,
+  method = c("hcubature", "pcubature", "cuhre", "divonne", "suave", "vegas"),
+  relTol = 1e-05,
+  absTol = 1e-12,
+  maxEval = 10^6,
+  nVec = 1L,
+  ...
+)
 }
 \arguments{
 \item{f}{The function (integrand) to be integrated. Can be
