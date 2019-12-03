@@ -427,6 +427,9 @@ typedef struct {
   bool init;
 } coreinit;
 
+/* Added for gcc 10.x default -fno-common. Global used by several funcs in Cuba-4.2 */
+static coreinit cubafun_;
+
 typedef struct {
   int ncores, naccel;
   int pcores, paccel;

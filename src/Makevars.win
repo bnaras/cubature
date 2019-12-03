@@ -21,6 +21,8 @@ cuba.ts:
 	cp $(CUBA_DIR_WIN)/src/common/stddecl.h $(CUBA_DIR)/src/common/stddecl.h
 	cp $(CUBA_DIR_WIN)/src/common/sock.h $(CUBA_DIR)/src/common/sock.h
 	cp $(CUBA_DIR_WIN)/src/common/Random.c $(CUBA_DIR)/src/common/Random.c
+	cp $(CUBA_DIR_WIN)/src/common/CSample.c $(CUBA_DIR)/src/common/CSample.c
+	cp $(CUBA_DIR_WIN)/src/common/Global.c $(CUBA_DIR)/src/common/Global.c
 	cp $(CUBA_DIR_WIN)/src/cuhre/common.c $(CUBA_DIR)/src/cuhre/common.c
 	cp $(CUBA_DIR_WIN)/config.h $(CUBA_DIR)/config.h
 	cp $(CUBA_DIR_WIN)/cuba.h $(CUBA_DIR)/cuba.h	
