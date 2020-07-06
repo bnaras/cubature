@@ -1,0 +1,9 @@
+#! /bin/sh
+
+rm -f src/Cuba-4.2/src/common/CSample.c
+rm -f src/Cuba-4.2/src/common/Fork.c
+rm -f src/Cuba-4.2/src/common/Global.c
+rm -f src/Cuba-4.2/src/common/Random.c
+rm -f src/Cuba-4.2/src/common/sock.h
+rm -f src/Cuba-4.2/src/common/stddecl.h
+rm -f src/Cuba-4.2/src/cuhre/common.c

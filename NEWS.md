@@ -1,3 +1,9 @@
+# cubature 2.0.4.1
+
+- Pass `$(AR)`, `$(ARFLAGS)`, `$(RANLIB)` to `make` so that LTO checks
+  pick up correct plugins. Also add `cleanup` script.  (Thanks,
+  Prof. Brian Ripley)
+
 # cubature 2.0.4
 
 - `cubintegrate` now matches method via `match.arg` ([Issue
