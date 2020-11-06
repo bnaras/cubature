@@ -105,6 +105,7 @@ static inline void SolveEqs(Cut *cut, count ncuts,
   real last = 0;
   real r = 1;
   Cut *c;
+  int first_time;
 
   for( c = cut; ; ++c ) {
     ccount dim = Dim(c->i);
@@ -116,7 +117,7 @@ static inline void SolveEqs(Cut *cut, count ncuts,
 
   last = Div(c->lhs - last, r);
 
-  for(int first_time = 1 ; c >= cut; --c) {
+  for first_time = 1 ; c >= cut; --c) {
     creal delmin = -(c->delta = delta[c->i]);
     creal delmax = FRACT*(delmin + c->save);
     if (!first_time) last = c->lhs;
