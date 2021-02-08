@@ -1,0 +1,14 @@
+*.Rproj
+.Rproj.user
+.RData
+.Rhistory
+src/*.o
+src/*.ts
+src/cubature-1.0.3/cubature.ts
+src/Cuba-4.2/config.log
+src/Cuba-4.2/config.status
+src/Cuba-4.2/config.h.in
+src/Cuba-4.2/cuba.ts
+src/Cuba-4.2/libcuba.a
+src/Cuba-4.2/makefile
+src/*.so

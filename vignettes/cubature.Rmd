@@ -26,16 +26,18 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-Starting with version 1.2, `cubature` now uses `Rcpp`. Also,
-version 1.3 uses the newer version (1.0.2) of Steven G. Johnson's
-[`hcubature` and `pcubature`](https://ab-initio.mit.edu/wiki/index.php/Cubature)
-routines, including the vectorized interface.
+This R `cubature` package exposes both the `hcubature` and `pcubature`
+routines of the underlying C `cubature` library, including the
+vectorized interfaces. 
 
 Per the documentation, use of `pcubature` is advisable only for smooth
-integrands in dimesions up to three at most. In fact, the `pcubature`
+integrands in dimensions up to three at most. In fact, the `pcubature`
 routines perform significantly worse than the vectorized `hcubature`
 in inappropriate cases. So when in doubt, you are better off using
 `hcubature`.
+
+Version 2.0 of this package integrates the `Cuba` library as well,
+once again providing vectorized interfaces. 
 
 The main point of this note is to examine the difference vectorization
 makes. My recommendations are below in the summary section.
@@ -43,18 +45,11 @@ makes. My recommendations are below in the summary section.
 ## A Timing Harness
 
 Our harness will provide timing results for `hcubature`, `pcubature`
-(where appropriate) and `R2Cuba` calls.  We begin by creating a
+(where appropriate) and Cuba `cuhre` calls.  We begin by creating a
 harness for these calls.
 
 ```{r}
-loadedSuggested  <- c(benchr = FALSE, R2Cuba = FALSE)
-if (requireNamespace("benchr", quietly = TRUE)) {
-    loadedSuggested["benchr"] <- TRUE
-}
-if (requireNamespace("R2Cuba", quietly = TRUE)) {
-    loadedSuggested["R2Cuba"] <- TRUE
-}
-
+library(benchr)
 library(cubature)
 
 harness <- function(which = NULL,
@@ -63,17 +58,18 @@ harness <- function(which = NULL,
     fns <- c(hc = "Non-vectorized Hcubature",
              hc.v = "Vectorized Hcubature",
              pc = "Non-vectorized Pcubature",
-             pc.v = "Vectorized Pcubature")
-
-    if (loadedSuggested["R2Cuba"]) {
-        fns <- c(fns, cc = "R2Cuba::cuhre")
-        cc <- function() R2Cuba::cuhre(ndim = ndim, ncomp = 1, integrand = f,
-                                       lower = lowerLimit, upper = upperLimit,
-                                       flags = list(verbose = 0, final = 1),
-                                       rel.tol = tol,
-                                       max.eval = 10^6,
+             pc.v = "Vectorized Pcubature",
+             cc = "Non-vectorized cubature::cuhre",
+             cc_v = "Vectorized cubature::cuhre")
+    cc <- function() cubature::cuhre(f = f,
+                                     lowerLimit = lowerLimit, upperLimit = upperLimit,
+                                     relTol = tol,
+                                     ...)
+    cc_v <- function() cubature::cuhre(f = fv,
+                                       lowerLimit = lowerLimit, upperLimit = upperLimit,
+                                       relTol = tol,
+                                       nVec = 1024L,
                                        ...)
-    }
 
     hc <- function() cubature::hcubature(f = f,
                                          lowerLimit = lowerLimit,
@@ -89,10 +85,10 @@ harness <- function(which = NULL,
                                            ...)
 
     pc <- function() cubature::pcubature(f = f,
-                                         lowerLimit = lowerLimit,
-                                         upperLimit = upperLimit,
-                                         tol = tol,
-                                         ...)
+                                     lowerLimit = lowerLimit,
+                                     upperLimit = upperLimit,
+                                     tol = tol,
+                                     ...)
 
     pc.v <- function() cubature::pcubature(f = fv,
                                            lowerLimit = lowerLimit,
@@ -100,7 +96,7 @@ harness <- function(which = NULL,
                                            tol = tol,
                                            vectorInterface = TRUE,
                                            ...)
-
+    
     ndim = length(lowerLimit)
 
     if (is.null(which)) {
@@ -110,15 +106,11 @@ harness <- function(which = NULL,
     }
     fnList <- lapply(names(fns)[fnIndices], function(x) call(x))
 
-    if (loadedSuggested["benchr"]) {
-        argList <- c(fnList, times = times, progress = FALSE)
-        result <- do.call(benchr::benchmark, args = argList)
-        d <- summary(result)[seq_along(fnIndices), ]
-        d$expr <- fns[fnIndices]
-        d
-    } else {
-        d <- data.frame(expr = names(fns)[fnIndices], timing = NA)
-    }
+    argList <- c(fnList, times = times, progress = FALSE)
+    result <- do.call(benchr::benchmark, args = argList)
+    d <- summary(result)[seq_along(fnIndices), ]
+    d$expr <- fns[fnIndices]
+    d
 }
 ```
 
@@ -262,7 +254,7 @@ testFn2_v <- function(x) {
     matrix(apply(x, 2, function(z) ifelse(sum(z * z) < radius * radius, 1, 0)), ncol = ncol(x))
 }
 
-d <- harness(which = c("hc", "hc.v", "cc"),
+d <- harness(which = c("hc", "hc.v", "cc", "cc_v"),
              f = testFn2, fv = testFn2_v,
              lowerLimit = rep(0, 2), upperLimit = rep(1, 2), times = 10)
 knitr::kable(d, digits = 3)
@@ -279,7 +271,7 @@ d <- harness(f = testFn3, fv = testFn3_v,
 knitr::kable(d, digits = 3)
 ```
 
-## Gaussian centered at \frac{1}{2}
+## Gaussian centered at $\frac{1}{2}$
 
 ```{r}
 testFn4 <- function(x) {
@@ -403,46 +395,22 @@ knitr::kable(d, digits = 3)
 ```
 
 
-## An implementation note
+## Implementation Notes
 
 About the only real modification we have made to the underlying
-[`cubature-1.0.2`](http://ab-initio.mit.edu/wiki/index.php/Cubature)
-library is that we use `M = 16` rather than the default `M = 19`
-suggested by the original author for `pcubature`. This allows us to
-comply with CRAN package size limits and seems to work reasonably well
-for the above tests. Future versions will allow for such customization
-on demand.
+`cubature-1.0.2` library is that we use `M = 16` rather than the
+default `M = 19` suggested by the original author for
+`pcubature`. This allows us to comply with CRAN package size limits
+and seems to work reasonably well for the above tests. Future versions
+will allow for such customization on demand.
 
-### Apropos the `Cuba` library
-
-The package [`R2Cuba`](https://cran.r-project.org/package=R2Cuba)
-provides a suite of cubature and other useful Monte Carlo integration
-routines linked against version 1.6 of the C library. The authors of
-`R2Cuba` have obviously put a lot of work has into it since it uses
-C-style R API. This approach also means that it is harder to keep the
-R package in sync with new versions of the underlying C library. In
-fact, the Cuba C library has marched on now to version 4.2.
-
-In a matter of a couple of hours, I was able to link the latest
-version (4.2) of the [Cuba libraries](http://www.feynarts.de/cuba/)
-with R using Rcpp; you can see it on the `Cuba` branch of my
-[Github repo](https://github.com/bnaras/cubature). This branch package
-builds and installs in R on my Mac and Ubuntu machines and gives
-correct answers at least for `cuhre`. The
-4.2 version of the Cuba library also has vectorized versions of the
-routines that can be gainfully exploited (not implemented in the
-branch). As of this writing, I have also not yet carefully considered
-the issue of parallel execution (via `fork()`) which might be
-problematic in the Windows version. In addition, my timing benchmarks
-showed very disappointing results.
-
-For the above reasons, I decided not to bother with Cuba for now, but
-if there is enough interest, I might consider rolling `Cuba-4.2+` into
-this `cubature` package in the future.
+The changes made to the `Cuba-4.2` library are separated out so that
+the original source is left pristine and the changes (a small number)
+applied only during the building process.
 
 ## Summary
 
-The following is therefore my recommendation.
+My recommendations are:
 
 1. _Vectorize_ your function. The time spent in so doing pays back
    enormously. This is easy to do and the examples above show how.
@@ -451,4 +419,9 @@ The following is therefore my recommendation.
 
 3. For smooth integrands in low dimensions ($\leq 3$), `pcubature` might be
    worth trying out. Experiment before using in a production package.
+   
+## Session Info
 
+```{r}
+sessionInfo()
+```
