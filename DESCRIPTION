@@ -1,7 +1,7 @@
 Package: cubature
 Type: Package
 Title: Adaptive Multivariate Integration over Hypercubes
-Version: 2.0.4.1
+Version: 2.0.4.2
 VignetteBuilder: knitr
 SystemRequirements: GNU make
 URL: https://bnaras.github.io/cubature
@@ -33,4 +33,5 @@ RoxygenNote: 7.1.0
 Suggests: testthat,
 	  knitr,
 	  mvtnorm,
-    	  benchr
+    	  benchr,
+	  rmarkdown

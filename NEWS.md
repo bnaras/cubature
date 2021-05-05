@@ -1,6 +1,7 @@
 # cubature 2.0.4.2
 
 - Fix `Makevars` to refer to `CC` not `C` ([Issue 33](https://github.com/bnaras/cubature/issues/33))
+- Add `rmarkdown` to suggests in description
 
 # cubature 2.0.4.1
 
