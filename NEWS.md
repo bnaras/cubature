@@ -1,6 +1,7 @@
 # cubature 2.0.4.2
 
 - Fix `Makevars` to refer to `CC` not `C` ([Issue 33](https://github.com/bnaras/cubature/issues/33))
+- Replace `src/Cuba-4.2-win/common/Random.c:105` with equivalent to ensure gcc 8.x erroneous warning is avoided on Windows
 - Add `rmarkdown` to suggests in description
 
 # cubature 2.0.4.1
