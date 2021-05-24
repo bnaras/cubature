@@ -101,8 +101,14 @@ static inline void SobolIni(This *t)
     number powers = *pini++, j;
     int inibits = -1, bit;
     for( j = powers; j; j >>= 1 ) ++inibits;
+    
+    /* Original line below replaced by three lines that follow due to bug in gcc 8.x toolchain! */
+    /* memcpy(pv, pini, inibits*sizeof *pini); */
+    
+    number sz = inibits * sizeof(*pini);
+    sz = (sz > 0) ? sz : 0;
+    memcpy(pv, pini, sz);
 
-    memcpy(pv, pini, inibits*sizeof *pini);
     pini += 8;
 
     for( bit = inibits; bit <= nbits; ++bit ) {

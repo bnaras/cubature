@@ -11,7 +11,7 @@ endif
 
 PKG_CFLAGS=$(SOLARIS_FLAG) -DRCPP_USE_UNWIND_PROTECT -I. -I../inst/include
 PKG_CPPFLAGS=$(PKG_CFLAGS)
-PKG_LIBS=-L$(CUBATURE_DIR) -L$(CUBA_DIR) -lcubature -lcuba
+PKG_LIBS=-L./$(CUBATURE_DIR) -L./$(CUBA_DIR) -lcubature -lcuba
 
 $(SHLIB): Rcpp-cubature.o Rcpp-Cuba.o RcppExports.o cubature_init.o
 

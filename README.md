@@ -3,12 +3,11 @@
 
 # cubature
 
-[![Travis-CI Build
-Status](https://travis-ci.org/bnaras/cubature.svg?branch=master)](https://travis-ci.org/bnaras/cubature)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/cubature)](https://cran.r-project.org/package=cubature)
-[![Coverage
-Status](https://img.shields.io/codecov/c/github/bnaras/cubature/master.svg)](https://codecov.io/github/bnaras/cubature?branch=master)
+[![R build status](https://github.com/bnaras/cubature/workflows/R-CMD-check/badge.svg)](https://github.com/bnaras/cubature/actions)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/cubature)](https://cran.r-project.org/package=cubature)
+[![Codecov test coverage](https://codecov.io/gh/bnaras/cubature/branch/master/graph/badge.svg)](https://codecov.io/gh/bnaras/cubature?branch=master)
 [![](https://cranlogs.r-pkg.org/badges/cubature)](https://CRAN.R-project.org/package=cubature)
+
 
 Cubature is an R package for adaptive multivariate integration over
 hypercubes using deterministic and Monte Carlo methods. The package
