@@ -23,9 +23,10 @@ extern "C" {
     static Fun fun = NULL;
     if (fun == NULL) {
       Rf_eval(Rf_lang2(Rf_install("loadNamespace"),
-                       Rf_ScalarString(Rf_mkChar("cubature")) ),
-	      R_GlobalEnv);
-      fun = (Fun) R_GetCCallable("cubature", "hcubature"); 
+                       PROTECT(Rf_ScalarString(Rf_mkChar("cubature")))),
+              R_GlobalEnv);
+      UNPROTECT(1);
+      fun = (Fun) R_GetCCallable("cubature", "hcubature");
     }
     return fun(fdim,f,fdata,dim,xmin,xmax,maxEval,reqAbsError,reqRelError,norm,val,err); 
   }
@@ -41,8 +42,9 @@ extern "C" {
     static Fun fun = NULL;
     if (fun == NULL) {
       Rf_eval(Rf_lang2(Rf_install("loadNamespace"),
-                       Rf_ScalarString(Rf_mkChar("cubature")) ),
-                       R_GlobalEnv);
+                       PROTECT(Rf_ScalarString(Rf_mkChar("cubature")))),
+              R_GlobalEnv);
+      UNPROTECT(1);
       fun = (Fun) R_GetCCallable("cubature", "hcubature_v");
     }
     return fun(fdim,f,fdata,dim,xmin,xmax,maxEval,reqAbsError,reqRelError,norm,val,err); 
@@ -62,8 +64,9 @@ extern "C" {
     static Fun fun = NULL;
     if (fun == NULL) {
       Rf_eval(Rf_lang2(Rf_install("loadNamespace"),
-                       Rf_ScalarString(Rf_mkChar("cubature")) ),
-                       R_GlobalEnv);
+                       PROTECT(Rf_ScalarString(Rf_mkChar("cubature")))),
+              R_GlobalEnv);
+      UNPROTECT(1);
       fun = (Fun) R_GetCCallable("cubature", "pcubature");
     }
     return fun(fdim,f,fdata,dim,xmin,xmax,maxEval,reqAbsError,reqRelError,norm,val,err); 
@@ -80,8 +83,9 @@ extern "C" {
     static Fun fun = NULL;
     if (fun == NULL) {
       Rf_eval(Rf_lang2(Rf_install("loadNamespace"),
-                       Rf_ScalarString(Rf_mkChar("cubature")) ),
-                       R_GlobalEnv);
+                       PROTECT(Rf_ScalarString(Rf_mkChar("cubature")))),
+              R_GlobalEnv);
+      UNPROTECT(1);
       fun = (Fun) R_GetCCallable("cubature", "pcubature_v");
     }
     return fun(fdim,f,fdata,dim,xmin,xmax,maxEval,reqAbsError,reqRelError,norm,val,err); 
