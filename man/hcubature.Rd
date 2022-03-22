@@ -70,7 +70,7 @@ convergence properties. See below.}
 \value{
 The returned value is a list of four items:
 \item{integral}{the value of the integral} \item{error}{the
-estimated relative error} \item{functionEvaluations}{the number
+estimated absolute error} \item{functionEvaluations}{the number
 of times the function was evaluated} \item{returnCode}{the
 actual integer return code of the C routine}
 }

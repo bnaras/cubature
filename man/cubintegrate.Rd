@@ -62,8 +62,7 @@ for f and so processed.}
 }
 \value{
 The returned value is a list of items: -\item{integral}{the
-value of the integral} - \item{error}{the estimated relative
-error for cubature; for Cuba it is the estimated absolute
+value of the integral} - \item{error}{the estimated absolute
 error} \item{neval}{the number of times the function was
 evaluated} - \item{returnCode}{the actual integer return code
 of the C routine; a non-zero value usually indicates problems;
