@@ -1,3 +1,11 @@
+# cubature 2.0.4.4
+
+- Fix unprotected arguments ([Issue 34](https://github.com/bnaras/cubature/issues/34)). Thanks Manuel Koller.
+
+# cubature 2.0.4.3
+
+- Unreleased
+
 # cubature 2.0.4.2
 
 - Fix `Makevars` to refer to `CC` not `C` ([Issue 33](https://github.com/bnaras/cubature/issues/33))

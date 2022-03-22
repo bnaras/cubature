@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // doCuhre
 Rcpp::List doCuhre(int nComp, SEXP f, int nDim, int nVec, int minEval, int maxEval, double absTol, double relTol, SEXP stateFile, int key, int flag);
 RcppExport SEXP _cubature_doCuhre(SEXP nCompSEXP, SEXP fSEXP, SEXP nDimSEXP, SEXP nVecSEXP, SEXP minEvalSEXP, SEXP maxEvalSEXP, SEXP absTolSEXP, SEXP relTolSEXP, SEXP stateFileSEXP, SEXP keySEXP, SEXP flagSEXP) {

@@ -5,7 +5,7 @@
 
 [![R build status](https://github.com/bnaras/cubature/workflows/R-CMD-check/badge.svg)](https://github.com/bnaras/cubature/actions)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/cubature)](https://cran.r-project.org/package=cubature)
-[![Codecov test coverage](https://codecov.io/gh/bnaras/cubature/branch/master/graph/badge.svg)](https://codecov.io/gh/bnaras/cubature?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/bnaras/cubature/branch/master/graph/badge.svg)](https://app.codecov.io/gh/bnaras/cubature?branch=master)
 [![](https://cranlogs.r-pkg.org/badges/cubature)](https://CRAN.R-project.org/package=cubature)
 
 
