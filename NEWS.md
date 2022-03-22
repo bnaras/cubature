@@ -1,6 +1,7 @@
 # cubature 2.0.4.4
 
 - Fix unprotected arguments ([Issue 34](https://github.com/bnaras/cubature/issues/34)). Thanks Manuel Koller.
+- Fix documentation ([Issue 32](https://github.com/bnaras/cubature/issues/32)). Thanks Emanuele Guidotti.
 
 # cubature 2.0.4.3
 
