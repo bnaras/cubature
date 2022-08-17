@@ -3,7 +3,7 @@
 #' Implement a deterministic algorithm for multidimensional numerical
 #' integration. Its algorithm uses one of several cubature rules in a globally
 #' adaptive subdivision scheme.  The subdivision algorithm is similar to
-#' \code{\link{suave}}'s.
+#' [suave()].
 #'
 #' See details in the documentation.
 #'
@@ -25,7 +25,7 @@
 #'     default 10^6.  Note that the actual number of function
 #'     evaluations performed is only approximately guaranteed not to
 #'     exceed this number.
-#' @param key the quadrature rule key: \code{key = 7, 9, 11, 13}
+#' @param key the quadrature rule key: `key = 7, 9, 11, 13`
 #'     selects the cubature rule of degree key. Note that the
 #'     degree-11 rule is available only in 3 dimensions, the degree-13
 #'     rule only in 2 dimensions.  For other values, including the
@@ -35,45 +35,21 @@
 #' @param flags flags governing the integration. The list here is
 #'     exhaustive to keep the documentation and invocation uniform,
 #'     but not all flags may be used for a particular method as noted
-#'     below.  List components: \describe{ \item{\code{verbose}}{
-#'     encodes the verbosity level, from 0 (default) to 3.  Level 0
-#'     does not print any output, level 1 prints reasonable
-#'     information on the progress of the integration, level 2 also
-#'     echoes the input parameters, and level 3 further prints the
-#'     subregion results.}  \item{\code{final}}{when 0, all sets of
-#'     samples collected on a subregion during the various iterations
-#'     or phases contribute to the final result.  When 1, only the
-#'     last (largest) set of samples is used in the final result.}
-#'     \item{\code{smooth}}{Applies to Suave and Vegas only. When 0,
-#'     apply additional smoothing to the importance function, this
-#'     moderately improves convergence for many integrands.  When 1,
-#'     use the importance function without smoothing, this should be
-#'     chosen if the integrand has sharp edges.}
-#'     \item{\code{keep_state}}{when nonzero, retain state file if
-#'     argument \code{stateFile} is non-null, else delete
-#'     \code{stateFile} if specified.}
-#'     \item{\code{load_state}}{Applies to Vegas only. Reset the
-#'     integrator's state even if a state file is present, i.e. keep
-#'     only the grid. Together with \code{keep_state} this allows a
-#'     grid adapted by one integration to be used for another
-#'     integrand.}  \item{\code{level}}{applies only to Divonne, Suave
-#'     and Vegas. When \code{0}, Mersenne Twister random numbers are
-#'     used. When nonzero Ranlux random numbers are used, except when
-#'     \code{rngSeed} is zero which forces use of Sobol quasi-random
-#'     numbers. Ranlux implements Marsaglia and Zaman's 24-bit RCARRY
-#'     algorithm with generation period p, i.e. for every 24 generated
-#'     numbers used, another p-24 are skipped. The luxury level for
-#'     the Ranlux generator may be encoded in \code{level} as follows:
-#'     \describe{ \item{Level 1 (p = 48)}{gives very long period,
-#'     passes the gap test but fails spectral test} \item{Level 2 (p =
-#'     97)}{passes all known tests, but theoretically still defective}
-#'     \item{Level 3 (p = 223)}{any theoretically possible
-#'     correlations have very small chance of being observed}
-#'     \item{Level 4 (p = 389)}{highest possible luxury, all 24 bits
-#'     chaotic} \item{Levels 5-23}{default to 3, values above 24
-#'     directly specify the period p.}}  Note that Ranlux's original
-#'     level 0, (mis)used for selecting Mersenne Twister in Cuba, is
-#'     equivalent to \code{level} = 24.}}
+#'     below.  List components:
+#'     \describe{
+#'        \item{verbose}{encodes the verbosity level, from 0 (default) to 3.  Level 0 does not print any output, level 1 prints reasonable information on the progress of the integration, level 2 also echoes the input parameters, and level 3 further prints the subregion results.}
+#'        \item{final}{when 0, all sets of samples collected on a subregion during the various iterations or phases contribute to the final result.  When 1, only the last (largest) set of samples is used in the final result.}
+#'        \item{smooth}{Applies to Suave and Vegas only. When 0, apply additional smoothing to the importance function, this moderately improves convergence for many integrands.  When 1, use the importance function without smoothing, this should be chosen if the integrand has sharp edges.}
+#'        \item{keep_state}{when nonzero, retain state file if argument `stateFile` is non-null, else delete `stateFile` if specified.}
+#'        \item{load_state}{Applies to Vegas only. Reset the integrator state even if a state file is present, i.e. keep only the grid. Together with `keep_state` this allows a grid adapted by one integration to be used for another integrand.}
+#'        \item{level}{applies only to Divonne, Suave and Vegas. When `0`, Mersenne Twister random numbers are used. When nonzero Ranlux random numbers are used, except when `rngSeed` is zero which forces use of Sobol quasi-random numbers. Ranlux implements Marsaglia and Zaman's 24-bit RCARRY algorithm with generation period \eqn{p}, i.e. for every 24 generated numbers used, another \eqn{p-24} are skipped. The luxury level for the Ranlux generator may be encoded in `level` as follows:
+#'     \describe{
+#'        \item{Level 1 (p = 48)}{gives very long period, passes the gap test but fails spectral test}
+#'        \item{Level 2 (p = 97)}{passes all known tests, but theoretically still defective}
+#'        \item{Level 3 (p = 223)}{any theoretically possible correlations have very small chance of being observed}
+#'        \item{Level 4 (p = 389)}{highest possible luxury, all 24 bits chaotic}
+#'        \item{Levels 5-23}{default to 3, values above 24 directly specify the period p. Note that Ranlux's original level 0, (mis)used for selecting Mersenne Twister in Cuba, is equivalent to `level = 24`}}}}
+#' 
 #' @param nVec the number of vectorization points, default 1, but can
 #'     be set to an integer > 1 for vectorization, for example, 1024
 #'     and the function f above needs to handle the vector of points
@@ -96,15 +72,15 @@
 #'     zero, the desired accuracy was reached, if -1, dimension out of
 #'     range, if 1, the accuracy goal was not met within the allowed
 #'     maximum number of integrand evaluations.}
-#'     \item{integral}{vector of length \code{nComp}; the integral of
-#'     \code{integrand} over the hypercube} \item{error}{vector of
-#'     length \code{nComp}; the presumed absolute error of
-#'     \code{integral}} \item{prob}{vector of length \code{nComp}; the
+#'     \item{integral}{vector of length `nComp`; the integral of
+#'     `integrand` over the hypercube} \item{error}{vector of
+#'     length `nComp`; the presumed absolute error of
+#'     `integral`} \item{prob}{vector of length `nComp`; the
 #'     \eqn{\chi^2}{Chi2}-probability (not the
-#'     \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
+#'     \eqn{\chi^2}{Chi2}-value itself!) that `error` is not a
 #'     reliable estimate of the true integration error.}}
 #'
-#' @seealso \code{\link{vegas}}, \code{\link{suave}}, \code{\link{divonne}}
+#' @seealso [vegas()], [suave()], [divonne()]
 #'
 #' @importFrom Rcpp evalCpp
 #'
@@ -113,12 +89,11 @@
 #' Mathematical Software}, \bold{17}(4), 437-451.
 #'
 #' T. Hahn (2005) CUBA-a library for multidimensional numerical integration.
-#' \emph{Computer Physics Communications}, \bold{168}, 78-95.
-#'
-#' @references See \url{http://www.feynarts.de/cuba/}
+#' \emph{Computer Physics Communications}, \bold{168}, 78-95. See \url{http://www.feynarts.de/cuba/}
+#' 
 #' @keywords math
+#' 
 #' @examples
-#'
 #' integrand <- function(arg) {
 #'   x <- arg[1]
 #'   y <- arg[2]

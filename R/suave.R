@@ -1,6 +1,6 @@
 #' Integration with SUbregion-Adaptive Vegas Algorithm
 #'
-#' Suave uses \code{\link{vegas}}-like importance sampling combined with a
+#' Suave uses [vegas()]-like importance sampling combined with a
 #' globally adaptive subdivision strategy: Until the requested accuracy is
 #' reached, the region with the largest error at the time is bisected in the
 #' dimension in which the fluctuations of the integrand are reduced most. The
@@ -34,15 +34,15 @@
 #'     the desired accuracy was reached, if -1,
 #'     dimension out of range, if 1, the accuracy goal was not met
 #'     within the allowed maximum number of integrand evaluations.}
-#'     \item{integral}{vector of length \code{nComp}; the integral of
-#'     \code{integrand} over the hypercube} \item{error}{vector of
-#'     length \code{nComp}; the presumed absolute error of
-#'     \code{integral}} \item{prob}{vector of length \code{nComp};
+#'     \item{integral}{vector of length `nComp`; the integral of
+#'     `integrand` over the hypercube} \item{error}{vector of
+#'     length `nComp`; the presumed absolute error of
+#'     `integral`} \item{prob}{vector of length `nComp`;
 #'     the \eqn{\chi^2}{Chi2}-probability (not the
-#'     \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
+#'     \eqn{\chi^2}{Chi2}-value itself!) that `error` is not a
 #'     reliable estimate of the true integration error.}}
 #'
-#' @seealso \code{\link{cuhre}}, \code{\link{divonne}}, \code{\link{vegas}}
+#' @seealso [cuhre()], [divonne()], [vegas()]
 #' @references T. Hahn (2005) CUBA-a library for multidimensional numerical
 #' integration. \emph{Computer Physics Communications}, \bold{168}, 78-95.
 #' @keywords math

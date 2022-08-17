@@ -14,12 +14,16 @@
 #'
 #' @inheritParams vegas
 #' @param f The function (integrand) to be integrated as in
-#'     \code{\link{cuhre}}. Optionally, the function can take an
-#'     additional arguments in addition to the variable being
-#'     integrated: - \code{cuba_phase}. The last argument, phase,
-#'     indicates the integration phase: 0. sampling of the points in
-#'     \code{xgiven}, 1. partitioning phase, 2. final integration
-#'     phase, 3. refinement phase. This information might be useful if
+#'     [cuhre()]. Optionally, the function can take an
+#'     additional argument in addition to the variable being
+#'     integrated: - `cuba_phase` - indicating the integration phase:
+#'     \describe{
+#'        \item{0}{sampling of the points in `xgiven`}
+#'        \item{1}{partitioning phase}
+#'        \item{2}{final integration phase}
+#'        \item{3}{refinement phase}
+#'     }
+#'     This information might be useful if
 #'     the integrand takes long to compute and a sufficiently accurate
 #'     approximation of the integrand is available. The actual value
 #'     of the integral is only of minor importance in the partitioning
@@ -28,42 +32,42 @@
 #'     tessellation. An approximation which reproduces the peak
 #'     structure while leaving out the fine details might hence be a
 #'     perfectly viable and much faster substitute when
-#'     \code{cuba_phase} < 2. In all other instances, phase can be
+#'     `cuba_phase < 2`. In all other instances, phase can be
 #'     ignored and it is entirely admissible to define the integrand
-#'     without it. which is the
+#'     without it.
 #' @param key1 integer that determines sampling in the partitioning
-#'     phase: \code{key1 = 7, 9, 11, 13} selects the cubature rule of
-#'     degree \code{key1}.  Note that the degree-11 rule is available
+#'     phase: `key1 = 7, 9, 11, 13` selects the cubature rule of
+#'     degree `key1`.  Note that the degree-11 rule is available
 #'     only in 3 dimensions, the degree-13 rule only in 2
-#'     dimensions. For other values of \code{key1}, a quasi-random
-#'     sample of \eqn{n=|key1|}{\code{n=|key1|}} points is used, where
-#'     the sign of \code{key1} determines the type of sample,
-#'     \code{key1 = 0}, use the default rule. \code{key1 > 0}, use a
-#'     Korobov quasi-random sample, \code{key1 < 0}, use a Sobol
-#'     quasi-random sample if \code{flags$seed} is zero, otherwise a
+#'     dimensions. For other values of `key1`, a quasi-random
+#'     sample of \eqn{n=|key1|}{`n=|key1|`} points is used, where
+#'     the sign of `key1` determines the type of sample,
+#'     `key1 = 0`, use the default rule. `key1 > 0`, use a
+#'     Korobov quasi-random sample, `key1 < 0`, use a Sobol
+#'     quasi-random sample if `flags$seed` is zero, otherwise a
 #'     \dQuote{standard} sample (Mersenne Twister) pseudo-random
 #'     sample
 #' @param key2 integer that determines sampling in the final
-#'     integration phase: same as \code{key1}, but here
-#'     \eqn{$n=|key2|$}{\code{n = |key2|}} determines the number of
-#'     points, \eqn{n > 39}{\code{n > 39}}, sample \eqn{n} points,
-#'     \eqn{n < 40}{\code{n < 40}}, sample \eqn{n}{\code{n}}
-#'     \code{nneed} points, where \code{nneed} is the number of points
+#'     integration phase: same as `key1`, but here
+#'     \eqn{n=|key2|}{`n = |key2|`} determines the number of
+#'     points, \eqn{n > 39}{`n > 39`}, sample \eqn{n} points,
+#'     \eqn{n < 40}{`n < 40`}, sample \eqn{n}{`n`}
+#'     \code{nneed} points, where `nneed` is the number of points
 #'     needed to reach the prescribed accuracy, as estimated by
 #'     Divonne from the results of the partitioning phase.
 #' @param key3 integer that sets the strategy for the refinement
-#'     phase: \code{key3 = 0}, do not treat the subregion any further.
-#'     \code{key3 = 1}, split the subregion up once more.  Otherwise,
-#'     the subregion is sampled a third time with \code{key3}
-#'     specifying the sampling parameters exactly as \code{key2}
+#'     phase: `key3 = 0`, do not treat the subregion any further.
+#'     `key3 = 1`, split the subregion up once more.  Otherwise,
+#'     the subregion is sampled a third time with `key3`
+#'     specifying the sampling parameters exactly as `key2`
 #'     above.
 #' @param maxPass integer that controls the thoroughness of the
 #'     partitioning phase: The partitioning phase terminates when the
 #'     estimated total number of integrand evaluations (partitioning
-#'     plus final integration) does not decrease for \code{maxPass}
+#'     plus final integration) does not decrease for `maxPass`
 #'     successive iterations. A decrease in points generally indicates
 #'     that Divonne discovered new structures of the integrand and was
-#'     able to find a more effective partitioning. \code{maxPass} can
+#'     able to find a more effective partitioning. `maxPass` can
 #'     be understood as the number of \dQuote{safety} iterations that
 #'     are performed before the partition is accepted as final and
 #'     counting consequently restarts at zero whenever new structures
@@ -71,16 +75,16 @@
 #' @param border the relative width of the border of the integration
 #'     region.  Points falling into the border region will not be
 #'     sampled directly, but will be extrapolated from two samples
-#'     from the interior. Use a non-zero \code{border} if the
+#'     from the interior. Use a non-zero `border` if the
 #'     integrand subroutine cannot produce values directly on the
 #'     integration boundary. The relative width of the border is
 #'     identical in all the dimensions. For example, set
-#'     \code{border=0.1} for a border of width equal to 10\% of the
+#'     `border=0.1` for a border of width equal to 10\% of the
 #'     width of the integration region.
 #' @param maxChisq the maximum \eqn{\chi^2}{Chi2} value a single
 #'     subregion is allowed to have in the final integration
 #'     phase. Regions which fail this \eqn{\chi^2}{Chi2} test and
-#'     whose sample averages differ by more than \code{min.deviation}
+#'     whose sample averages differ by more than `min.deviation`
 #'     move on to the refinement phase.
 #' @param minDeviation a bound, given as the fraction of the requested
 #'     error of the entire integral, which determines whether it is
@@ -88,28 +92,28 @@
 #'     \eqn{\chi^2}{Chi2} test.  Only if the two sampling averages
 #'     obtained for the region differ by more than this bound is the
 #'     region further treated.
-#' @param xGiven a matrix ( \code{nDim}, \code{nGiven}).  A list of
-#'     \code{nGiven} points where the integrand might have peaks.
+#' @param xGiven a matrix (`nDim`, `nGiven`).  A list of
+#'     `nGiven` points where the integrand might have peaks.
 #'     Divonne will consider these points when partitioning the
 #'     integration region.  The idea here is to help the integrator
 #'     find the extrema of the integrand in the presence of very
 #'     narrow peaks. Even if only the approximate location of such
 #'     peaks is known, this can considerably speed up convergence.
 #' @param nExtra the maximum number of extra points the peak-finder
-#'     subroutine will return. If \code{nextra} is zero,
-#'     \code{peakfinder} is not called and an arbitrary object may be
+#'     subroutine will return. If `nextra` is zero,
+#'     `peakfinder` is not called and an arbitrary object may be
 #'     passed in its place, e.g. just 0.
 #' @param peakFinder the peak-finder subroutine. This R function is
 #'     called whenever a region is up for subdivision and is supposed
 #'     to point out possible peaks lying in the region, thus acting as
 #'     the dynamic counterpart of the static list of points supplied
-#'     in \code{xgiven}. It is expected to be declared as
-#'     \code{peakFinder <- function(bounds, nMax)} where \code{bounds}
-#'     is a matrix of dimension (\code{2, nDim}) which contains the
+#'     in `xgiven`. It is expected to be declared as
+#'     `peakFinder <- function(bounds, nMax)` where `bounds`
+#'     is a matrix of dimension `(2, nDim)` which contains the
 #'     lower (row 1) and upper (row 2) bounds of the subregion.  The
-#'     returned value should be a matrix (\code{nX, nDim}) where
-#'     \code{nX} is the actual number of points (should be less or
-#'     equal to \code{nMax}).
+#'     returned value should be a matrix `(nX, nDim)` where
+#'     `nX` is the actual number of points (should be less or
+#'     equal to `nMax`).
 #' @return A list with components: \describe{\item{nregions}{the actual
 #'     number of subregions needed} \item{neval}{the actual number
 #'     of integrand evaluations needed} \item{returnCode}{if zero,
@@ -117,14 +121,14 @@
 #'     dimension out of range, if 1, the accuracy goal was not met
 #'     within the allowed maximum number of integrand evaluations.}
 #'     \item{integral}{vector of length \code{nComp}; the integral of
-#'     \code{integrand} over the hypercube} \item{error}{vector of
-#'     length \code{nComp}; the presumed absolute error of
-#'     \code{integral}} \item{prob}{vector of length \code{nComp};
+#'     `integrand` over the hypercube} \item{error}{vector of
+#'     length `nComp`; the presumed absolute error of
+#'     `integral`} \item{prob}{vector of length `nComp`;
 #'     the \eqn{\chi^2}{Chi2}-probability (not the
-#'     \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
+#'     \eqn{\chi^2}{Chi2}-value itself!) that `error` is not a
 #'     reliable estimate of the true integration error.}}
 #'
-#' @seealso \code{\link{cuhre}}, \code{\link{suave}}, \code{\link{vegas}}
+#' @seealso [cuhre()], [suave()], [vegas()]
 #' @references J. H. Friedman, M. H. Wright (1981) A nested partitioning
 #' procedure for numerical multiple integration. \emph{ACM Trans. Math.
 #' Software}, \bold{7}(1), 76-92.

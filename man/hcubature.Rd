@@ -121,7 +121,7 @@ respectively, the \code{norm} argument takes on one of the following values:
 error tolerances}
 \item{\code{L1}, \code{L2}, \code{LINF}}{The absolute error is measured as
 \eqn{|e|} and the relative error as \eqn{|e|/|v|}, where \eqn{|...|} is the
-\eqn{L_1}, \eqn{L_2}, or \eqn{\L_{\infty}} norm, respectively}
+\eqn{L_1}, \eqn{L_2}, or \eqn{L_{\infty}} norm, respectively}
 \item{\code{PAIRED}}{Like \code{INDIVIDUAL}, except that the integrands are
 grouped into consecutive pairs, with the error tolerance applied in an
 \eqn{L_2} sense to each pair. This option is mainly useful for integrating
