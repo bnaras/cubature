@@ -20,7 +20,7 @@ points in a single call."><!-- mathjax --><script src="https://cdnjs.cloudflare.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cubature</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4.5</span>
       </span>
     </div>
 
@@ -72,84 +72,108 @@ points in a single call.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">hcubature</span><span class="op">(</span>
-  <span class="va">f</span>,
-  <span class="va">lowerLimit</span>,
-  <span class="va">upperLimit</span>,
-  <span class="va">...</span>,
-  tol <span class="op">=</span> <span class="fl">1e-05</span>,
-  fDim <span class="op">=</span> <span class="fl">1</span>,
-  maxEval <span class="op">=</span> <span class="fl">0</span>,
-  absError <span class="op">=</span> <span class="fl">0</span>,
-  doChecking <span class="op">=</span> <span class="cn">FALSE</span>,
-  vectorInterface <span class="op">=</span> <span class="cn">FALSE</span>,
-  norm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"INDIVIDUAL"</span>, <span class="st">"PAIRED"</span>, <span class="st">"L2"</span>, <span class="st">"L1"</span>, <span class="st">"LINF"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">pcubature</span><span class="op">(</span>
-  <span class="va">f</span>,
-  <span class="va">lowerLimit</span>,
-  <span class="va">upperLimit</span>,
-  <span class="va">...</span>,
-  tol <span class="op">=</span> <span class="fl">1e-05</span>,
-  fDim <span class="op">=</span> <span class="fl">1</span>,
-  maxEval <span class="op">=</span> <span class="fl">0</span>,
-  absError <span class="op">=</span> <span class="fl">0</span>,
-  doChecking <span class="op">=</span> <span class="cn">FALSE</span>,
-  vectorInterface <span class="op">=</span> <span class="cn">FALSE</span>,
-  norm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"INDIVIDUAL"</span>, <span class="st">"PAIRED"</span>, <span class="st">"L2"</span>, <span class="st">"L1"</span>, <span class="st">"LINF"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hcubature</span><span class="op">(</span></span>
+<span>  <span class="va">f</span>,</span>
+<span>  <span class="va">lowerLimit</span>,</span>
+<span>  <span class="va">upperLimit</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  tol <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  fDim <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  maxEval <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  absError <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  doChecking <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  vectorInterface <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  norm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"INDIVIDUAL"</span>, <span class="st">"PAIRED"</span>, <span class="st">"L2"</span>, <span class="st">"L1"</span>, <span class="st">"LINF"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pcubature</span><span class="op">(</span></span>
+<span>  <span class="va">f</span>,</span>
+<span>  <span class="va">lowerLimit</span>,</span>
+<span>  <span class="va">upperLimit</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  tol <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  fDim <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  maxEval <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  absError <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  doChecking <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  vectorInterface <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  norm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"INDIVIDUAL"</span>, <span class="st">"PAIRED"</span>, <span class="st">"L2"</span>, <span class="st">"L1"</span>, <span class="st">"LINF"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>f</dt>
 <dd><p>The function (integrand) to be integrated</p></dd>
+
+
 <dt>lowerLimit</dt>
 <dd><p>The lower limit of integration, a vector for
 hypercubes</p></dd>
+
+
 <dt>upperLimit</dt>
 <dd><p>The upper limit of integration, a vector for
 hypercubes</p></dd>
+
+
 <dt>...</dt>
 <dd><p>All other arguments passed to the function f</p></dd>
+
+
 <dt>tol</dt>
 <dd><p>The maximum tolerance, default 1e-5.</p></dd>
+
+
 <dt>fDim</dt>
 <dd><p>The dimension of the integrand, default 1, bears no
 relation to the dimension of the hypercube</p></dd>
+
+
 <dt>maxEval</dt>
 <dd><p>The maximum number of function evaluations needed,
 default 0 implying no limit. Note that the actual number of
 function evaluations performed is only approximately guaranteed
 not to exceed this number.</p></dd>
+
+
 <dt>absError</dt>
 <dd><p>The maximum absolute error tolerated</p></dd>
+
+
 <dt>doChecking</dt>
 <dd><p>As of version 2.0, this flag is ignored and will
 be dropped in forthcoming versions</p></dd>
+
+
 <dt>vectorInterface</dt>
 <dd><p>A flag that indicates whether to use the
 vector interface and is by default FALSE. See details below</p></dd>
+
+
 <dt>norm</dt>
 <dd><p>For vector-valued integrands, <code>norm</code> specifies the
 norm that is used to measure the error and determine
 convergence properties. See below.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The returned value is a list of four items:</p>
+    
+
+<p>The returned value is a list of four items:</p>
 <dl><dt>integral</dt>
 <dd><p>the value of the integral</p></dd>
-<dt>error</dt>
+ <dt>error</dt>
 <dd><p>the
 estimated absolute error</p></dd>
-<dt>functionEvaluations</dt>
+ <dt>functionEvaluations</dt>
 <dd><p>the number
 of times the function was evaluated</p></dd>
-<dt>returnCode</dt>
+ <dt>returnCode</dt>
 <dd><p>the
 actual integer return code of the C routine</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -187,7 +211,7 @@ error tolerances</p></dd>
 <dt><code>L1</code>, <code>L2</code>, <code>LINF</code></dt>
 <dd><p>The absolute error is measured as
 \(|e|\) and the relative error as \(|e|/|v|\), where \(|...|\) is the
-\(L_1\), \(L_2\), or \(\L_{\infty}\) norm, respectively</p></dd>
+\(L_1\), \(L_2\), or \(L_{\infty}\) norm, respectively</p></dd>
 
 <dt><code>PAIRED</code></dt>
 <dd><p>Like <code>INDIVIDUAL</code>, except that the integrands are
@@ -207,236 +231,236 @@ imaginary parts separately</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co">## Test function 0</span></span>
-<span class="r-in"><span class="co">## Compare with original cubature result of</span></span>
-<span class="r-in"><span class="co">## ./cubature_test 2 1e-4 0 0</span></span>
-<span class="r-in"><span class="co">## 2-dim integral, tolerance = 0.0001</span></span>
-<span class="r-in"><span class="co">## integrand 0: integral = 0.708073, est err = 1.70943e-05, true err = 7.69005e-09</span></span>
-<span class="r-in"><span class="co">## #evals = 17</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">testFn0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn0</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn0</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">M_2_SQRTPI</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Test function 1</span></span>
-<span class="r-in"><span class="co">## Compare with original cubature result of</span></span>
-<span class="r-in"><span class="co">## ./cubature_test 3 1e-4 1 0</span></span>
-<span class="r-in"><span class="co">## 3-dim integral, tolerance = 0.0001</span></span>
-<span class="r-in"><span class="co">## integrand 1: integral = 1.00001, est err = 9.67798e-05, true err = 9.76919e-06</span></span>
-<span class="r-in"><span class="co">## #evals = 5115</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">testFn1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span> <span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="va">x</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">scale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">M_2_SQRTPI</span><span class="op">/</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">val</span><span class="op">)</span> <span class="op">*</span> <span class="va">scale</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="co">## Test function 2</span></span>
-<span class="r-in"><span class="co">## Compare with original cubature result of</span></span>
-<span class="r-in"><span class="co">## ./cubature_test 2 1e-4 2 0</span></span>
-<span class="r-in"><span class="co">## 2-dim integral, tolerance = 0.0001</span></span>
-<span class="r-in"><span class="co">## integrand 2: integral = 0.19728, est err = 1.97261e-05, true err = 4.58316e-05</span></span>
-<span class="r-in"><span class="co">## #evals = 166141</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">testFn2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="co">## discontinuous objective: volume of hypersphere</span></span>
-<span class="r-in">  <span class="va">radius</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/double.html" class="external-link">as.double</a></span><span class="op">(</span><span class="fl">0.50124145262344534123412</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">*</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;</span> <span class="va">radius</span><span class="op">*</span><span class="va">radius</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn2</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn2</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="co">## Test function 3</span></span>
-<span class="r-in"><span class="co">## Compare with original cubature result of</span></span>
-<span class="r-in"><span class="co">## ./cubature_test 3 1e-4 3 0</span></span>
-<span class="r-in"><span class="co">## 3-dim integral, tolerance = 0.0001</span></span>
-<span class="r-in"><span class="co">## integrand 3: integral = 1, est err = 0, true err = 2.22045e-16</span></span>
-<span class="r-in"><span class="co">## #evals = 33</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">testFn3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn3</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn3</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="co">## Test function 4 (Gaussian centered at 1/2)</span></span>
-<span class="r-in"><span class="co">## Compare with original cubature result of</span></span>
-<span class="r-in"><span class="co">## ./cubature_test 2 1e-4 4 0</span></span>
-<span class="r-in"><span class="co">## 2-dim integral, tolerance = 0.0001</span></span>
-<span class="r-in"><span class="co">## integrand 4: integral = 1, est err = 9.84399e-05, true err = 2.78894e-06</span></span>
-<span class="r-in"><span class="co">## #evals = 1853</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">testFn4</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
-<span class="r-in">  <span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">(</span><span class="va">M_2_SQRTPI</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span> <span class="op">(</span><span class="op">-</span><span class="va">s</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn4</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn4</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="co">## Test function 5 (double Gaussian)</span></span>
-<span class="r-in"><span class="co">## Compare with original cubature result of</span></span>
-<span class="r-in"><span class="co">## ./cubature_test 3 1e-4 5 0</span></span>
-<span class="r-in"><span class="co">## 3-dim integral, tolerance = 0.0001</span></span>
-<span class="r-in"><span class="co">## integrand 5: integral = 0.999994, est err = 9.98015e-05, true err = 6.33407e-06</span></span>
-<span class="r-in"><span class="co">## #evals = 59631</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">testFn5</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
-<span class="r-in">  <span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fl">0.5</span> <span class="op">*</span> <span class="op">(</span><span class="va">M_2_SQRTPI</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s1</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s2</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn5</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn5</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="co">## Test function 6 (Tsuda's example)</span></span>
-<span class="r-in"><span class="co">## Compare with original cubature result of</span></span>
-<span class="r-in"><span class="co">## ./cubature_test 4 1e-4 6 0</span></span>
-<span class="r-in"><span class="co">## 4-dim integral, tolerance = 0.0001</span></span>
-<span class="r-in"><span class="co">## integrand 6: integral = 0.999998, est err = 9.99685e-05, true err = 1.5717e-06</span></span>
-<span class="r-in"><span class="co">## #evals = 18753</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">testFn6</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10.0</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">9.0</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">a</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn6</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn6</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="co">## Test function 7</span></span>
-<span class="r-in"><span class="co">##   test integrand from W. J. Morokoff and R. E. Caflisch, "Quasi=</span></span>
-<span class="r-in"><span class="co">##   Monte Carlo integration," J. Comput. Phys 122, 218-230 (1995).</span></span>
-<span class="r-in"><span class="co">##   Designed for integration on [0,1]^dim, integral = 1. */</span></span>
-<span class="r-in"><span class="co">## Compare with original cubature result of</span></span>
-<span class="r-in"><span class="co">## ./cubature_test 3 1e-4 7 0</span></span>
-<span class="r-in"><span class="co">## 3-dim integral, tolerance = 0.0001</span></span>
-<span class="r-in"><span class="co">## integrand 7: integral = 1.00001, est err = 9.96657e-05, true err = 1.15994e-05</span></span>
-<span class="r-in"><span class="co">## #evals = 7887</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">testFn7</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span></span>
-<span class="r-in">  <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">p</span><span class="op">)</span><span class="op">^</span><span class="va">n</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="va">p</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn7</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn7</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Example from web page</span></span>
-<span class="r-in"><span class="co">## http://ab-initio.mit.edu/wiki/index.php/Cubature</span></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="co">## f(x) = exp(-0.5(euclidean_norm(x)^2)) over the three-dimensional</span></span>
-<span class="r-in"><span class="co">## hyperbcube [-2, 2]^3</span></span>
-<span class="r-in"><span class="co">## Compare with original cubature result</span></span>
-<span class="r-in"><span class="va">testFnWeb</span> <span class="op">&lt;-</span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFnWeb</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFnWeb</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Test function I.1d from</span></span>
-<span class="r-in"><span class="co">## Numerical integration using Wang-Landau sampling</span></span>
-<span class="r-in"><span class="co">## Y. W. Li, T. Wust, D. P. Landau, H. Q. Lin</span></span>
-<span class="r-in"><span class="co">## Computer Physics Communications, 2007, 524-529</span></span>
-<span class="r-in"><span class="co">## Compare with exact answer: 1.63564436296</span></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="va">I.1d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span><span class="op">*</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span></span>
-<span class="r-in">    <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="op">(</span> <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">*</span><span class="va">x</span><span class="op">-</span><span class="fl">4</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">I.1d</span>, <span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span>, tol<span class="op">=</span><span class="fl">1e-7</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">I.1d</span>, <span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span>, tol<span class="op">=</span><span class="fl">1e-7</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Test function I.2d from</span></span>
-<span class="r-in"><span class="co">## Numerical integration using Wang-Landau sampling</span></span>
-<span class="r-in"><span class="co">## Y. W. Li, T. Wust, D. P. Landau, H. Q. Lin</span></span>
-<span class="r-in"><span class="co">## Computer Physics Communications, 2007, 524-529</span></span>
-<span class="r-in"><span class="co">## Compare with exact answer: -0.01797992646</span></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="va">I.2d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">x1</span> <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">x2</span> <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span><span class="op">*</span><span class="va">x1</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="fl">4</span><span class="op">*</span><span class="va">x2</span><span class="op">)</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x1</span><span class="op">*</span><span class="op">(</span><span class="va">x1</span><span class="op">*</span><span class="va">x1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">x2</span><span class="op">*</span><span class="op">(</span><span class="va">x2</span><span class="op">*</span><span class="va">x2</span> <span class="op">-</span> <span class="va">x1</span><span class="op">)</span> <span class="op">+</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">I.2d</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, maxEval<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">I.2d</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, maxEval<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="co">## Example of multivariate normal integration borrowed from</span></span>
-<span class="r-in"><span class="co">## package mvtnorm (on CRAN) to check ... argument</span></span>
-<span class="r-in"><span class="co">## Compare with output of</span></span>
-<span class="r-in"><span class="co">## pmvnorm(lower=rep(-0.5, m), upper=c(1,4,2), mean=rep(0, m), corr=sigma, alg=Miwa())</span></span>
-<span class="r-in"><span class="co">##     0.3341125.  Blazing quick as well!  Ours is, not unexpectedly, much slower.</span></span>
-<span class="r-in"><span class="co">##</span></span>
-<span class="r-in"><span class="va">dmvnorm</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">x</span>, <span class="va">mean</span>, <span class="va">sigma</span>, <span class="va">log</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">is.vector</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">        <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">x</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">}</span></span>
-<span class="r-in">    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html" class="external-link">missing</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">        <span class="va">mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">}</span></span>
-<span class="r-in">    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html" class="external-link">missing</a></span><span class="op">(</span><span class="va">sigma</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">        <span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">}</span></span>
-<span class="r-in">    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NCOL</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NCOL</a></span><span class="op">(</span><span class="va">sigma</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">        <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"x and sigma have non-conforming size"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">}</span></span>
-<span class="r-in">    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/isSymmetric.html" class="external-link">isSymmetric</a></span><span class="op">(</span><span class="va">sigma</span>, tol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">)</span>,</span>
-<span class="r-in">        check.attributes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">        <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"sigma must be a symmetric matrix"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">}</span></span>
-<span class="r-in">    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">sigma</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">        <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"mean and sigma have non-conforming size"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">}</span></span>
-<span class="r-in">    <span class="va">distval</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/mahalanobis.html" class="external-link">mahalanobis</a></span><span class="op">(</span><span class="va">x</span>, center <span class="op">=</span> <span class="va">mean</span>, cov <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">logdet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">sigma</span>, symmetric <span class="op">=</span> <span class="cn">TRUE</span>, only.values <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">logretval</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">+</span> <span class="va">logdet</span> <span class="op">+</span> <span class="va">distval</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span></span>
-<span class="r-in">    <span class="kw">if</span> <span class="op">(</span><span class="va">log</span><span class="op">)</span></span>
-<span class="r-in">        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">logretval</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">logretval</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span class="r-in"><span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">sigma</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">3</span><span class="op">/</span><span class="fl">5</span> ; <span class="va">sigma</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span></span>
-<span class="r-in"><span class="va">sigma</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">11</span><span class="op">/</span><span class="fl">15</span></span>
-<span class="r-in"><span class="fu">hcubature</span><span class="op">(</span><span class="va">dmvnorm</span>, lower<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>, upper<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span>,</span>
-<span class="r-in">                        mean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, sigma<span class="op">=</span><span class="va">sigma</span>, log<span class="op">=</span><span class="cn">FALSE</span>,</span>
-<span class="r-in">               maxEval<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pcubature</span><span class="op">(</span><span class="va">dmvnorm</span>, lower<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>, upper<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span>,</span>
-<span class="r-in">                        mean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, sigma<span class="op">=</span><span class="va">sigma</span>, log<span class="op">=</span><span class="cn">FALSE</span>,</span>
-<span class="r-in">               maxEval<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co">## Test function 0</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with original cubature result of</span></span></span>
+<span class="r-in"><span><span class="co">## ./cubature_test 2 1e-4 0 0</span></span></span>
+<span class="r-in"><span><span class="co">## 2-dim integral, tolerance = 0.0001</span></span></span>
+<span class="r-in"><span><span class="co">## integrand 0: integral = 0.708073, est err = 1.70943e-05, true err = 7.69005e-09</span></span></span>
+<span class="r-in"><span><span class="co">## #evals = 17</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testFn0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn0</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn0</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">M_2_SQRTPI</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Test function 1</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with original cubature result of</span></span></span>
+<span class="r-in"><span><span class="co">## ./cubature_test 3 1e-4 1 0</span></span></span>
+<span class="r-in"><span><span class="co">## 3-dim integral, tolerance = 0.0001</span></span></span>
+<span class="r-in"><span><span class="co">## integrand 1: integral = 1.00001, est err = 9.67798e-05, true err = 9.76919e-06</span></span></span>
+<span class="r-in"><span><span class="co">## #evals = 5115</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testFn1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span> <span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="va">x</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">scale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">M_2_SQRTPI</span><span class="op">/</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">val</span><span class="op">)</span> <span class="op">*</span> <span class="va">scale</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="co">## Test function 2</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with original cubature result of</span></span></span>
+<span class="r-in"><span><span class="co">## ./cubature_test 2 1e-4 2 0</span></span></span>
+<span class="r-in"><span><span class="co">## 2-dim integral, tolerance = 0.0001</span></span></span>
+<span class="r-in"><span><span class="co">## integrand 2: integral = 0.19728, est err = 1.97261e-05, true err = 4.58316e-05</span></span></span>
+<span class="r-in"><span><span class="co">## #evals = 166141</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testFn2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="co">## discontinuous objective: volume of hypersphere</span></span></span>
+<span class="r-in"><span>  <span class="va">radius</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/double.html" class="external-link">as.double</a></span><span class="op">(</span><span class="fl">0.50124145262344534123412</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">*</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;</span> <span class="va">radius</span><span class="op">*</span><span class="va">radius</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn2</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn2</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="co">## Test function 3</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with original cubature result of</span></span></span>
+<span class="r-in"><span><span class="co">## ./cubature_test 3 1e-4 3 0</span></span></span>
+<span class="r-in"><span><span class="co">## 3-dim integral, tolerance = 0.0001</span></span></span>
+<span class="r-in"><span><span class="co">## integrand 3: integral = 1, est err = 0, true err = 2.22045e-16</span></span></span>
+<span class="r-in"><span><span class="co">## #evals = 33</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testFn3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn3</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn3</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="co">## Test function 4 (Gaussian centered at 1/2)</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with original cubature result of</span></span></span>
+<span class="r-in"><span><span class="co">## ./cubature_test 2 1e-4 4 0</span></span></span>
+<span class="r-in"><span><span class="co">## 2-dim integral, tolerance = 0.0001</span></span></span>
+<span class="r-in"><span><span class="co">## integrand 4: integral = 1, est err = 9.84399e-05, true err = 2.78894e-06</span></span></span>
+<span class="r-in"><span><span class="co">## #evals = 1853</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testFn4</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span></span>
+<span class="r-in"><span>  <span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">(</span><span class="va">M_2_SQRTPI</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span> <span class="op">(</span><span class="op">-</span><span class="va">s</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn4</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn4</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="co">## Test function 5 (double Gaussian)</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with original cubature result of</span></span></span>
+<span class="r-in"><span><span class="co">## ./cubature_test 3 1e-4 5 0</span></span></span>
+<span class="r-in"><span><span class="co">## 3-dim integral, tolerance = 0.0001</span></span></span>
+<span class="r-in"><span><span class="co">## integrand 5: integral = 0.999994, est err = 9.98015e-05, true err = 6.33407e-06</span></span></span>
+<span class="r-in"><span><span class="co">## #evals = 59631</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testFn5</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span></span>
+<span class="r-in"><span>  <span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fl">0.5</span> <span class="op">*</span> <span class="op">(</span><span class="va">M_2_SQRTPI</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s1</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s2</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn5</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn5</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="co">## Test function 6 (Tsuda's example)</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with original cubature result of</span></span></span>
+<span class="r-in"><span><span class="co">## ./cubature_test 4 1e-4 6 0</span></span></span>
+<span class="r-in"><span><span class="co">## 4-dim integral, tolerance = 0.0001</span></span></span>
+<span class="r-in"><span><span class="co">## integrand 6: integral = 0.999998, est err = 9.99685e-05, true err = 1.5717e-06</span></span></span>
+<span class="r-in"><span><span class="co">## #evals = 18753</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testFn6</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10.0</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">9.0</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">a</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn6</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn6</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="co">## Test function 7</span></span></span>
+<span class="r-in"><span><span class="co">##   test integrand from W. J. Morokoff and R. E. Caflisch, "Quasi=</span></span></span>
+<span class="r-in"><span><span class="co">##   Monte Carlo integration," J. Comput. Phys 122, 218-230 (1995).</span></span></span>
+<span class="r-in"><span><span class="co">##   Designed for integration on [0,1]^dim, integral = 1. */</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with original cubature result of</span></span></span>
+<span class="r-in"><span><span class="co">## ./cubature_test 3 1e-4 7 0</span></span></span>
+<span class="r-in"><span><span class="co">## 3-dim integral, tolerance = 0.0001</span></span></span>
+<span class="r-in"><span><span class="co">## integrand 7: integral = 1.00001, est err = 9.96657e-05, true err = 1.15994e-05</span></span></span>
+<span class="r-in"><span><span class="co">## #evals = 7887</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testFn7</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span></span></span>
+<span class="r-in"><span>  <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">p</span><span class="op">)</span><span class="op">^</span><span class="va">n</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="va">p</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFn7</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFn7</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Example from web page</span></span></span>
+<span class="r-in"><span><span class="co">## http://ab-initio.mit.edu/wiki/index.php/Cubature</span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="co">## f(x) = exp(-0.5(euclidean_norm(x)^2)) over the three-dimensional</span></span></span>
+<span class="r-in"><span><span class="co">## hyperbcube [-2, 2]^3</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with original cubature result</span></span></span>
+<span class="r-in"><span><span class="va">testFnWeb</span> <span class="op">&lt;-</span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">testFnWeb</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">testFnWeb</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, tol<span class="op">=</span><span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Test function I.1d from</span></span></span>
+<span class="r-in"><span><span class="co">## Numerical integration using Wang-Landau sampling</span></span></span>
+<span class="r-in"><span><span class="co">## Y. W. Li, T. Wust, D. P. Landau, H. Q. Lin</span></span></span>
+<span class="r-in"><span><span class="co">## Computer Physics Communications, 2007, 524-529</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with exact answer: 1.63564436296</span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="va">I.1d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span><span class="op">*</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span></span></span>
+<span class="r-in"><span>    <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="op">(</span> <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">*</span><span class="va">x</span><span class="op">-</span><span class="fl">4</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">I.1d</span>, <span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span>, tol<span class="op">=</span><span class="fl">1e-7</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">I.1d</span>, <span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span>, tol<span class="op">=</span><span class="fl">1e-7</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Test function I.2d from</span></span></span>
+<span class="r-in"><span><span class="co">## Numerical integration using Wang-Landau sampling</span></span></span>
+<span class="r-in"><span><span class="co">## Y. W. Li, T. Wust, D. P. Landau, H. Q. Lin</span></span></span>
+<span class="r-in"><span><span class="co">## Computer Physics Communications, 2007, 524-529</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with exact answer: -0.01797992646</span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="va">I.2d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">x1</span> <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">x2</span> <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span><span class="op">*</span><span class="va">x1</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="fl">4</span><span class="op">*</span><span class="va">x2</span><span class="op">)</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x1</span><span class="op">*</span><span class="op">(</span><span class="va">x1</span><span class="op">*</span><span class="va">x1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">x2</span><span class="op">*</span><span class="op">(</span><span class="va">x2</span><span class="op">*</span><span class="va">x2</span> <span class="op">-</span> <span class="va">x1</span><span class="op">)</span> <span class="op">+</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">I.2d</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, maxEval<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">I.2d</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, maxEval<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="co">## Example of multivariate normal integration borrowed from</span></span></span>
+<span class="r-in"><span><span class="co">## package mvtnorm (on CRAN) to check ... argument</span></span></span>
+<span class="r-in"><span><span class="co">## Compare with output of</span></span></span>
+<span class="r-in"><span><span class="co">## pmvnorm(lower=rep(-0.5, m), upper=c(1,4,2), mean=rep(0, m), corr=sigma, alg=Miwa())</span></span></span>
+<span class="r-in"><span><span class="co">##     0.3341125.  Blazing quick as well!  Ours is, not unexpectedly, much slower.</span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
+<span class="r-in"><span><span class="va">dmvnorm</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">x</span>, <span class="va">mean</span>, <span class="va">sigma</span>, <span class="va">log</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">is.vector</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>        <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">x</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html" class="external-link">missing</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>        <span class="va">mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html" class="external-link">missing</a></span><span class="op">(</span><span class="va">sigma</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>        <span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NCOL</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NCOL</a></span><span class="op">(</span><span class="va">sigma</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>        <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"x and sigma have non-conforming size"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/isSymmetric.html" class="external-link">isSymmetric</a></span><span class="op">(</span><span class="va">sigma</span>, tol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        check.attributes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>        <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"sigma must be a symmetric matrix"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">sigma</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>        <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"mean and sigma have non-conforming size"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="va">distval</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/mahalanobis.html" class="external-link">mahalanobis</a></span><span class="op">(</span><span class="va">x</span>, center <span class="op">=</span> <span class="va">mean</span>, cov <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">logdet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">sigma</span>, symmetric <span class="op">=</span> <span class="cn">TRUE</span>, only.values <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">logretval</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">+</span> <span class="va">logdet</span> <span class="op">+</span> <span class="va">distval</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="va">log</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">logretval</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">logretval</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sigma</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">3</span><span class="op">/</span><span class="fl">5</span> ; <span class="va">sigma</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="va">sigma</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">11</span><span class="op">/</span><span class="fl">15</span></span></span>
+<span class="r-in"><span><span class="fu">hcubature</span><span class="op">(</span><span class="va">dmvnorm</span>, lower<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>, upper<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                        mean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, sigma<span class="op">=</span><span class="va">sigma</span>, log<span class="op">=</span><span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>               maxEval<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pcubature</span><span class="op">(</span><span class="va">dmvnorm</span>, lower<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>, upper<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                        mean<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, sigma<span class="op">=</span><span class="va">sigma</span>, log<span class="op">=</span><span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>               maxEval<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -447,16 +471,11 @@ imaginary parts separately</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by
-<a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian
-Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G.
-Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas
-Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
+  <p></p><p>Developed by <a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G. Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

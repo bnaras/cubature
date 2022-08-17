@@ -1,3 +1,8 @@
+# cubature 2.0.4.5
+
+- Fix math typesetting in documentation and use roxygen markdown tags wherever
+  possible.
+
 # cubature 2.0.4.4
 
 - Fix unprotected arguments ([Issue 34](https://github.com/bnaras/cubature/issues/34)). Thanks Manuel Koller.

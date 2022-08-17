@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cubature</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4.5</span>
       </span>
     </div>
 
@@ -61,11 +61,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.0.4.4" id="cubature-2044">cubature 2.0.4.4<a class="anchor" aria-label="anchor" href="#cubature-2044"></a></h2>
-<ul><li>Fix unprotected arguments (<a href="https://github.com/bnaras/cubature/issues/34" class="external-link">Issue 34</a>).
-Thanks Manuel Koller.</li>
-<li>Fix documentation (<a href="https://github.com/bnaras/cubature/issues/32" class="external-link">Issue 32</a>).
-Thanks Emanuele Guidotti.</li>
+<h2 class="page-header" data-toc-text="2.0.4.5" id="cubature-2045">cubature 2.0.4.5<a class="anchor" aria-label="anchor" href="#cubature-2045"></a></h2>
+<ul><li>Fix math typesetting in documentation and use roxygen markdown tags wherever possible.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.4.4" id="cubature-2044">cubature 2.0.4.4<small>2022-03-22</small><a class="anchor" aria-label="anchor" href="#cubature-2044"></a></h2>
+<ul><li>Fix unprotected arguments (<a href="https://github.com/bnaras/cubature/issues/34" class="external-link">Issue 34</a>). Thanks Manuel Koller.</li>
+<li>Fix documentation (<a href="https://github.com/bnaras/cubature/issues/32" class="external-link">Issue 32</a>). Thanks Emanuele Guidotti.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.4.3" id="cubature-2043">cubature 2.0.4.3<a class="anchor" aria-label="anchor" href="#cubature-2043"></a></h2>
@@ -73,98 +75,61 @@ Thanks Emanuele Guidotti.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.4.2" id="cubature-2042">cubature 2.0.4.2<small>2021-05-13</small><a class="anchor" aria-label="anchor" href="#cubature-2042"></a></h2>
-<ul><li>Fix <code>Makevars</code> to refer to <code>CC</code> not
-<code>C</code> (<a href="https://github.com/bnaras/cubature/issues/33" class="external-link">Issue 33</a>)</li>
-<li>Replace <code>src/Cuba-4.2-win/common/Random.c:105</code> with
-equivalent to ensure gcc 8.x erroneous warning is avoided on
-Windows</li>
+<ul><li>Fix <code>Makevars</code> to refer to <code>CC</code> not <code>C</code> (<a href="https://github.com/bnaras/cubature/issues/33" class="external-link">Issue 33</a>)</li>
+<li>Replace <code>src/Cuba-4.2-win/common/Random.c:105</code> with equivalent to ensure gcc 8.x erroneous warning is avoided on Windows</li>
 <li>Add <code>rmarkdown</code> to suggests in description</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.4.1" id="cubature-2041">cubature 2.0.4.1<small>2020-07-06</small><a class="anchor" aria-label="anchor" href="#cubature-2041"></a></h2>
-<ul><li>Pass <code>$(AR)</code>, <code>$(ARFLAGS)</code>,
-<code>$(RANLIB)</code> to <code>make</code> so that LTO checks pick up
-correct plugins. Also add <code>cleanup</code> script. (Thanks,
-Prof. Brian Ripley)</li>
+<ul><li>Pass <code>$(AR)</code>, <code>$(ARFLAGS)</code>, <code>$(RANLIB)</code> to <code>make</code> so that LTO checks pick up correct plugins. Also add <code>cleanup</code> script. (Thanks, Prof. Brian Ripley)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.4" id="cubature-204">cubature 2.0.4<small>2019-12-04</small><a class="anchor" aria-label="anchor" href="#cubature-204"></a></h2>
-<ul><li><p><code>cubintegrate</code> now matches method via
-<code>match.arg</code> (<a href="https://github.com/bnaras/cubature/issues/25" class="external-link">Issue
-25</a>)</p></li>
-<li><p>Address <code>gcc</code> version 10.0 changes due to
-<code>-fno-common</code> default setting.</p></li>
+<ul><li><p><code>cubintegrate</code> now matches method via <code>match.arg</code> (<a href="https://github.com/bnaras/cubature/issues/25" class="external-link">Issue 25</a>)</p></li>
+<li><p>Address <code>gcc</code> version 10.0 changes due to <code>-fno-common</code> default setting.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.3" id="cubature-203">cubature 2.0.3<small>2018-12-18</small><a class="anchor" aria-label="anchor" href="#cubature-203"></a></h2>
-<ul><li>Fixed up stack overrun in <code>Cuba-4.2/src/divonne/Split.c</code>
-(lines 119–128 utilizing a flag for first time through loop</li>
+<ul><li>Fixed up stack overrun in <code>Cuba-4.2/src/divonne/Split.c</code> (lines 119–128 utilizing a flag for first time through loop</li>
 <li>More cleanup of <code>Makevars</code>
 </li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.2" id="cubature-202">cubature 2.0.2<small>2018-12-11</small><a class="anchor" aria-label="anchor" href="#cubature-202"></a></h2>
-<ul><li>Fixed up uninitialized count for <code>hcubature</code> (Thanks,
-Ehsan Masoudi)</li>
-<li>Tentative fix of infinite value for <code>minfluct</code> in
-<code>Cuba-4.2/src/suave/Integrate.c</code> in lines 197–205. (Thanks,
-Prof. Brian Ripley)</li>
+<ul><li>Fixed up uninitialized count for <code>hcubature</code> (Thanks, Ehsan Masoudi)</li>
+<li>Tentative fix of infinite value for <code>minfluct</code> in <code>Cuba-4.2/src/suave/Integrate.c</code> in lines 197–205. (Thanks, Prof. Brian Ripley)</li>
 <li>Miscellaneous fixes for compilation on various platforms.
-<ul><li>Cleaned up <code>Makevars</code> and <code>Makevars.win</code> to
-remove some unused flags. Tentative fix for solaris in
-<code>Makevars</code> and
-<code>Cuba-4.2/src/common/stddecl.c</code>.</li>
-<li>Removed printing of <code>statefile</code> in all the
-<code>src/*/Integrate.c</code> routines to avoid segfault on
-solaris.</li>
-<li>Added <code>ret_code</code> for return value in call to
-<code>getloadavg</code> in <code>Cuba-4.2/src/common/Fork.c</code>. Also
-added an <code>#ifdef SOLARIS</code> for including appropriate header
-under solaris.</li>
-<li>Fixed up call to <code>MASTER</code> variadic macro by including
-dummy argument 0 in <code>Cuba-4.2/src/common/Fork.c</code>, line
-146.</li>
-<li>Replaced multi-statement macro with a <code>do { } while(0)</code>
-hack.</li>
-<li>Reworked code around <code>Cuba-4.2/src/divonne/Rule.c</code> checks
-for key values (lines 593 to 600).</li>
-<li>Fixed up call to <code>WORKER</code> variadic macro by including
-dummy argument 0 in <code>Cuba-4.2/src/common/Parallel.c</code>, line
-393.</li>
-<li>Moved <code>#ifdef FRAMECOPY</code> outside in
-<code>Cuba-4.2/src/common/Parallel.c</code> to avoid embedding
-directives in macro args, lines 70-80.</li>
+<ul><li>Cleaned up <code>Makevars</code> and <code>Makevars.win</code> to remove some unused flags. Tentative fix for solaris in <code>Makevars</code> and <code>Cuba-4.2/src/common/stddecl.c</code>.</li>
+<li>Removed printing of <code>statefile</code> in all the <code>src/*/Integrate.c</code> routines to avoid segfault on solaris.</li>
+<li>Added <code>ret_code</code> for return value in call to <code>getloadavg</code> in <code>Cuba-4.2/src/common/Fork.c</code>. Also added an <code>#ifdef SOLARIS</code> for including appropriate header under solaris.</li>
+<li>Fixed up call to <code>MASTER</code> variadic macro by including dummy argument 0 in <code>Cuba-4.2/src/common/Fork.c</code>, line 146.</li>
+<li>Replaced multi-statement macro with a <code>do { } while(0)</code> hack.</li>
+<li>Reworked code around <code>Cuba-4.2/src/divonne/Rule.c</code> checks for key values (lines 593 to 600).</li>
+<li>Fixed up call to <code>WORKER</code> variadic macro by including dummy argument 0 in <code>Cuba-4.2/src/common/Parallel.c</code>, line 393.</li>
+<li>Moved <code>#ifdef FRAMECOPY</code> outside in <code>Cuba-4.2/src/common/Parallel.c</code> to avoid embedding directives in macro args, lines 70-80.</li>
 </ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0" id="cubature-20">cubature 2.0<small>2018-11-23</small><a class="anchor" aria-label="anchor" href="#cubature-20"></a></h2>
-<ul><li>Major update. Integrates <a href="http://www.feynarts.de/cuba/" class="external-link">Cuba
-4.2</a> library</li>
-<li>Allows for finite or infinite limits of integration (courtesy of
-Simon Gaure)</li>
-<li>Deprecates <code>doChecking</code> argument. Now it does nothing and
-will be removed in future versions.</li>
+<ul><li>Major update. Integrates <a href="http://www.feynarts.de/cuba/" class="external-link">Cuba 4.2</a> library</li>
+<li>Allows for finite or infinite limits of integration (courtesy of Simon Gaure)</li>
+<li>Deprecates <code>doChecking</code> argument. Now it does nothing and will be removed in future versions.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4-1" id="cubature-14-1">cubature 1.4-1<small>2018-10-26</small><a class="anchor" aria-label="anchor" href="#cubature-14-1"></a></h2>
-<ul><li>Fixed up <code>scale</code> argument to tests to conform to pass
-checks.</li>
-<li>Removed any reference to orphaned package <code>R2Cuba</code> and
-updated vignette with information on imminent 2.0 release.</li>
+<ul><li>Fixed up <code>scale</code> argument to tests to conform to pass checks.</li>
+<li>Removed any reference to orphaned package <code>R2Cuba</code> and updated vignette with information on imminent 2.0 release.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4" id="cubature-14">cubature 1.4<small>2018-06-13</small><a class="anchor" aria-label="anchor" href="#cubature-14"></a></h2>
-<ul><li><p>Fixed up the C call so that it is re-entrant (brought to my
-attention by Pierre de Villemereuil). This should be considered a bug
-fix!</p></li>
+<ul><li><p>Fixed up the C call so that it is re-entrant (brought to my attention by Pierre de Villemereuil). This should be considered a bug fix!</p></li>
 <li><p>Corrected private notes</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3-13" id="cubature-13-13">cubature 1.3-13<small>2018-06-11</small><a class="anchor" aria-label="anchor" href="#cubature-13-13"></a></h2>
 <ul><li>Generated package docs using pkgdown</li>
 <li>Synced up to cubature-1.0.3</li>
-<li>Added LICENSE file (<a href="https://github.com/bnaras/cubature/issues/12" class="external-link">request of Nick
-Youngblut</a>)</li>
+<li>Added LICENSE file (<a href="https://github.com/bnaras/cubature/issues/12" class="external-link">request of Nick Youngblut</a>)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3-12" id="cubature-13-12">cubature 1.3-12<a class="anchor" aria-label="anchor" href="#cubature-13-12"></a></h2>
@@ -172,17 +137,14 @@ Youngblut</a>)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3-11" id="cubature-13-11">cubature 1.3-11<small>2017-07-19</small><a class="anchor" aria-label="anchor" href="#cubature-13-11"></a></h2>
-<ul><li>Merged Manuel Koller’s registration for C code and vignette fix for
-NA.</li>
-<li>Moved cubature header and exp_cubature headers to
-<code>inst/include</code> for linking to other packages</li>
+<ul><li>Merged Manuel Koller’s registration for C code and vignette fix for NA.</li>
+<li>Moved cubature header and exp_cubature headers to <code>inst/include</code> for linking to other packages</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3-10" id="cubature-13-10">cubature 1.3-10<a class="anchor" aria-label="anchor" href="#cubature-13-10"></a></h2>
 <ul><li>Renamed <code>Readme.md</code> to <code>README.md</code>
 </li>
-<li>Removed references to ab-initio website that caused some hassle due
-to misconfigured site.</li>
+<li>Removed references to ab-initio website that caused some hassle due to misconfigured site.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3-9" id="cubature-13-9">cubature 1.3-9<a class="anchor" aria-label="anchor" href="#cubature-13-9"></a></h2>
@@ -192,18 +154,15 @@ to misconfigured site.</li>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3-7" id="cubature-13-7">cubature 1.3-7<a class="anchor" aria-label="anchor" href="#cubature-13-7"></a></h2>
-<ul><li>Registered .Call stuff and removed microbenchmark suggestion in
-favor of benchr.</li>
+<ul><li>Registered .Call stuff and removed microbenchmark suggestion in favor of benchr.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3-4" id="cubature-13-4">cubature 1.3-4<a class="anchor" aria-label="anchor" href="#cubature-13-4"></a></h2>
-<ul><li>Generated smaller pcubature header (<code>clencurt.h</code>) using M
-= 16 and put back C cubature source in tree.</li>
+<ul><li>Generated smaller pcubature header (<code>clencurt.h</code>) using M = 16 and put back C cubature source in tree.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3-3" id="cubature-13-3">cubature 1.3-3<a class="anchor" aria-label="anchor" href="#cubature-13-3"></a></h2>
-<ul><li>Moved the cubature-1.0.2 C library to github to avoid hitting the
-CRAN size limit.</li>
+<ul><li>Moved the cubature-1.0.2 C library to github to avoid hitting the CRAN size limit.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3-2" id="cubature-13-2">cubature 1.3-2<a class="anchor" aria-label="anchor" href="#cubature-13-2"></a></h2>
@@ -218,11 +177,9 @@ CRAN size limit.</li>
 <h2 class="page-header" data-toc-text="1.3-0" id="cubature-13-0">cubature 1.3-0<a class="anchor" aria-label="anchor" href="#cubature-13-0"></a></h2>
 <ul><li>Moved to SGJ cubature-1.0.2 version.</li>
 <li>
-<code>adaptIntegrate</code> and <code>hcubature</code> are
-aliases</li>
+<code>adaptIntegrate</code> and <code>hcubature</code> are aliases</li>
 <li>
-<code>hcubature</code> function gains a norm argument that is set to
-a sensible default so as not to affect depending packages</li>
+<code>hcubature</code> function gains a norm argument that is set to a sensible default so as not to affect depending packages</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.2-0" id="cubature-12-0">cubature 1.2-0<a class="anchor" aria-label="anchor" href="#cubature-12-0"></a></h2>
@@ -231,42 +188,32 @@ a sensible default so as not to affect depending packages</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1-3" id="cubature-11-3">cubature 1.1-3<a class="anchor" aria-label="anchor" href="#cubature-11-3"></a></h2>
-<ul><li>Roxygenized in preparation for upgrade to newer version of cubature
-library on abinitio website</li>
+<ul><li>Roxygenized in preparation for upgrade to newer version of cubature library on abinitio website</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1-2" id="cubature-11-2">cubature 1.1-2<small>2013-02-25</small><a class="anchor" aria-label="anchor" href="#cubature-11-2"></a></h2>
-<ul><li>Registered native cubature functions <code>adapt_integrate</code>
-and <code>adapt_integrate_v</code> so that they are directly callable
-from C (courtesy of Simen Gaure)</li>
+<ul><li>Registered native cubature functions <code>adapt_integrate</code> and <code>adapt_integrate_v</code> so that they are directly callable from C (courtesy of Simen Gaure)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1-2" id="cubature-11-2-1">cubature 1.1-2<small>2013-02-25</small><a class="anchor" aria-label="anchor" href="#cubature-11-2-1"></a></h2>
-<ul><li>Fixed typo in doc for function <code>adaptIntegrate</code>; default
-value for <code>doChecking</code> was incorrectly stated as
-<code>TRUE</code>
+<ul><li>Fixed typo in doc for function <code>adaptIntegrate</code>; default value for <code>doChecking</code> was incorrectly stated as <code>TRUE</code>
 </li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1-1" id="cubature-11-1">cubature 1.1-1<small>2011-12-08</small><a class="anchor" aria-label="anchor" href="#cubature-11-1"></a></h2>
-<ul><li>Added <code>doChecking</code> argument (default <code>FALSE</code>)
-to save some computation time in evaluating integrand (9% speedup).</li>
+<ul><li>Added <code>doChecking</code> argument (default <code>FALSE</code>) to save some computation time in evaluating integrand (9% speedup).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1" id="cubature-11">cubature 1.1<small>2011-11-22</small><a class="anchor" aria-label="anchor" href="#cubature-11"></a></h2>
 <ul><li>Synced up to SGJ cubature routines dated 2010-10-18 on <a href="https://github.com/stevengj/cubature" class="external-link">his website</a>
 </li>
-<li>Bugfix: potential memory leak fixed up in heap routine (my
-oversight!)</li>
-<li>Routine <code>adaptIntegrate</code> gains … argument (request of
-Baptiste Auguie)</li>
-<li>Corrected radius constant in <code>testFn2</code> to match cubature
-output exactly</li>
+<li>Bugfix: potential memory leak fixed up in heap routine (my oversight!)</li>
+<li>Routine <code>adaptIntegrate</code> gains … argument (request of Baptiste Auguie)</li>
+<li>Corrected radius constant in <code>testFn2</code> to match cubature output exactly</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0" id="cubature-10">cubature 1.0<small>2009-12-20</small><a class="anchor" aria-label="anchor" href="#cubature-10"></a></h2>
-<ul><li>Original version of package based on Steven G. Johnson’s cubature
-routines at <a href="http://ab-initio.mit.edu/wiki/index.php/Cubature" class="external-link uri">http://ab-initio.mit.edu/wiki/index.php/Cubature</a>
+<ul><li>Original version of package based on Steven G. Johnson’s cubature routines at <a href="http://ab-initio.mit.edu/wiki/index.php/Cubature" class="external-link uri">http://ab-initio.mit.edu/wiki/index.php/Cubature</a>
 </li>
 </ul></div>
   </div>
@@ -279,16 +226,11 @@ routines at <a href="http://ab-initio.mit.edu/wiki/index.php/Cubature" class="ex
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by
-<a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian
-Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G.
-Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas
-Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
+  <p></p><p>Developed by <a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G. Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
