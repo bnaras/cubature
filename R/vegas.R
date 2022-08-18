@@ -13,15 +13,15 @@
 #'
 #' @inheritParams cuhre
 #' @param f The function (integrand) to be integrated as in
-#'     \code{\link{cuhre}}. Optionally, the function can take two
+#'     [cuhre()]. Optionally, the function can take two
 #'     additional arguments in addition to the variable being
 #'     integrated: - \code{cuba_weight} which is the weight of the
 #'     point being sampled, - \code{cuba_iter} the current iteration
 #'     number. The function author may choose to use these in any
 #'     appropriate way or ignore them altogether.
 #' @param rngSeed seed, default 0, for the random number
-#'     generator. Note the articulation with \code{level} settings for
-#'     \code{flag}
+#'     generator. Note the articulation with `level` settings for
+#'     `flag`
 #' @param nStart the number of integrand evaluations per iteration to
 #'     start with.
 #' @param nIncrease the increase in the number of integrand
@@ -29,7 +29,7 @@
 #'     integrand at nStart+(j-1)*nincrease points.
 #' @param nBatch Vegas samples points not all at once, but in batches
 #'     of a predetermined size, to avoid excessive memory
-#'     consumption. \code{nbatch} is the number of points sampled in
+#'     consumption. `nbatch` is the number of points sampled in
 #'     each batch. Tuning this number should usually not be necessary
 #'     as performance is affected significantly only as far as the
 #'     batch of samples fits into the CPU cache.
@@ -37,7 +37,7 @@
 #'     the grid accumulated during one integration for the next one,
 #'     if the integrands are reasonably similar to each other. Vegas
 #'     maintains an internal table with space for ten grids for this
-#'     purpose.  If \code{gridno} is a number between 1 and 10, the
+#'     purpose.  If `gridno` is a number between 1 and 10, the
 #'     grid is not discarded at the end of the integration, but stored
 #'     in the respective slot of the table for a future
 #'     invocation. The grid is only re-used if the dimension of the
@@ -54,15 +54,15 @@
 #'     the desired accuracy was reached, if -1,
 #'     dimension out of range, if 1, the accuracy goal was not met
 #'     within the allowed maximum number of integrand evaluations.}
-#'     \item{integral}{vector of length \code{nComp}; the integral of
-#'     \code{integrand} over the hypercube} \item{error}{vector of
-#'     length \code{nComp}; the presumed absolute error of
-#'     \code{integral}} \item{prob}{vector of length \code{nComp};
+#'     \item{integral}{vector of length `nComp`; the integral of
+#'     `integrand` over the hypercube} \item{error}{vector of
+#'     length `nComp`; the presumed absolute error of
+#'     `integral`} \item{prob}{vector of length `nComp`;
 #'     the \eqn{\chi^2}{Chi2}-probability (not the
-#'     \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
+#'     \eqn{\chi^2}{Chi2}-value itself!) that `error` is not a
 #'     reliable estimate of the true integration error.}}
 #'
-#' @seealso \code{\link{cuhre}}, \code{\link{suave}}, \code{\link{divonne}}
+#' @seealso [cuhre()], [suave()], [divonne()]
 #'
 #' @references G. P. Lepage (1978) A new algorithm for adaptive
 #' multidimensional integration. \emph{J. Comput. Phys.}, \bold{27}, 192-210.

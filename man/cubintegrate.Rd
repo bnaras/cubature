@@ -64,7 +64,7 @@ for f and so processed.}
 The returned value is a list of items: -\item{integral}{the
 value of the integral} - \item{error}{the estimated absolute
 error} \item{neval}{the number of times the function was
-evaluated} - \item{returnCode}{the actual integer return code
+evaluated} - {returnCode}{the actual integer return code
 of the C routine; a non-zero value usually indicates problems;
 further interpretation depends on method} - \item{nregions}{for
 Cuba routines, the actual number of subregions needed}
@@ -76,7 +76,7 @@ reliable estimate of the true integration error.}
 Integrate a function within specified limits using method
 specified. Further arguments specific to method as well as other
 arguments to f may be passed. For defaults used in each method, see
-help on the method or \code{\link{default_args}}'s.
+help on the method or \code{\link[=default_args]{default_args()}}.
 }
 \examples{
 I.1d <- function(x) {
@@ -96,7 +96,7 @@ cubintegrate(f = I.1d_v, lower = -2, upper = 2, method = "cuhre", nVec = 128L)
 
 }
 \seealso{
-\code{\link{default_args}}, \code{\link{hcubature}},
-\code{\link{pcubature}}, \code{\link{cuhre}},
-\code{\link{vegas}}, \code{\link{suave}}, \code{\link{divonne}}
+\code{\link[=default_args]{default_args()}}, \code{\link[=hcubature]{hcubature()}},
+\code{\link[=pcubature]{pcubature()}}, \code{\link[=cuhre]{cuhre()}},
+\code{\link[=vegas]{vegas()}}, \code{\link[=suave]{suave()}}, \code{\link[=divonne]{divonne()}}
 }

@@ -82,12 +82,12 @@ default_args <- function() {
 #' Integrate a function within specified limits using method
 #' specified. Further arguments specific to method as well as other
 #' arguments to f may be passed. For defaults used in each method, see
-#' help on the method or \code{\link{default_args}}'s.
+#' help on the method or [default_args()].
 #'
 #' @param f The function (integrand) to be integrated. Can be
-#'     vectorized version, but the additional arguments \code{...}
-#'     must indicate via either \code{vectorInterface = TRUE} for
-#'     `hcubature` and `pcubature`, or a value for \code{nVec}. See
+#'     vectorized version, but the additional arguments `...`
+#'     must indicate via either `vectorInterface = TRUE` for
+#'     `hcubature` and `pcubature`, or a value for `nVec`. See
 #'     details on each method.
 #' @param fDim The number of components of f, default 1, bears no
 #'     relation to the dimension of the hypercube over which
@@ -119,17 +119,17 @@ default_args <- function() {
 #' @return The returned value is a list of items: -\item{integral}{the
 #'     value of the integral} - \item{error}{the estimated absolute
 #'     error} \item{neval}{the number of times the function was
-#'     evaluated} - \item{returnCode}{the actual integer return code
+#'     evaluated} - {returnCode}{the actual integer return code
 #'     of the C routine; a non-zero value usually indicates problems;
 #'     further interpretation depends on method} - \item{nregions}{for
 #'     Cuba routines, the actual number of subregions needed}
 #'     \item{prob}{the \eqn{\chi^2}{Chi2}-probability (not the
-#'     \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
+#'     \eqn{\chi^2}{Chi2}-value itself!) that `error` is not a
 #'     reliable estimate of the true integration error.}
 #'
-#' @seealso \code{\link{default_args}}, \code{\link{hcubature}},
-#'     \code{\link{pcubature}}, \code{\link{cuhre}},
-#'     \code{\link{vegas}}, \code{\link{suave}}, \code{\link{divonne}}
+#' @seealso [default_args()], [hcubature()],
+#'     [pcubature()], [cuhre()],
+#'     [vegas()], [suave()], [divonne()]
 #'
 #' @examples
 #' I.1d <- function(x) {

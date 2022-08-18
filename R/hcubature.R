@@ -13,8 +13,8 @@
 #' than tol times the integral, in absolute value, or the maximum number of
 #' iterations is reached (see parameter info below), whichever is earlier.
 #'
-#' For compatibility with earlier versions, the \code{adaptIntegrate} function
-#' is an alias for the underlying \code{hcubature} function which uses h-adaptive
+#' For compatibility with earlier versions, the `adaptIntegrate` function
+#' is an alias for the underlying `hcubature` function which uses h-adaptive
 #' integration. Otherwise, the calling conventions are the same.
 #'
 #' We highly recommend referring to the vignette to achieve the best results!
@@ -40,7 +40,7 @@
 #'     be dropped in forthcoming versions
 #' @param vectorInterface A flag that indicates whether to use the
 #'     vector interface and is by default FALSE. See details below
-#' @param norm For vector-valued integrands, \code{norm} specifies the
+#' @param norm For vector-valued integrands, `norm` specifies the
 #'     norm that is used to measure the error and determine
 #'     convergence properties. See below.
 #' @return The returned value is a list of four items:
@@ -51,16 +51,16 @@
 #'
 #' @details
 #'
-#' The \code{hcubature} function is the h-adaptive version that recursively partitions
+#' The `hcubature` function is the h-adaptive version that recursively partitions
 #' the integration domain into smaller subdomains, applying the same integration
 #' rule to each, until convergence is achieved.
 #'
-#' The p-adaptive version, \code{pcubature}, repeatedly doubles the degree
+#' The p-adaptive version, `pcubature`, repeatedly doubles the degree
 #' of the quadrature rules until convergence is achieved, and is based on a tensor
 #' product of Clenshaw-Curtis quadrature rules. This algorithm is often superior
 #' to h-adaptive integration for smooth integrands in a few (<=3) dimensions,
 #' but is a poor choice in higher dimensions or for non-smooth integrands.
-#' Compare with \code{hcubature} which also takes the same arguments.
+#' Compare with `hcubature` which also takes the same arguments.
 #'
 #' The vector interface requires the integrand to take a matrix as its argument.
 #' The return value should also be a matrix. The number of points at which the
@@ -68,17 +68,17 @@
 #' takes care of that and this number may run to several hundreds. We strongly
 #' advise vectorization; see vignette.
 #'
-#' The \code{norm} argument is irrelevant for scalar integrands and is ignored.
+#' The `norm` argument is irrelevant for scalar integrands and is ignored.
 #' Given vectors \eqn{v} and \eqn{e} of estimated integrals and errors therein,
-#' respectively, the \code{norm} argument takes on one of the following values:
+#' respectively, the `norm` argument takes on one of the following values:
 #' \describe{
-#'   \item{\code{INDIVIDUAL}}{Convergence is achieved only when each integrand
+#'   \item{`INDIVIDUAL`}{Convergence is achieved only when each integrand
 #'   (each component of \eqn{v} and \eqn{e}) individually satisfies the requested
 #'   error tolerances}
-#'   \item{\code{L1}, \code{L2}, \code{LINF}}{The absolute error is measured as
+#'   \item{`L1`, `L2`, `LINF`}{The absolute error is measured as
 #'   \eqn{|e|} and the relative error as \eqn{|e|/|v|}, where \eqn{|...|} is the
-#'   \eqn{L_1}, \eqn{L_2}, or \eqn{\L_{\infty}} norm, respectively}
-#'   \item{\code{PAIRED}}{Like \code{INDIVIDUAL}, except that the integrands are
+#'   \eqn{L_1}, \eqn{L_2}, or \eqn{L_{\infty}} norm, respectively}
+#'   \item{`PAIRED`}{Like `INDIVIDUAL`, except that the integrands are
 #'   grouped into consecutive pairs, with the error tolerance applied in an
 #'   \eqn{L_2} sense to each pair. This option is mainly useful for integrating
 #'   vectors of complex numbers, where each consecutive pair of real integrands
