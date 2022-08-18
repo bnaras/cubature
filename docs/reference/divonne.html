@@ -68,31 +68,31 @@ integration region is aided by methods from numerical optimization.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">divonne</span><span class="op">(</span>
-  <span class="va">f</span>,
-  nComp <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">lowerLimit</span>,
-  <span class="va">upperLimit</span>,
-  <span class="va">...</span>,
-  relTol <span class="op">=</span> <span class="fl">1e-05</span>,
-  absTol <span class="op">=</span> <span class="fl">1e-12</span>,
-  minEval <span class="op">=</span> <span class="fl">0L</span>,
-  maxEval <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,
-  flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">0L</span>, final <span class="op">=</span> <span class="fl">1L</span>, keep_state <span class="op">=</span> <span class="fl">0L</span>, level <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span>,
-  rngSeed <span class="op">=</span> <span class="fl">0L</span>,
-  nVec <span class="op">=</span> <span class="fl">1L</span>,
-  key1 <span class="op">=</span> <span class="fl">47L</span>,
-  key2 <span class="op">=</span> <span class="fl">1L</span>,
-  key3 <span class="op">=</span> <span class="fl">1L</span>,
-  maxPass <span class="op">=</span> <span class="fl">5L</span>,
-  border <span class="op">=</span> <span class="fl">0</span>,
-  maxChisq <span class="op">=</span> <span class="fl">10</span>,
-  minDeviation <span class="op">=</span> <span class="fl">0.25</span>,
-  xGiven <span class="op">=</span> <span class="cn">NULL</span>,
-  nExtra <span class="op">=</span> <span class="fl">0L</span>,
-  peakFinder <span class="op">=</span> <span class="cn">NULL</span>,
-  stateFile <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">divonne</span><span class="op">(</span></span>
+<span>  <span class="va">f</span>,</span>
+<span>  nComp <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">lowerLimit</span>,</span>
+<span>  <span class="va">upperLimit</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  relTol <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  absTol <span class="op">=</span> <span class="fl">1e-12</span>,</span>
+<span>  minEval <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  maxEval <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,</span>
+<span>  flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">0L</span>, final <span class="op">=</span> <span class="fl">1L</span>, keep_state <span class="op">=</span> <span class="fl">0L</span>, level <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span>,</span>
+<span>  rngSeed <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  nVec <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  key1 <span class="op">=</span> <span class="fl">47L</span>,</span>
+<span>  key2 <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  key3 <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  maxPass <span class="op">=</span> <span class="fl">5L</span>,</span>
+<span>  border <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  maxChisq <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  minDeviation <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  xGiven <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nExtra <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  peakFinder <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  stateFile <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -116,29 +116,47 @@ perfectly viable and much faster substitute when
 <code>cuba_phase</code> &lt; 2. In all other instances, phase can be
 ignored and it is entirely admissible to define the integrand
 without it. which is the</p></dd>
+
+
 <dt>nComp</dt>
 <dd><p>The number of components of f, default 1, bears no
 relation to the dimension of the hypercube over which
 integration is performed.</p></dd>
+
+
 <dt>lowerLimit</dt>
 <dd><p>The lower limit of integration, a vector for
 hypercubes.</p></dd>
+
+
 <dt>upperLimit</dt>
 <dd><p>The upper limit of integration, a vector for
 hypercubes.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>All other arguments passed to the function f.</p></dd>
+
+
 <dt>relTol</dt>
 <dd><p>The maximum tolerance, default 1e-5.</p></dd>
+
+
 <dt>absTol</dt>
 <dd><p>the absolute tolerance, default 1e-12.</p></dd>
+
+
 <dt>minEval</dt>
 <dd><p>the minimum number of function evaluations required</p></dd>
+
+
 <dt>maxEval</dt>
 <dd><p>The maximum number of function evaluations needed,
 default 10^6.  Note that the actual number of function
 evaluations performed is only approximately guaranteed not to
 exceed this number.</p></dd>
+
+
 <dt>flags</dt>
 <dd><p>flags governing the integration. The list here is
 exhaustive to keep the documentation and invocation uniform,
@@ -204,15 +222,21 @@ level 0, (mis)used for selecting Mersenne Twister in Cuba, is
 equivalent to <code>level</code> = 24.</p></dd>
 
 </dl></dd>
+
+
 <dt>rngSeed</dt>
 <dd><p>seed, default 0, for the random number
 generator. Note the articulation with <code>level</code> settings for
 <code>flag</code></p></dd>
+
+
 <dt>nVec</dt>
 <dd><p>the number of vectorization points, default 1, but can
 be set to an integer &gt; 1 for vectorization, for example, 1024
 and the function f above needs to handle the vector of points
 appropriately. See vignette examples.</p></dd>
+
+
 <dt>key1</dt>
 <dd><p>integer that determines sampling in the partitioning
 phase: <code>key1 = 7, 9, 11, 13</code> selects the cubature rule of
@@ -226,6 +250,8 @@ Korobov quasi-random sample, <code>key1 &lt; 0</code>, use a Sobol
 quasi-random sample if <code>flags$seed</code> is zero, otherwise a
 “standard” sample (Mersenne Twister) pseudo-random
 sample</p></dd>
+
+
 <dt>key2</dt>
 <dd><p>integer that determines sampling in the final
 integration phase: same as <code>key1</code>, but here
@@ -235,6 +261,8 @@ points, \(n &gt; 39\), sample \(n\) points,
 <code>nneed</code> points, where <code>nneed</code> is the number of points
 needed to reach the prescribed accuracy, as estimated by
 Divonne from the results of the partitioning phase.</p></dd>
+
+
 <dt>key3</dt>
 <dd><p>integer that sets the strategy for the refinement
 phase: <code>key3 = 0</code>, do not treat the subregion any further.
@@ -242,6 +270,8 @@ phase: <code>key3 = 0</code>, do not treat the subregion any further.
 the subregion is sampled a third time with <code>key3</code>
 specifying the sampling parameters exactly as <code>key2</code>
 above.</p></dd>
+
+
 <dt>maxPass</dt>
 <dd><p>integer that controls the thoroughness of the
 partitioning phase: The partitioning phase terminates when the
@@ -254,6 +284,8 @@ be understood as the number of “safety” iterations that
 are performed before the partition is accepted as final and
 counting consequently restarts at zero whenever new structures
 are found.</p></dd>
+
+
 <dt>border</dt>
 <dd><p>the relative width of the border of the integration
 region.  Points falling into the border region will not be
@@ -264,12 +296,16 @@ integration boundary. The relative width of the border is
 identical in all the dimensions. For example, set
 <code>border=0.1</code> for a border of width equal to 10\<!-- % of the -->
 width of the integration region.</p></dd>
+
+
 <dt>maxChisq</dt>
 <dd><p>the maximum \(\chi^2\) value a single
 subregion is allowed to have in the final integration
 phase. Regions which fail this \(\chi^2\) test and
 whose sample averages differ by more than <code>min.deviation</code>
 move on to the refinement phase.</p></dd>
+
+
 <dt>minDeviation</dt>
 <dd><p>a bound, given as the fraction of the requested
 error of the entire integral, which determines whether it is
@@ -277,6 +313,8 @@ worthwhile further examining a region that failed the
 \(\chi^2\) test.  Only if the two sampling averages
 obtained for the region differ by more than this bound is the
 region further treated.</p></dd>
+
+
 <dt>xGiven</dt>
 <dd><p>a matrix ( <code>nDim</code>, <code>nGiven</code>).  A list of
 <code>nGiven</code> points where the integrand might have peaks.
@@ -285,11 +323,15 @@ integration region.  The idea here is to help the integrator
 find the extrema of the integrand in the presence of very
 narrow peaks. Even if only the approximate location of such
 peaks is known, this can considerably speed up convergence.</p></dd>
+
+
 <dt>nExtra</dt>
 <dd><p>the maximum number of extra points the peak-finder
 subroutine will return. If <code>nextra</code> is zero,
 <code>peakfinder</code> is not called and an arbitrary object may be
 passed in its place, e.g. just 0.</p></dd>
+
+
 <dt>peakFinder</dt>
 <dd><p>the peak-finder subroutine. This R function is
 called whenever a region is up for subdivision and is supposed
@@ -302,6 +344,8 @@ lower (row 1) and upper (row 2) bounds of the subregion.  The
 returned value should be a matrix (<code>nX, nDim</code>) where
 <code>nX</code> is the actual number of points (should be less or
 equal to <code>nMax</code>).</p></dd>
+
+
 <dt>stateFile</dt>
 <dd><p>the name of an external file. Vegas can store its
 entire internal state (i.e. all the information to resume an
@@ -315,10 +359,13 @@ integration finishes successfully, i.e. the prescribed accuracy
 is attained, the state file is removed. This feature is useful
 mainly to define ‘check-points’ in long-running
 integrations from which the calculation can be restarted.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list with components:</p><dl><dt>neval</dt>
+    
+
+<p>A list with components:</p><dl><dt>neval</dt>
 <dd><p>the actual number
 of integrand evaluations needed</p></dd>
  <dt>returnCode</dt>
@@ -366,15 +413,15 @@ CGTM-193-REV, CGTM-193, Stanford University.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">integrand</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span>, <span class="va">phase</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">ff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">ff</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="fu">divonne</span><span class="op">(</span><span class="va">integrand</span>, relTol<span class="op">=</span><span class="fl">1e-3</span>,  absTol<span class="op">=</span><span class="fl">1e-12</span>, lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">        flags<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,  key1<span class="op">=</span> <span class="fl">47</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">integrand</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span>, <span class="va">phase</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">ff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">ff</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu">divonne</span><span class="op">(</span><span class="va">integrand</span>, relTol<span class="op">=</span><span class="fl">1e-3</span>,  absTol<span class="op">=</span><span class="fl">1e-12</span>, lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        flags<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,  key1<span class="op">=</span> <span class="fl">47</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $integral</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6646098</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -390,25 +437,25 @@ CGTM-193-REV, CGTM-193, Stanford University.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returnCode</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Example with a peak-finder function</span></span>
-<span class="r-in"><span class="va">nDim</span> <span class="op">&lt;-</span> <span class="fl">3L</span></span>
-<span class="r-in"><span class="va">peakf</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">bounds</span>, <span class="va">nMax</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co">#  print(bounds) # matrix (ndim,2)</span></span>
-<span class="r-in">  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, ncol <span class="op">=</span> <span class="va">nMax</span>, nrow <span class="op">=</span> <span class="va">nDim</span><span class="op">)</span></span>
-<span class="r-in">   <span class="va">pas</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="op">(</span><span class="va">nMax</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in">   <span class="co"># 1ier point</span></span>
-<span class="r-in">   <span class="va">x</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nDim</span><span class="op">)</span></span>
-<span class="r-in">   <span class="co"># Les autres points</span></span>
-<span class="r-in">   <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2L</span><span class="op">:</span><span class="va">nMax</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">      <span class="va">x</span><span class="op">[</span>, <span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>, <span class="op">(</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">]</span> <span class="op">+</span> <span class="va">pas</span></span>
-<span class="r-in">    <span class="op">}</span></span>
-<span class="r-in">  <span class="va">x</span></span>
-<span class="r-in"><span class="op">}</span> <span class="co">#end peakf</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">divonne</span><span class="op">(</span><span class="va">integrand</span>, relTol<span class="op">=</span><span class="fl">1e-3</span>,  absTol<span class="op">=</span><span class="fl">1e-12</span>,</span>
-<span class="r-in">        lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">        flags<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,  peakFinder <span class="op">=</span> <span class="va">peakf</span>, nExtra <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example with a peak-finder function</span></span></span>
+<span class="r-in"><span><span class="va">nDim</span> <span class="op">&lt;-</span> <span class="fl">3L</span></span></span>
+<span class="r-in"><span><span class="va">peakf</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">bounds</span>, <span class="va">nMax</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co">#  print(bounds) # matrix (ndim,2)</span></span></span>
+<span class="r-in"><span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, ncol <span class="op">=</span> <span class="va">nMax</span>, nrow <span class="op">=</span> <span class="va">nDim</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="va">pas</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="op">(</span><span class="va">nMax</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="co"># 1ier point</span></span></span>
+<span class="r-in"><span>   <span class="va">x</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nDim</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="co"># Les autres points</span></span></span>
+<span class="r-in"><span>   <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2L</span><span class="op">:</span><span class="va">nMax</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="va">x</span><span class="op">[</span>, <span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>, <span class="op">(</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">]</span> <span class="op">+</span> <span class="va">pas</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="va">x</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co">#end peakf</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">divonne</span><span class="op">(</span><span class="va">integrand</span>, relTol<span class="op">=</span><span class="fl">1e-3</span>,  absTol<span class="op">=</span><span class="fl">1e-12</span>,</span></span>
+<span class="r-in"><span>        lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        flags<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,  peakFinder <span class="op">=</span> <span class="va">peakf</span>, nExtra <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $integral</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6646098</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -434,16 +481,11 @@ CGTM-193-REV, CGTM-193, Stanford University.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by
-<a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian
-Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G.
-Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas
-Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
+  <p></p><p>Developed by <a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G. Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

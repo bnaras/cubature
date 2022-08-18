@@ -72,21 +72,21 @@ adaptive subdivision scheme.  The subdivision algorithm is similar to
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cuhre</span><span class="op">(</span>
-  <span class="va">f</span>,
-  nComp <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">lowerLimit</span>,
-  <span class="va">upperLimit</span>,
-  <span class="va">...</span>,
-  relTol <span class="op">=</span> <span class="fl">1e-05</span>,
-  absTol <span class="op">=</span> <span class="fl">1e-12</span>,
-  minEval <span class="op">=</span> <span class="fl">0L</span>,
-  maxEval <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,
-  flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">0L</span>, final <span class="op">=</span> <span class="fl">1L</span>, keep_state <span class="op">=</span> <span class="fl">0L</span>, level <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span>,
-  key <span class="op">=</span> <span class="fl">0L</span>,
-  nVec <span class="op">=</span> <span class="fl">1L</span>,
-  stateFile <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cuhre</span><span class="op">(</span></span>
+<span>  <span class="va">f</span>,</span>
+<span>  nComp <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">lowerLimit</span>,</span>
+<span>  <span class="va">upperLimit</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  relTol <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  absTol <span class="op">=</span> <span class="fl">1e-12</span>,</span>
+<span>  minEval <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  maxEval <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,</span>
+<span>  flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">0L</span>, final <span class="op">=</span> <span class="fl">1L</span>, keep_state <span class="op">=</span> <span class="fl">0L</span>, level <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span>,</span>
+<span>  key <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  nVec <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  stateFile <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -95,29 +95,47 @@ adaptive subdivision scheme.  The subdivision algorithm is similar to
 <dd><p>The function (integrand) to be integrated. For cuhre, it
 can be something as simple as a function of a single argument,
 say x.</p></dd>
+
+
 <dt>nComp</dt>
 <dd><p>The number of components of f, default 1, bears no
 relation to the dimension of the hypercube over which
 integration is performed.</p></dd>
+
+
 <dt>lowerLimit</dt>
 <dd><p>The lower limit of integration, a vector for
 hypercubes.</p></dd>
+
+
 <dt>upperLimit</dt>
 <dd><p>The upper limit of integration, a vector for
 hypercubes.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>All other arguments passed to the function f.</p></dd>
+
+
 <dt>relTol</dt>
 <dd><p>The maximum tolerance, default 1e-5.</p></dd>
+
+
 <dt>absTol</dt>
 <dd><p>the absolute tolerance, default 1e-12.</p></dd>
+
+
 <dt>minEval</dt>
 <dd><p>the minimum number of function evaluations required</p></dd>
+
+
 <dt>maxEval</dt>
 <dd><p>The maximum number of function evaluations needed,
 default 10^6.  Note that the actual number of function
 evaluations performed is only approximately guaranteed not to
 exceed this number.</p></dd>
+
+
 <dt>flags</dt>
 <dd><p>flags governing the integration. The list here is
 exhaustive to keep the documentation and invocation uniform,
@@ -183,6 +201,8 @@ level 0, (mis)used for selecting Mersenne Twister in Cuba, is
 equivalent to <code>level</code> = 24.</p></dd>
 
 </dl></dd>
+
+
 <dt>key</dt>
 <dd><p>the quadrature rule key: <code>key = 7, 9, 11, 13</code>
 selects the cubature rule of degree key. Note that the
@@ -191,11 +211,15 @@ rule only in 2 dimensions.  For other values, including the
 default 0, the rule is the degree-13 rule in 2 dimensions, the
 degree-11 rule in 3 dimensions, and the degree-9 rule
 otherwise.</p></dd>
+
+
 <dt>nVec</dt>
 <dd><p>the number of vectorization points, default 1, but can
 be set to an integer &gt; 1 for vectorization, for example, 1024
 and the function f above needs to handle the vector of points
 appropriately. See vignette examples.</p></dd>
+
+
 <dt>stateFile</dt>
 <dd><p>the name of an external file. Vegas can store its
 entire internal state (i.e. all the information to resume an
@@ -209,10 +233,13 @@ integration finishes successfully, i.e. the prescribed accuracy
 is attained, the state file is removed. This feature is useful
 mainly to define ‘check-points’ in long-running
 integrations from which the calculation can be restarted.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list with components:</p><dl><dt>neval</dt>
+    
+
+<p>A list with components:</p><dl><dt>neval</dt>
 <dd><p>the actual
 number of integrand evaluations needed</p></dd>
  <dt>returnCode</dt>
@@ -255,22 +282,22 @@ Mathematical Software</em>, <b>17</b>(4), 437-451.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">integrand</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">ff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">ff</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span> <span class="co"># End integrand</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">NDIM</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span class="r-in"><span class="va">NCOMP</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span class="r-in"><span class="fu">cuhre</span><span class="op">(</span>f <span class="op">=</span> <span class="va">integrand</span>,</span>
-<span class="r-in">      lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">NDIM</span><span class="op">)</span>,</span>
-<span class="r-in">      upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">NDIM</span><span class="op">)</span>,</span>
-<span class="r-in">      relTol <span class="op">=</span> <span class="fl">1e-3</span>, absTol<span class="op">=</span> <span class="fl">1e-12</span>,</span>
-<span class="r-in">      flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">2</span>, final <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">integrand</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">ff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">ff</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># End integrand</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">NDIM</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="va">NCOMP</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="fu">cuhre</span><span class="op">(</span>f <span class="op">=</span> <span class="va">integrand</span>,</span></span>
+<span class="r-in"><span>      lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">NDIM</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">NDIM</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      relTol <span class="op">=</span> <span class="fl">1e-3</span>, absTol<span class="op">=</span> <span class="fl">1e-12</span>,</span></span>
+<span class="r-in"><span>      flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">2</span>, final <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $integral</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6646697</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -289,7 +316,7 @@ Mathematical Software</em>, <b>17</b>(4), 437-451.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returnCode</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -300,16 +327,11 @@ Mathematical Software</em>, <b>17</b>(4), 437-451.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by
-<a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian
-Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G.
-Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas
-Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
+  <p></p><p>Developed by <a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G. Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

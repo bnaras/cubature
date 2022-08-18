@@ -72,18 +72,18 @@ help on the method or <code><a href="default_args.html">default_args</a></code>'
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cubintegrate</span><span class="op">(</span>
-  <span class="va">f</span>,
-  <span class="va">lower</span>,
-  <span class="va">upper</span>,
-  fDim <span class="op">=</span> <span class="fl">1</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hcubature"</span>, <span class="st">"pcubature"</span>, <span class="st">"cuhre"</span>, <span class="st">"divonne"</span>, <span class="st">"suave"</span>, <span class="st">"vegas"</span><span class="op">)</span>,
-  relTol <span class="op">=</span> <span class="fl">1e-05</span>,
-  absTol <span class="op">=</span> <span class="fl">1e-12</span>,
-  maxEval <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,
-  nVec <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cubintegrate</span><span class="op">(</span></span>
+<span>  <span class="va">f</span>,</span>
+<span>  <span class="va">lower</span>,</span>
+<span>  <span class="va">upper</span>,</span>
+<span>  fDim <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hcubature"</span>, <span class="st">"pcubature"</span>, <span class="st">"cuhre"</span>, <span class="st">"divonne"</span>, <span class="st">"suave"</span>, <span class="st">"vegas"</span><span class="op">)</span>,</span>
+<span>  relTol <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  absTol <span class="op">=</span> <span class="fl">1e-12</span>,</span>
+<span>  maxEval <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,</span>
+<span>  nVec <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -94,28 +94,44 @@ vectorized version, but the additional arguments <code>...</code>
 must indicate via either <code>vectorInterface = TRUE</code> for
 <code>hcubature</code> and <code>pcubature</code>, or a value for <code>nVec</code>. See
 details on each method.</p></dd>
+
+
 <dt>lower</dt>
 <dd><p>The lower limit of integration, a vector for
 hypercubes.</p></dd>
+
+
 <dt>upper</dt>
 <dd><p>The upper limit of integration, a vector for
 hypercubes.</p></dd>
+
+
 <dt>fDim</dt>
 <dd><p>The number of components of f, default 1, bears no
 relation to the dimension of the hypercube over which
 integration is performed.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>the method to use should be one of "hcubature",
 "pcubature", "cuhre", "divonne", "suave" or "vegas".</p></dd>
+
+
 <dt>relTol</dt>
 <dd><p>The maximum tolerance, default 1e-5.</p></dd>
+
+
 <dt>absTol</dt>
 <dd><p>the absolute tolerance, default 1e-12.</p></dd>
+
+
 <dt>maxEval</dt>
 <dd><p>The maximum number of function evaluations needed,
 default 10^6.  Note that the actual number of function
 evaluations performed is only approximately guaranteed not to
 exceed this number.</p></dd>
+
+
 <dt>nVec</dt>
 <dd><p>the number of vectorization points for Cuba C library,
 default 1, but can be set to an integer &gt; 1 for vectorization,
@@ -125,15 +141,20 @@ Cuba, the cubature C library manages the number of points on
 its own and can vary between calls. Therefore, any value for
 nVec greater than one implies vectorization for a cubature
 method.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>All other arguments which may include integration
 method specific parameters and those for f. Unrecognized
 parameters for integration method are presumed to be intended
 for f and so processed.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The returned value is a list of items: -</p>
+    
+
+<p>The returned value is a list of items: -</p>
 <dl><dt>integral</dt>
 <dd><p>the
 value of the integral</p></dd>
@@ -141,7 +162,7 @@ value of the integral</p></dd>
 <dl><dt>error</dt>
 <dd><p>the estimated absolute
 error</p></dd>
-<dt>neval</dt>
+ <dt>neval</dt>
 <dd><p>the number of times the function was
 evaluated</p></dd>
 </dl><p>-</p>
@@ -153,10 +174,12 @@ further interpretation depends on method</p></dd>
 <dl><dt>nregions</dt>
 <dd><p>for
 Cuba routines, the actual number of subregions needed</p></dd>
+
 <dt>prob</dt>
 <dd><p>the \(\chi^2\)-probability (not the
 \(\chi^2\)-value itself!) that <code>error</code> is not a
 reliable estimate of the true integration error.</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -167,17 +190,17 @@ reliable estimate of the true integration error.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">I.1d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span><span class="op">*</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span></span>
-<span class="r-in">    <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="op">(</span> <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">*</span><span class="va">x</span><span class="op">-</span><span class="fl">4</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="va">I.1d_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">   <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
-<span class="r-in">       <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">z</span><span class="op">)</span> <span class="op">*</span></span>
-<span class="r-in">       <span class="va">z</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">z</span> <span class="op">*</span> <span class="op">(</span> <span class="va">z</span> <span class="op">*</span> <span class="op">(</span><span class="va">z</span> <span class="op">*</span> <span class="va">z</span> <span class="op">-</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">       ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="fu">cubintegrate</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d</span>, lower <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upper <span class="op">=</span> <span class="fl">2</span>, method <span class="op">=</span> <span class="st">"pcubature"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">I.1d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span><span class="op">*</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span></span></span>
+<span class="r-in"><span>    <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="op">(</span> <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">*</span><span class="va">x</span><span class="op">-</span><span class="fl">4</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">I.1d_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span></span>
+<span class="r-in"><span>       <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">z</span><span class="op">)</span> <span class="op">*</span></span></span>
+<span class="r-in"><span>       <span class="va">z</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">z</span> <span class="op">*</span> <span class="op">(</span> <span class="va">z</span> <span class="op">*</span> <span class="op">(</span><span class="va">z</span> <span class="op">*</span> <span class="va">z</span> <span class="op">-</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>       ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu">cubintegrate</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d</span>, lower <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upper <span class="op">=</span> <span class="fl">2</span>, method <span class="op">=</span> <span class="st">"pcubature"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $integral</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.635644</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -190,7 +213,7 @@ reliable estimate of the true integration error.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returnCode</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">cubintegrate</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d</span>, lower <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upper <span class="op">=</span> <span class="fl">2</span>, method <span class="op">=</span> <span class="st">"cuhre"</span>, flags<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">cubintegrate</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d</span>, lower <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upper <span class="op">=</span> <span class="fl">2</span>, method <span class="op">=</span> <span class="st">"cuhre"</span>, flags<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $integral</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.635644</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -209,7 +232,7 @@ reliable estimate of the true integration error.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returnCode</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">cubintegrate</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d_v</span>, lower <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upper <span class="op">=</span> <span class="fl">2</span>, method <span class="op">=</span> <span class="st">"hcubature"</span>, nVec <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">cubintegrate</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d_v</span>, lower <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upper <span class="op">=</span> <span class="fl">2</span>, method <span class="op">=</span> <span class="st">"hcubature"</span>, nVec <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $integral</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.635644</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -222,7 +245,7 @@ reliable estimate of the true integration error.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returnCode</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">cubintegrate</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d_v</span>, lower <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upper <span class="op">=</span> <span class="fl">2</span>, method <span class="op">=</span> <span class="st">"cuhre"</span>, nVec <span class="op">=</span> <span class="fl">128L</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">cubintegrate</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d_v</span>, lower <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upper <span class="op">=</span> <span class="fl">2</span>, method <span class="op">=</span> <span class="st">"cuhre"</span>, nVec <span class="op">=</span> <span class="fl">128L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $integral</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.635644</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -241,7 +264,7 @@ reliable estimate of the true integration error.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returnCode</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -252,16 +275,11 @@ reliable estimate of the true integration error.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by
-<a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian
-Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G.
-Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas
-Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
+  <p></p><p>Developed by <a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G. Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

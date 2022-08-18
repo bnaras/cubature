@@ -76,26 +76,26 @@ refinement of the grid.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">vegas</span><span class="op">(</span>
-  <span class="va">f</span>,
-  nComp <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">lowerLimit</span>,
-  <span class="va">upperLimit</span>,
-  <span class="va">...</span>,
-  relTol <span class="op">=</span> <span class="fl">1e-05</span>,
-  absTol <span class="op">=</span> <span class="fl">1e-12</span>,
-  minEval <span class="op">=</span> <span class="fl">0L</span>,
-  maxEval <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,
-  flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">0L</span>, final <span class="op">=</span> <span class="fl">1L</span>, smooth <span class="op">=</span> <span class="fl">0L</span>, keep_state <span class="op">=</span> <span class="fl">0L</span>, load_state <span class="op">=</span> <span class="fl">0L</span>,
-    level <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span>,
-  rngSeed <span class="op">=</span> <span class="fl">12345L</span>,
-  nVec <span class="op">=</span> <span class="fl">1L</span>,
-  nStart <span class="op">=</span> <span class="fl">1000L</span>,
-  nIncrease <span class="op">=</span> <span class="fl">500L</span>,
-  nBatch <span class="op">=</span> <span class="fl">1000L</span>,
-  gridNo <span class="op">=</span> <span class="fl">0L</span>,
-  stateFile <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vegas</span><span class="op">(</span></span>
+<span>  <span class="va">f</span>,</span>
+<span>  nComp <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">lowerLimit</span>,</span>
+<span>  <span class="va">upperLimit</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  relTol <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  absTol <span class="op">=</span> <span class="fl">1e-12</span>,</span>
+<span>  minEval <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  maxEval <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,</span>
+<span>  flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">0L</span>, final <span class="op">=</span> <span class="fl">1L</span>, smooth <span class="op">=</span> <span class="fl">0L</span>, keep_state <span class="op">=</span> <span class="fl">0L</span>, load_state <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>    level <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span>,</span>
+<span>  rngSeed <span class="op">=</span> <span class="fl">12345L</span>,</span>
+<span>  nVec <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  nStart <span class="op">=</span> <span class="fl">1000L</span>,</span>
+<span>  nIncrease <span class="op">=</span> <span class="fl">500L</span>,</span>
+<span>  nBatch <span class="op">=</span> <span class="fl">1000L</span>,</span>
+<span>  gridNo <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  stateFile <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -108,29 +108,47 @@ integrated: - <code>cuba_weight</code> which is the weight of the
 point being sampled, - <code>cuba_iter</code> the current iteration
 number. The function author may choose to use these in any
 appropriate way or ignore them altogether.</p></dd>
+
+
 <dt>nComp</dt>
 <dd><p>The number of components of f, default 1, bears no
 relation to the dimension of the hypercube over which
 integration is performed.</p></dd>
+
+
 <dt>lowerLimit</dt>
 <dd><p>The lower limit of integration, a vector for
 hypercubes.</p></dd>
+
+
 <dt>upperLimit</dt>
 <dd><p>The upper limit of integration, a vector for
 hypercubes.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>All other arguments passed to the function f.</p></dd>
+
+
 <dt>relTol</dt>
 <dd><p>The maximum tolerance, default 1e-5.</p></dd>
+
+
 <dt>absTol</dt>
 <dd><p>the absolute tolerance, default 1e-12.</p></dd>
+
+
 <dt>minEval</dt>
 <dd><p>the minimum number of function evaluations required</p></dd>
+
+
 <dt>maxEval</dt>
 <dd><p>The maximum number of function evaluations needed,
 default 10^6.  Note that the actual number of function
 evaluations performed is only approximately guaranteed not to
 exceed this number.</p></dd>
+
+
 <dt>flags</dt>
 <dd><p>flags governing the integration. The list here is
 exhaustive to keep the documentation and invocation uniform,
@@ -196,22 +214,32 @@ level 0, (mis)used for selecting Mersenne Twister in Cuba, is
 equivalent to <code>level</code> = 24.</p></dd>
 
 </dl></dd>
+
+
 <dt>rngSeed</dt>
 <dd><p>seed, default 0, for the random number
 generator. Note the articulation with <code>level</code> settings for
 <code>flag</code></p></dd>
+
+
 <dt>nVec</dt>
 <dd><p>the number of vectorization points, default 1, but can
 be set to an integer &gt; 1 for vectorization, for example, 1024
 and the function f above needs to handle the vector of points
 appropriately. See vignette examples.</p></dd>
+
+
 <dt>nStart</dt>
 <dd><p>the number of integrand evaluations per iteration to
 start with.</p></dd>
+
+
 <dt>nIncrease</dt>
 <dd><p>the increase in the number of integrand
 evaluations per iteration. The j-th iteration evaluates the
 integrand at nStart+(j-1)*nincrease points.</p></dd>
+
+
 <dt>nBatch</dt>
 <dd><p>Vegas samples points not all at once, but in batches
 of a predetermined size, to avoid excessive memory
@@ -219,6 +247,8 @@ consumption. <code>nbatch</code> is the number of points sampled in
 each batch. Tuning this number should usually not be necessary
 as performance is affected significantly only as far as the
 batch of samples fits into the CPU cache.</p></dd>
+
+
 <dt>gridNo</dt>
 <dd><p>an integer.  Vegas may accelerate convergence to keep
 the grid accumulated during one integration for the next one,
@@ -235,6 +265,8 @@ should be set. Vegas will then start with a new grid and also
 restore the grid number to its positive value, such that at the
 end of the integration the grid is again stored in the
 indicated slot.</p></dd>
+
+
 <dt>stateFile</dt>
 <dd><p>the name of an external file. Vegas can store its
 entire internal state (i.e. all the information to resume an
@@ -248,10 +280,13 @@ integration finishes successfully, i.e. the prescribed accuracy
 is attained, the state file is removed. This feature is useful
 mainly to define ‘check-points’ in long-running
 integrations from which the calculation can be restarted.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list with components:</p><dl><dt>neval</dt>
+    
+
+<p>A list with components:</p><dl><dt>neval</dt>
 <dd><p>the actual number
 of integrand evaluations needed</p></dd>
  <dt>returnCode</dt>
@@ -294,17 +329,17 @@ program. Research Report CLNS-80/447. Cornell University, Ithaca, N.-Y.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">integrand</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span>, <span class="va">weight</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">ff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">ff</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span> <span class="co"># end integrand</span></span>
-<span class="r-in"><span class="fu">vegas</span><span class="op">(</span><span class="va">integrand</span>, lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">             relTol<span class="op">=</span><span class="fl">1e-3</span>,  absTol<span class="op">=</span><span class="fl">1e-12</span>,</span>
-<span class="r-in">             flags<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose<span class="op">=</span><span class="fl">2</span>, final<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">integrand</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span>, <span class="va">weight</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">ff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">ff</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># end integrand</span></span></span>
+<span class="r-in"><span><span class="fu">vegas</span><span class="op">(</span><span class="va">integrand</span>, lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>             relTol<span class="op">=</span><span class="fl">1e-3</span>,  absTol<span class="op">=</span><span class="fl">1e-12</span>,</span></span>
+<span class="r-in"><span>             flags<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose<span class="op">=</span><span class="fl">2</span>, final<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $integral</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6652311</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -320,7 +355,7 @@ program. Research Report CLNS-80/447. Cornell University, Ithaca, N.-Y.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returnCode</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -331,16 +366,11 @@ program. Research Report CLNS-80/447. Cornell University, Ithaca, N.-Y.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by
-<a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian
-Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G.
-Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas
-Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
+  <p></p><p>Developed by <a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G. Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

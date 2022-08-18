@@ -76,24 +76,24 @@ half.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">suave</span><span class="op">(</span>
-  <span class="va">f</span>,
-  nComp <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">lowerLimit</span>,
-  <span class="va">upperLimit</span>,
-  <span class="va">...</span>,
-  relTol <span class="op">=</span> <span class="fl">1e-05</span>,
-  absTol <span class="op">=</span> <span class="fl">1e-12</span>,
-  minEval <span class="op">=</span> <span class="fl">0L</span>,
-  maxEval <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,
-  flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">0L</span>, final <span class="op">=</span> <span class="fl">1L</span>, smooth <span class="op">=</span> <span class="fl">0L</span>, keep_state <span class="op">=</span> <span class="fl">0L</span>, level <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span>,
-  rngSeed <span class="op">=</span> <span class="fl">0L</span>,
-  nVec <span class="op">=</span> <span class="fl">1L</span>,
-  nNew <span class="op">=</span> <span class="fl">1000L</span>,
-  nMin <span class="op">=</span> <span class="fl">50L</span>,
-  flatness <span class="op">=</span> <span class="fl">50</span>,
-  stateFile <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">suave</span><span class="op">(</span></span>
+<span>  <span class="va">f</span>,</span>
+<span>  nComp <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">lowerLimit</span>,</span>
+<span>  <span class="va">upperLimit</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  relTol <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  absTol <span class="op">=</span> <span class="fl">1e-12</span>,</span>
+<span>  minEval <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  maxEval <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,</span>
+<span>  flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">0L</span>, final <span class="op">=</span> <span class="fl">1L</span>, smooth <span class="op">=</span> <span class="fl">0L</span>, keep_state <span class="op">=</span> <span class="fl">0L</span>, level <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span>,</span>
+<span>  rngSeed <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  nVec <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  nNew <span class="op">=</span> <span class="fl">1000L</span>,</span>
+<span>  nMin <span class="op">=</span> <span class="fl">50L</span>,</span>
+<span>  flatness <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  stateFile <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -106,29 +106,47 @@ integrated: - <code>cuba_weight</code> which is the weight of the
 point being sampled, - <code>cuba_iter</code> the current iteration
 number. The function author may choose to use these in any
 appropriate way or ignore them altogether.</p></dd>
+
+
 <dt>nComp</dt>
 <dd><p>The number of components of f, default 1, bears no
 relation to the dimension of the hypercube over which
 integration is performed.</p></dd>
+
+
 <dt>lowerLimit</dt>
 <dd><p>The lower limit of integration, a vector for
 hypercubes.</p></dd>
+
+
 <dt>upperLimit</dt>
 <dd><p>The upper limit of integration, a vector for
 hypercubes.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>All other arguments passed to the function f.</p></dd>
+
+
 <dt>relTol</dt>
 <dd><p>The maximum tolerance, default 1e-5.</p></dd>
+
+
 <dt>absTol</dt>
 <dd><p>the absolute tolerance, default 1e-12.</p></dd>
+
+
 <dt>minEval</dt>
 <dd><p>the minimum number of function evaluations required</p></dd>
+
+
 <dt>maxEval</dt>
 <dd><p>The maximum number of function evaluations needed,
 default 10^6.  Note that the actual number of function
 evaluations performed is only approximately guaranteed not to
 exceed this number.</p></dd>
+
+
 <dt>flags</dt>
 <dd><p>flags governing the integration. The list here is
 exhaustive to keep the documentation and invocation uniform,
@@ -194,23 +212,33 @@ level 0, (mis)used for selecting Mersenne Twister in Cuba, is
 equivalent to <code>level</code> = 24.</p></dd>
 
 </dl></dd>
+
+
 <dt>rngSeed</dt>
 <dd><p>seed, default 0, for the random number
 generator. Note the articulation with <code>level</code> settings for
 <code>flag</code></p></dd>
+
+
 <dt>nVec</dt>
 <dd><p>the number of vectorization points, default 1, but can
 be set to an integer &gt; 1 for vectorization, for example, 1024
 and the function f above needs to handle the vector of points
 appropriately. See vignette examples.</p></dd>
+
+
 <dt>nNew</dt>
 <dd><p>the number of new integrand evaluations in each
 subdivision.</p></dd>
+
+
 <dt>nMin</dt>
 <dd><p>the minimum number of samples a former pass must
 contribute to a subregion to be considered in that region's
 compound integral value. Increasing nmin may reduce jumps in
 the \(\chi^2\) value.</p></dd>
+
+
 <dt>flatness</dt>
 <dd><p>the parameter p, or the type of norm used to
 compute the fluctuation of a sample. This determines how
@@ -222,6 +250,8 @@ for "volatile" integrands with high peaks. Note that since
 flatness appears in the exponent, one should not use too large
 values (say, no more than a few hundred) lest terms be
 truncated internally to prevent overflow.</p></dd>
+
+
 <dt>stateFile</dt>
 <dd><p>the name of an external file. Vegas can store its
 entire internal state (i.e. all the information to resume an
@@ -235,10 +265,13 @@ integration finishes successfully, i.e. the prescribed accuracy
 is attained, the state file is removed. This feature is useful
 mainly to define ‘check-points’ in long-running
 integrations from which the calculation can be restarted.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list with components:</p><dl><dt>neval</dt>
+    
+
+<p>A list with components:</p><dl><dt>neval</dt>
 <dd><p>the actual number
 of integrand evaluations needed</p></dd>
  <dt>returnCode</dt>
@@ -277,17 +310,17 @@ integration. <em>Computer Physics Communications</em>, <b>168</b>, 78-95.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">integrand</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">ff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">ff</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span> <span class="co"># end integrand</span></span>
-<span class="r-in"><span class="fu">suave</span><span class="op">(</span><span class="va">integrand</span>, lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">             relTol<span class="op">=</span><span class="fl">1e-3</span>,  absTol<span class="op">=</span><span class="fl">1e-12</span>,</span>
-<span class="r-in">             flags<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose<span class="op">=</span><span class="fl">2</span>, final<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">integrand</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">arg</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">ff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">ff</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># end integrand</span></span></span>
+<span class="r-in"><span><span class="fu">suave</span><span class="op">(</span><span class="va">integrand</span>, lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>             relTol<span class="op">=</span><span class="fl">1e-3</span>,  absTol<span class="op">=</span><span class="fl">1e-12</span>,</span></span>
+<span class="r-in"><span>             flags<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose<span class="op">=</span><span class="fl">2</span>, final<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $integral</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6646196</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -303,7 +336,7 @@ integration. <em>Computer Physics Communications</em>, <b>168</b>, 78-95.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returnCode</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -314,16 +347,11 @@ integration. <em>Computer Physics Communications</em>, <b>168</b>, 78-95.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by
-<a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian
-Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G.
-Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas
-Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
+  <p></p><p>Developed by <a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G. Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

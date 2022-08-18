@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Balasubramanian
 Narasimhan</h4>
             
-            <h4 data-toc-skip class="date">2022-03-22</h4>
+            <h4 data-toc-skip class="date">2022-08-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bnaras/cubature/blob/HEAD/vignettes/cubature.Rmd" class="external-link"><code>vignettes/cubature.Rmd</code></a></small>
       <div class="hidden name"><code>cubature.Rmd</code></div>
@@ -119,86 +119,86 @@ section.</p>
 <code>pcubature</code> (where appropriate) and Cuba <code>cuhre</code>
 calls. We begin by creating a harness for these calls.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gitlab.com/artemklevtsov/benchr" class="external-link">benchr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bnaras.github.io/cubature/" class="external-link">cubature</a></span><span class="op">)</span>
-
-<span class="va">harness</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">which</span> <span class="op">=</span> <span class="cn">NULL</span>,
-                    <span class="va">f</span>, <span class="va">fv</span>, <span class="va">lowerLimit</span>, <span class="va">upperLimit</span>, <span class="va">tol</span> <span class="op">=</span> <span class="fl">1e-3</span>, <span class="va">times</span> <span class="op">=</span> <span class="fl">20</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-
-    <span class="va">fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>hc <span class="op">=</span> <span class="st">"Non-vectorized Hcubature"</span>,
-             hc.v <span class="op">=</span> <span class="st">"Vectorized Hcubature"</span>,
-             pc <span class="op">=</span> <span class="st">"Non-vectorized Pcubature"</span>,
-             pc.v <span class="op">=</span> <span class="st">"Vectorized Pcubature"</span>,
-             cc <span class="op">=</span> <span class="st">"Non-vectorized cubature::cuhre"</span>,
-             cc_v <span class="op">=</span> <span class="st">"Vectorized cubature::cuhre"</span><span class="op">)</span>
-    <span class="va">cc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/cuhre.html">cuhre</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,
-                                     lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>, upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,
-                                     relTol <span class="op">=</span> <span class="va">tol</span>,
-                                     <span class="va">...</span><span class="op">)</span>
-    <span class="va">cc_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/cuhre.html">cuhre</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,
-                                       lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>, upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,
-                                       relTol <span class="op">=</span> <span class="va">tol</span>,
-                                       nVec <span class="op">=</span> <span class="fl">1024L</span>,
-                                       <span class="va">...</span><span class="op">)</span>
-
-    <span class="va">hc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">hcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,
-                                         lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,
-                                         upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,
-                                         tol <span class="op">=</span> <span class="va">tol</span>,
-                                         <span class="va">...</span><span class="op">)</span>
-
-    <span class="va">hc.v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">hcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,
-                                           lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,
-                                           upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,
-                                           tol <span class="op">=</span> <span class="va">tol</span>,
-                                           vectorInterface <span class="op">=</span> <span class="cn">TRUE</span>,
-                                           <span class="va">...</span><span class="op">)</span>
-
-    <span class="va">pc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">pcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,
-                                     lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,
-                                     upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,
-                                     tol <span class="op">=</span> <span class="va">tol</span>,
-                                     <span class="va">...</span><span class="op">)</span>
-
-    <span class="va">pc.v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">pcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,
-                                           lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,
-                                           upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,
-                                           tol <span class="op">=</span> <span class="va">tol</span>,
-                                           vectorInterface <span class="op">=</span> <span class="cn">TRUE</span>,
-                                           <span class="va">...</span><span class="op">)</span>
-    
-    <span class="va">ndim</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lowerLimit</span><span class="op">)</span>
-
-    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">which</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-        <span class="va">fnIndices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span>
-    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-        <span class="va">fnIndices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">which</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span>
-    <span class="va">fnList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span><span class="op">[</span><span class="va">fnIndices</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-
-    <span class="va">argList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">fnList</span>, times <span class="op">=</span> <span class="va">times</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-    <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">benchr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/benchr/man/benchmark.html" class="external-link">benchmark</a></span>, args <span class="op">=</span> <span class="va">argList</span><span class="op">)</span>
-    <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fnIndices</span><span class="op">)</span>, <span class="op">]</span>
-    <span class="va">d</span><span class="op">$</span><span class="va">expr</span> <span class="op">&lt;-</span> <span class="va">fns</span><span class="op">[</span><span class="va">fnIndices</span><span class="op">]</span>
-    <span class="va">d</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gitlab.com/artemklevtsov/benchr" class="external-link">benchr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bnaras.github.io/cubature/" class="external-link">cubature</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">harness</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">which</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                    <span class="va">f</span>, <span class="va">fv</span>, <span class="va">lowerLimit</span>, <span class="va">upperLimit</span>, <span class="va">tol</span> <span class="op">=</span> <span class="fl">1e-3</span>, <span class="va">times</span> <span class="op">=</span> <span class="fl">20</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>    <span class="va">fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>hc <span class="op">=</span> <span class="st">"Non-vectorized Hcubature"</span>,</span>
+<span>             hc.v <span class="op">=</span> <span class="st">"Vectorized Hcubature"</span>,</span>
+<span>             pc <span class="op">=</span> <span class="st">"Non-vectorized Pcubature"</span>,</span>
+<span>             pc.v <span class="op">=</span> <span class="st">"Vectorized Pcubature"</span>,</span>
+<span>             cc <span class="op">=</span> <span class="st">"Non-vectorized cubature::cuhre"</span>,</span>
+<span>             cc_v <span class="op">=</span> <span class="st">"Vectorized cubature::cuhre"</span><span class="op">)</span></span>
+<span>    <span class="va">cc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/cuhre.html">cuhre</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,</span>
+<span>                                     lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>, upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
+<span>                                     relTol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                     <span class="va">...</span><span class="op">)</span></span>
+<span>    <span class="va">cc_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/cuhre.html">cuhre</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,</span>
+<span>                                       lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>, upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
+<span>                                       relTol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                       nVec <span class="op">=</span> <span class="fl">1024L</span>,</span>
+<span>                                       <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">hc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">hcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,</span>
+<span>                                         lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
+<span>                                         upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
+<span>                                         tol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                         <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">hc.v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">hcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,</span>
+<span>                                           lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
+<span>                                           upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
+<span>                                           tol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                           vectorInterface <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                           <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">pc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">pcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,</span>
+<span>                                     lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
+<span>                                     upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
+<span>                                     tol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                     <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">pc.v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">pcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,</span>
+<span>                                           lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
+<span>                                           upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
+<span>                                           tol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                           vectorInterface <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                           <span class="va">...</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="va">ndim</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lowerLimit</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">which</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">fnIndices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>        <span class="va">fnIndices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">which</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="va">fnList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span><span class="op">[</span><span class="va">fnIndices</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">argList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">fnList</span>, times <span class="op">=</span> <span class="va">times</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>    <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">benchr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/benchr/man/benchmark.html" class="external-link">benchmark</a></span>, args <span class="op">=</span> <span class="va">argList</span><span class="op">)</span></span>
+<span>    <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fnIndices</span><span class="op">)</span>, <span class="op">]</span></span>
+<span>    <span class="va">d</span><span class="op">$</span><span class="va">expr</span> <span class="op">&lt;-</span> <span class="va">fns</span><span class="op">[</span><span class="va">fnIndices</span><span class="op">]</span></span>
+<span>    <span class="va">d</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>We reel off the timing runs.</p>
 </div>
 <div class="section level2">
 <h2 id="example-1-">Example 1.<a class="anchor" aria-label="anchor" href="#example-1-"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">func</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>
-<span class="va">func.v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">z</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">z</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">z</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">func</span>, fv <span class="op">=</span> <span class="va">func.v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,
-             upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,
-             tol <span class="op">=</span> <span class="fl">1e-5</span>,
-             times <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">func</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">func.v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">z</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">z</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">z</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">func</span>, fv <span class="op">=</span> <span class="va">func.v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>             upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>             tol <span class="op">=</span> <span class="fl">1e-5</span>,</span>
+<span>             times <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="34%">
@@ -231,11 +231,11 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.048</td>
-<td align="right">1.29</td>
+<td align="right">0.000</td>
+<td align="right">0.003</td>
+<td align="right">0.050</td>
+<td align="right">1.21</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -245,8 +245,8 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.001</td>
-<td align="right">0.034</td>
+<td align="right">0.002</td>
+<td align="right">0.042</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
@@ -255,11 +255,11 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
+<td align="right">0.002</td>
+<td align="right">0.002</td>
 <td align="right">0.003</td>
-<td align="right">0.141</td>
-<td align="right">4.05</td>
+<td align="right">0.150</td>
+<td align="right">3.75</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -269,9 +269,9 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.003</td>
-<td align="right">0.103</td>
-<td align="right">2.93</td>
+<td align="right">0.004</td>
+<td align="right">0.115</td>
+<td align="right">2.88</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -281,20 +281,20 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.083</td>
-<td align="right">2.38</td>
+<td align="right">0.003</td>
+<td align="right">0.093</td>
+<td align="right">2.31</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">100</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.057</td>
+<td align="right">0.001</td>
+<td align="right">0.001</td>
+<td align="right">0.003</td>
+<td align="right">0.063</td>
 <td align="right">1.55</td>
 </tr>
 </tbody>
@@ -319,30 +319,30 @@ three-dimensional multivariate normal density with mean 0, and variance
 <p>We construct a scalar function (<code>my_dmvnorm</code>) and a vector
 analog (<code>my_dmvnorm_v</code>). First the functions.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">3</span>
-<span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
-<span class="va">sigma</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">3</span><span class="op">/</span><span class="fl">5</span> ; <span class="va">sigma</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span>
-<span class="va">sigma</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">11</span><span class="op">/</span><span class="fl">15</span>
-<span class="va">logdet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">sigma</span>, symmetric <span class="op">=</span> <span class="cn">TRUE</span>, only.values <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span><span class="op">)</span>
-<span class="va">my_dmvnorm</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">x</span>, <span class="va">mean</span>, <span class="va">sigma</span>, <span class="va">logdet</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">x</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">distval</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/mahalanobis.html" class="external-link">mahalanobis</a></span><span class="op">(</span><span class="va">x</span>, center <span class="op">=</span> <span class="va">mean</span>, cov <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="op">(</span><span class="fl">3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">+</span> <span class="va">logdet</span> <span class="op">+</span> <span class="va">distval</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">my_dmvnorm_v</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">x</span>, <span class="va">mean</span>, <span class="va">sigma</span>, <span class="va">logdet</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">distval</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/mahalanobis.html" class="external-link">mahalanobis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, center <span class="op">=</span> <span class="va">mean</span>, cov <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="op">-</span><span class="op">(</span><span class="fl">3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">+</span> <span class="va">logdet</span> <span class="op">+</span> <span class="va">distval</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
+<span><span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">sigma</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">3</span><span class="op">/</span><span class="fl">5</span> ; <span class="va">sigma</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span></span>
+<span><span class="va">sigma</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sigma</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">11</span><span class="op">/</span><span class="fl">15</span></span>
+<span><span class="va">logdet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">sigma</span>, symmetric <span class="op">=</span> <span class="cn">TRUE</span>, only.values <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">my_dmvnorm</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">x</span>, <span class="va">mean</span>, <span class="va">sigma</span>, <span class="va">logdet</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">x</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">distval</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/mahalanobis.html" class="external-link">mahalanobis</a></span><span class="op">(</span><span class="va">x</span>, center <span class="op">=</span> <span class="va">mean</span>, cov <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="op">(</span><span class="fl">3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">+</span> <span class="va">logdet</span> <span class="op">+</span> <span class="va">distval</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">my_dmvnorm_v</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">x</span>, <span class="va">mean</span>, <span class="va">sigma</span>, <span class="va">logdet</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">distval</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/mahalanobis.html" class="external-link">mahalanobis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, center <span class="op">=</span> <span class="va">mean</span>, cov <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="op">-</span><span class="op">(</span><span class="fl">3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">+</span> <span class="va">logdet</span> <span class="op">+</span> <span class="va">distval</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Now the timing.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">my_dmvnorm</span>, fv <span class="op">=</span> <span class="va">my_dmvnorm_v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">3</span><span class="op">)</span>,
-             upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>,
-             tol <span class="op">=</span> <span class="fl">1e-5</span>,
-             times <span class="op">=</span> <span class="fl">10</span>,
-             mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="va">sigma</span>, logdet <span class="op">=</span> <span class="va">logdet</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">my_dmvnorm</span>, fv <span class="op">=</span> <span class="va">my_dmvnorm_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>             upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>             tol <span class="op">=</span> <span class="fl">1e-5</span>,</span>
+<span>             times <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>             mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="va">sigma</span>, logdet <span class="op">=</span> <span class="va">logdet</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="34%">
@@ -372,14 +372,14 @@ analog (<code>my_dmvnorm_v</code>). First the functions.</p>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.752</td>
-<td align="right">0.766</td>
-<td align="right">0.786</td>
-<td align="right">0.782</td>
-<td align="right">0.794</td>
-<td align="right">0.818</td>
-<td align="right">7.825</td>
-<td align="right">636.00</td>
+<td align="right">0.840</td>
+<td align="right">0.861</td>
+<td align="right">0.888</td>
+<td align="right">0.888</td>
+<td align="right">0.907</td>
+<td align="right">0.951</td>
+<td align="right">8.876</td>
+<td align="right">585.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -390,56 +390,56 @@ analog (<code>my_dmvnorm_v</code>). First the functions.</p>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.003</td>
-<td align="right">0.020</td>
-<td align="right">1.58</td>
+<td align="right">0.021</td>
+<td align="right">1.41</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">10</td>
-<td align="right">0.326</td>
-<td align="right">0.333</td>
-<td align="right">0.343</td>
-<td align="right">0.346</td>
-<td align="right">0.359</td>
-<td align="right">0.371</td>
-<td align="right">3.462</td>
-<td align="right">277.00</td>
+<td align="right">0.355</td>
+<td align="right">0.381</td>
+<td align="right">0.401</td>
+<td align="right">0.391</td>
+<td align="right">0.404</td>
+<td align="right">0.409</td>
+<td align="right">3.906</td>
+<td align="right">264.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">10</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
+<td align="right">0.002</td>
 <td align="right">0.001</td>
 <td align="right">0.002</td>
-<td align="right">0.013</td>
+<td align="right">0.002</td>
+<td align="right">0.015</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.307</td>
-<td align="right">0.316</td>
-<td align="right">0.325</td>
-<td align="right">0.327</td>
-<td align="right">0.334</td>
-<td align="right">0.352</td>
-<td align="right">3.270</td>
-<td align="right">263.00</td>
+<td align="right">0.353</td>
+<td align="right">0.360</td>
+<td align="right">0.369</td>
+<td align="right">0.373</td>
+<td align="right">0.388</td>
+<td align="right">0.398</td>
+<td align="right">3.732</td>
+<td align="right">243.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
 <td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.036</td>
-<td align="right">2.82</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
+<td align="right">0.039</td>
+<td align="right">2.59</td>
 </tr>
 </tbody>
 </table>
@@ -451,19 +451,19 @@ for the multivariate normal. The good news is that the vectorized
 versions of <code>hcubature</code> and <code>pcubature</code> are quite
 competitive if you compare the table above to the one below.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://mvtnorm.R-forge.R-project.org" class="external-link">mvtnorm</a></span><span class="op">)</span>
-<span class="va">g1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">mvtnorm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/pmvnorm.html" class="external-link">pmvnorm</a></span><span class="op">(</span>lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>,
-                                  upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, corr <span class="op">=</span> <span class="va">sigma</span>,
-                                  alg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/algorithms.html" class="external-link">Miwa</a></span><span class="op">(</span><span class="op">)</span>, abseps <span class="op">=</span> <span class="fl">1e-5</span>, releps <span class="op">=</span> <span class="fl">1e-5</span><span class="op">)</span>
-<span class="va">g2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">mvtnorm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/pmvnorm.html" class="external-link">pmvnorm</a></span><span class="op">(</span>lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>,
-                                  upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, corr <span class="op">=</span> <span class="va">sigma</span>,
-                                  alg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/algorithms.html" class="external-link">GenzBretz</a></span><span class="op">(</span><span class="op">)</span>, abseps <span class="op">=</span> <span class="fl">1e-5</span>, releps <span class="op">=</span> <span class="fl">1e-5</span><span class="op">)</span>
-<span class="va">g3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">mvtnorm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/pmvnorm.html" class="external-link">pmvnorm</a></span><span class="op">(</span>lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>,
-                                  upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, corr <span class="op">=</span> <span class="va">sigma</span>,
-                                  alg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/algorithms.html" class="external-link">TVPACK</a></span><span class="op">(</span><span class="op">)</span>, abseps <span class="op">=</span> <span class="fl">1e-5</span>, releps <span class="op">=</span> <span class="fl">1e-5</span><span class="op">)</span>
-
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">benchr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/benchr/man/benchmark.html" class="external-link">benchmark</a></span><span class="op">(</span><span class="fu">g1</span><span class="op">(</span><span class="op">)</span>, <span class="fu">g2</span><span class="op">(</span><span class="op">)</span>, <span class="fu">g3</span><span class="op">(</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,
-             digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://mvtnorm.R-forge.R-project.org" class="external-link">mvtnorm</a></span><span class="op">)</span></span>
+<span><span class="va">g1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">mvtnorm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/pmvnorm.html" class="external-link">pmvnorm</a></span><span class="op">(</span>lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>,</span>
+<span>                                  upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, corr <span class="op">=</span> <span class="va">sigma</span>,</span>
+<span>                                  alg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/algorithms.html" class="external-link">Miwa</a></span><span class="op">(</span><span class="op">)</span>, abseps <span class="op">=</span> <span class="fl">1e-5</span>, releps <span class="op">=</span> <span class="fl">1e-5</span><span class="op">)</span></span>
+<span><span class="va">g2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">mvtnorm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/pmvnorm.html" class="external-link">pmvnorm</a></span><span class="op">(</span>lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>,</span>
+<span>                                  upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, corr <span class="op">=</span> <span class="va">sigma</span>,</span>
+<span>                                  alg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/algorithms.html" class="external-link">GenzBretz</a></span><span class="op">(</span><span class="op">)</span>, abseps <span class="op">=</span> <span class="fl">1e-5</span>, releps <span class="op">=</span> <span class="fl">1e-5</span><span class="op">)</span></span>
+<span><span class="va">g3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">mvtnorm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/pmvnorm.html" class="external-link">pmvnorm</a></span><span class="op">(</span>lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>,</span>
+<span>                                  upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, corr <span class="op">=</span> <span class="va">sigma</span>,</span>
+<span>                                  alg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/algorithms.html" class="external-link">TVPACK</a></span><span class="op">(</span><span class="op">)</span>, abseps <span class="op">=</span> <span class="fl">1e-5</span>, releps <span class="op">=</span> <span class="fl">1e-5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">benchr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/benchr/man/benchmark.html" class="external-link">benchmark</a></span><span class="op">(</span><span class="fu">g1</span><span class="op">(</span><span class="op">)</span>, <span class="fu">g2</span><span class="op">(</span><span class="op">)</span>, <span class="fu">g3</span><span class="op">(</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>             digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="7%">
@@ -499,8 +499,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.022</td>
-<td align="right">1</td>
+<td align="right">0.023</td>
+<td align="right">1.14</td>
 </tr>
 <tr class="even">
 <td align="left">g2()</td>
@@ -511,8 +511,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.020</td>
-<td align="right">1</td>
+<td align="right">0.024</td>
+<td align="right">1.06</td>
 </tr>
 <tr class="odd">
 <td align="left">g3()</td>
@@ -523,8 +523,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.021</td>
-<td align="right">1</td>
+<td align="right">0.022</td>
+<td align="right">1.00</td>
 </tr>
 </tbody>
 </table>
@@ -533,20 +533,20 @@ competitive if you compare the table above to the one below.</p>
 <h2 id="product-of-cosines">Product of cosines<a class="anchor" aria-label="anchor" href="#product-of-cosines"></a>
 </h2>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">testFn0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="va">testFn0_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn0</span>, fv <span class="op">=</span> <span class="va">testFn0_v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">testFn0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">testFn0_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn0</span>, fv <span class="op">=</span> <span class="va">testFn0_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="35%">
-<col width="8%">
+<col width="7%">
 <col width="4%">
 <col width="6%">
-<col width="8%">
-<col width="5%">
+<col width="7%">
+<col width="6%">
 <col width="6%">
 <col width="6%">
 <col width="6%">
@@ -570,11 +570,11 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">1000</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.059</td>
+<td align="right">0.063</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -582,23 +582,23 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">1000</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.072</td>
-<td align="right">1.22</td>
+<td align="right">0.078</td>
+<td align="right">1.26</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">1000</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0.002</td>
-<td align="right">0.077</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.079</td>
 <td align="right">1.32</td>
 </tr>
 <tr class="even">
@@ -606,36 +606,36 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">1000</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="right">0.000</td>
-<td align="right">0.124</td>
-<td align="right">2.18</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.002</td>
+<td align="right">0.142</td>
+<td align="right">2.26</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">1000</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0.009</td>
-<td align="right">0.477</td>
-<td align="right">8.09</td>
+<td align="right">0.001</td>
+<td align="right">0.001</td>
+<td align="right">0.001</td>
+<td align="right">0.003</td>
+<td align="right">0.520</td>
+<td align="right">8.92</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">1000</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0.002</td>
-<td align="right">0.363</td>
-<td align="right">6.21</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.003</td>
+<td align="right">0.421</td>
+<td align="right">6.98</td>
 </tr>
 </tbody>
 </table>
@@ -644,22 +644,22 @@ competitive if you compare the table above to the one below.</p>
 <h2 id="gaussian-function">Gaussian function<a class="anchor" aria-label="anchor" href="#gaussian-function"></a>
 </h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">testFn1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="va">x</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-    <span class="va">scale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">val</span><span class="op">)</span> <span class="op">*</span> <span class="va">scale</span>
-<span class="op">}</span>
-
-<span class="va">testFn1_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">z</span><span class="op">)</span> <span class="op">/</span> <span class="va">z</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">scale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="va">z</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">val</span><span class="op">)</span> <span class="op">*</span> <span class="va">scale</span>
-<span class="op">}</span>
-
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn1</span>, fv <span class="op">=</span> <span class="va">testFn1_v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">testFn1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="va">x</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="va">scale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">val</span><span class="op">)</span> <span class="op">*</span> <span class="va">scale</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">testFn1_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">z</span><span class="op">)</span> <span class="op">/</span> <span class="va">z</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">scale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="va">z</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">val</span><span class="op">)</span> <span class="op">*</span> <span class="va">scale</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn1</span>, fv <span class="op">=</span> <span class="va">testFn1_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="34%">
@@ -691,12 +691,12 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">10</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.005</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
 <td align="right">0.037</td>
-<td align="right">32.50</td>
+<td align="right">32.30</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -705,10 +705,10 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.004</td>
 <td align="right">0.005</td>
-<td align="right">0.042</td>
-<td align="right">38.70</td>
+<td align="right">0.006</td>
+<td align="right">0.045</td>
+<td align="right">38.40</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -732,31 +732,31 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">1.57</td>
+<td align="right">1.32</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.014</td>
-<td align="right">0.016</td>
-<td align="right">0.016</td>
 <td align="right">0.016</td>
 <td align="right">0.017</td>
+<td align="right">0.017</td>
+<td align="right">0.017</td>
+<td align="right">0.017</td>
 <td align="right">0.018</td>
-<td align="right">0.162</td>
-<td align="right">155.00</td>
+<td align="right">0.170</td>
+<td align="right">151.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.015</td>
-<td align="right">0.015</td>
-<td align="right">0.016</td>
 <td align="right">0.016</td>
 <td align="right">0.017</td>
+<td align="right">0.018</td>
+<td align="right">0.018</td>
 <td align="right">0.019</td>
-<td align="right">0.164</td>
-<td align="right">152.00</td>
+<td align="right">0.020</td>
+<td align="right">0.185</td>
+<td align="right">161.00</td>
 </tr>
 </tbody>
 </table>
@@ -765,20 +765,20 @@ competitive if you compare the table above to the one below.</p>
 <h2 id="discontinuous-function">Discontinuous function<a class="anchor" aria-label="anchor" href="#discontinuous-function"></a>
 </h2>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">testFn2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">radius</span> <span class="op">&lt;-</span> <span class="fl">0.50124145262344534123412</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="va">x</span><span class="op">)</span> <span class="op">&lt;</span> <span class="va">radius</span> <span class="op">*</span> <span class="va">radius</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">testFn2_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">radius</span> <span class="op">&lt;-</span> <span class="fl">0.50124145262344534123412</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">z</span> <span class="op">*</span> <span class="va">z</span><span class="op">)</span> <span class="op">&lt;</span> <span class="va">radius</span> <span class="op">*</span> <span class="va">radius</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>which <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hc"</span>, <span class="st">"hc.v"</span>, <span class="st">"cc"</span>, <span class="st">"cc_v"</span><span class="op">)</span>,
-             f <span class="op">=</span> <span class="va">testFn2</span>, fv <span class="op">=</span> <span class="va">testFn2_v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">testFn2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">radius</span> <span class="op">&lt;-</span> <span class="fl">0.50124145262344534123412</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="va">x</span><span class="op">)</span> <span class="op">&lt;</span> <span class="va">radius</span> <span class="op">*</span> <span class="va">radius</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">testFn2_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">radius</span> <span class="op">&lt;-</span> <span class="fl">0.50124145262344534123412</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">z</span> <span class="op">*</span> <span class="va">z</span><span class="op">)</span> <span class="op">&lt;</span> <span class="va">radius</span> <span class="op">*</span> <span class="va">radius</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>which <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hc"</span>, <span class="st">"hc.v"</span>, <span class="st">"cc"</span>, <span class="st">"cc_v"</span><span class="op">)</span>,</span>
+<span>             f <span class="op">=</span> <span class="va">testFn2</span>, fv <span class="op">=</span> <span class="va">testFn2_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="34%">
@@ -789,8 +789,8 @@ competitive if you compare the table above to the one below.</p>
 <col width="6%">
 <col width="6%">
 <col width="6%">
-<col width="6%">
-<col width="10%">
+<col width="7%">
+<col width="9%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">expr</th>
@@ -808,50 +808,50 @@ competitive if you compare the table above to the one below.</p>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.051</td>
-<td align="right">0.052</td>
-<td align="right">0.054</td>
-<td align="right">0.054</td>
-<td align="right">0.054</td>
+<td align="right">0.050</td>
+<td align="right">0.053</td>
+<td align="right">0.060</td>
 <td align="right">0.058</td>
-<td align="right">0.538</td>
+<td align="right">0.062</td>
+<td align="right">0.065</td>
+<td align="right">0.581</td>
 <td align="right">1.25</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.039</td>
-<td align="right">0.041</td>
-<td align="right">0.043</td>
-<td align="right">0.043</td>
-<td align="right">0.045</td>
-<td align="right">0.050</td>
-<td align="right">0.435</td>
+<td align="right">0.040</td>
+<td align="right">0.044</td>
+<td align="right">0.048</td>
+<td align="right">0.046</td>
+<td align="right">0.048</td>
+<td align="right">0.052</td>
+<td align="right">0.464</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.899</td>
-<td align="right">0.929</td>
-<td align="right">0.956</td>
-<td align="right">0.950</td>
-<td align="right">0.961</td>
-<td align="right">1.023</td>
-<td align="right">9.503</td>
-<td align="right">22.30</td>
+<td align="right">0.924</td>
+<td align="right">0.979</td>
+<td align="right">1.051</td>
+<td align="right">1.037</td>
+<td align="right">1.092</td>
+<td align="right">1.121</td>
+<td align="right">10.370</td>
+<td align="right">22.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.750</td>
-<td align="right">0.773</td>
-<td align="right">0.785</td>
-<td align="right">0.788</td>
-<td align="right">0.791</td>
-<td align="right">0.874</td>
-<td align="right">7.883</td>
-<td align="right">18.30</td>
+<td align="right">0.744</td>
+<td align="right">0.819</td>
+<td align="right">0.861</td>
+<td align="right">0.844</td>
+<td align="right">0.880</td>
+<td align="right">0.907</td>
+<td align="right">8.438</td>
+<td align="right">18.10</td>
 </tr>
 </tbody>
 </table>
@@ -860,12 +860,12 @@ competitive if you compare the table above to the one below.</p>
 <h2 id="a-simple-polynomial-product-of-coordinates">A Simple Polynomial (product of coordinates)<a class="anchor" aria-label="anchor" href="#a-simple-polynomial-product-of-coordinates"></a>
 </h2>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">testFn3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">x</span><span class="op">)</span>
-<span class="va">testFn3_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">z</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn3</span>, fv <span class="op">=</span> <span class="va">testFn3_v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">testFn3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">x</span><span class="op">)</span></span>
+<span><span class="va">testFn3_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">z</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn3</span>, fv <span class="op">=</span> <span class="va">testFn3_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="34%">
@@ -901,8 +901,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.005</td>
-<td align="right">1.11</td>
+<td align="right">0.004</td>
+<td align="right">1.07</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -914,7 +914,7 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.005</td>
-<td align="right">1.23</td>
+<td align="right">1.21</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -938,7 +938,7 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.004</td>
-<td align="right">1.06</td>
+<td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -948,21 +948,21 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.045</td>
-<td align="right">12.10</td>
+<td align="right">0.003</td>
+<td align="right">0.044</td>
+<td align="right">11.30</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">50</td>
+<td align="right">0.000</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.030</td>
-<td align="right">7.01</td>
+<td align="right">0.029</td>
+<td align="right">7.42</td>
 </tr>
 </tbody>
 </table>
@@ -971,24 +971,24 @@ competitive if you compare the table above to the one below.</p>
 <h2 id="gaussian-centered-at-frac12">Gaussian centered at <span class="math inline">\(\frac{1}{2}\)</span><a class="anchor" aria-label="anchor" href="#gaussian-centered-at-frac12"></a>
 </h2>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">testFn4</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>
-    <span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-    <span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span> <span class="op">(</span><span class="op">-</span><span class="va">s</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">testFn4_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>
-    <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">{</span>
-        <span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">z</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-        <span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span> <span class="op">(</span><span class="op">-</span><span class="va">s</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">r</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn4</span>, fv <span class="op">=</span> <span class="va">testFn4_v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">testFn4</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span>    <span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span> <span class="op">(</span><span class="op">-</span><span class="va">s</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">testFn4_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span>    <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">z</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span> <span class="op">(</span><span class="op">-</span><span class="va">s</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">r</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn4</span>, fv <span class="op">=</span> <span class="va">testFn4_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="34%">
@@ -1018,14 +1018,14 @@ competitive if you compare the table above to the one below.</p>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">20</td>
+<td align="right">0.001</td>
+<td align="right">0.001</td>
+<td align="right">0.001</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
+<td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.038</td>
-<td align="right">1.26</td>
+<td align="right">0.032</td>
+<td align="right">1.13</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1035,7 +1035,7 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
+<td align="right">0.003</td>
 <td align="right">0.029</td>
 <td align="right">1.00</td>
 </tr>
@@ -1047,8 +1047,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.002</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.005</td>
-<td align="right">0.053</td>
+<td align="right">0.004</td>
+<td align="right">0.052</td>
 <td align="right">1.77</td>
 </tr>
 <tr class="even">
@@ -1059,21 +1059,21 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.044</td>
-<td align="right">1.46</td>
+<td align="right">0.002</td>
+<td align="right">0.039</td>
+<td align="right">1.43</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.078</td>
-<td align="right">2.70</td>
+<td align="right">0.072</td>
+<td align="right">2.62</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -1084,8 +1084,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.004</td>
-<td align="right">0.060</td>
-<td align="right">2.07</td>
+<td align="right">0.058</td>
+<td align="right">2.10</td>
 </tr>
 </tbody>
 </table>
@@ -1094,25 +1094,25 @@ competitive if you compare the table above to the one below.</p>
 <h2 id="double-gaussian">Double Gaussian<a class="anchor" aria-label="anchor" href="#double-gaussian"></a>
 </h2>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">testFn5</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>
-    <span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-    <span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">2</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-    <span class="fl">0.5</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s1</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s2</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">testFn5_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>
-    <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">{</span>
-        <span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">z</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-        <span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">z</span> <span class="op">-</span> <span class="fl">2</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-        <span class="fl">0.5</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s1</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s2</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">r</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn5</span>, fv <span class="op">=</span> <span class="va">testFn5_v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">testFn5</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span>    <span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">2</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="fl">0.5</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s1</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s2</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">testFn5_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span>    <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">z</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span>        <span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">z</span> <span class="op">-</span> <span class="fl">2</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span>        <span class="fl">0.5</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s1</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">s2</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">r</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn5</span>, fv <span class="op">=</span> <span class="va">testFn5_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="34%">
@@ -1145,23 +1145,23 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
 <td align="right">0.006</td>
-<td align="right">0.090</td>
-<td align="right">1.73</td>
+<td align="right">0.083</td>
+<td align="right">1.56</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">20</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
+<td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
+<td align="right">0.005</td>
 <td align="right">0.074</td>
-<td align="right">1.46</td>
+<td align="right">1.36</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -1171,20 +1171,20 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.063</td>
-<td align="right">1.22</td>
+<td align="right">0.003</td>
+<td align="right">0.057</td>
+<td align="right">1.10</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">20</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.012</td>
-<td align="right">0.062</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
+<td align="right">0.051</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
@@ -1195,21 +1195,21 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
 <td align="right">0.009</td>
-<td align="right">0.009</td>
-<td align="right">0.161</td>
-<td align="right">3.14</td>
+<td align="right">0.012</td>
+<td align="right">0.162</td>
+<td align="right">2.99</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
 <td align="right">0.006</td>
+<td align="right">0.006</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
-<td align="right">0.008</td>
 <td align="right">0.009</td>
-<td align="right">0.148</td>
-<td align="right">2.96</td>
+<td align="right">0.134</td>
+<td align="right">2.63</td>
 </tr>
 </tbody>
 </table>
@@ -1218,20 +1218,20 @@ competitive if you compare the table above to the one below.</p>
 <h2 id="tsudas-example">Tsuda’s Example<a class="anchor" aria-label="anchor" href="#tsudas-example"></a>
 </h2>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">testFn6</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">a</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10.0</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">9.0</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span> <span class="va">a</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">testFn6_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">a</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10.0</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">9.0</span>
-    <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span> <span class="va">a</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="va">z</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">r</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn6</span>, fv <span class="op">=</span> <span class="va">testFn6_v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">testFn6</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">a</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10.0</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">9.0</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span> <span class="va">a</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">testFn6_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">a</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10.0</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">9.0</span></span>
+<span>    <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span> <span class="va">a</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="va">z</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">r</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn6</span>, fv <span class="op">=</span> <span class="va">testFn6_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="34%">
@@ -1265,70 +1265,70 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
+<td align="right">0.002</td>
 <td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.049</td>
-<td align="right">1.16</td>
+<td align="right">0.040</td>
+<td align="right">1.21</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">20</td>
+<td align="right">0.001</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.004</td>
-<td align="right">0.042</td>
+<td align="right">0.003</td>
+<td align="right">0.034</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.011</td>
-<td align="right">0.012</td>
-<td align="right">0.013</td>
-<td align="right">0.013</td>
-<td align="right">0.013</td>
-<td align="right">0.014</td>
-<td align="right">0.252</td>
-<td align="right">6.41</td>
-</tr>
-<tr class="even">
-<td align="left">Vectorized Pcubature</td>
-<td align="right">20</td>
-<td align="right">0.008</td>
 <td align="right">0.009</td>
 <td align="right">0.010</td>
 <td align="right">0.010</td>
 <td align="right">0.010</td>
 <td align="right">0.011</td>
-<td align="right">0.192</td>
-<td align="right">4.87</td>
+<td align="right">0.012</td>
+<td align="right">0.204</td>
+<td align="right">6.45</td>
+</tr>
+<tr class="even">
+<td align="left">Vectorized Pcubature</td>
+<td align="right">20</td>
+<td align="right">0.007</td>
+<td align="right">0.007</td>
+<td align="right">0.007</td>
+<td align="right">0.008</td>
+<td align="right">0.008</td>
+<td align="right">0.012</td>
+<td align="right">0.157</td>
+<td align="right">4.81</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
 <td align="right">0.005</td>
+<td align="right">0.005</td>
+<td align="right">0.005</td>
+<td align="right">0.005</td>
+<td align="right">0.005</td>
 <td align="right">0.006</td>
-<td align="right">0.006</td>
-<td align="right">0.006</td>
-<td align="right">0.006</td>
-<td align="right">0.007</td>
-<td align="right">0.119</td>
-<td align="right">2.86</td>
+<td align="right">0.100</td>
+<td align="right">3.11</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.006</td>
-<td align="right">0.093</td>
-<td align="right">2.25</td>
+<td align="right">0.072</td>
+<td align="right">2.26</td>
 </tr>
 </tbody>
 </table>
@@ -1337,22 +1337,22 @@ competitive if you compare the table above to the one below.</p>
 <h2 id="morokoff-calflish-example">Morokoff &amp; Calflish Example<a class="anchor" aria-label="anchor" href="#morokoff-calflish-example"></a>
 </h2>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">testFn7</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-    <span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span>
-    <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">p</span><span class="op">)</span><span class="op">^</span><span class="va">n</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="va">p</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">testFn7_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">{</span>
-        <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
-        <span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span>
-        <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">p</span><span class="op">)</span><span class="op">^</span><span class="va">n</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">z</span><span class="op">^</span><span class="va">p</span><span class="op">)</span>
-    <span class="op">}</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn7</span>, fv <span class="op">=</span> <span class="va">testFn7_v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">testFn7</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>    <span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span></span>
+<span>    <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">p</span><span class="op">)</span><span class="op">^</span><span class="va">n</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">testFn7_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
+<span>        <span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span></span>
+<span>        <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">p</span><span class="op">)</span><span class="op">^</span><span class="va">n</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="va">z</span><span class="op">^</span><span class="va">p</span><span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn7</span>, fv <span class="op">=</span> <span class="va">testFn7_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="34%">
@@ -1384,12 +1384,12 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">20</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
+<td align="right">0.004</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.008</td>
-<td align="right">0.098</td>
-<td align="right">1.39</td>
+<td align="right">0.006</td>
+<td align="right">0.092</td>
+<td align="right">1.42</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1398,22 +1398,22 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.004</td>
+<td align="right">0.003</td>
 <td align="right">0.005</td>
-<td align="right">0.070</td>
+<td align="right">0.066</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
 <td align="right">0.010</td>
+<td align="right">0.010</td>
 <td align="right">0.011</td>
-<td align="right">0.011</td>
-<td align="right">0.011</td>
-<td align="right">0.012</td>
 <td align="right">0.013</td>
-<td align="right">0.229</td>
-<td align="right">3.35</td>
+<td align="right">0.011</td>
+<td align="right">0.050</td>
+<td align="right">0.252</td>
+<td align="right">3.38</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1423,33 +1423,33 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.008</td>
 <td align="right">0.008</td>
 <td align="right">0.009</td>
-<td align="right">0.010</td>
-<td align="right">0.166</td>
-<td align="right">2.40</td>
+<td align="right">0.011</td>
+<td align="right">0.165</td>
+<td align="right">2.56</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
+<td align="right">0.044</td>
+<td align="right">0.046</td>
 <td align="right">0.048</td>
 <td align="right">0.049</td>
-<td align="right">0.050</td>
-<td align="right">0.050</td>
-<td align="right">0.051</td>
-<td align="right">0.057</td>
-<td align="right">1.010</td>
-<td align="right">15.00</td>
+<td align="right">0.052</td>
+<td align="right">0.055</td>
+<td align="right">0.978</td>
+<td align="right">15.30</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
+<td align="right">0.032</td>
+<td align="right">0.033</td>
+<td align="right">0.034</td>
+<td align="right">0.034</td>
 <td align="right">0.035</td>
 <td align="right">0.036</td>
-<td align="right">0.037</td>
-<td align="right">0.038</td>
-<td align="right">0.039</td>
-<td align="right">0.044</td>
-<td align="right">0.753</td>
-<td align="right">11.10</td>
+<td align="right">0.680</td>
+<td align="right">10.80</td>
 </tr>
 </tbody>
 </table>
@@ -1458,19 +1458,19 @@ competitive if you compare the table above to the one below.</p>
 <h2 id="wang-landau-sampling-1d-2d-examples">Wang-Landau Sampling 1d, 2d Examples<a class="anchor" aria-label="anchor" href="#wang-landau-sampling-1d-2d-examples"></a>
 </h2>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">I.1d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">x</span><span class="op">)</span> <span class="op">*</span>
-        <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="op">(</span> <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="va">x</span> <span class="op">-</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">I.1d_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
-        <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">z</span><span class="op">)</span> <span class="op">*</span>
-        <span class="va">z</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">z</span> <span class="op">*</span> <span class="op">(</span> <span class="va">z</span> <span class="op">*</span> <span class="op">(</span><span class="va">z</span> <span class="op">*</span> <span class="va">z</span> <span class="op">-</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
-        ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d</span>, fv <span class="op">=</span> <span class="va">I.1d_v</span>,
-             lowerLimit <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upperLimit <span class="op">=</span> <span class="fl">2</span>, times <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">I.1d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">x</span><span class="op">)</span> <span class="op">*</span></span>
+<span>        <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="op">(</span> <span class="va">x</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="va">x</span> <span class="op">-</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">I.1d_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">z</span><span class="op">)</span> <span class="op">*</span></span>
+<span>        <span class="va">z</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">z</span> <span class="op">*</span> <span class="op">(</span> <span class="va">z</span> <span class="op">*</span> <span class="op">(</span><span class="va">z</span> <span class="op">*</span> <span class="va">z</span> <span class="op">-</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>        ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d</span>, fv <span class="op">=</span> <span class="va">I.1d_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upperLimit <span class="op">=</span> <span class="fl">2</span>, times <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="35%">
@@ -1505,9 +1505,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.008</td>
-<td align="right">0.030</td>
-<td align="right">2.58</td>
+<td align="right">0.000</td>
+<td align="right">0.020</td>
+<td align="right">2.49</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1517,9 +1517,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.021</td>
-<td align="right">2.38</td>
+<td align="right">0.002</td>
+<td align="right">0.022</td>
+<td align="right">2.61</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -1530,7 +1530,7 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.009</td>
+<td align="right">0.008</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -1542,8 +1542,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.018</td>
-<td align="right">2.15</td>
+<td align="right">0.017</td>
+<td align="right">2.04</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -1554,8 +1554,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.038</td>
-<td align="right">4.31</td>
+<td align="right">0.037</td>
+<td align="right">4.29</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -1566,27 +1566,27 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.055</td>
-<td align="right">6.57</td>
+<td align="right">0.054</td>
+<td align="right">6.86</td>
 </tr>
 </tbody>
 </table>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">I.2d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x1</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">x2</span><span class="op">)</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x1</span> <span class="op">*</span> <span class="va">x1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">x2</span> <span class="op">*</span> <span class="op">(</span><span class="va">x2</span> <span class="op">*</span> <span class="va">x2</span> <span class="op">-</span> <span class="va">x1</span><span class="op">)</span> <span class="op">+</span><span class="fl">2</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">I.2d_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>,
-                 <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">{</span>
-                     <span class="va">x1</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
-                     <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">x2</span><span class="op">)</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x1</span> <span class="op">*</span> <span class="va">x1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">x2</span> <span class="op">*</span> <span class="op">(</span><span class="va">x2</span> <span class="op">*</span> <span class="va">x2</span> <span class="op">-</span> <span class="va">x1</span><span class="op">)</span> <span class="op">+</span><span class="fl">2</span><span class="op">)</span>
-                 <span class="op">}</span><span class="op">)</span>,
-           ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.2d</span>, fv <span class="op">=</span> <span class="va">I.2d_v</span>,
-             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">I.2d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x1</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">x2</span><span class="op">)</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x1</span> <span class="op">*</span> <span class="va">x1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">x2</span> <span class="op">*</span> <span class="op">(</span><span class="va">x2</span> <span class="op">*</span> <span class="va">x2</span> <span class="op">-</span> <span class="va">x1</span><span class="op">)</span> <span class="op">+</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">I.2d_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>,</span>
+<span>                 <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">{</span></span>
+<span>                     <span class="va">x1</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span>                     <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">x2</span><span class="op">)</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x1</span> <span class="op">*</span> <span class="va">x1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">x2</span> <span class="op">*</span> <span class="op">(</span><span class="va">x2</span> <span class="op">*</span> <span class="va">x2</span> <span class="op">-</span> <span class="va">x1</span><span class="op">)</span> <span class="op">+</span><span class="fl">2</span><span class="op">)</span></span>
+<span>                 <span class="op">}</span><span class="op">)</span>,</span>
+<span>           ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.2d</span>, fv <span class="op">=</span> <span class="va">I.2d_v</span>,</span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="34%">
@@ -1619,11 +1619,11 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.006</td>
 <td align="right">0.006</td>
 <td align="right">0.006</td>
+<td align="right">0.006</td>
 <td align="right">0.007</td>
-<td align="right">0.007</td>
-<td align="right">0.009</td>
-<td align="right">0.666</td>
-<td align="right">12.30</td>
+<td align="right">0.011</td>
+<td align="right">0.643</td>
+<td align="right">11.90</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1633,31 +1633,31 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.004</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
-<td align="right">0.006</td>
-<td align="right">0.455</td>
-<td align="right">8.23</td>
+<td align="right">0.007</td>
+<td align="right">0.453</td>
+<td align="right">8.25</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">100</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.061</td>
-<td align="right">1.09</td>
-</tr>
-<tr class="even">
-<td align="left">Vectorized Pcubature</td>
 <td align="right">100</td>
 <td align="right">0.000</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.002</td>
+<td align="right">0.001</td>
+<td align="right">0.057</td>
+<td align="right">1.06</td>
+</tr>
+<tr class="even">
+<td align="left">Vectorized Pcubature</td>
+<td align="right">100</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.001</td>
+<td align="right">0.001</td>
+<td align="right">0.001</td>
+<td align="right">0.001</td>
 <td align="right">0.055</td>
 <td align="right">1.00</td>
 </tr>
@@ -1669,8 +1669,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.046</td>
-<td align="right">0.205</td>
+<td align="right">0.004</td>
+<td align="right">0.163</td>
 <td align="right">2.95</td>
 </tr>
 <tr class="even">
@@ -1682,8 +1682,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.121</td>
-<td align="right">2.19</td>
+<td align="right">0.132</td>
+<td align="right">2.25</td>
 </tr>
 </tbody>
 </table>
@@ -1720,34 +1720,34 @@ package.</p></li>
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## R version 4.1.3 (2022-03-10)</span>
-<span class="co">## Platform: x86_64-apple-darwin21.3.0 (64-bit)</span>
-<span class="co">## Running under: macOS Monterey 12.3</span>
-<span class="co">## </span>
-<span class="co">## Matrix products: default</span>
-<span class="co">## BLAS:   /usr/local/Cellar/openblas/0.3.20/lib/libopenblasp-r0.3.20.dylib</span>
-<span class="co">## LAPACK: /usr/local/Cellar/r/4.1.3/lib/R/lib/libRlapack.dylib</span>
-<span class="co">## </span>
-<span class="co">## locale:</span>
-<span class="co">## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span>
-<span class="co">## </span>
-<span class="co">## attached base packages:</span>
-<span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
-<span class="co">## </span>
-<span class="co">## other attached packages:</span>
-<span class="co">## [1] mvtnorm_1.1-3    cubature_2.0.4.4 benchr_0.2.5    </span>
-<span class="co">## </span>
-<span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##  [1] Rcpp_1.0.8.3       knitr_1.37         magrittr_2.0.2     R6_2.5.1          </span>
-<span class="co">##  [5] ragg_1.2.2         rlang_1.0.2        fastmap_1.1.0      highr_0.9         </span>
-<span class="co">##  [9] stringr_1.4.0      RcppProgress_0.4.2 tools_4.1.3        xfun_0.30         </span>
-<span class="co">## [13] cli_3.2.0          jquerylib_0.1.4    htmltools_0.5.2    systemfonts_1.0.4 </span>
-<span class="co">## [17] yaml_2.3.5         digest_0.6.29      rprojroot_2.0.2    pkgdown_2.0.2     </span>
-<span class="co">## [21] textshaping_0.3.6  purrr_0.3.4        sass_0.4.0         fs_1.5.2          </span>
-<span class="co">## [25] memoise_2.0.1      cachem_1.0.6       evaluate_0.15      rmarkdown_2.13    </span>
-<span class="co">## [29] stringi_1.7.6      compiler_4.1.3     bslib_0.3.1        desc_1.4.1        </span>
-<span class="co">## [33] jsonlite_1.8.0</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
+<span><span class="co">## Platform: x86_64-apple-darwin21.5.0 (64-bit)</span></span>
+<span><span class="co">## Running under: macOS Monterey 12.5</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Matrix products: default</span></span>
+<span><span class="co">## BLAS:   /usr/local/Cellar/openblas/0.3.20/lib/libopenblasp-r0.3.20.dylib</span></span>
+<span><span class="co">## LAPACK: /usr/local/Cellar/r/4.2.1/lib/R/lib/libRlapack.dylib</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## locale:</span></span>
+<span><span class="co">## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attached base packages:</span></span>
+<span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## other attached packages:</span></span>
+<span><span class="co">## [1] mvtnorm_1.1-3    cubature_2.0.4.4 benchr_0.2.5    </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## loaded via a namespace (and not attached):</span></span>
+<span><span class="co">##  [1] Rcpp_1.0.9         knitr_1.39         magrittr_2.0.3     R6_2.5.1          </span></span>
+<span><span class="co">##  [5] ragg_1.2.2         rlang_1.0.4        fastmap_1.1.0      highr_0.9         </span></span>
+<span><span class="co">##  [9] stringr_1.4.0      RcppProgress_0.4.2 tools_4.2.1        xfun_0.31         </span></span>
+<span><span class="co">## [13] cli_3.3.0          jquerylib_0.1.4    htmltools_0.5.3    systemfonts_1.0.4 </span></span>
+<span><span class="co">## [17] yaml_2.3.5         digest_0.6.29      rprojroot_2.0.3    pkgdown_2.0.6     </span></span>
+<span><span class="co">## [21] textshaping_0.3.6  purrr_0.3.4        sass_0.4.2         fs_1.5.2          </span></span>
+<span><span class="co">## [25] memoise_2.0.1      cachem_1.0.6       evaluate_0.15      rmarkdown_2.14    </span></span>
+<span><span class="co">## [29] stringi_1.7.8      compiler_4.2.1     bslib_0.4.0        desc_1.4.1        </span></span>
+<span><span class="co">## [33] jsonlite_1.8.0</span></span></code></pre>
 </div>
   </div>
 
@@ -1763,17 +1763,12 @@ package.</p></li>
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by
-<a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian
-Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G.
-Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas
-Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
+<p>Developed by <a href="https://statistics.stanford.edu/people/balasubramanian-narasimhan" class="external-link">Balasubramanian Narasimhan</a>, <a href="https://math.mit.edu/~stevenj/" class="external-link">Steven G. Johnson</a>, <a href="https://wwwth.mpp.mpg.de/members/hahn/" class="external-link">Thomas Hahn</a>, Annie Bouvier, Kiên Kiêu.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
