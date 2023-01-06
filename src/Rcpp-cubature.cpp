@@ -43,7 +43,7 @@ int fWrapper_v(unsigned ndim, size_t npts, const double *x, void *fdata,
     for (unsigned i = 0; i < fdim * npts; ++i) {
         fval[i] = fxp[i];
     }
-    (iip -> count)++;
+    (iip -> count)+=npts;
     return 0;
 }
 
