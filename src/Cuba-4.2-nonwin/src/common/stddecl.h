@@ -221,19 +221,11 @@ enum { uninitialized = 0x61627563 };
 
 #undef ShmFree
 
-#ifdef SOLARIS
-#define ShmFree(t, who)	 \
-  if( t->shmid != -1 ) { \
-    shmdt((char *)(t->frame));		\
-    who##Free(t); \
-  }
-#else 
 #define ShmFree(t, who)	 \
   if( t->shmid != -1 ) { \
     shmdt(t->frame); \
     who##Free(t); \
   }
-#endif
 
 #endif
 #endif
