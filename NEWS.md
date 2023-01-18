@@ -74,7 +74,7 @@
 
 # cubature 2.0
 
-- Major update. Integrates [Cuba 4.2](https://www.feynarts.de/cuba/)
+- Major update. Integrates [Cuba 4.2](https://feynarts.de/cuba/)
   library
 - Allows for finite or infinite limits of integration (courtesy of
   Simon Gaure)
