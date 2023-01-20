@@ -28,7 +28,7 @@ cuba.ts:
 	cp $(CUBA_DIR_WIN)/cuba.h $(CUBA_DIR)/cuba.h
 	cp $(CUBA_DIR_WIN)/cuba.h ../inst/include/cuba.h
 	cp $(CUBA_DIR_WIN)/Makefile $(CUBA_DIR)/Makefile
-	cd $(CUBA_DIR) && CC=$(CC) CFLAGS="$(CFLAGS) -UHAVE_FORK -DHAVE_CONFIG_H -DREALSIZE=8 $(CPICFLAGS) -I./src/common $(PKG_CFLAGS)" AR=$(AR) RANLIB=$(RANLIB) $(MAKE) lib
+	cd $(CUBA_DIR) && $(MAKE) lib CC=$(CC) CFLAGS="$(CFLAGS) -UHAVE_FORK -DHAVE_CONFIG_H -DREALSIZE=8 $(CPICFLAGS) -I./src/common $(PKG_CFLAGS)" AR=$(AR) RANLIB=$(RANLIB) 
 	touch $@
 
 clean:

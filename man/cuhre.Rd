@@ -140,7 +140,7 @@ approximate calculation of multiple integrals. \emph{ACM Transactions on
 Mathematical Software}, \bold{17}(4), 437-451.
 
 T. Hahn (2005) CUBA-a library for multidimensional numerical integration.
-\emph{Computer Physics Communications}, \bold{168}, 78-95. See \url{http://www.feynarts.de/cuba/}
+\emph{Computer Physics Communications}, \bold{168}, 78-95. See \url{https://feynarts.de/cuba/}
 }
 \seealso{
 \code{\link[=vegas]{vegas()}}, \code{\link[=suave]{suave()}}, \code{\link[=divonne]{divonne()}}
