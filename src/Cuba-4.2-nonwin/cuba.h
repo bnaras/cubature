@@ -72,8 +72,8 @@ void cubawait(void *pspin);
 void cubacores(const int n, const int p);
 void cubaaccel(const int n, const int p);
 
-void cubainit(void (*f)(), void *arg);
-void cubaexit(void (*f)(), void *arg);
+/* void cubainit(void (*f)(), void *arg); */
+/* void cubaexit(void (*f)(), void *arg); */
 
 #ifdef __cplusplus
 }

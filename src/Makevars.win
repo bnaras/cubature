@@ -2,7 +2,7 @@ CUBATURE_DIR=cubature-1.0.3
 CUBA_DIR=Cuba-4.2
 CUBA_DIR_WIN=Cuba-4.2-win
 
-PKG_CFLAGS=$(SOLARIS_FLAG) -DRCPP_USE_UNWIND_PROTECT -I. -I../inst/include
+PKG_CFLAGS=-I. -I../inst/include
 PKG_CPPFLAGS=$(PKG_CFLAGS)
 PKG_LIBS=-L./$(CUBATURE_DIR) -L./$(CUBA_DIR) -lcubature -lcuba
 
@@ -25,9 +25,10 @@ cuba.ts:
 	cp $(CUBA_DIR_WIN)/src/common/Global.c $(CUBA_DIR)/src/common/Global.c
 	cp $(CUBA_DIR_WIN)/src/cuhre/common.c $(CUBA_DIR)/src/cuhre/common.c
 	cp $(CUBA_DIR_WIN)/config.h $(CUBA_DIR)/config.h
-	cp $(CUBA_DIR_WIN)/cuba.h $(CUBA_DIR)/cuba.h	
+	cp $(CUBA_DIR_WIN)/cuba.h $(CUBA_DIR)/cuba.h
+	cp $(CUBA_DIR_WIN)/cuba.h ../inst/include/cuba.h
 	cp $(CUBA_DIR_WIN)/Makefile $(CUBA_DIR)/Makefile
-	cd $(CUBA_DIR) && CC=$(CC) CFLAGS="$(CFLAGS) -UHAVE_FORK -DHAVE_CONFIG_H -DREALSIZE=8 $(CPICFLAGS) -I./src/common $(PKG_CFLAGS)" AR=$(AR) RANLIB=$(RANLIB) $(MAKE) lib
+	cd $(CUBA_DIR) && $(MAKE) lib CC=$(CC) CFLAGS="$(CFLAGS) -UHAVE_FORK -DHAVE_CONFIG_H -DREALSIZE=8 $(CPICFLAGS) -I./src/common $(PKG_CFLAGS)" AR=$(AR) RANLIB=$(RANLIB) 
 	touch $@
 
 clean:

@@ -80,16 +80,19 @@ Extern void SUFFIX(cubafork)(Spin **pspin)
     return;
   }
 
+#ifdef HAVE_SHMGET  
   if( cubaverb_ ) {
-    sprintf(out, "using %d cores %d accelerators via "
-#ifdef HAVE_SHMGET
-      "shared memory",
-#else
-      "pipes",
-#endif
-      cubaworkers_.ncores, cubaworkers_.naccel);
+    sprintf(out, "using %d cores %d accelerators via shared memory",
+	    cubaworkers_.ncores, cubaworkers_.naccel);
     Print(out);
   }
+#else 
+  if( cubaverb_ ) {
+    sprintf(out, "using %d cores %d accelerators via pipes",
+	    cubaworkers_.ncores, cubaworkers_.naccel);
+    Print(out);
+  }
+#endif
 
   fflush(NULL);		/* make sure all buffers are flushed,
 			   or else buffered content will be written

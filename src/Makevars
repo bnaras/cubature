@@ -2,14 +2,7 @@ CUBATURE_DIR=cubature-1.0.3
 CUBA_DIR=Cuba-4.2
 CUBA_DIR_NONWIN=Cuba-4.2-nonwin
 
-SOLARIS=$(shell $(R_HOME)/bin/Rscript -e 'cat(grepl("SunOS", Sys.info()["sysname"]))')
-ifeq ($(SOLARIS),TRUE)
-   SOLARIS_FLAG=-DSOLARIS
-else
-   SOLARIS_FLAG=-USOLARIS
-endif
-
-PKG_CFLAGS=$(SOLARIS_FLAG) -DRCPP_USE_UNWIND_PROTECT -I. -I../inst/include
+PKG_CFLAGS=-I. -I../inst/include -I./src/common
 PKG_CPPFLAGS=$(PKG_CFLAGS)
 PKG_LIBS=-L./$(CUBATURE_DIR) -L./$(CUBA_DIR) -lcubature -lcuba
 
@@ -26,11 +19,12 @@ cubature.ts:
 
 cuba.ts:
 	(cp -f $(CUBA_DIR_NONWIN)/makefile.in $(CUBA_DIR_NONWIN)/cuba.h $(CUBA_DIR) && \
+	cp -f $(CUBA_DIR_NONWIN)/cuba.h ../inst/include && \
 	cp -f $(CUBA_DIR_NONWIN)/src/common/* $(CUBA_DIR)/src/common && \
 	cp -f $(CUBA_DIR_NONWIN)/src/cuhre/common.c $(CUBA_DIR)/src/cuhre && \
 	cd $(CUBA_DIR) && \
-	CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)" ./configure && \
-	$(MAKE) libcuba.a AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)" && \
+	./configure && \
+	$(MAKE) libcuba.a AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)" CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)" && \
 	touch $@)
 
 clean:
