@@ -18,3 +18,4 @@
 ^src/*\.a$
 ^inst/stuff
 ^\.github$
+^revdep$

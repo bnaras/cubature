@@ -1,4 +1,4 @@
-# cubature 2.0.4.5
+# cubature 2.0.4.6
 
 - Fix CRAN C23 issues using system requirements USE_C17
 - Bug fix: increment correct count of number of evaluations. Thanks Jan Meis.
