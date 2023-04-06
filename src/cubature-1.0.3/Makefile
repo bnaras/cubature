@@ -5,6 +5,7 @@
 
 libcubature.a: hcubature.o pcubature.o
 	${AR} cr libcubature.a  hcubature.o pcubature.o
+	${RANLIB} libcubature.a
 #
 # To clean things up.
 #
