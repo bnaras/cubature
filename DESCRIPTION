@@ -29,7 +29,7 @@ LinkingTo: Rcpp
 Imports: Rcpp
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Suggests: testthat,
 	  knitr,
 	  mvtnorm,
