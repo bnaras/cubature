@@ -18,10 +18,6 @@ cubature.ts:
 	touch $@)
 
 cuba.ts:
-	# (cp -f $(CUBA_DIR_NONWIN)/makefile.in $(CUBA_DIR_NONWIN)/cuba.h $(CUBA_DIR) && \
-	# cp -f $(CUBA_DIR_NONWIN)/cuba.h ../inst/include && \
-	# cp -f $(CUBA_DIR_NONWIN)/src/common/* $(CUBA_DIR)/src/common && \
-	# cp -f $(CUBA_DIR_NONWIN)/src/cuhre/common.c $(CUBA_DIR)/src/cuhre && \
 	cd $(CUBA_DIR) && \
 	./configure && \
 	$(MAKE) libcuba.a AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)" CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)" && \
