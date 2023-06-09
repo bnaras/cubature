@@ -3,6 +3,8 @@
 Personal notes for synchronizing to a new version of underlying C
 library.
 
+## For Cubature
+
 1. Download tagged tar.gz release
 2. Replace `clencurt.h` with version generated using `M=16` rather
   than the default `M=19`. Easiest to copy our version of `clencurt.h`
@@ -14,8 +16,13 @@ library.
 
 ## For Cuba
 
-I've tried to keep the sources pristine and apply changes to via
-copies of files. However, some files were changed in place, notably,
-`src/common/Parallel.c` and `src/suave/Integrate.c`. The news file
-should have details.
+This is now moved to a separate
+[repo](https://github.com/bnaras/Cuba), allowing me to track the
+changes that Thomas Hahn makes.
+
+The changes needed for an R package are in the `R_pkg` branch and we
+use that branch as submodule here, with Unix-like systems being the
+default. Any changes to Windows system are isolated in the `Cuba-win`
+directory and copied over using `Makefile.win`. 
+
 

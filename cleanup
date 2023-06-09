@@ -1,0 +1,5 @@
+#!/bin/sh
+
+(cd src/Cuba && make distclean)
+(cd src/cubature-1.0.4 && make clean)
+rm -f src/*.o src/*.so src/*.ts src/*.dll src/*.a
