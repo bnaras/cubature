@@ -26,10 +26,6 @@ jobs:
 
     steps:
 
-      - name: Create artifact dir
-        run: |
-	  mkdir results
-	
       - uses: actions/checkout@v3
         with:
           submodules: 'true'
@@ -55,4 +51,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with: 
           name: results-for-download
-          path: results
+          path: cubature.Rcheck
