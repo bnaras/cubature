@@ -27,7 +27,8 @@ jobs:
     steps:
 
       - name: Create artifact dir
-        run: mkdir results
+        run: |
+	  mkdir results
 	
       - uses: actions/checkout@v3
         with:
