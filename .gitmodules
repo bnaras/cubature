@@ -1,0 +1,4 @@
+[submodule "src/Cuba"]
+	path = src/Cuba
+	url = https://github.com/bnaras/Cuba
+	branch = R_pkg

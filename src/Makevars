@@ -1,5 +1,5 @@
-CUBATURE_DIR=cubature-1.0.3
-CUBA_DIR=Cuba-4.2
+CUBATURE_DIR=cubature-1.0.4
+CUBA_DIR=Cuba
 CUBA_DIR_NONWIN=Cuba-4.2-nonwin
 
 PKG_CFLAGS=-I. -I../inst/include -I./src/common
@@ -18,13 +18,9 @@ cubature.ts:
 	touch $@)
 
 cuba.ts:
-	(cp -f $(CUBA_DIR_NONWIN)/makefile.in $(CUBA_DIR_NONWIN)/cuba.h $(CUBA_DIR) && \
-	cp -f $(CUBA_DIR_NONWIN)/cuba.h ../inst/include && \
-	cp -f $(CUBA_DIR_NONWIN)/src/common/* $(CUBA_DIR)/src/common && \
-	cp -f $(CUBA_DIR_NONWIN)/src/cuhre/common.c $(CUBA_DIR)/src/cuhre && \
-	cd $(CUBA_DIR) && \
+	((cd $(CUBA_DIR) && \
 	./configure && \
-	$(MAKE) libcuba.a AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)" CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)" && \
+	$(MAKE) libcuba.a AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)" CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)") && \
 	touch $@)
 
 clean:
