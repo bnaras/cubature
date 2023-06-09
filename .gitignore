@@ -13,3 +13,4 @@ src/Cuba-4.2/cuba.ts
 src/Cuba-4.2/libcuba.a
 src/Cuba-4.2/makefile
 src/*.so
+docs
