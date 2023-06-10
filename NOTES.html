@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cubature</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0</span>
       </span>
     </div>
 
@@ -62,6 +62,8 @@
 <div id="build-notes" class="section level1">
 
 <p>Personal notes for synchronizing to a new version of underlying C library.</p>
+<div class="section level2">
+<h2 id="for-cubature">For Cubature<a class="anchor" aria-label="anchor" href="#for-cubature"></a></h2>
 <ol style="list-style-type: decimal"><li>Download tagged tar.gz release</li>
 <li>Replace <code>clencurt.h</code> with version generated using <code>M=16</code> rather than the default <code>M=19</code>. Easiest to copy our version of <code>clencurt.h</code> over</li>
 <li>Move <code>Makefile</code> to <code>Makefile.orig</code>
@@ -69,9 +71,11 @@
 <li>Move in <code>Makefile</code> from our previous version over</li>
 <li>Copy over any includes in the new C library release</li>
 <li>Rest as usual</li>
-</ol><div class="section level2">
+</ol></div>
+<div class="section level2">
 <h2 id="for-cuba">For Cuba<a class="anchor" aria-label="anchor" href="#for-cuba"></a></h2>
-<p>I’ve tried to keep the sources pristine and apply changes to via copies of files. However, some files were changed in place, notably, <code>src/common/Parallel.c</code> and <code>src/suave/Integrate.c</code>. The news file should have details.</p>
+<p>This is now moved to a separate <a href="https://github.com/bnaras/Cuba" class="external-link">repo</a>, allowing me to track the changes that Thomas Hahn makes.</p>
+<p>The changes needed for an R package are in the <code>R_pkg</code> branch and we use that branch as submodule here, with Unix-like systems being the default. Any changes to Windows system are isolated in the <code>Cuba-win</code> directory and copied over using <code>Makefile.win</code>.</p>
 </div>
 </div>
 

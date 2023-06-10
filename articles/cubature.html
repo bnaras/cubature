@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cubature</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Balasubramanian
 Narasimhan</h4>
             
-            <h4 data-toc-skip class="date">2023-01-24</h4>
+            <h4 data-toc-skip class="date">2023-06-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bnaras/cubature/blob/HEAD/vignettes/cubature.Rmd" class="external-link"><code>vignettes/cubature.Rmd</code></a></small>
       <div class="hidden name"><code>cubature.Rmd</code></div>
@@ -234,7 +234,7 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.036</td>
+<td align="right">0.037</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -243,11 +243,11 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.001</td>
 <td align="right">0.000</td>
-<td align="right">0.003</td>
-<td align="right">0.050</td>
-<td align="right">1.32</td>
+<td align="right">0.000</td>
+<td align="right">0.002</td>
+<td align="right">0.048</td>
+<td align="right">1.26</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -257,9 +257,9 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.004</td>
-<td align="right">0.117</td>
-<td align="right">3.10</td>
+<td align="right">0.003</td>
+<td align="right">0.115</td>
+<td align="right">3.08</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -269,9 +269,9 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.004</td>
-<td align="right">0.142</td>
-<td align="right">3.80</td>
+<td align="right">0.003</td>
+<td align="right">0.144</td>
+<td align="right">3.69</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -281,9 +281,9 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.004</td>
-<td align="right">0.074</td>
-<td align="right">1.98</td>
+<td align="right">0.003</td>
+<td align="right">0.075</td>
+<td align="right">1.99</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -293,9 +293,9 @@ calls. We begin by creating a harness for these calls.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.004</td>
-<td align="right">0.079</td>
-<td align="right">1.97</td>
+<td align="right">0.003</td>
+<td align="right">0.074</td>
+<td align="right">1.89</td>
 </tr>
 </tbody>
 </table>
@@ -353,8 +353,8 @@ analog (<code>my_dmvnorm_v</code>). First the functions.</p>
 <col width="6%">
 <col width="6%">
 <col width="6%">
-<col width="7%">
-<col width="9%">
+<col width="6%">
+<col width="10%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">expr</th>
@@ -372,74 +372,74 @@ analog (<code>my_dmvnorm_v</code>). First the functions.</p>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.987</td>
-<td align="right">0.998</td>
-<td align="right">1.000</td>
-<td align="right">1.011</td>
-<td align="right">1.030</td>
-<td align="right">1.052</td>
-<td align="right">10.112</td>
-<td align="right">562.00</td>
+<td align="right">0.914</td>
+<td align="right">0.920</td>
+<td align="right">0.934</td>
+<td align="right">0.939</td>
+<td align="right">0.960</td>
+<td align="right">0.970</td>
+<td align="right">9.386</td>
+<td align="right">610.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">10</td>
 <td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.026</td>
+<td align="right">0.002</td>
+<td align="right">0.002</td>
+<td align="right">0.002</td>
+<td align="right">0.002</td>
+<td align="right">0.002</td>
+<td align="right">0.022</td>
 <td align="right">1.45</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">10</td>
-<td align="right">0.427</td>
-<td align="right">0.430</td>
-<td align="right">0.432</td>
-<td align="right">0.436</td>
-<td align="right">0.433</td>
-<td align="right">0.482</td>
-<td align="right">4.363</td>
-<td align="right">243.00</td>
+<td align="right">0.391</td>
+<td align="right">0.396</td>
+<td align="right">0.398</td>
+<td align="right">0.397</td>
+<td align="right">0.400</td>
+<td align="right">0.402</td>
+<td align="right">3.974</td>
+<td align="right">260.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">10</td>
+<td align="right">0.001</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.018</td>
+<td align="right">0.015</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.410</td>
-<td align="right">0.415</td>
-<td align="right">0.415</td>
-<td align="right">0.416</td>
-<td align="right">0.418</td>
-<td align="right">0.421</td>
-<td align="right">4.161</td>
-<td align="right">233.00</td>
+<td align="right">0.380</td>
+<td align="right">0.381</td>
+<td align="right">0.382</td>
+<td align="right">0.382</td>
+<td align="right">0.382</td>
+<td align="right">0.386</td>
+<td align="right">3.821</td>
+<td align="right">250.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
 <td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.046</td>
-<td align="right">2.57</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
+<td align="right">0.037</td>
+<td align="right">2.44</td>
 </tr>
 </tbody>
 </table>
@@ -498,32 +498,32 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.005</td>
-<td align="right">0.032</td>
+<td align="right">0.004</td>
+<td align="right">0.033</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">g2()</td>
 <td align="right">20</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
+<td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.004</td>
-<td align="right">0.033</td>
+<td align="right">0.034</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">g3()</td>
 <td align="right">20</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
+<td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.004</td>
-<td align="right">0.033</td>
+<td align="right">0.034</td>
 <td align="right">1</td>
 </tr>
 </tbody>
@@ -573,8 +573,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0.004</td>
-<td align="right">0.064</td>
+<td align="right">0.002</td>
+<td align="right">0.055</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -585,9 +585,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0.002</td>
-<td align="right">0.092</td>
-<td align="right">1.57</td>
+<td align="right">0.000</td>
+<td align="right">0.078</td>
+<td align="right">1.53</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -597,9 +597,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0.000</td>
-<td align="right">0.074</td>
-<td align="right">1.30</td>
+<td align="right">0.002</td>
+<td align="right">0.076</td>
+<td align="right">1.33</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -609,9 +609,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0.003</td>
-<td align="right">0.165</td>
-<td align="right">2.71</td>
+<td align="right">0.002</td>
+<td align="right">0.147</td>
+<td align="right">2.73</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -621,9 +621,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0.008</td>
-<td align="right">0.449</td>
-<td align="right">7.41</td>
+<td align="right">0.003</td>
+<td align="right">0.444</td>
+<td align="right">8.49</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -634,8 +634,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0.003</td>
-<td align="right">0.487</td>
-<td align="right">8.15</td>
+<td align="right">0.448</td>
+<td align="right">8.51</td>
 </tr>
 </tbody>
 </table>
@@ -690,25 +690,25 @@ competitive if you compare the table above to the one below.</p>
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
 <td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
 <td align="right">0.004</td>
-<td align="right">0.003</td>
-<td align="right">0.010</td>
-<td align="right">0.040</td>
-<td align="right">25.20</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
+<td align="right">0.007</td>
+<td align="right">0.039</td>
+<td align="right">29.80</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">10</td>
 <td align="right">0.005</td>
-<td align="right">0.005</td>
 <td align="right">0.006</td>
 <td align="right">0.006</td>
-<td align="right">0.007</td>
-<td align="right">0.011</td>
-<td align="right">0.065</td>
-<td align="right">42.50</td>
+<td align="right">0.006</td>
+<td align="right">0.006</td>
+<td align="right">0.008</td>
+<td align="right">0.062</td>
+<td align="right">48.10</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -718,8 +718,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
 <td align="right">0.002</td>
+<td align="right">0.003</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -732,31 +732,31 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">1.79</td>
+<td align="right">1.92</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">0.015</td>
-<td align="right">0.015</td>
+<td align="right">0.017</td>
+<td align="right">0.017</td>
+<td align="right">0.017</td>
 <td align="right">0.017</td>
 <td align="right">0.018</td>
-<td align="right">0.018</td>
-<td align="right">0.029</td>
-<td align="right">0.181</td>
-<td align="right">133.00</td>
+<td align="right">0.019</td>
+<td align="right">0.174</td>
+<td align="right">138.00</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
 <td align="right">0.022</td>
-<td align="right">0.022</td>
+<td align="right">0.023</td>
 <td align="right">0.024</td>
-<td align="right">0.027</td>
+<td align="right">0.024</td>
+<td align="right">0.024</td>
 <td align="right">0.025</td>
-<td align="right">0.041</td>
-<td align="right">0.266</td>
-<td align="right">187.00</td>
+<td align="right">0.237</td>
+<td align="right">194.00</td>
 </tr>
 </tbody>
 </table>
@@ -808,50 +808,50 @@ competitive if you compare the table above to the one below.</p>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.054</td>
-<td align="right">0.055</td>
-<td align="right">0.056</td>
 <td align="right">0.057</td>
 <td align="right">0.058</td>
-<td align="right">0.059</td>
-<td align="right">0.565</td>
-<td align="right">1.00</td>
+<td align="right">0.060</td>
+<td align="right">0.060</td>
+<td align="right">0.061</td>
+<td align="right">0.062</td>
+<td align="right">0.596</td>
+<td align="right">1.0</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">10</td>
-<td align="right">0.057</td>
-<td align="right">0.057</td>
 <td align="right">0.058</td>
-<td align="right">0.058</td>
-<td align="right">0.058</td>
+<td align="right">0.059</td>
+<td align="right">0.060</td>
+<td align="right">0.060</td>
+<td align="right">0.060</td>
 <td align="right">0.061</td>
-<td align="right">0.580</td>
-<td align="right">1.02</td>
+<td align="right">0.597</td>
+<td align="right">1.0</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">1.012</td>
-<td align="right">1.018</td>
-<td align="right">1.021</td>
-<td align="right">1.030</td>
-<td align="right">1.024</td>
-<td align="right">1.076</td>
-<td align="right">10.302</td>
-<td align="right">18.10</td>
+<td align="right">1.080</td>
+<td align="right">1.090</td>
+<td align="right">1.092</td>
+<td align="right">1.096</td>
+<td align="right">1.097</td>
+<td align="right">1.142</td>
+<td align="right">10.963</td>
+<td align="right">18.3</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">10</td>
-<td align="right">1.039</td>
-<td align="right">1.044</td>
-<td align="right">1.047</td>
-<td align="right">1.061</td>
-<td align="right">1.079</td>
-<td align="right">1.115</td>
-<td align="right">10.609</td>
-<td align="right">18.50</td>
+<td align="right">1.064</td>
+<td align="right">1.088</td>
+<td align="right">1.092</td>
+<td align="right">1.098</td>
+<td align="right">1.111</td>
+<td align="right">1.136</td>
+<td align="right">10.985</td>
+<td align="right">18.3</td>
 </tr>
 </tbody>
 </table>
@@ -902,7 +902,7 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.004</td>
-<td align="right">1.09</td>
+<td align="right">1.14</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -914,7 +914,7 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.006</td>
-<td align="right">1.62</td>
+<td align="right">1.64</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -938,7 +938,7 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.005</td>
-<td align="right">1.51</td>
+<td align="right">1.44</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -949,8 +949,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.040</td>
-<td align="right">10.30</td>
+<td align="right">0.044</td>
+<td align="right">12.10</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -960,9 +960,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.003</td>
-<td align="right">0.040</td>
-<td align="right">10.30</td>
+<td align="right">0.001</td>
+<td align="right">0.038</td>
+<td align="right">11.10</td>
 </tr>
 </tbody>
 </table>
@@ -1023,8 +1023,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.004</td>
-<td align="right">0.034</td>
+<td align="right">0.002</td>
+<td align="right">0.036</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -1035,21 +1035,21 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.041</td>
-<td align="right">1.25</td>
+<td align="right">0.004</td>
+<td align="right">0.045</td>
+<td align="right">1.14</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
 <td align="right">0.003</td>
-<td align="right">0.002</td>
-<td align="right">0.005</td>
-<td align="right">0.053</td>
-<td align="right">1.49</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
+<td align="right">0.054</td>
+<td align="right">1.47</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1059,9 +1059,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.059</td>
-<td align="right">1.82</td>
+<td align="right">0.005</td>
+<td align="right">0.066</td>
+<td align="right">1.66</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -1072,8 +1072,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.006</td>
-<td align="right">0.079</td>
-<td align="right">2.27</td>
+<td align="right">0.089</td>
+<td align="right">2.33</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -1083,9 +1083,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.007</td>
+<td align="right">0.006</td>
 <td align="right">0.089</td>
-<td align="right">2.60</td>
+<td align="right">2.39</td>
 </tr>
 </tbody>
 </table>
@@ -1142,14 +1142,14 @@ competitive if you compare the table above to the one below.</p>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">20</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
-<td align="right">0.010</td>
-<td align="right">0.097</td>
-<td align="right">1.44</td>
+<td align="right">0.005</td>
+<td align="right">0.005</td>
+<td align="right">0.005</td>
+<td align="right">0.007</td>
+<td align="right">0.101</td>
+<td align="right">1.43</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1159,9 +1159,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.005</td>
 <td align="right">0.006</td>
 <td align="right">0.005</td>
-<td align="right">0.009</td>
-<td align="right">0.116</td>
-<td align="right">1.70</td>
+<td align="right">0.007</td>
+<td align="right">0.110</td>
+<td align="right">1.57</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -1169,10 +1169,10 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
 <td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
+<td align="right">0.004</td>
+<td align="right">0.004</td>
 <td align="right">0.005</td>
-<td align="right">0.069</td>
+<td align="right">0.075</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -1183,20 +1183,20 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
 <td align="right">0.004</td>
-<td align="right">0.006</td>
-<td align="right">0.080</td>
-<td align="right">1.21</td>
+<td align="right">0.004</td>
+<td align="right">0.075</td>
+<td align="right">1.11</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.008</td>
-<td align="right">0.008</td>
-<td align="right">0.008</td>
+<td align="right">0.009</td>
+<td align="right">0.009</td>
 <td align="right">0.009</td>
 <td align="right">0.010</td>
+<td align="right">0.009</td>
 <td align="right">0.011</td>
-<td align="right">0.179</td>
+<td align="right">0.190</td>
 <td align="right">2.68</td>
 </tr>
 <tr class="even">
@@ -1204,12 +1204,12 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">20</td>
 <td align="right">0.009</td>
 <td align="right">0.009</td>
-<td align="right">0.009</td>
 <td align="right">0.010</td>
-<td align="right">0.009</td>
+<td align="right">0.010</td>
+<td align="right">0.010</td>
 <td align="right">0.012</td>
-<td align="right">0.190</td>
-<td align="right">3.03</td>
+<td align="right">0.198</td>
+<td align="right">2.79</td>
 </tr>
 </tbody>
 </table>
@@ -1266,8 +1266,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.038</td>
+<td align="right">0.004</td>
+<td align="right">0.042</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -1276,23 +1276,23 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.003</td>
 <td align="right">0.002</td>
-<td align="right">0.005</td>
-<td align="right">0.056</td>
-<td align="right">1.26</td>
+<td align="right">0.002</td>
+<td align="right">0.004</td>
+<td align="right">0.050</td>
+<td align="right">1.20</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.009</td>
 <td align="right">0.010</td>
 <td align="right">0.010</td>
 <td align="right">0.011</td>
+<td align="right">0.011</td>
 <td align="right">0.012</td>
 <td align="right">0.012</td>
-<td align="right">0.212</td>
-<td align="right">5.28</td>
+<td align="right">0.221</td>
+<td align="right">5.27</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
@@ -1300,11 +1300,11 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.011</td>
 <td align="right">0.011</td>
 <td align="right">0.011</td>
-<td align="right">0.011</td>
-<td align="right">0.011</td>
+<td align="right">0.012</td>
+<td align="right">0.012</td>
 <td align="right">0.014</td>
-<td align="right">0.225</td>
-<td align="right">5.89</td>
+<td align="right">0.232</td>
+<td align="right">5.69</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -1315,8 +1315,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
 <td align="right">0.007</td>
-<td align="right">0.103</td>
-<td align="right">2.65</td>
+<td align="right">0.110</td>
+<td align="right">2.69</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -1324,11 +1324,11 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
+<td align="right">0.006</td>
 <td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.007</td>
-<td align="right">0.103</td>
-<td align="right">2.68</td>
+<td align="right">0.008</td>
+<td align="right">0.113</td>
+<td align="right">2.62</td>
 </tr>
 </tbody>
 </table>
@@ -1383,12 +1383,12 @@ competitive if you compare the table above to the one below.</p>
 <td align="left">Non-vectorized Hcubature</td>
 <td align="right">20</td>
 <td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.007</td>
-<td align="right">0.085</td>
+<td align="right">0.005</td>
+<td align="right">0.005</td>
+<td align="right">0.005</td>
+<td align="right">0.005</td>
+<td align="right">0.008</td>
+<td align="right">0.100</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -1399,57 +1399,57 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
 <td align="right">0.005</td>
-<td align="right">0.007</td>
-<td align="right">0.099</td>
-<td align="right">1.17</td>
+<td align="right">0.009</td>
+<td align="right">0.109</td>
+<td align="right">1.10</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.010</td>
-<td align="right">0.010</td>
-<td align="right">0.010</td>
+<td align="right">0.011</td>
+<td align="right">0.011</td>
 <td align="right">0.011</td>
 <td align="right">0.012</td>
 <td align="right">0.013</td>
-<td align="right">0.218</td>
-<td align="right">2.51</td>
+<td align="right">0.013</td>
+<td align="right">0.238</td>
+<td align="right">2.44</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
 <td align="right">20</td>
-<td align="right">0.011</td>
-<td align="right">0.011</td>
 <td align="right">0.012</td>
 <td align="right">0.012</td>
-<td align="right">0.014</td>
+<td align="right">0.012</td>
+<td align="right">0.012</td>
+<td align="right">0.012</td>
 <td align="right">0.014</td>
 <td align="right">0.247</td>
-<td align="right">2.82</td>
+<td align="right">2.58</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.049</td>
-<td align="right">0.050</td>
-<td align="right">0.050</td>
-<td align="right">0.051</td>
-<td align="right">0.052</td>
 <td align="right">0.054</td>
-<td align="right">1.017</td>
-<td align="right">12.20</td>
+<td align="right">0.054</td>
+<td align="right">0.054</td>
+<td align="right">0.055</td>
+<td align="right">0.055</td>
+<td align="right">0.057</td>
+<td align="right">1.096</td>
+<td align="right">11.80</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
 <td align="right">20</td>
-<td align="right">0.050</td>
-<td align="right">0.050</td>
-<td align="right">0.051</td>
-<td align="right">0.051</td>
-<td align="right">0.051</td>
-<td align="right">0.053</td>
-<td align="right">1.019</td>
-<td align="right">12.20</td>
+<td align="right">0.052</td>
+<td align="right">0.052</td>
+<td align="right">0.052</td>
+<td align="right">0.052</td>
+<td align="right">0.052</td>
+<td align="right">0.054</td>
+<td align="right">1.046</td>
+<td align="right">11.30</td>
 </tr>
 </tbody>
 </table>
@@ -1505,9 +1505,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.003</td>
-<td align="right">0.020</td>
-<td align="right">2.29</td>
+<td align="right">0.000</td>
+<td align="right">0.018</td>
+<td align="right">2.38</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
@@ -1517,9 +1517,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.003</td>
-<td align="right">0.029</td>
-<td align="right">3.41</td>
+<td align="right">0.000</td>
+<td align="right">0.025</td>
+<td align="right">3.36</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -1529,8 +1529,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.010</td>
+<td align="right">0.000</td>
+<td align="right">0.008</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -1541,9 +1541,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.020</td>
-<td align="right">2.50</td>
+<td align="right">0.002</td>
+<td align="right">0.021</td>
+<td align="right">2.49</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
@@ -1554,8 +1554,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.029</td>
-<td align="right">3.67</td>
+<td align="right">0.030</td>
+<td align="right">4.02</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -1565,9 +1565,9 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.060</td>
-<td align="right">7.76</td>
+<td align="right">0.004</td>
+<td align="right">0.066</td>
+<td align="right">8.10</td>
 </tr>
 </tbody>
 </table>
@@ -1621,21 +1621,21 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.006</td>
 <td align="right">0.006</td>
 <td align="right">0.006</td>
-<td align="right">0.009</td>
-<td align="right">0.630</td>
+<td align="right">0.008</td>
+<td align="right">0.632</td>
 <td align="right">10.60</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
 <td align="right">100</td>
 <td align="right">0.006</td>
-<td align="right">0.006</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
 <td align="right">0.007</td>
-<td align="right">0.010</td>
-<td align="right">0.682</td>
-<td align="right">11.70</td>
+<td align="right">0.007</td>
+<td align="right">0.009</td>
+<td align="right">0.704</td>
+<td align="right">12.00</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
@@ -1646,7 +1646,7 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.063</td>
+<td align="right">0.059</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
@@ -1658,20 +1658,20 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.001</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
-<td align="right">0.082</td>
-<td align="right">1.39</td>
+<td align="right">0.078</td>
+<td align="right">1.34</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
 <td align="right">100</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
-<td align="right">0.004</td>
-<td align="right">0.161</td>
-<td align="right">2.68</td>
+<td align="right">0.002</td>
+<td align="right">0.002</td>
+<td align="right">0.002</td>
+<td align="right">0.055</td>
+<td align="right">0.217</td>
+<td align="right">2.76</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
@@ -1682,8 +1682,8 @@ competitive if you compare the table above to the one below.</p>
 <td align="right">0.002</td>
 <td align="right">0.002</td>
 <td align="right">0.004</td>
-<td align="right">0.167</td>
-<td align="right">2.94</td>
+<td align="right">0.175</td>
+<td align="right">2.93</td>
 </tr>
 </tbody>
 </table>
@@ -1721,13 +1721,13 @@ package.</p></li>
 </h2>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.2.2 (2022-10-31)</span></span>
+<pre><code><span><span class="co">## R version 4.3.0 (2023-04-21)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 22.04.1 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 22.04.2 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span></span>
-<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
@@ -1735,22 +1735,25 @@ package.</p></li>
 <span><span class="co">##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
 <span><span class="co">## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## time zone: UTC</span></span>
+<span><span class="co">## tzcode source: system (glibc)</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## attached base packages:</span></span>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] mvtnorm_1.1-3    cubature_2.0.4.6 benchr_0.2.5    </span></span>
+<span><span class="co">## [1] mvtnorm_1.2-2  cubature_2.1.0 benchr_0.2.5  </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] Rcpp_1.0.10        knitr_1.41         magrittr_2.0.3     R6_2.5.1          </span></span>
-<span><span class="co">##  [5] ragg_1.2.5         rlang_1.0.6        fastmap_1.1.0      highr_0.10        </span></span>
-<span><span class="co">##  [9] stringr_1.5.0      RcppProgress_0.4.2 tools_4.2.2        xfun_0.36         </span></span>
-<span><span class="co">## [13] cli_3.6.0          jquerylib_0.1.4    systemfonts_1.0.4  htmltools_0.5.4   </span></span>
-<span><span class="co">## [17] yaml_2.3.6         digest_0.6.31      rprojroot_2.0.3    lifecycle_1.0.3   </span></span>
-<span><span class="co">## [21] pkgdown_2.0.7      textshaping_0.3.6  purrr_1.0.1        sass_0.4.5        </span></span>
-<span><span class="co">## [25] vctrs_0.5.1        fs_1.5.2           memoise_2.0.1      glue_1.6.2        </span></span>
-<span><span class="co">## [29] cachem_1.0.6       evaluate_0.20      rmarkdown_2.20     stringi_1.7.12    </span></span>
-<span><span class="co">## [33] compiler_4.2.2     bslib_0.4.2        desc_1.4.2         jsonlite_1.8.4</span></span></code></pre>
+<span><span class="co">##  [1] vctrs_0.6.2        cli_3.6.1          knitr_1.43         rlang_1.1.1       </span></span>
+<span><span class="co">##  [5] xfun_0.39          stringi_1.7.12     purrr_1.0.1        textshaping_0.3.6 </span></span>
+<span><span class="co">##  [9] jsonlite_1.8.5     glue_1.6.2         rprojroot_2.0.3    htmltools_0.5.5   </span></span>
+<span><span class="co">## [13] ragg_1.2.5         sass_0.4.6         rmarkdown_2.22     RcppProgress_0.4.2</span></span>
+<span><span class="co">## [17] evaluate_0.21      jquerylib_0.1.4    fastmap_1.1.1      yaml_2.3.7        </span></span>
+<span><span class="co">## [21] lifecycle_1.0.3    memoise_2.0.1      stringr_1.5.0      compiler_4.3.0    </span></span>
+<span><span class="co">## [25] fs_1.6.2           Rcpp_1.0.10        systemfonts_1.0.4  digest_0.6.31     </span></span>
+<span><span class="co">## [29] R6_2.5.1           magrittr_2.0.3     bslib_0.5.0        tools_4.3.0       </span></span>
+<span><span class="co">## [33] pkgdown_2.0.7      cachem_1.0.8       desc_1.4.2</span></span></code></pre>
 </div>
   </div>
 
