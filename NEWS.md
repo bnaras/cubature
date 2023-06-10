@@ -1,7 +1,7 @@
 # cubature 2.1.0
 
 - Update cubature to 1.0.4 and Cuba to 4.2.2
-- Added RANLIB call to `libcubature.a` (([Issue 40](https://github.com/bnaras/cubature/issues/40)). Thanks Sergei Fedorov.
+- Added RANLIB call to `libcubature.a` ([Issue 40](https://github.com/bnaras/cubature/issues/40)). Thanks Sergei Fedorov.
 - Simplified windows/non-windows organization, with default being windows
 
 # cubature 2.0.4.6

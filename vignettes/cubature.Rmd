@@ -398,19 +398,22 @@ knitr::kable(d, digits = 3)
 ## Implementation Notes
 
 About the only real modification we have made to the underlying
-`cubature-1.0.2` library is that we use `M = 16` rather than the
-default `M = 19` suggested by the original author for
-`pcubature`. This allows us to comply with CRAN package size limits
-and seems to work reasonably well for the above tests. Future versions
-will allow for such customization on demand.
+`cubature` library is that we use `M = 16` rather than the default `M
+= 19` suggested by the original author for `pcubature`. This allows us
+to comply with CRAN package size limits and seems to work reasonably
+well for the above tests. Future versions will allow for such
+customization on demand.
 
-The changes made to the `Cuba-4.2` library are separated out so that
-the original source is left pristine and the changes (a small number)
-applied only during the building process.
+The changes made to the `Cuba` library are managed in a [Github repo
+branch](https://github.com/bnaras/Cuba/tree/R_pkg): each time a new
+release is made, we update the main branch, and keep all changes for
+Unix platforms in a branch named `R_pkg` against the current main
+branch. Customization for windows is done in the package itself using
+the `Makevars.win` script.
 
 ## Summary
 
-My recommendations are:
+The recommendations are:
 
 1. _Vectorize_ your function. The time spent in so doing pays back
    enormously. This is easy to do and the examples above show how.
