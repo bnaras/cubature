@@ -28,8 +28,8 @@ knitr::opts_chunk$set(
 
 Version 2.0 integrates two well-known cubature libraries in one place:
 
-- The cubature C library  of [Steven G. Johnson](https://math.mit.edu/~stevenj/)
-- The Cuba C library of [Thomas Hahn](https://wwwth.mpp.mpg.de/members/hahn/)
+- The [cubature C library](https://github.com/stevengj/cubature)  of [Steven G. Johnson](https://math.mit.edu/~stevenj/)
+- The [Cuba C library](https://feynarts.de/cuba/) of [Thomas Hahn](https://wwwth.mpp.mpg.de/members/hahn/)
 
 It also provides a single function `cubintegrate` that allows one to
 call all methods in a uniform fashion, as I explain below.
