@@ -19,7 +19,7 @@ cubature.ts:
 
 cuba.ts:
 	((cd $(CUBA_DIR) && \
-	./configure && \
+	./configure $(R_CONFIGURE_FLAGS) && \
 	$(MAKE) libcuba.a AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)" CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)") && \
 	touch $@)
 
