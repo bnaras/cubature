@@ -61,16 +61,15 @@ parameters for integration method are presumed to be intended
 for f and so processed.}
 }
 \value{
-The returned value is a list of items: -\item{integral}{the
-value of the integral} - \item{error}{the estimated absolute
-error} \item{neval}{the number of times the function was
-evaluated} - {returnCode}{the actual integer return code
-of the C routine; a non-zero value usually indicates problems;
-further interpretation depends on method} - \item{nregions}{for
-Cuba routines, the actual number of subregions needed}
-\item{prob}{the \eqn{\chi^2}{Chi2}-probability (not the
-\eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
-reliable estimate of the true integration error.}
+The returned value is a list of items:
+\describe{
+\item{integral}{the value of the integral}
+\item{error}{the estimated absolute error}
+\item{neval}{the number of times the function was evaluated}
+\item{returnCode}{the actual integer return code of the C routine; a non-zero value usually indicates problems; further interpretation depends on method}
+\item{nregions}{forcCuba routines, the actual number of subregions needed}
+\item{prob}{the \eqn{\chi^2}{Chi2}-probability (not the \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a reliable estimate of the true integration error.}
+}
 }
 \description{
 Integrate a function within specified limits using method

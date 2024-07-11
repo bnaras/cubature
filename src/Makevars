@@ -1,6 +1,5 @@
 CUBATURE_DIR=cubature-1.0.4
 CUBA_DIR=Cuba
-CUBA_DIR_NONWIN=Cuba-4.2-nonwin
 
 PKG_CFLAGS=-I. -I../inst/include -I./src/common
 PKG_CPPFLAGS=$(PKG_CFLAGS)
@@ -19,7 +18,7 @@ cubature.ts:
 
 cuba.ts:
 	((cd $(CUBA_DIR) && \
-	./configure && \
+	./configure $(R_CONFIGURE_FLAGS) && \
 	$(MAKE) libcuba.a AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)" CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)") && \
 	touch $@)
 

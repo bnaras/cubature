@@ -1,3 +1,11 @@
+# cubature 2.1.1
+
+- Fix documentation errors shown in CRAN checks
+- Change default `absError` value in `hcubature`, `adaptIntegrate`,
+  `pcubature` to `.Machine$double.eps * 10^2` to avoid nontermination,
+  a breaking change unfortunately, but necessary
+- Address issue raised by @jeroen about cross-compilation (thanks Jeroen).
+
 # cubature 2.1.0
 
 - Update cubature to 1.0.4 and Cuba to 4.2.2

@@ -195,15 +195,15 @@ to the one below.
 
 ```{r}
 library(mvtnorm)
-g1 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
+g1 <- function() pmvnorm(lower = rep(-0.5, m),
                                   upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
                                   alg = Miwa(), abseps = 1e-5, releps = 1e-5)
-g2 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
-                                  upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
-                                  alg = GenzBretz(), abseps = 1e-5, releps = 1e-5)
-g3 <- function() mvtnorm::pmvnorm(lower = rep(-0.5, m),
-                                  upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
-                                  alg = TVPACK(), abseps = 1e-5, releps = 1e-5)
+g2 <- function() pmvnorm(lower = rep(-0.5, m),
+                         upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                         alg = GenzBretz(), abseps = 1e-5, releps = 1e-5)
+g3 <- function() pmvnorm(lower = rep(-0.5, m),
+                         upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                         alg = TVPACK(), abseps = 1e-5, releps = 1e-5)
 
 knitr::kable(summary(benchr::benchmark(g1(), g2(), g3(), times = 20, progress = FALSE)),
              digits = 3, row.names = FALSE)
