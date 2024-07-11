@@ -14,7 +14,7 @@ hcubature(
   tol = 1e-05,
   fDim = 1,
   maxEval = 0,
-  absError = 0,
+  absError = .Machine$double.eps * 10^2/2,
   doChecking = FALSE,
   vectorInterface = FALSE,
   norm = c("INDIVIDUAL", "PAIRED", "L2", "L1", "LINF")
@@ -28,7 +28,7 @@ pcubature(
   tol = 1e-05,
   fDim = 1,
   maxEval = 0,
-  absError = 0,
+  absError = .Machine$double.eps * 10^2,
   doChecking = FALSE,
   vectorInterface = FALSE,
   norm = c("INDIVIDUAL", "PAIRED", "L2", "L1", "LINF")
@@ -55,7 +55,7 @@ default 0 implying no limit. Note that the actual number of
 function evaluations performed is only approximately guaranteed
 not to exceed this number.}
 
-\item{absError}{The maximum absolute error tolerated}
+\item{absError}{The maximum absolute error tolerated, default \code{.Machine$double_eps * 10^2}.}
 
 \item{doChecking}{As of version 2.0, this flag is ignored and will
 be dropped in forthcoming versions}

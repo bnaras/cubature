@@ -35,11 +35,9 @@ It also provides a single function `cubintegrate` that allows one to
 call all methods in a uniform fashion, as I explain below.
 
 __N.B.__ One has to be aware that there are cases where one library
-will integrate a function while the other won't. Where possible, I
-have brought such
-[problems](https://github.com/stevengj/cubature/issues/7) to the
-notice of the authors underlying C library and I encourage you to do
-the same, by providing reproducible examples.
+will integrate a function while the other won't, and in some cases,
+provide somewhat different answers. That still makes sense and depends
+on the underlying methodology used.
 
 ## Unified Interface
 
@@ -89,7 +87,7 @@ As there are many such method-specific arguments, you may find the
 function `default_args()` useful.
 
 ```{r}
-default_args()
+str(default_args())
 ```
 
 ## Vectorization 

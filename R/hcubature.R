@@ -35,7 +35,7 @@
 #'     default 0 implying no limit. Note that the actual number of
 #'     function evaluations performed is only approximately guaranteed
 #'     not to exceed this number.
-#' @param absError The maximum absolute error tolerated
+#' @param absError The maximum absolute error tolerated, default `.Machine$double_eps * 10^2`. 
 #' @param doChecking As of version 2.0, this flag is ignored and will
 #'     be dropped in forthcoming versions
 #' @param vectorInterface A flag that indicates whether to use the
@@ -323,7 +323,7 @@
 #' @export hcubature adaptIntegrate pcubature
 #'
 hcubature <- adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
-                                        fDim = 1, maxEval = 0, absError = 0, doChecking = FALSE,
+                                        fDim = 1, maxEval = 0, absError = .Machine$double.eps * 10^2 / 2.0, doChecking = FALSE,
                                         vectorInterface = FALSE,
                                         norm = c("INDIVIDUAL",
                                                  "PAIRED",
@@ -367,7 +367,7 @@ hcubature <- adaptIntegrate <- function(f, lowerLimit, upperLimit, ..., tol = 1e
 
 #' @rdname hcubature
 pcubature <- function(f, lowerLimit, upperLimit, ..., tol = 1e-5,
-                      fDim = 1, maxEval = 0, absError = 0, doChecking = FALSE,
+                      fDim = 1, maxEval = 0, absError = .Machine$double.eps * 10^2, doChecking = FALSE,
                       vectorInterface = FALSE,
                       norm = c("INDIVIDUAL",
                                "PAIRED",
