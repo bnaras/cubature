@@ -1,8 +1,8 @@
 CUBATURE_DIR=cubature-1.0.4
 CUBA_DIR=Cuba
 
-PKG_CFLAGS=-I. -I../inst/include -I./src/common
-PKG_CPPFLAGS=$(PKG_CFLAGS)
+R_CPPFLAGS := $(shell $(R_HOME)/bin/R CMD config --cppflags)
+PKG_CPPFLAGS=-I. -I../inst/include -I../../inst/include -I./src/common -D_R_INTERFACE $(R_CPPFLAGS)
 PKG_LIBS=-L./$(CUBATURE_DIR) -L./$(CUBA_DIR) -lcubature -lcuba
 
 $(SHLIB): Rcpp-cubature.o Rcpp-Cuba.o RcppExports.o cubature_init.o
@@ -13,13 +13,13 @@ Rcpp-Cuba.o: cuba.ts
 
 cubature.ts:
 	((cd $(CUBATURE_DIR) && \
-	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)" AR="$(AR)" RANLIB="$(RANLIB)")) && \
+	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CPPFLAGS) $(PKG_CPPFLAGS) $(CFLAGS) $(CPICFLAGS)" AR="$(AR)" RANLIB="$(RANLIB)")) && \
 	touch $@)
 
 cuba.ts:
 	((cd $(CUBA_DIR) && \
 	./configure $(R_CONFIGURE_FLAGS) && \
-	$(MAKE) libcuba.a AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)" CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS) $(PKG_CFLAGS)") && \
+	$(MAKE) libcuba.a CC="$(CC)" CFLAGS="$(CPPFLAGS) $(PKG_CPPFLAGS) $(CFLAGS) $(CPICFLAGS)" AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)") && \
 	touch $@)
 
 clean:

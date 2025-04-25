@@ -26,6 +26,10 @@
  *
  */
 
+#ifdef _R_INTERFACE
+#include <R.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -867,8 +871,12 @@ static heap_item heap_pop(heap *h)
      int i, n, child;
 
      if (!(h->n)) {
+#ifdef _R_INTERFACE
+       Rf_error("hcubature.c: attempted to pop an empty heap\n");
+#else
 	  fprintf(stderr, "attempted to pop an empty heap\n");
 	  exit(EXIT_FAILURE);
+#endif
      }
 
      ret = h->items[0];

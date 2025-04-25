@@ -18,6 +18,7 @@ COMMON_CDEPS = $(COMMON_DEPS) $(common)/CSample.c $(common)/Parallel.c $(common)
 COMMON_TMDEPS = $(COMMON_DEPS) $(common)/MSample.c
 
 RNG_DEPS = $(common)/Random.c $(common)/KorobovCoeff.c
+R_DEPS = $(LIB)(r_helpers.o)
 
 VEGAS_C = $(vegas)/Vegas.c
 VEGAS_TM = $(vegas)/Vegas.tm
@@ -26,8 +27,8 @@ VEGAS_DEPS = $(RNG_DEPS) \
   $(vegas)/Grid.c $(vegas)/Integrate.c
 VEGAS = $(VEGAS_C) $(VEGAS_TM) $(VEGAS_DEPS)
 
-$(LIB)(Vegas.o): config.h $(VEGAS_C) $(VEGAS_DEPS) $(COMMON_CDEPS) 
-	$(CC) $(CFLAGS) -I$(vegas) -DNOUNDERSCORE -c -o Vegas.o $(VEGAS_C)
+$(LIB)(Vegas.o): config.h $(VEGAS_C) $(VEGAS_DEPS) $(COMMON_CDEPS) $(R_DEPS)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -I$(vegas) -DNOUNDERSCORE -c -o Vegas.o $(VEGAS_C)
 	$(AR) $(ARFLAGS) $(LIB) Vegas.o
 	$(RM) Vegas.o
 
@@ -41,8 +42,8 @@ SUAVE_DEPS = $(RNG_DEPS) \
   $(suave)/Integrate.c
 SUAVE = $(SUAVE_C) $(SUAVE_TM) $(SUAVE_DEPS)
 
-$(LIB)(Suave.o): config.h $(SUAVE_C) $(SUAVE_DEPS) $(COMMON_CDEPS)
-	$(CC) $(CFLAGS) -I$(suave) -DNOUNDERSCORE -c -o Suave.o $(SUAVE_C)
+$(LIB)(Suave.o): config.h $(SUAVE_C) $(SUAVE_DEPS) $(COMMON_CDEPS) $(R_DEPS)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -I$(suave) -DNOUNDERSCORE -c -o Suave.o $(SUAVE_C)
 	$(AR) $(ARFLAGS) $(LIB) Suave.o
 	$(RM) Suave.o
 
@@ -57,8 +58,8 @@ DIVONNE_DEPS = $(RNG_DEPS) \
   $(divonne)/Split.c $(divonne)/Integrate.c
 DIVONNE = $(DIVONNE_C) $(DIVONNE_TM) $(DIVONNE_DEPS)
 
-$(LIB)(Divonne.o): config.h $(DIVONNE_C) $(DIVONNE_DEPS) $(COMMON_CDEPS)
-	$(CC) $(CFLAGS) -I$(divonne) -DNOUNDERSCORE -c -o Divonne.o $(DIVONNE_C)
+$(LIB)(Divonne.o): config.h $(DIVONNE_C) $(DIVONNE_DEPS) $(COMMON_CDEPS) $(R_DEPS)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -I$(divonne) -DNOUNDERSCORE -c -o Divonne.o $(DIVONNE_C)
 	$(AR) $(ARFLAGS) $(LIB) Divonne.o
 	$(RM) Divonne.o
 
@@ -71,29 +72,32 @@ CUHRE_DEPS = \
   $(cuhre)/Rule.c $(cuhre)/Integrate.c
 CUHRE = $(CUHRE_C) $(CUHRE_TM) $(CUHRE_DEPS)
 
-$(LIB)(Cuhre.o): config.h $(CUHRE_C) $(CUHRE_DEPS) $(COMMON_CDEPS)
-	$(CC) $(CFLAGS) -I$(cuhre) -DNOUNDERSCORE -c -o Cuhre.o $(CUHRE_C)
+$(LIB)(Cuhre.o): config.h $(CUHRE_C) $(CUHRE_DEPS) $(COMMON_CDEPS) $(R_DEPS)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -I$(cuhre) -DNOUNDERSCORE -c -o Cuhre.o $(CUHRE_C)
 	$(AR) $(ARFLAGS) $(LIB) Cuhre.o
 	$(RM) Cuhre.o
 
-
+$(LIB)(r_helpers.o): $(common)/r_helpers.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -DNOUNDERSCORE -c -o r_helpers.o $(common)/r_helpers.c
+	$(AR) $(ARFLAGS) $(LIB) r_helpers.o
+	$(RM) r_helpers.o
 
 $(LIB)(Fork.o): $(common)/Fork.c $(common)/stddecl.h $(common)/sock.h
-	$(CC) $(CFLAGS) -DNOUNDERSCORE -c -o Fork.o $(common)/Fork.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -DNOUNDERSCORE -c -o Fork.o $(common)/Fork.c
 	$(AR) $(ARFLAGS) $(LIB) Fork.o
 	$(RM) Fork.o
 
 
 
 $(LIB)(Global.o): $(common)/Global.c $(common)/stddecl.h
-	$(CC) $(CFLAGS) -DNOUNDERSCORE -c -o Global.o $(common)/Global.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -DNOUNDERSCORE -c -o Global.o $(common)/Global.c
 	$(AR) $(ARFLAGS) $(LIB) Global.o
 	$(RM) Global.o
 
 
 
 $(LIB)(Data.o): $(common)/Data.c $(common)/stddecl.h
-	$(CC) $(CFLAGS) -c -o Data.o $(common)/Data.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o Data.o $(common)/Data.c
 	$(AR) $(ARFLAGS) $(LIB) Data.o
 	$(RM) Data.o
 
@@ -103,6 +107,7 @@ $(LIB): $(LIB)(Vegas.o)     \
 	$(LIB)(Cuhre.o)     \
 	$(LIB)(Fork.o)      \
 	$(LIB)(Global.o)    \
+	$(LIB)(r_helpers.o) \
 	$(LIB)(Data.o)
 	-$(RANLIB) $(LIB)
 
