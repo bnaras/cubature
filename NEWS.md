@@ -1,3 +1,7 @@
+# cubature 2.1.3
+
+- Further CRAN fixes.
+
 # cubature 2.1.2
 
 - CRAN fixes to use safe `printf()` and other things.
