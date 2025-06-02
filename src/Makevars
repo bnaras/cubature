@@ -1,7 +1,7 @@
 CUBATURE_DIR=cubature-1.0.4
 CUBA_DIR=Cuba
 
-R_INC_FLAG := $(shell $(R_HOME)/bin/R -s -e 'cat(paste0("-I", shQuote(R.home("include"))))')
+R_INC_FLAG=-I"$(R_INCLUDE_DIR)"
 PKG_CPPFLAGS=-I. -I../inst/include -I../../inst/include -I./src/common -D_R_INTERFACE
 PKG_LIBS=-L./$(CUBATURE_DIR) -L./$(CUBA_DIR) -lcubature -lcuba
 
