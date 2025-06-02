@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cubature</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@
                         <h4 data-toc-skip class="author">Balasubramanian
 Narasimhan</h4>
             
-            <h4 data-toc-skip class="date">2025-04-04</h4>
+            <h4 data-toc-skip class="date">2025-06-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bnaras/cubature/blob/main/vignettes/version2.Rmd" class="external-link"><code>vignettes/version2.Rmd</code></a></small>
       <div class="d-none name"><code>version2.Rmd</code></div>
@@ -157,6 +157,74 @@ the help on <code>cuhre</code>. Such arguments can be directly passed to
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cubintegrate.html">cubintegrate</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">my_dmvnorm</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">3</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"cuhre"</span>,</span>
 <span>             mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="va">sigma</span>, logdet <span class="op">=</span> <span class="va">logdet</span>,</span>
 <span>             flags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Cuhre input parameters:</span></span>
+<span><span class="co">##   ndim 3</span></span>
+<span><span class="co">##   ncomp 1</span></span>
+<span><span class="co">##   nvec 1</span></span>
+<span><span class="co">##   epsrel 1e-05</span></span>
+<span><span class="co">##   epsabs 1e-12</span></span>
+<span><span class="co">##   flags 6</span></span>
+<span><span class="co">##   mineval 0</span></span>
+<span><span class="co">##   maxeval 1000000</span></span>
+<span><span class="co">##   key 0</span></span>
+<span><span class="co">##   statefile "(null)"</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 1:  127 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.330292 +- 0.16199      chisq 0 (0 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 2:  381 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334551 +- 0.0726708    chisq 0.000575398 (1 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 3:  635 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334084 +- 0.0126583    chisq 0.000588724 (2 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 4:  889 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334093 +- 0.00467064   chisq 0.000590497 (3 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 5:  1143 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.33411 +- 0.00213905    chisq 0.00060536 (4 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 6:  1397 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 0.000658593      chisq 0.000616501 (5 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 7:  1651 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 0.000290809      chisq 0.000617561 (6 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 8:  1905 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 4.6551e-05   chisq 0.000617624 (7 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 9:  2159 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 3.69574e-05      chisq 0.000617628 (8 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 10:  2413 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 6.66791e-05      chisq 0.000623039 (9 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 11:  2667 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 2.65953e-05      chisq 0.000637044 (10 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 12:  2921 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 3.88133e-05      chisq 0.000639547 (11 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 13:  3175 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 2.10511e-05      chisq 0.000643649 (12 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 14:  3429 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 1.31307e-05      chisq 0.000650985 (13 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 15:  3683 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 8.69938e-06      chisq 0.000654884 (14 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 16:  3937 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 1.88417e-05      chisq 0.000655659 (15 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 17:  4191 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 1.59906e-05      chisq 0.000656612 (16 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 18:  4445 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 4.85581e-06      chisq 0.000660539 (17 df)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Iteration 19:  4699 integrand evaluations so far</span></span>
+<span><span class="co">## [1] 0.334113 +- 2.22627e-06      chisq 0.000668228 (18 df)</span></span></code></pre>
 <pre><code><span><span class="co">## $integral</span></span>
 <span><span class="co">## [1] 0.3341125</span></span>
 <span><span class="co">## </span></span>
@@ -176,7 +244,7 @@ the help on <code>cuhre</code>. Such arguments can be directly passed to
 <span><span class="co">## [1] 0</span></span></code></pre>
 <p>As there are many such method-specific arguments, you may find the
 function <code><a href="../reference/default_args.html">default_args()</a></code> useful.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/default_args.html">default_args</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## List of 6</span></span>
 <span><span class="co">##  $ hcubature:List of 1</span></span>
@@ -252,7 +320,7 @@ function <code><a href="../reference/default_args.html">default_args()</a></code
 parameter <code>nVec</code> is by default 1, indicating a scalar
 interface. Any value &gt; 1 results in a vectorized call. So
 <code>f</code> has to be constructed appropriately, thus:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_dmvnorm_v</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">x</span>, <span class="va">mean</span>, <span class="va">sigma</span>, <span class="va">logdet</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">distval</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/mahalanobis.html" class="external-link">mahalanobis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, center <span class="op">=</span> <span class="va">mean</span>, cov <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="op">-</span><span class="op">(</span><span class="fl">3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">+</span> <span class="va">logdet</span> <span class="op">+</span> <span class="va">distval</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -263,7 +331,7 @@ number can even vary from call to call. So any value of
 <code>nVec</code> greater than 1 is merely a flag to use vectorization.
 The Cuba C library on the other hand, will use the actual value of
 <code>nVec</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cubintegrate.html">cubintegrate</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">my_dmvnorm_v</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">3</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"pcubature"</span>,</span>
 <span>             mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="va">sigma</span>, logdet <span class="op">=</span> <span class="va">logdet</span>,</span>
 <span>             nVec <span class="op">=</span> <span class="fl">128</span><span class="op">)</span></span></code></pre></div>
@@ -278,7 +346,7 @@ The Cuba C library on the other hand, will use the actual value of
 <span><span class="co">## </span></span>
 <span><span class="co">## $returnCode</span></span>
 <span><span class="co">## [1] 0</span></span></code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cubintegrate.html">cubintegrate</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">my_dmvnorm_v</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">3</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"cuhre"</span>,</span>
 <span>             mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="va">sigma</span>, logdet <span class="op">=</span> <span class="va">logdet</span>,</span>
 <span>             nVec <span class="op">=</span> <span class="fl">128</span><span class="op">)</span></span></code></pre></div>
@@ -303,9 +371,9 @@ The Cuba C library on the other hand, will use the actual value of
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.4.3 (2025-02-28)</span></span>
+<pre><code><span><span class="co">## R version 4.5.0 (2025-04-11)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">## Running under: Ubuntu 24.04.2 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -326,16 +394,16 @@ The Cuba C library on the other hand, will use the actual value of
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] cubature_2.1.1</span></span>
+<span><span class="co">## [1] cubature_2.1.3</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] digest_0.6.37     desc_1.4.3        R6_2.6.1          fastmap_1.2.0    </span></span>
 <span><span class="co">##  [5] xfun_0.52         cachem_1.1.0      knitr_1.50        htmltools_0.5.8.1</span></span>
-<span><span class="co">##  [9] rmarkdown_2.29    lifecycle_1.0.4   cli_3.6.4         sass_0.4.9       </span></span>
-<span><span class="co">## [13] pkgdown_2.1.1     textshaping_1.0.0 jquerylib_0.1.4   systemfonts_1.2.1</span></span>
-<span><span class="co">## [17] compiler_4.4.3    tools_4.4.3       ragg_1.3.3        evaluate_1.0.3   </span></span>
+<span><span class="co">##  [9] rmarkdown_2.29    lifecycle_1.0.4   cli_3.6.5         sass_0.4.10      </span></span>
+<span><span class="co">## [13] pkgdown_2.1.3     textshaping_1.0.1 jquerylib_0.1.4   systemfonts_1.2.3</span></span>
+<span><span class="co">## [17] compiler_4.5.0    tools_4.5.0       ragg_1.4.0        evaluate_1.0.3   </span></span>
 <span><span class="co">## [21] bslib_0.9.0       Rcpp_1.0.14       yaml_2.3.10       jsonlite_2.0.0   </span></span>
-<span><span class="co">## [25] rlang_1.1.5       fs_1.6.5</span></span></code></pre>
+<span><span class="co">## [25] rlang_1.1.6       fs_1.6.6</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -348,7 +416,7 @@ The Cuba C library on the other hand, will use the actual value of
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
