@@ -1,3 +1,7 @@
+# cubature 2.1.4
+
+- Include file fixes, thanks Dirk Eddelbuettel.
+
 # cubature 2.1.3
 
 - Further CRAN fixes.
