@@ -1,4 +1,4 @@
-# cubature 2.1.4-1
+# cubature 2.1.4-2
 
 - Updated Cuba configure files (`config.guess`, `config.sub`)
 
