@@ -27,12 +27,12 @@ Source:
 
 Narasimhan B, Johnson SG, Hahn T, Bouvier A, Kiêu K (2025). *cubature:
 Adaptive Multivariate Integration over Hypercubes*. R package version
-2.1.4-1, <https://bnaras.github.io/cubature/>.
+2.1.4-2, <https://bnaras.github.io/cubature/>.
 
     @Manual{,
       title = {cubature: Adaptive Multivariate Integration over Hypercubes},
       author = {Balasubramanian Narasimhan and Steven G. Johnson and Thomas Hahn and Annie Bouvier and Kiên Kiêu},
       year = {2025},
-      note = {R package version 2.1.4-1},
+      note = {R package version 2.1.4-2},
       url = {https://bnaras.github.io/cubature/},
     }
