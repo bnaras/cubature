@@ -1,3 +1,7 @@
+# cubature 2.1.4-1
+
+- Removed use of `benchr` in favor of `bench` for benchmarking.
+
 # cubature 2.1.4
 
 - Include file fixes, thanks Dirk Eddelbuettel.
