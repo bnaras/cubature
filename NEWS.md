@@ -1,5 +1,9 @@
 # cubature 2.1.4-1
 
+- Updated Cuba configure files (`config.guess`, `config.sub`)
+
+# cubature 2.1.4-1
+
 - Removed use of `benchr` in favor of `bench` for benchmarking.
 
 # cubature 2.1.4
