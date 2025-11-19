@@ -1,0 +1,45 @@
+# cubature
+
+Cubature is an R package for adaptive multivariate integration over
+hypercubes using deterministic and Monte Carlo methods. The package
+provides wrappers around two C libraries:
+
+- The cubature C library of [Steven G.
+  Johnson](https://math.mit.edu/~stevenj/)
+- The Cuba C library of [Thomas
+  Hahn](https://wwwth.mpp.mpg.de/members/hahn/)
+
+Both scalar and vectorized interfaces are available for all routines. R
+users will gain a lot by using the vectorization as demonstrated in the
+included vignette.
+
+## Dedication
+
+Version 2.0 is dedicated to the memory of Kiên Kiêu, one of the original
+authors of `R2Cuba`. I (BN) never knew him, but this package derives
+from his work on `R2Cuba`.
+
+# Package index
+
+## All functions
+
+- [`cubintegrate()`](cubintegrate.md) : Unified Cubature Integration
+  Interface
+- [`cuhre()`](cuhre.md) : Integration by a Deterministic Iterative
+  Adaptive Algorithm
+- [`default_args()`](default_args.md) : Default arguments for each
+  integration method
+- [`divonne()`](divonne.md) : Integration by Stratified Sampling for
+  Variance Reduction
+- [`hcubature()`](hcubature.md) [`pcubature()`](hcubature.md) : Adaptive
+  multivariate integration over hypercubes (hcubature and pcubature)
+- [`suave()`](suave.md) : Integration with SUbregion-Adaptive Vegas
+  Algorithm
+- [`vegas()`](vegas.md) : Integration by a Monte Carlo Algorithm
+
+# Articles
+
+### All vignettes
+
+- [Cubature Vectorization Results](cubature.md):
+- [Version 2.0 Notes](version2.md):

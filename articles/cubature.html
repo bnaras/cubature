@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cubature</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.4-1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,9 +69,9 @@
                         <h4 data-toc-skip class="author">Balasubramanian
 Narasimhan</h4>
             
-            <h4 data-toc-skip class="date">2025-06-02</h4>
+            <h4 data-toc-skip class="date">2025-11-19</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/bnaras/cubature/blob/v2.1.4/vignettes/cubature.Rmd" class="external-link"><code>vignettes/cubature.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/bnaras/cubature/blob/main/vignettes/cubature.Rmd" class="external-link"><code>vignettes/cubature.Rmd</code></a></small>
       <div class="d-none name"><code>cubature.Rmd</code></div>
     </div>
 
@@ -102,68 +102,64 @@ section.</p>
 <code>pcubature</code> (where appropriate) and Cuba <code>cuhre</code>
 calls. We begin by creating a harness for these calls.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gitlab.com/artemklevtsov/benchr" class="external-link">benchr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bench.r-lib.org/" class="external-link">bench</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bnaras.github.io/cubature/" class="external-link">cubature</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">harness</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">which</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                    <span class="va">f</span>, <span class="va">fv</span>, <span class="va">lowerLimit</span>, <span class="va">upperLimit</span>, <span class="va">tol</span> <span class="op">=</span> <span class="fl">1e-3</span>, <span class="va">times</span> <span class="op">=</span> <span class="fl">20</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span></span>
-<span>    <span class="va">fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>hc <span class="op">=</span> <span class="st">"Non-vectorized Hcubature"</span>,</span>
-<span>             hc.v <span class="op">=</span> <span class="st">"Vectorized Hcubature"</span>,</span>
-<span>             pc <span class="op">=</span> <span class="st">"Non-vectorized Pcubature"</span>,</span>
-<span>             pc.v <span class="op">=</span> <span class="st">"Vectorized Pcubature"</span>,</span>
-<span>             cc <span class="op">=</span> <span class="st">"Non-vectorized cubature::cuhre"</span>,</span>
-<span>             cc_v <span class="op">=</span> <span class="st">"Vectorized cubature::cuhre"</span><span class="op">)</span></span>
-<span>    <span class="va">cc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/cuhre.html">cuhre</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,</span>
+<span>                    <span class="va">f</span>, <span class="va">fv</span>, <span class="va">lowerLimit</span>, <span class="va">upperLimit</span>, <span class="va">tol</span> <span class="op">=</span> <span class="fl">1e-3</span>, <span class="va">iterations</span> <span class="op">=</span> <span class="fl">20</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>hc <span class="op">=</span> <span class="st">"Non-vectorized Hcubature"</span>,</span>
+<span>           hc.v <span class="op">=</span> <span class="st">"Vectorized Hcubature"</span>,</span>
+<span>           pc <span class="op">=</span> <span class="st">"Non-vectorized Pcubature"</span>,</span>
+<span>           pc.v <span class="op">=</span> <span class="st">"Vectorized Pcubature"</span>,</span>
+<span>           cc <span class="op">=</span> <span class="st">"Non-vectorized cubature::cuhre"</span>,</span>
+<span>           cc_v <span class="op">=</span> <span class="st">"Vectorized cubature::cuhre"</span><span class="op">)</span></span>
+<span>  <span class="va">cc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/cuhre.html">cuhre</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,</span>
+<span>                                   lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>, upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
+<span>                                   relTol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                   <span class="va">...</span><span class="op">)</span></span>
+<span>  <span class="va">cc_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/cuhre.html">cuhre</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,</span>
 <span>                                     lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>, upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
 <span>                                     relTol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                     nVec <span class="op">=</span> <span class="fl">1024L</span>,</span>
 <span>                                     <span class="va">...</span><span class="op">)</span></span>
-<span>    <span class="va">cc_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/cuhre.html">cuhre</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,</span>
-<span>                                       lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>, upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
-<span>                                       relTol <span class="op">=</span> <span class="va">tol</span>,</span>
-<span>                                       nVec <span class="op">=</span> <span class="fl">1024L</span>,</span>
+<span>  <span class="va">hc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">hcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,</span>
+<span>                                       lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
+<span>                                       upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
+<span>                                       tol <span class="op">=</span> <span class="va">tol</span>,</span>
 <span>                                       <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">hc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">hcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,</span>
+<span>  <span class="va">hc.v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">hcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,</span>
 <span>                                         lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
 <span>                                         upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
 <span>                                         tol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                         vectorInterface <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                         <span class="va">...</span><span class="op">)</span></span>
+<span>  <span class="va">pc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">pcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,</span>
+<span>                                       lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
+<span>                                       upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
+<span>                                       tol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                       <span class="va">...</span><span class="op">)</span></span>
+<span>  <span class="va">pc.v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">pcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,</span>
+<span>                                         lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
+<span>                                         upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
+<span>                                         tol <span class="op">=</span> <span class="va">tol</span>,</span>
+<span>                                         vectorInterface <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                                         <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="va">hc.v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">hcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,</span>
-<span>                                           lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
-<span>                                           upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
-<span>                                           tol <span class="op">=</span> <span class="va">tol</span>,</span>
-<span>                                           vectorInterface <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                                           <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">pc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">pcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">f</span>,</span>
-<span>                                     lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
-<span>                                     upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
-<span>                                     tol <span class="op">=</span> <span class="va">tol</span>,</span>
-<span>                                     <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">pc.v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">cubature</span><span class="fu">::</span><span class="fu"><a href="../reference/hcubature.html">pcubature</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">fv</span>,</span>
-<span>                                           lowerLimit <span class="op">=</span> <span class="va">lowerLimit</span>,</span>
-<span>                                           upperLimit <span class="op">=</span> <span class="va">upperLimit</span>,</span>
-<span>                                           tol <span class="op">=</span> <span class="va">tol</span>,</span>
-<span>                                           vectorInterface <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                                           <span class="va">...</span><span class="op">)</span></span>
-<span>    </span>
-<span>    <span class="va">ndim</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lowerLimit</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">which</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>        <span class="va">fnIndices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span></span>
-<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>        <span class="va">fnIndices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">which</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>    <span class="va">fnList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span><span class="op">[</span><span class="va">fnIndices</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">argList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">fnList</span>, times <span class="op">=</span> <span class="va">times</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>    <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">benchr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/benchr/man/benchmark.html" class="external-link">benchmark</a></span>, args <span class="op">=</span> <span class="va">argList</span><span class="op">)</span></span>
-<span>    <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fnIndices</span><span class="op">)</span>, <span class="op">]</span></span>
-<span>    <span class="va">d</span><span class="op">$</span><span class="va">expr</span> <span class="op">&lt;-</span> <span class="va">fns</span><span class="op">[</span><span class="va">fnIndices</span><span class="op">]</span></span>
-<span>    <span class="va">d</span></span>
+<span>  <span class="va">ndim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lowerLimit</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">which</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">fnIndices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="va">fnIndices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">which</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">fnList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fns</span><span class="op">)</span><span class="op">[</span><span class="va">fnIndices</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">argList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">fnList</span>, iterations <span class="op">=</span> <span class="va">iterations</span>, check <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">bench</span><span class="fu">::</span><span class="va"><a href="https://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span>, args <span class="op">=</span> <span class="va">argList</span><span class="op">)</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fnIndices</span><span class="op">)</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span></span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">expression</span> <span class="op">&lt;-</span> <span class="va">fns</span><span class="op">[</span><span class="va">fnIndices</span><span class="op">]</span></span>
+<span>  <span class="va">d</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>We reel off the timing runs.</p>
 </div>
@@ -180,105 +176,98 @@ calls. We begin by creating a harness for these calls.</p>
 <span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>             upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>             tol <span class="op">=</span> <span class="fl">1e-5</span>,</span>
-<span>             times <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>             iterations <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span></span>
+<span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="34%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="31%">
+<col width="9%">
+<col width="9%">
+<col width="9%">
 <col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">100</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.028</td>
-<td align="right">1.00</td>
+<td align="right">252.74µs</td>
+<td align="right">281.93µs</td>
+<td align="right">3516.802</td>
+<td align="right">59.3KB</td>
+<td align="right">35.523</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">28.2ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">100</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.041</td>
-<td align="right">1.47</td>
+<td align="right">371.74µs</td>
+<td align="right">392.53µs</td>
+<td align="right">2511.624</td>
+<td align="right">54.5KB</td>
+<td align="right">25.370</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">39.4ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">100</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.089</td>
-<td align="right">3.11</td>
+<td align="right">836.09µs</td>
+<td align="right">899.53µs</td>
+<td align="right">1107.845</td>
+<td align="right">31.2KB</td>
+<td align="right">34.263</td>
+<td align="right">97</td>
+<td align="right">3</td>
+<td align="right">87.6ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">100</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.003</td>
-<td align="right">0.125</td>
-<td align="right">4.32</td>
+<td align="right">1.14ms</td>
+<td align="right">1.19ms</td>
+<td align="right">832.897</td>
+<td align="right">58.4KB</td>
+<td align="right">16.998</td>
+<td align="right">98</td>
+<td align="right">2</td>
+<td align="right">117.7ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">100</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.061</td>
-<td align="right">2.17</td>
+<td align="right">540.38µs</td>
+<td align="right">588.11µs</td>
+<td align="right">1692.355</td>
+<td align="right">40.5KB</td>
+<td align="right">17.094</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">58.5ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">100</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.061</td>
-<td align="right">2.21</td>
+<td align="right">575.57µs</td>
+<td align="right">610.75µs</td>
+<td align="right">1627.377</td>
+<td align="right">39.8KB</td>
+<td align="right">33.212</td>
+<td align="right">98</td>
+<td align="right">2</td>
+<td align="right">60.2ms</td>
 </tr>
 </tbody>
 </table>
@@ -328,106 +317,98 @@ analog (<code>my_dmvnorm_v</code>). First the functions.</p>
 <span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>             upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>             tol <span class="op">=</span> <span class="fl">1e-5</span>,</span>
-<span>             times <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>             iterations <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>             mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="va">sigma</span>, logdet <span class="op">=</span> <span class="va">logdet</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="34%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="32%">
+<col width="9%">
+<col width="9%">
+<col width="8%">
 <col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
+<td align="right">673.62ms</td>
+<td align="right">683.49ms</td>
+<td align="right">1.422</td>
+<td align="right">139.68KB</td>
+<td align="right">22.036</td>
 <td align="right">10</td>
-<td align="right">0.819</td>
-<td align="right">0.826</td>
-<td align="right">0.831</td>
-<td align="right">0.837</td>
-<td align="right">0.834</td>
-<td align="right">0.907</td>
-<td align="right">8.371</td>
-<td align="right">627.00</td>
+<td align="right">155</td>
+<td align="right">7.03s</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
+<td align="right">1.68ms</td>
+<td align="right">2.32ms</td>
+<td align="right">463.807</td>
+<td align="right">1.89MB</td>
+<td align="right">0.000</td>
 <td align="right">10</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.020</td>
-<td align="right">1.40</td>
+<td align="right">0</td>
+<td align="right">21.56ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
+<td align="right">287.38ms</td>
+<td align="right">295.2ms</td>
+<td align="right">3.332</td>
+<td align="right">0B</td>
+<td align="right">21.661</td>
 <td align="right">10</td>
-<td align="right">0.352</td>
-<td align="right">0.354</td>
-<td align="right">0.356</td>
-<td align="right">0.356</td>
-<td align="right">0.358</td>
-<td align="right">0.361</td>
-<td align="right">3.563</td>
-<td align="right">268.00</td>
+<td align="right">65</td>
+<td align="right">3s</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
+<td align="right">1.11ms</td>
+<td align="right">1.22ms</td>
+<td align="right">692.083</td>
+<td align="right">810.26KB</td>
+<td align="right">69.208</td>
 <td align="right">10</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.014</td>
-<td align="right">1.00</td>
+<td align="right">1</td>
+<td align="right">14.45ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
+<td align="right">282.43ms</td>
+<td align="right">284.3ms</td>
+<td align="right">3.514</td>
+<td align="right">0B</td>
+<td align="right">22.137</td>
 <td align="right">10</td>
-<td align="right">0.337</td>
-<td align="right">0.340</td>
-<td align="right">0.343</td>
-<td align="right">0.347</td>
-<td align="right">0.344</td>
-<td align="right">0.394</td>
-<td align="right">3.469</td>
-<td align="right">259.00</td>
+<td align="right">63</td>
+<td align="right">2.85s</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
+<td align="right">2.65ms</td>
+<td align="right">2.79ms</td>
+<td align="right">350.634</td>
+<td align="right">898.41KB</td>
+<td align="right">0.000</td>
 <td align="right">10</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.003</td>
-<td align="right">0.005</td>
-<td align="right">0.035</td>
-<td align="right">2.53</td>
+<td align="right">0</td>
+<td align="right">28.52ms</td>
 </tr>
 </tbody>
 </table>
@@ -435,9 +416,10 @@ analog (<code>my_dmvnorm_v</code>). First the functions.</p>
 vectorize the integrands as much as possible for efficiency.</p>
 <p>Furthermore, for this particular example, we expect
 <code><a href="https://rdrr.io/pkg/mvtnorm/man/pmvnorm.html" class="external-link">mvtnorm::pmvnorm</a></code> to do pretty well since it is specialized
-for the multivariate normal. The good news is that the vectorized
-versions of <code>hcubature</code> and <code>pcubature</code> are quite
-competitive if you compare the table above to the one below.</p>
+for the multivariate normal. The vectorized versions of
+<code>hcubature</code> and <code>pcubature</code> seem competitive and
+in some cases better, if you compare the table above to the one
+below.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://mvtnorm.R-forge.R-project.org" class="external-link">mvtnorm</a></span><span class="op">)</span></span>
 <span><span class="va">g1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/pmvnorm.html" class="external-link">pmvnorm</a></span><span class="op">(</span>lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="va">m</span><span class="op">)</span>,</span>
@@ -450,69 +432,64 @@ competitive if you compare the table above to the one below.</p>
 <span>                         upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">m</span><span class="op">)</span>, corr <span class="op">=</span> <span class="va">sigma</span>,</span>
 <span>                         alg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/algorithms.html" class="external-link">TVPACK</a></span><span class="op">(</span><span class="op">)</span>, abseps <span class="op">=</span> <span class="fl">1e-5</span>, releps <span class="op">=</span> <span class="fl">1e-5</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">benchr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/benchr/man/benchmark.html" class="external-link">benchmark</a></span><span class="op">(</span><span class="fu">g1</span><span class="op">(</span><span class="op">)</span>, <span class="fu">g2</span><span class="op">(</span><span class="op">)</span>, <span class="fu">g3</span><span class="op">(</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">g1</span><span class="op">(</span><span class="op">)</span>, <span class="fu">g2</span><span class="op">(</span><span class="op">)</span>, <span class="fu">g3</span><span class="op">(</span><span class="op">)</span>, iterations <span class="op">=</span> <span class="fl">20</span>, check <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span>,</span>
 <span>             digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="7%">
-<col width="10%">
+<col width="15%">
+<col width="8%">
 <col width="9%">
-<col width="9%">
-<col width="10%">
-<col width="9%">
-<col width="9%">
-<col width="9%">
-<col width="9%">
+<col width="11%">
 <col width="14%">
+<col width="9%">
+<col width="8%">
+<col width="7%">
+<col width="15%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">g1()</td>
+<td align="right">675µs</td>
+<td align="right">1.24ms</td>
+<td align="right">809.138</td>
+<td align="right">355.13KB</td>
+<td align="right">0</td>
 <td align="right">20</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.003</td>
-<td align="right">0.029</td>
-<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">24.7ms</td>
 </tr>
 <tr class="even">
 <td align="left">g2()</td>
+<td align="right">670µs</td>
+<td align="right">1.24ms</td>
+<td align="right">831.680</td>
+<td align="right">2.49KB</td>
+<td align="right">0</td>
 <td align="right">20</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.004</td>
-<td align="right">0.026</td>
-<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">24ms</td>
 </tr>
 <tr class="odd">
 <td align="left">g3()</td>
+<td align="right">680µs</td>
+<td align="right">1.24ms</td>
+<td align="right">811.326</td>
+<td align="right">2.49KB</td>
+<td align="right">0</td>
 <td align="right">20</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.003</td>
-<td align="right">0.026</td>
-<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">24.7ms</td>
 </tr>
 </tbody>
 </table>
@@ -525,105 +502,97 @@ competitive if you compare the table above to the one below.</p>
 <span><span class="va">testFn0_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn0</span>, fv <span class="op">=</span> <span class="va">testFn0_v</span>,</span>
-<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, iterations <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="35%">
+<col width="32%">
 <col width="8%">
-<col width="4%">
-<col width="6%">
 <col width="8%">
-<col width="5%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
 <col width="10%">
+<col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">1000</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0.000</td>
-<td align="right">0.043</td>
-<td align="right">1.00</td>
+<td align="right">32µs</td>
+<td align="right">35.8µs</td>
+<td align="right">27305.257</td>
+<td align="right">7.66KB</td>
+<td align="right">27.333</td>
+<td align="right">999</td>
+<td align="right">1</td>
+<td align="right">36.6ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">1000</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0.002</td>
-<td align="right">0.074</td>
-<td align="right">1.66</td>
+<td align="right">54.2µs</td>
+<td align="right">58.4µs</td>
+<td align="right">16702.135</td>
+<td align="right">1.16KB</td>
+<td align="right">33.471</td>
+<td align="right">998</td>
+<td align="right">2</td>
+<td align="right">59.8ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">1000</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0.002</td>
-<td align="right">0.059</td>
-<td align="right">1.29</td>
+<td align="right">42.2µs</td>
+<td align="right">46.4µs</td>
+<td align="right">21025.150</td>
+<td align="right">0B</td>
+<td align="right">21.046</td>
+<td align="right">999</td>
+<td align="right">1</td>
+<td align="right">47.5ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">1000</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0.003</td>
-<td align="right">0.134</td>
-<td align="right">2.91</td>
+<td align="right">96.2µs</td>
+<td align="right">103.6µs</td>
+<td align="right">9481.220</td>
+<td align="right">18.68KB</td>
+<td align="right">28.529</td>
+<td align="right">997</td>
+<td align="right">3</td>
+<td align="right">105.2ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">1000</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0.002</td>
-<td align="right">0.373</td>
-<td align="right">8.44</td>
+<td align="right">303.4µs</td>
+<td align="right">348.4µs</td>
+<td align="right">2863.060</td>
+<td align="right">0B</td>
+<td align="right">26.002</td>
+<td align="right">991</td>
+<td align="right">9</td>
+<td align="right">346.1ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">1000</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0.002</td>
-<td align="right">0.410</td>
-<td align="right">9.34</td>
+<td align="right">332.6µs</td>
+<td align="right">358.2µs</td>
+<td align="right">2770.079</td>
+<td align="right">16.38KB</td>
+<td align="right">27.981</td>
+<td align="right">990</td>
+<td align="right">10</td>
+<td align="right">357.4ms</td>
 </tr>
 </tbody>
 </table>
@@ -645,106 +614,98 @@ competitive if you compare the table above to the one below.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn1</span>, fv <span class="op">=</span> <span class="va">testFn1_v</span>,</span>
-<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, iterations <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="34%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="31%">
+<col width="9%">
+<col width="9%">
 <col width="10%">
+<col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">10</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.005</td>
-<td align="right">0.031</td>
-<td align="right">34.30</td>
+<td align="right">2.63ms</td>
+<td align="right">2.67ms</td>
+<td align="right">372.475</td>
+<td align="right">67.3KB</td>
+<td align="right">41.386</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">24.16ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">10</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.006</td>
-<td align="right">0.053</td>
-<td align="right">60.60</td>
+<td align="right">4.62ms</td>
+<td align="right">4.71ms</td>
+<td align="right">212.755</td>
+<td align="right">290.5KB</td>
+<td align="right">23.639</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">42.3ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
+<td align="right">79.37µs</td>
+<td align="right">81.16µs</td>
+<td align="right">11662.588</td>
+<td align="right">0B</td>
+<td align="right">0.000</td>
 <td align="right">10</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.001</td>
-<td align="right">1.00</td>
+<td align="right">0</td>
+<td align="right">857.44µs</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
+<td align="right">146.13µs</td>
+<td align="right">151.91µs</td>
+<td align="right">6288.140</td>
+<td align="right">4.1KB</td>
+<td align="right">0.000</td>
 <td align="right">10</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">2.05</td>
+<td align="right">0</td>
+<td align="right">1.59ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">10</td>
-<td align="right">0.014</td>
-<td align="right">0.014</td>
-<td align="right">0.014</td>
-<td align="right">0.014</td>
-<td align="right">0.015</td>
-<td align="right">0.016</td>
-<td align="right">0.145</td>
-<td align="right">167.00</td>
+<td align="right">12.21ms</td>
+<td align="right">12.44ms</td>
+<td align="right">80.191</td>
+<td align="right">0B</td>
+<td align="right">34.368</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">87.29ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">10</td>
-<td align="right">0.021</td>
-<td align="right">0.021</td>
-<td align="right">0.021</td>
-<td align="right">0.021</td>
-<td align="right">0.022</td>
-<td align="right">0.024</td>
-<td align="right">0.214</td>
-<td align="right">246.00</td>
+<td align="right">18.9ms</td>
+<td align="right">19ms</td>
+<td align="right">52.502</td>
+<td align="right">971.5KB</td>
+<td align="right">52.502</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">95.23ms</td>
 </tr>
 </tbody>
 </table>
@@ -765,81 +726,75 @@ competitive if you compare the table above to the one below.</p>
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>which <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hc"</span>, <span class="st">"hc.v"</span>, <span class="st">"cc"</span>, <span class="st">"cc_v"</span><span class="op">)</span>,</span>
 <span>             f <span class="op">=</span> <span class="va">testFn2</span>, fv <span class="op">=</span> <span class="va">testFn2_v</span>,</span>
-<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, iterations <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="34%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="32%">
+<col width="8%">
+<col width="8%">
+<col width="8%">
 <col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
+<td align="right">46.5ms</td>
+<td align="right">47.1ms</td>
+<td align="right">18.079</td>
+<td align="right">17.7KB</td>
+<td align="right">36.157</td>
 <td align="right">10</td>
-<td align="right">0.041</td>
-<td align="right">0.041</td>
-<td align="right">0.041</td>
-<td align="right">0.041</td>
-<td align="right">0.041</td>
-<td align="right">0.043</td>
-<td align="right">0.413</td>
-<td align="right">1.00</td>
+<td align="right">20</td>
+<td align="right">553.14ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
+<td align="right">47.3ms</td>
+<td align="right">47.9ms</td>
+<td align="right">20.651</td>
+<td align="right">1011.8KB</td>
+<td align="right">26.846</td>
 <td align="right">10</td>
-<td align="right">0.047</td>
-<td align="right">0.048</td>
-<td align="right">0.048</td>
-<td align="right">0.048</td>
-<td align="right">0.049</td>
-<td align="right">0.050</td>
-<td align="right">0.483</td>
-<td align="right">1.17</td>
+<td align="right">13</td>
+<td align="right">484.25ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
+<td align="right">805.7ms</td>
+<td align="right">818.3ms</td>
+<td align="right">1.205</td>
+<td align="right">0B</td>
+<td align="right">28.315</td>
 <td align="right">10</td>
-<td align="right">0.781</td>
-<td align="right">0.787</td>
-<td align="right">0.788</td>
-<td align="right">0.790</td>
-<td align="right">0.790</td>
-<td align="right">0.813</td>
-<td align="right">7.899</td>
-<td align="right">19.20</td>
+<td align="right">235</td>
+<td align="right">8.3s</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
+<td align="right">872.4ms</td>
+<td align="right">882.8ms</td>
+<td align="right">1.120</td>
+<td align="right">21.2MB</td>
+<td align="right">25.433</td>
 <td align="right">10</td>
-<td align="right">0.872</td>
-<td align="right">0.874</td>
-<td align="right">0.875</td>
-<td align="right">0.885</td>
-<td align="right">0.880</td>
-<td align="right">0.931</td>
-<td align="right">8.849</td>
-<td align="right">21.30</td>
+<td align="right">227</td>
+<td align="right">8.93s</td>
 </tr>
 </tbody>
 </table>
@@ -852,105 +807,97 @@ competitive if you compare the table above to the one below.</p>
 <span><span class="va">testFn3_v</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/prod.html" class="external-link">prod</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">z</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn3</span>, fv <span class="op">=</span> <span class="va">testFn3_v</span>,</span>
-<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, iterations <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="34%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="31%">
+<col width="8%">
+<col width="8%">
 <col width="10%">
+<col width="10%">
+<col width="8%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
+<td align="right">53.3µs</td>
+<td align="right">57.3µs</td>
+<td align="right">16759.695</td>
+<td align="right">6.75KB</td>
+<td align="right">0.000</td>
 <td align="right">50</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.003</td>
-<td align="right">1.14</td>
+<td align="right">0</td>
+<td align="right">2.98ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">50</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.005</td>
-<td align="right">1.76</td>
+<td align="right">79.7µs</td>
+<td align="right">85.4µs</td>
+<td align="right">10851.973</td>
+<td align="right">2.91KB</td>
+<td align="right">221.469</td>
+<td align="right">49</td>
+<td align="right">1</td>
+<td align="right">4.51ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
+<td align="right">44µs</td>
+<td align="right">45.1µs</td>
+<td align="right">21084.959</td>
+<td align="right">0B</td>
+<td align="right">0.000</td>
 <td align="right">50</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.003</td>
-<td align="right">1.00</td>
+<td align="right">0</td>
+<td align="right">2.37ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
+<td align="right">67.9µs</td>
+<td align="right">71.4µs</td>
+<td align="right">13515.659</td>
+<td align="right">19.12KB</td>
+<td align="right">0.000</td>
 <td align="right">50</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.006</td>
-<td align="right">1.62</td>
+<td align="right">0</td>
+<td align="right">3.7ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">50</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.034</td>
-<td align="right">12.30</td>
+<td align="right">596.4µs</td>
+<td align="right">641.5µs</td>
+<td align="right">1538.272</td>
+<td align="right">0B</td>
+<td align="right">31.393</td>
+<td align="right">49</td>
+<td align="right">1</td>
+<td align="right">31.85ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">50</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.035</td>
-<td align="right">12.70</td>
+<td align="right">612.9µs</td>
+<td align="right">652.7µs</td>
+<td align="right">1531.361</td>
+<td align="right">39.84KB</td>
+<td align="right">31.252</td>
+<td align="right">49</td>
+<td align="right">1</td>
+<td align="right">32ms</td>
 </tr>
 </tbody>
 </table>
@@ -976,105 +923,97 @@ competitive if you compare the table above to the one below.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn4</span>, fv <span class="op">=</span> <span class="va">testFn4_v</span>,</span>
-<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, iterations <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="34%">
+<col width="33%">
 <col width="7%">
-<col width="6%">
-<col width="6%">
 <col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="8%">
 <col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">20</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.003</td>
-<td align="right">0.029</td>
-<td align="right">1.00</td>
+<td align="right">1.23ms</td>
+<td align="right">1.31ms</td>
+<td align="right">757.544</td>
+<td align="right">85.2KB</td>
+<td align="right">39.871</td>
+<td align="right">19</td>
+<td align="right">1</td>
+<td align="right">25.1ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
+<td align="right">1.7ms</td>
+<td align="right">1.76ms</td>
+<td align="right">568.723</td>
+<td align="right">147.2KB</td>
+<td align="right">0.000</td>
 <td align="right">20</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.039</td>
-<td align="right">1.35</td>
+<td align="right">0</td>
+<td align="right">35.2ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">20</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.044</td>
-<td align="right">1.50</td>
+<td align="right">1.85ms</td>
+<td align="right">1.99ms</td>
+<td align="right">496.789</td>
+<td align="right">0B</td>
+<td align="right">55.199</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">36.2ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">20</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.055</td>
-<td align="right">1.94</td>
+<td align="right">2.45ms</td>
+<td align="right">2.55ms</td>
+<td align="right">390.605</td>
+<td align="right">68.9KB</td>
+<td align="right">20.558</td>
+<td align="right">19</td>
+<td align="right">1</td>
+<td align="right">48.6ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">20</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.067</td>
-<td align="right">2.41</td>
+<td align="right">2.95ms</td>
+<td align="right">3.12ms</td>
+<td align="right">318.540</td>
+<td align="right">0B</td>
+<td align="right">35.393</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">56.5ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">20</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.079</td>
-<td align="right">2.83</td>
+<td align="right">3.52ms</td>
+<td align="right">3.62ms</td>
+<td align="right">275.377</td>
+<td align="right">125.6KB</td>
+<td align="right">30.597</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">65.4ms</td>
 </tr>
 </tbody>
 </table>
@@ -1100,105 +1039,97 @@ competitive if you compare the table above to the one below.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn5</span>, fv <span class="op">=</span> <span class="va">testFn5_v</span>,</span>
-<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, iterations <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="34%">
+<col width="33%">
 <col width="7%">
-<col width="6%">
-<col width="6%">
 <col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="8%">
 <col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">20</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.078</td>
-<td align="right">1.42</td>
+<td align="right">3.32ms</td>
+<td align="right">3.59ms</td>
+<td align="right">281.564</td>
+<td align="right">133KB</td>
+<td align="right">31.285</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">63.9ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">20</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.006</td>
-<td align="right">0.097</td>
-<td align="right">1.87</td>
+<td align="right">4.58ms</td>
+<td align="right">4.78ms</td>
+<td align="right">210.121</td>
+<td align="right">249KB</td>
+<td align="right">23.347</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">85.7ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">20</td>
-<td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.054</td>
-<td align="right">1.00</td>
+<td align="right">2.31ms</td>
+<td align="right">2.39ms</td>
+<td align="right">412.413</td>
+<td align="right">0B</td>
+<td align="right">45.824</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">43.6ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">20</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.003</td>
-<td align="right">0.005</td>
-<td align="right">0.070</td>
-<td align="right">1.32</td>
+<td align="right">3.13ms</td>
+<td align="right">3.28ms</td>
+<td align="right">304.179</td>
+<td align="right">69KB</td>
+<td align="right">33.798</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">59.2ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">20</td>
-<td align="right">0.007</td>
-<td align="right">0.007</td>
-<td align="right">0.007</td>
-<td align="right">0.007</td>
-<td align="right">0.007</td>
-<td align="right">0.008</td>
-<td align="right">0.144</td>
-<td align="right">2.78</td>
+<td align="right">6.64ms</td>
+<td align="right">6.75ms</td>
+<td align="right">147.482</td>
+<td align="right">0B</td>
+<td align="right">36.870</td>
+<td align="right">16</td>
+<td align="right">4</td>
+<td align="right">108.5ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">20</td>
-<td align="right">0.008</td>
-<td align="right">0.008</td>
-<td align="right">0.009</td>
-<td align="right">0.009</td>
-<td align="right">0.009</td>
-<td align="right">0.012</td>
-<td align="right">0.178</td>
-<td align="right">3.34</td>
+<td align="right">7.9ms</td>
+<td align="right">7.99ms</td>
+<td align="right">124.664</td>
+<td align="right">224KB</td>
+<td align="right">31.166</td>
+<td align="right">16</td>
+<td align="right">4</td>
+<td align="right">128.3ms</td>
 </tr>
 </tbody>
 </table>
@@ -1219,105 +1150,97 @@ competitive if you compare the table above to the one below.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn6</span>, fv <span class="op">=</span> <span class="va">testFn6_v</span>,</span>
-<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, iterations <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="34%">
+<col width="33%">
 <col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="8%">
+<col width="8%">
 <col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">20</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.003</td>
-<td align="right">0.034</td>
-<td align="right">1.00</td>
+<td align="right">1.51ms</td>
+<td align="right">1.59ms</td>
+<td align="right">625.555</td>
+<td align="right">64.6KB</td>
+<td align="right">32.924</td>
+<td align="right">19</td>
+<td align="right">1</td>
+<td align="right">30.4ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">20</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.002</td>
-<td align="right">0.004</td>
-<td align="right">0.046</td>
-<td align="right">1.38</td>
+<td align="right">2.03ms</td>
+<td align="right">2.05ms</td>
+<td align="right">483.449</td>
+<td align="right">156KB</td>
+<td align="right">25.445</td>
+<td align="right">19</td>
+<td align="right">1</td>
+<td align="right">39.3ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">20</td>
-<td align="right">0.008</td>
-<td align="right">0.008</td>
-<td align="right">0.008</td>
-<td align="right">0.009</td>
-<td align="right">0.008</td>
-<td align="right">0.010</td>
-<td align="right">0.171</td>
-<td align="right">5.13</td>
+<td align="right">7.63ms</td>
+<td align="right">7.74ms</td>
+<td align="right">127.032</td>
+<td align="right">0B</td>
+<td align="right">42.344</td>
+<td align="right">15</td>
+<td align="right">5</td>
+<td align="right">118.1ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">20</td>
-<td align="right">0.010</td>
-<td align="right">0.011</td>
-<td align="right">0.011</td>
-<td align="right">0.011</td>
-<td align="right">0.011</td>
-<td align="right">0.012</td>
-<td align="right">0.218</td>
-<td align="right">6.60</td>
+<td align="right">9.96ms</td>
+<td align="right">10.05ms</td>
+<td align="right">99.263</td>
+<td align="right">386.2KB</td>
+<td align="right">24.816</td>
+<td align="right">16</td>
+<td align="right">4</td>
+<td align="right">161.2ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">20</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.004</td>
-<td align="right">0.006</td>
-<td align="right">0.092</td>
-<td align="right">2.73</td>
+<td align="right">4ms</td>
+<td align="right">4.18ms</td>
+<td align="right">239.557</td>
+<td align="right">0B</td>
+<td align="right">42.275</td>
+<td align="right">17</td>
+<td align="right">3</td>
+<td align="right">71ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">20</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.098</td>
-<td align="right">3.05</td>
+<td align="right">4.5ms</td>
+<td align="right">4.57ms</td>
+<td align="right">219.081</td>
+<td align="right">225.8KB</td>
+<td align="right">24.342</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">82.2ms</td>
 </tr>
 </tbody>
 </table>
@@ -1340,105 +1263,97 @@ competitive if you compare the table above to the one below.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">testFn7</span>, fv <span class="op">=</span> <span class="va">testFn7_v</span>,</span>
-<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, iterations <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="34%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="32%">
+<col width="8%">
+<col width="8%">
+<col width="8%">
 <col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
+<td align="right">3.11ms</td>
+<td align="right">3.35ms</td>
+<td align="right">271.504</td>
+<td align="right">32.89KB</td>
+<td align="right">27.150</td>
 <td align="right">20</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.007</td>
-<td align="right">0.075</td>
-<td align="right">1.00</td>
+<td align="right">2</td>
+<td align="right">73.7ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
+<td align="right">3.85ms</td>
+<td align="right">3.96ms</td>
+<td align="right">233.513</td>
+<td align="right">205.61KB</td>
+<td align="right">23.351</td>
 <td align="right">20</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.004</td>
-<td align="right">0.085</td>
-<td align="right">1.22</td>
+<td align="right">2</td>
+<td align="right">85.6ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
+<td align="right">7.8ms</td>
+<td align="right">8.64ms</td>
+<td align="right">106.683</td>
+<td align="right">0B</td>
+<td align="right">32.005</td>
 <td align="right">20</td>
-<td align="right">0.008</td>
-<td align="right">0.009</td>
-<td align="right">0.009</td>
-<td align="right">0.009</td>
-<td align="right">0.009</td>
-<td align="right">0.010</td>
-<td align="right">0.176</td>
-<td align="right">2.48</td>
+<td align="right">6</td>
+<td align="right">187.5ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
+<td align="right">9.08ms</td>
+<td align="right">9.43ms</td>
+<td align="right">97.782</td>
+<td align="right">386.24KB</td>
+<td align="right">24.446</td>
 <td align="right">20</td>
-<td align="right">0.010</td>
-<td align="right">0.010</td>
-<td align="right">0.010</td>
-<td align="right">0.010</td>
-<td align="right">0.011</td>
-<td align="right">0.012</td>
-<td align="right">0.208</td>
-<td align="right">2.88</td>
+<td align="right">5</td>
+<td align="right">204.5ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
+<td align="right">42.05ms</td>
+<td align="right">43.1ms</td>
+<td align="right">22.738</td>
+<td align="right">0B</td>
+<td align="right">23.875</td>
 <td align="right">20</td>
-<td align="right">0.042</td>
-<td align="right">0.043</td>
-<td align="right">0.043</td>
-<td align="right">0.043</td>
-<td align="right">0.044</td>
-<td align="right">0.046</td>
-<td align="right">0.868</td>
-<td align="right">12.50</td>
+<td align="right">21</td>
+<td align="right">879.6ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
+<td align="right">42.43ms</td>
+<td align="right">43.13ms</td>
+<td align="right">23.024</td>
+<td align="right">2.04MB</td>
+<td align="right">25.327</td>
 <td align="right">20</td>
-<td align="right">0.044</td>
-<td align="right">0.044</td>
-<td align="right">0.045</td>
-<td align="right">0.045</td>
-<td align="right">0.045</td>
-<td align="right">0.046</td>
-<td align="right">0.891</td>
-<td align="right">12.80</td>
+<td align="right">22</td>
+<td align="right">868.6ms</td>
 </tr>
 </tbody>
 </table>
@@ -1458,105 +1373,97 @@ competitive if you compare the table above to the one below.</p>
 <span>        ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.1d</span>, fv <span class="op">=</span> <span class="va">I.1d_v</span>,</span>
-<span>             lowerLimit <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upperLimit <span class="op">=</span> <span class="fl">2</span>, times <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>             lowerLimit <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, upperLimit <span class="op">=</span> <span class="fl">2</span>, iterations <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="35%">
-<col width="7%">
-<col width="4%">
-<col width="6%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="31%">
+<col width="8%">
+<col width="8%">
 <col width="10%">
+<col width="10%">
+<col width="8%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
+<td align="right">112.9µs</td>
+<td align="right">119.4µs</td>
+<td align="right">7949.969</td>
+<td align="right">53.7KB</td>
+<td align="right">0.000</td>
 <td align="right">100</td>
 <td align="right">0</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.014</td>
-<td align="right">2.30</td>
+<td align="right">12.58ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
+<td align="right">194.3µs</td>
+<td align="right">206.6µs</td>
+<td align="right">4761.105</td>
+<td align="right">68.5KB</td>
+<td align="right">0.000</td>
 <td align="right">100</td>
 <td align="right">0</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.023</td>
-<td align="right">3.84</td>
+<td align="right">21ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">100</td>
-<td align="right">0</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.006</td>
-<td align="right">1.00</td>
+<td align="right">49.2µs</td>
+<td align="right">56.8µs</td>
+<td align="right">16143.375</td>
+<td align="right">0B</td>
+<td align="right">163.064</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">6.13ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
+<td align="right">131.8µs</td>
+<td align="right">136.7µs</td>
+<td align="right">6932.497</td>
+<td align="right">0B</td>
+<td align="right">0.000</td>
 <td align="right">100</td>
 <td align="right">0</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.017</td>
-<td align="right">2.81</td>
+<td align="right">14.43ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">100</td>
-<td align="right">0</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.024</td>
-<td align="right">4.08</td>
+<td align="right">200.8µs</td>
+<td align="right">224.8µs</td>
+<td align="right">4303.243</td>
+<td align="right">0B</td>
+<td align="right">43.467</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">23.01ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">100</td>
-<td align="right">0</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.057</td>
-<td align="right">9.05</td>
+<td align="right">457.3µs</td>
+<td align="right">487.8µs</td>
+<td align="right">1988.945</td>
+<td align="right">0B</td>
+<td align="right">20.090</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">49.77ms</td>
 </tr>
 </tbody>
 </table>
@@ -1574,105 +1481,97 @@ competitive if you compare the table above to the one below.</p>
 <span>           ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">harness</span><span class="op">(</span>f <span class="op">=</span> <span class="va">I.2d</span>, fv <span class="op">=</span> <span class="va">I.2d_v</span>,</span>
-<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>             lowerLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, upperLimit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, iterations <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="34%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="7%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
-<col width="6%">
+<col width="31%">
+<col width="9%">
+<col width="9%">
+<col width="9%">
 <col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="5%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">expr</th>
-<th align="right">n.eval</th>
+<th align="left">expression</th>
 <th align="right">min</th>
-<th align="right">lw.qu</th>
 <th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">up.qu</th>
-<th align="right">max</th>
-<th align="right">total</th>
-<th align="right">relative</th>
+<th align="right">itr/sec</th>
+<th align="right">mem_alloc</th>
+<th align="right">gc/sec</th>
+<th align="right">n_itr</th>
+<th align="right">n_gc</th>
+<th align="right">total_time</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">100</td>
-<td align="right">0.004</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.005</td>
-<td align="right">0.006</td>
-<td align="right">0.480</td>
-<td align="right">10.60</td>
+<td align="right">4.32ms</td>
+<td align="right">4.48ms</td>
+<td align="right">218.946</td>
+<td align="right">78.4KB</td>
+<td align="right">35.642</td>
+<td align="right">86</td>
+<td align="right">14</td>
+<td align="right">392.8ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">100</td>
-<td align="right">0.006</td>
-<td align="right">0.006</td>
-<td align="right">0.006</td>
-<td align="right">0.006</td>
-<td align="right">0.006</td>
-<td align="right">0.008</td>
-<td align="right">0.586</td>
-<td align="right">13.10</td>
+<td align="right">5.46ms</td>
+<td align="right">5.6ms</td>
+<td align="right">178.056</td>
+<td align="right">304.7KB</td>
+<td align="right">26.606</td>
+<td align="right">87</td>
+<td align="right">13</td>
+<td align="right">488.6ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">100</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.045</td>
-<td align="right">1.00</td>
+<td align="right">373.51µs</td>
+<td align="right">420.07µs</td>
+<td align="right">2308.003</td>
+<td align="right">0B</td>
+<td align="right">47.102</td>
+<td align="right">98</td>
+<td align="right">2</td>
+<td align="right">42.5ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">100</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.065</td>
-<td align="right">1.50</td>
+<td align="right">580.31µs</td>
+<td align="right">611.19µs</td>
+<td align="right">1619.748</td>
+<td align="right">18.3KB</td>
+<td align="right">16.361</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">61.1ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">100</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.002</td>
-<td align="right">0.001</td>
-<td align="right">0.054</td>
-<td align="right">0.184</td>
-<td align="right">2.98</td>
+<td align="right">1.15ms</td>
+<td align="right">1.19ms</td>
+<td align="right">825.542</td>
+<td align="right">0B</td>
+<td align="right">25.532</td>
+<td align="right">97</td>
+<td align="right">3</td>
+<td align="right">117.5ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">100</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.001</td>
-<td align="right">0.003</td>
-<td align="right">0.147</td>
-<td align="right">3.27</td>
+<td align="right">1.29ms</td>
+<td align="right">1.33ms</td>
+<td align="right">745.039</td>
+<td align="right">60.1KB</td>
+<td align="right">23.042</td>
+<td align="right">97</td>
+<td align="right">3</td>
+<td align="right">130.2ms</td>
 </tr>
 </tbody>
 </table>
@@ -1713,9 +1612,9 @@ using in a production package.</p></li>
 </h2>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.5.0 (2025-04-11)</span></span>
+<pre><code><span><span class="co">## R version 4.5.2 (2025-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">## Running under: Ubuntu 24.04.2 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 24.04.3 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
@@ -1734,16 +1633,18 @@ using in a production package.</p></li>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] mvtnorm_1.3-3  cubature_2.1.4 benchr_0.2.5  </span></span>
+<span><span class="co">## [1] mvtnorm_1.3-3    cubature_2.1.4-1 bench_1.1.4     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] digest_0.6.37      desc_1.4.3         R6_2.6.1           fastmap_1.2.0     </span></span>
-<span><span class="co">##  [5] xfun_0.52          cachem_1.1.0       knitr_1.50         htmltools_0.5.8.1 </span></span>
-<span><span class="co">##  [9] rmarkdown_2.29     lifecycle_1.0.4    cli_3.6.5          RcppProgress_0.4.2</span></span>
-<span><span class="co">## [13] sass_0.4.10        pkgdown_2.1.3      textshaping_1.0.1  jquerylib_0.1.4   </span></span>
-<span><span class="co">## [17] systemfonts_1.2.3  compiler_4.5.0     tools_4.5.0        ragg_1.4.0        </span></span>
-<span><span class="co">## [21] evaluate_1.0.3     bslib_0.9.0        Rcpp_1.0.14        yaml_2.3.10       </span></span>
-<span><span class="co">## [25] jsonlite_2.0.0     rlang_1.1.6        fs_1.6.6</span></span></code></pre>
+<span><span class="co">##  [1] vctrs_0.6.5       cli_3.6.5         knitr_1.50        rlang_1.1.6      </span></span>
+<span><span class="co">##  [5] xfun_0.54         textshaping_1.0.4 jsonlite_2.0.0    glue_1.8.0       </span></span>
+<span><span class="co">##  [9] htmltools_0.5.8.1 ragg_1.5.0        sass_0.4.10       rmarkdown_2.30   </span></span>
+<span><span class="co">## [13] tibble_3.3.0      evaluate_1.0.5    jquerylib_0.1.4   fastmap_1.2.0    </span></span>
+<span><span class="co">## [17] profmem_0.7.0     yaml_2.3.10       lifecycle_1.0.4   compiler_4.5.2   </span></span>
+<span><span class="co">## [21] fs_1.6.6          pkgconfig_2.0.3   Rcpp_1.1.0        systemfonts_1.3.1</span></span>
+<span><span class="co">## [25] digest_0.6.38     R6_2.6.1          pillar_1.11.1     magrittr_2.0.4   </span></span>
+<span><span class="co">## [29] bslib_0.9.0       tools_4.5.2       pkgdown_2.2.0     cachem_1.1.0     </span></span>
+<span><span class="co">## [33] desc_1.4.3</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -1756,7 +1657,7 @@ using in a production package.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
