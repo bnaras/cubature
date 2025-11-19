@@ -130,16 +130,16 @@ cubintegrate(f = my_dmvnorm, lower = rep(-0.5, 3), upper = c(1, 4, 2), method = 
     ## [1] 0.334113 +- 3.69574e-05      chisq 0.000617628 (8 df)
     ## 
     ## Iteration 10:  2413 integrand evaluations so far
-    ## [1] 0.334113 +- 6.66791e-05      chisq 0.000623038 (9 df)
+    ## [1] 0.334113 +- 6.66791e-05      chisq 0.000623039 (9 df)
     ## 
     ## Iteration 11:  2667 integrand evaluations so far
     ## [1] 0.334113 +- 2.65953e-05      chisq 0.000637044 (10 df)
     ## 
     ## Iteration 12:  2921 integrand evaluations so far
-    ## [1] 0.334113 +- 3.88133e-05      chisq 0.000639546 (11 df)
+    ## [1] 0.334113 +- 3.88133e-05      chisq 0.000639547 (11 df)
     ## 
     ## Iteration 13:  3175 integrand evaluations so far
-    ## [1] 0.334113 +- 2.10511e-05      chisq 0.000643648 (12 df)
+    ## [1] 0.334113 +- 2.10511e-05      chisq 0.000643649 (12 df)
     ## 
     ## Iteration 14:  3429 integrand evaluations so far
     ## [1] 0.334113 +- 1.31307e-05      chisq 0.000650985 (13 df)
@@ -148,13 +148,13 @@ cubintegrate(f = my_dmvnorm, lower = rep(-0.5, 3), upper = c(1, 4, 2), method = 
     ## [1] 0.334113 +- 8.69938e-06      chisq 0.000654884 (14 df)
     ## 
     ## Iteration 16:  3937 integrand evaluations so far
-    ## [1] 0.334113 +- 1.88417e-05      chisq 0.000655651 (15 df)
+    ## [1] 0.334113 +- 1.88417e-05      chisq 0.000655659 (15 df)
     ## 
     ## Iteration 17:  4191 integrand evaluations so far
-    ## [1] 0.334113 +- 1.59906e-05      chisq 0.000656605 (16 df)
+    ## [1] 0.334113 +- 1.59906e-05      chisq 0.000656612 (16 df)
     ## 
     ## Iteration 18:  4445 integrand evaluations so far
-    ## [1] 0.334113 +- 4.85581e-06      chisq 0.000660554 (17 df)
+    ## [1] 0.334113 +- 4.85581e-06      chisq 0.000660539 (17 df)
     ## 
     ## Iteration 19:  4699 integrand evaluations so far
     ## [1] 0.334113 +- 2.22627e-06      chisq 0.000668228 (18 df)
