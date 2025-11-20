@@ -1,3 +1,7 @@
+# cubature 2.1.4-6
+
+Removed `Makevars.wasm` and pointed to new Cuba fixes.
+
 # cubature 2.1.4-5
 
 - Modified `Makevars.wasm`
