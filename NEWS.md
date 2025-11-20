@@ -1,3 +1,7 @@
+# cubature 2.1.4-4
+
+- Modified `configure.guess`
+
 # cubature 2.1.4-3
 
 - Added `Makevars.wasm`
