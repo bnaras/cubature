@@ -1,3 +1,7 @@
+# cubature 2.1.4-3
+
+- Added `Makevars.wasm`
+
 # cubature 2.1.4-2
 
 - Updated Cuba configure files (`config.guess`, `config.sub`)
