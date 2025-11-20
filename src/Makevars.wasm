@@ -1,0 +1,31 @@
+CUBATURE_DIR=cubature-1.0.4
+CUBA_DIR=Cuba
+
+R_INC_FLAG=-I"$(R_INCLUDE_DIR)"
+PKG_CPPFLAGS=-I. -I../inst/include -I../../inst/include -I./src/common -D_R_INTERFACE
+PKG_LIBS=-L./$(CUBATURE_DIR) -L./$(CUBA_DIR) -lcubature -lcuba
+
+$(SHLIB): Rcpp-cubature.o Rcpp-Cuba.o RcppExports.o cubature_init.o
+
+Rcpp-cubature.o: cubature.ts
+RcppExports.o: cuba.ts cubature.ts
+Rcpp-Cuba.o: cuba.ts
+
+cubature.ts:
+	((cd $(CUBATURE_DIR) && \
+	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CPPFLAGS) $(PKG_CPPFLAGS) $(R_INC_FLAG) $(CFLAGS) $(CPICFLAGS)" AR="$(AR)" RANLIB="$(RANLIB)")) && \
+	touch $@)
+
+cuba.ts:
+	((cd $(CUBA_DIR) && \
+	./configure --build=wasm32-unknown-emscripten --host=wasm32-unknown-emscripten $(R_CONFIGURE_FLAGS) && \
+	$(MAKE) libcuba.a CC="$(CC)" CFLAGS="$(CPPFLAGS) $(PKG_CPPFLAGS) $(R_INC_FLAG) $(CFLAGS) $(CPICFLAGS)" AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)") && \
+	touch $@)
+
+clean:
+	rm -f Rcpp-cubature.o RcppExports.o cubature.so Rcpp-Cuba.o cubature_init.o
+	rm -f $(CUBATURE_DIR)/*.o
+	rm -f $(CUBATURE_DIR)/libcubature.a cubature.ts
+	rm -f $(CUBA_DIR)/*.o
+	rm -f $(CUBA_DIR)/libcuba.a cuba.ts
+
