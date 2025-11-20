@@ -342,7 +342,7 @@ sessionInfo()
     ## [1] cubature_2.1.4-3
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] digest_0.6.38     desc_1.4.3        R6_2.6.1          fastmap_1.2.0    
+    ##  [1] digest_0.6.39     desc_1.4.3        R6_2.6.1          fastmap_1.2.0    
     ##  [5] xfun_0.54         cachem_1.1.0      knitr_1.50        htmltools_0.5.8.1
     ##  [9] rmarkdown_2.30    lifecycle_1.0.4   cli_3.6.5         sass_0.4.10      
     ## [13] pkgdown_2.2.0     textshaping_1.0.4 jquerylib_0.1.4   systemfonts_1.3.1
