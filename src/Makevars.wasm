@@ -5,6 +5,13 @@ R_INC_FLAG=-I"$(R_INCLUDE_DIR)"
 PKG_CPPFLAGS=-I. -I../inst/include -I../../inst/include -I./src/common -D_R_INTERFACE
 PKG_LIBS=-L./$(CUBATURE_DIR) -L./$(CUBA_DIR) -lcubature -lcuba
 
+$(info *** USING MAKEVARS.WASM ***)
+
+CC = emcc
+CXX = em++
+AR = emar
+RANLIB = emranlib
+
 $(SHLIB): Rcpp-cubature.o Rcpp-Cuba.o RcppExports.o cubature_init.o
 
 Rcpp-cubature.o: cubature.ts
@@ -12,13 +19,15 @@ RcppExports.o: cuba.ts cubature.ts
 Rcpp-Cuba.o: cuba.ts
 
 cubature.ts:
+	@echo "Compiling $< with $(CC)"
 	((cd $(CUBATURE_DIR) && \
 	($(MAKE) libcubature.a CC="$(CC)" CFLAGS="$(CPPFLAGS) $(PKG_CPPFLAGS) $(R_INC_FLAG) $(CFLAGS) $(CPICFLAGS)" AR="$(AR)" RANLIB="$(RANLIB)")) && \
 	touch $@)
 
 cuba.ts:
+	@echo "Compiling $< with $(CC)"
 	((cd $(CUBA_DIR) && \
-	./configure --build=wasm32-unknown-emscripten --host=wasm32-unknown-emscripten $(R_CONFIGURE_FLAGS) && \
+	./configure $(R_CONFIGURE_FLAGS) && \
 	$(MAKE) libcuba.a CC="$(CC)" CFLAGS="$(CPPFLAGS) $(PKG_CPPFLAGS) $(R_INC_FLAG) $(CFLAGS) $(CPICFLAGS)" AR="$(AR)" ARFLAGS="-rv" RANLIB="$(RANLIB)") && \
 	touch $@)
 
