@@ -69,7 +69,7 @@
                         <h4 data-toc-skip class="author">Balasubramanian
 Narasimhan</h4>
             
-            <h4 data-toc-skip class="date">2025-11-19</h4>
+            <h4 data-toc-skip class="date">2025-11-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bnaras/cubature/blob/main/vignettes/cubature.Rmd" class="external-link"><code>vignettes/cubature.Rmd</code></a></small>
       <div class="d-none name"><code>cubature.Rmd</code></div>
@@ -181,9 +181,9 @@ calls. We begin by creating a harness for these calls.</p>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="32%">
+<col width="31%">
 <col width="9%">
-<col width="8%">
+<col width="9%">
 <col width="9%">
 <col width="10%">
 <col width="7%">
@@ -205,69 +205,69 @@ calls. We begin by creating a harness for these calls.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">270.88µs</td>
-<td align="right">282.6µs</td>
-<td align="right">3512.711</td>
+<td align="right">272.62µs</td>
+<td align="right">284.25µs</td>
+<td align="right">3467.632</td>
 <td align="right">59.3KB</td>
-<td align="right">35.482</td>
+<td align="right">35.027</td>
 <td align="right">99</td>
 <td align="right">1</td>
-<td align="right">28.2ms</td>
+<td align="right">28.6ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">389.52µs</td>
-<td align="right">412.1µs</td>
-<td align="right">2395.089</td>
+<td align="right">395µs</td>
+<td align="right">418.68µs</td>
+<td align="right">2357.743</td>
 <td align="right">54.5KB</td>
-<td align="right">24.193</td>
+<td align="right">23.816</td>
 <td align="right">99</td>
 <td align="right">1</td>
-<td align="right">41.3ms</td>
+<td align="right">42ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">853.12µs</td>
-<td align="right">886.1µs</td>
-<td align="right">1114.087</td>
+<td align="right">872.97µs</td>
+<td align="right">896.86µs</td>
+<td align="right">1099.629</td>
 <td align="right">31.2KB</td>
-<td align="right">34.456</td>
+<td align="right">34.009</td>
 <td align="right">97</td>
 <td align="right">3</td>
-<td align="right">87.1ms</td>
+<td align="right">88.2ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">1.16ms</td>
-<td align="right">1.2ms</td>
-<td align="right">826.148</td>
+<td align="right">1.21ms</td>
+<td align="right">1.24ms</td>
+<td align="right">795.401</td>
 <td align="right">58.4KB</td>
-<td align="right">16.860</td>
+<td align="right">16.233</td>
 <td align="right">98</td>
 <td align="right">2</td>
-<td align="right">118.6ms</td>
+<td align="right">123.2ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">586.12µs</td>
-<td align="right">602.8µs</td>
-<td align="right">1643.600</td>
+<td align="right">591.12µs</td>
+<td align="right">607.86µs</td>
+<td align="right">1633.375</td>
 <td align="right">40.5KB</td>
-<td align="right">16.602</td>
+<td align="right">16.499</td>
 <td align="right">99</td>
 <td align="right">1</td>
-<td align="right">60.2ms</td>
+<td align="right">60.6ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">588.08µs</td>
-<td align="right">621.9µs</td>
-<td align="right">1606.397</td>
+<td align="right">601.8µs</td>
+<td align="right">637.24µs</td>
+<td align="right">1566.886</td>
 <td align="right">39.8KB</td>
-<td align="right">32.784</td>
+<td align="right">31.977</td>
 <td align="right">98</td>
 <td align="right">2</td>
-<td align="right">61ms</td>
+<td align="right">62.5ms</td>
 </tr>
 </tbody>
 </table>
@@ -346,69 +346,69 @@ analog (<code>my_dmvnorm_v</code>). First the functions.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">819.85ms</td>
-<td align="right">827.25ms</td>
-<td align="right">1.186</td>
+<td align="right">845.58ms</td>
+<td align="right">851.77ms</td>
+<td align="right">1.151</td>
 <td align="right">139.68KB</td>
-<td align="right">18.389</td>
+<td align="right">17.844</td>
 <td align="right">10</td>
 <td align="right">155</td>
-<td align="right">8.43s</td>
+<td align="right">8.69s</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">1.77ms</td>
-<td align="right">2.49ms</td>
-<td align="right">440.758</td>
+<td align="right">1.82ms</td>
+<td align="right">2.55ms</td>
+<td align="right">423.708</td>
 <td align="right">1.89MB</td>
 <td align="right">0.000</td>
 <td align="right">10</td>
 <td align="right">0</td>
-<td align="right">22.69ms</td>
+<td align="right">23.6ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">343.79ms</td>
-<td align="right">348.71ms</td>
-<td align="right">2.834</td>
+<td align="right">363.38ms</td>
+<td align="right">366.59ms</td>
+<td align="right">2.679</td>
 <td align="right">0B</td>
-<td align="right">18.421</td>
+<td align="right">17.416</td>
 <td align="right">10</td>
 <td align="right">65</td>
-<td align="right">3.53s</td>
+<td align="right">3.73s</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">1.25ms</td>
-<td align="right">1.27ms</td>
-<td align="right">682.377</td>
+<td align="right">1.28ms</td>
+<td align="right">1.32ms</td>
+<td align="right">626.560</td>
 <td align="right">810.26KB</td>
-<td align="right">68.238</td>
+<td align="right">62.656</td>
 <td align="right">10</td>
 <td align="right">1</td>
-<td align="right">14.65ms</td>
+<td align="right">15.96ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">330.49ms</td>
-<td align="right">332.85ms</td>
-<td align="right">3.008</td>
+<td align="right">352.33ms</td>
+<td align="right">353.85ms</td>
+<td align="right">2.822</td>
 <td align="right">0B</td>
-<td align="right">18.948</td>
+<td align="right">17.778</td>
 <td align="right">10</td>
 <td align="right">63</td>
-<td align="right">3.33s</td>
+<td align="right">3.54s</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">3.19ms</td>
-<td align="right">3.25ms</td>
-<td align="right">306.119</td>
+<td align="right">3.34ms</td>
+<td align="right">3.39ms</td>
+<td align="right">292.965</td>
 <td align="right">898.41KB</td>
 <td align="right">0.000</td>
 <td align="right">10</td>
 <td align="right">0</td>
-<td align="right">32.67ms</td>
+<td align="right">34.13ms</td>
 </tr>
 </tbody>
 </table>
@@ -460,36 +460,36 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">g1()</td>
-<td align="right">760µs</td>
+<td align="right">767µs</td>
 <td align="right">1.38ms</td>
-<td align="right">735.101</td>
+<td align="right">731.020</td>
 <td align="right">355.13KB</td>
 <td align="right">0</td>
 <td align="right">20</td>
 <td align="right">0</td>
-<td align="right">27.2ms</td>
+<td align="right">27.4ms</td>
 </tr>
 <tr class="even">
 <td align="left">g2()</td>
-<td align="right">757µs</td>
-<td align="right">1.36ms</td>
-<td align="right">760.078</td>
+<td align="right">748µs</td>
+<td align="right">1.37ms</td>
+<td align="right">757.928</td>
 <td align="right">2.49KB</td>
 <td align="right">0</td>
 <td align="right">20</td>
 <td align="right">0</td>
-<td align="right">26.3ms</td>
+<td align="right">26.4ms</td>
 </tr>
 <tr class="odd">
 <td align="left">g3()</td>
-<td align="right">747µs</td>
-<td align="right">1.37ms</td>
-<td align="right">738.318</td>
+<td align="right">762µs</td>
+<td align="right">1.38ms</td>
+<td align="right">734.542</td>
 <td align="right">2.49KB</td>
 <td align="right">0</td>
 <td align="right">20</td>
 <td align="right">0</td>
-<td align="right">27.1ms</td>
+<td align="right">27.2ms</td>
 </tr>
 </tbody>
 </table>
@@ -530,69 +530,69 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">37.7µs</td>
-<td align="right">39.8µs</td>
-<td align="right">24409.837</td>
+<td align="right">36.6µs</td>
+<td align="right">39.4µs</td>
+<td align="right">24555.168</td>
 <td align="right">7.66KB</td>
-<td align="right">24.434</td>
+<td align="right">24.580</td>
 <td align="right">999</td>
 <td align="right">1</td>
-<td align="right">40.9ms</td>
+<td align="right">40.7ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">64.4µs</td>
-<td align="right">67.6µs</td>
-<td align="right">14315.604</td>
+<td align="right">65.3µs</td>
+<td align="right">68.8µs</td>
+<td align="right">13930.744</td>
 <td align="right">1.16KB</td>
-<td align="right">28.689</td>
+<td align="right">27.917</td>
 <td align="right">998</td>
 <td align="right">2</td>
-<td align="right">69.7ms</td>
+<td align="right">71.6ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
 <td align="right">49µs</td>
-<td align="right">50.6µs</td>
-<td align="right">19208.439</td>
+<td align="right">51.2µs</td>
+<td align="right">18906.070</td>
 <td align="right">0B</td>
-<td align="right">19.228</td>
+<td align="right">18.925</td>
 <td align="right">999</td>
 <td align="right">1</td>
-<td align="right">52ms</td>
+<td align="right">52.8ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">113.5µs</td>
-<td align="right">118.4µs</td>
-<td align="right">8212.793</td>
+<td align="right">114.4µs</td>
+<td align="right">121.8µs</td>
+<td align="right">7967.540</td>
 <td align="right">18.68KB</td>
-<td align="right">24.713</td>
+<td align="right">23.975</td>
 <td align="right">997</td>
 <td align="right">3</td>
-<td align="right">121.4ms</td>
+<td align="right">125.1ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">347.7µs</td>
-<td align="right">359.9µs</td>
-<td align="right">2760.175</td>
+<td align="right">341.3µs</td>
+<td align="right">356µs</td>
+<td align="right">2787.078</td>
 <td align="right">0B</td>
-<td align="right">25.067</td>
+<td align="right">25.312</td>
 <td align="right">991</td>
 <td align="right">9</td>
-<td align="right">359ms</td>
+<td align="right">355.6ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">360.8µs</td>
-<td align="right">377.6µs</td>
-<td align="right">2636.488</td>
+<td align="right">372µs</td>
+<td align="right">395.4µs</td>
+<td align="right">2514.324</td>
 <td align="right">16.38KB</td>
-<td align="right">26.631</td>
+<td align="right">25.397</td>
 <td align="right">990</td>
 <td align="right">10</td>
-<td align="right">375.5ms</td>
+<td align="right">393.7ms</td>
 </tr>
 </tbody>
 </table>
@@ -619,8 +619,8 @@ below.</p>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">d</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="31%">
-<col width="9%">
+<col width="32%">
+<col width="7%">
 <col width="9%">
 <col width="10%">
 <col width="10%">
@@ -643,69 +643,69 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">3.03ms</td>
-<td align="right">3.06ms</td>
-<td align="right">326.147</td>
+<td align="right">2.9ms</td>
+<td align="right">2.95ms</td>
+<td align="right">336.323</td>
 <td align="right">67.3KB</td>
-<td align="right">36.239</td>
-<td align="right">9</td>
-<td align="right">1</td>
-<td align="right">27.6ms</td>
+<td align="right">0.000</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">29.73ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">4.94ms</td>
-<td align="right">5.02ms</td>
-<td align="right">197.433</td>
+<td align="right">5.1ms</td>
+<td align="right">5.17ms</td>
+<td align="right">192.985</td>
 <td align="right">290.5KB</td>
-<td align="right">21.937</td>
-<td align="right">9</td>
-<td align="right">1</td>
-<td align="right">45.6ms</td>
+<td align="right">48.246</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">41.45ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">75.18µs</td>
-<td align="right">76.66µs</td>
-<td align="right">12524.679</td>
+<td align="right">74.9µs</td>
+<td align="right">77.09µs</td>
+<td align="right">11727.996</td>
 <td align="right">0B</td>
 <td align="right">0.000</td>
 <td align="right">10</td>
 <td align="right">0</td>
-<td align="right">798.4µs</td>
+<td align="right">852.66µs</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">151.19µs</td>
-<td align="right">154.62µs</td>
-<td align="right">6261.958</td>
+<td align="right">159µs</td>
+<td align="right">165.87µs</td>
+<td align="right">5736.449</td>
 <td align="right">4.1KB</td>
 <td align="right">0.000</td>
 <td align="right">10</td>
 <td align="right">0</td>
-<td align="right">1.6ms</td>
+<td align="right">1.74ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">13.38ms</td>
-<td align="right">13.46ms</td>
-<td align="right">74.142</td>
+<td align="right">13.8ms</td>
+<td align="right">13.96ms</td>
+<td align="right">71.547</td>
 <td align="right">0B</td>
-<td align="right">31.775</td>
+<td align="right">30.663</td>
 <td align="right">7</td>
 <td align="right">3</td>
-<td align="right">94.4ms</td>
+<td align="right">97.84ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">20.03ms</td>
-<td align="right">20.05ms</td>
-<td align="right">49.443</td>
+<td align="right">21.2ms</td>
+<td align="right">21.24ms</td>
+<td align="right">46.996</td>
 <td align="right">971.5KB</td>
-<td align="right">49.443</td>
+<td align="right">46.996</td>
 <td align="right">5</td>
 <td align="right">5</td>
-<td align="right">101.1ms</td>
+<td align="right">106.39ms</td>
 </tr>
 </tbody>
 </table>
@@ -754,47 +754,47 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">46.8ms</td>
-<td align="right">47.3ms</td>
-<td align="right">18.439</td>
+<td align="right">48.9ms</td>
+<td align="right">49.2ms</td>
+<td align="right">17.149</td>
 <td align="right">17.7KB</td>
-<td align="right">36.878</td>
+<td align="right">34.298</td>
 <td align="right">10</td>
 <td align="right">20</td>
-<td align="right">542.34ms</td>
+<td align="right">583.13ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">47ms</td>
-<td align="right">47.7ms</td>
-<td align="right">20.900</td>
+<td align="right">49.9ms</td>
+<td align="right">50.6ms</td>
+<td align="right">19.628</td>
 <td align="right">1011.8KB</td>
-<td align="right">27.170</td>
+<td align="right">23.553</td>
 <td align="right">10</td>
-<td align="right">13</td>
-<td align="right">478.47ms</td>
+<td align="right">12</td>
+<td align="right">509.49ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">785.9ms</td>
-<td align="right">821ms</td>
-<td align="right">1.228</td>
+<td align="right">828.8ms</td>
+<td align="right">839.2ms</td>
+<td align="right">1.183</td>
 <td align="right">0B</td>
-<td align="right">28.866</td>
+<td align="right">27.923</td>
 <td align="right">10</td>
-<td align="right">235</td>
-<td align="right">8.14s</td>
+<td align="right">236</td>
+<td align="right">8.45s</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">884.9ms</td>
-<td align="right">899.5ms</td>
-<td align="right">1.103</td>
+<td align="right">940.1ms</td>
+<td align="right">955.3ms</td>
+<td align="right">1.037</td>
 <td align="right">21.2MB</td>
-<td align="right">25.048</td>
+<td align="right">23.544</td>
 <td align="right">10</td>
 <td align="right">227</td>
-<td align="right">9.06s</td>
+<td align="right">9.64s</td>
 </tr>
 </tbody>
 </table>
@@ -835,69 +835,69 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">60µs</td>
-<td align="right">61.7µs</td>
-<td align="right">15783.593</td>
+<td align="right">57.7µs</td>
+<td align="right">60.9µs</td>
+<td align="right">15522.842</td>
 <td align="right">6.75KB</td>
 <td align="right">0.000</td>
 <td align="right">50</td>
 <td align="right">0</td>
-<td align="right">3.17ms</td>
+<td align="right">3.22ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">91.1µs</td>
-<td align="right">97µs</td>
-<td align="right">9942.231</td>
+<td align="right">91.8µs</td>
+<td align="right">95.8µs</td>
+<td align="right">10003.803</td>
 <td align="right">2.91KB</td>
 <td align="right">0.000</td>
 <td align="right">50</td>
 <td align="right">0</td>
-<td align="right">5.03ms</td>
+<td align="right">5ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">51.3µs</td>
-<td align="right">55.3µs</td>
-<td align="right">17228.781</td>
+<td align="right">51µs</td>
+<td align="right">53.9µs</td>
+<td align="right">17386.257</td>
 <td align="right">0B</td>
-<td align="right">351.608</td>
-<td align="right">49</td>
-<td align="right">1</td>
-<td align="right">2.84ms</td>
-</tr>
-<tr class="even">
-<td align="left">Vectorized Pcubature</td>
-<td align="right">81.2µs</td>
-<td align="right">83.7µs</td>
-<td align="right">11607.434</td>
-<td align="right">19.12KB</td>
 <td align="right">0.000</td>
 <td align="right">50</td>
 <td align="right">0</td>
-<td align="right">4.31ms</td>
+<td align="right">2.88ms</td>
+</tr>
+<tr class="even">
+<td align="left">Vectorized Pcubature</td>
+<td align="right">82.7µs</td>
+<td align="right">89.4µs</td>
+<td align="right">10289.507</td>
+<td align="right">19.12KB</td>
+<td align="right">209.990</td>
+<td align="right">49</td>
+<td align="right">1</td>
+<td align="right">4.76ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">640.6µs</td>
-<td align="right">664.3µs</td>
-<td align="right">1503.319</td>
+<td align="right">651.4µs</td>
+<td align="right">678.3µs</td>
+<td align="right">1473.807</td>
 <td align="right">0B</td>
-<td align="right">30.680</td>
+<td align="right">30.078</td>
 <td align="right">49</td>
 <td align="right">1</td>
-<td align="right">32.59ms</td>
+<td align="right">33.25ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">654.6µs</td>
-<td align="right">679.3µs</td>
-<td align="right">1465.846</td>
+<td align="right">666.1µs</td>
+<td align="right">703.1µs</td>
+<td align="right">1422.627</td>
 <td align="right">39.84KB</td>
 <td align="right">0.000</td>
 <td align="right">50</td>
 <td align="right">0</td>
-<td align="right">34.11ms</td>
+<td align="right">35.15ms</td>
 </tr>
 </tbody>
 </table>
@@ -951,69 +951,69 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">1.41ms</td>
-<td align="right">1.45ms</td>
-<td align="right">690.288</td>
+<td align="right">1.37ms</td>
+<td align="right">1.4ms</td>
+<td align="right">708.239</td>
 <td align="right">85.2KB</td>
-<td align="right">36.331</td>
+<td align="right">37.276</td>
 <td align="right">19</td>
 <td align="right">1</td>
-<td align="right">27.5ms</td>
+<td align="right">26.8ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">1.76ms</td>
-<td align="right">1.81ms</td>
-<td align="right">550.014</td>
+<td align="right">1.84ms</td>
+<td align="right">1.9ms</td>
+<td align="right">527.843</td>
 <td align="right">147.2KB</td>
-<td align="right">28.948</td>
+<td align="right">27.781</td>
 <td align="right">19</td>
 <td align="right">1</td>
-<td align="right">34.5ms</td>
+<td align="right">36ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">2.06ms</td>
-<td align="right">2.07ms</td>
-<td align="right">479.560</td>
+<td align="right">2.04ms</td>
+<td align="right">2.08ms</td>
+<td align="right">477.612</td>
 <td align="right">0B</td>
-<td align="right">25.240</td>
+<td align="right">25.137</td>
 <td align="right">19</td>
 <td align="right">1</td>
-<td align="right">39.6ms</td>
+<td align="right">39.8ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">2.58ms</td>
-<td align="right">2.64ms</td>
-<td align="right">377.627</td>
+<td align="right">2.67ms</td>
+<td align="right">2.78ms</td>
+<td align="right">361.781</td>
 <td align="right">68.9KB</td>
-<td align="right">19.875</td>
-<td align="right">19</td>
-<td align="right">1</td>
-<td align="right">50.3ms</td>
+<td align="right">40.198</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">49.8ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">3.27ms</td>
-<td align="right">3.35ms</td>
-<td align="right">298.744</td>
+<td align="right">3.26ms</td>
+<td align="right">3.33ms</td>
+<td align="right">298.684</td>
 <td align="right">0B</td>
-<td align="right">33.194</td>
-<td align="right">18</td>
-<td align="right">2</td>
-<td align="right">60.3ms</td>
+<td align="right">15.720</td>
+<td align="right">19</td>
+<td align="right">1</td>
+<td align="right">63.6ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">3.75ms</td>
-<td align="right">3.79ms</td>
-<td align="right">263.372</td>
+<td align="right">3.88ms</td>
+<td align="right">3.93ms</td>
+<td align="right">253.759</td>
 <td align="right">125.6KB</td>
-<td align="right">13.862</td>
-<td align="right">19</td>
-<td align="right">1</td>
-<td align="right">72.1ms</td>
+<td align="right">28.195</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">70.9ms</td>
 </tr>
 </tbody>
 </table>
@@ -1067,69 +1067,69 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">3.76ms</td>
-<td align="right">3.83ms</td>
-<td align="right">260.061</td>
+<td align="right">3.69ms</td>
+<td align="right">3.74ms</td>
+<td align="right">265.373</td>
 <td align="right">133KB</td>
-<td align="right">28.896</td>
-<td align="right">18</td>
-<td align="right">2</td>
-<td align="right">69.2ms</td>
+<td align="right">46.830</td>
+<td align="right">17</td>
+<td align="right">3</td>
+<td align="right">64.1ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">4.66ms</td>
-<td align="right">4.76ms</td>
-<td align="right">209.691</td>
+<td align="right">4.82ms</td>
+<td align="right">4.92ms</td>
+<td align="right">203.239</td>
 <td align="right">249KB</td>
-<td align="right">37.004</td>
-<td align="right">17</td>
-<td align="right">3</td>
-<td align="right">81.1ms</td>
+<td align="right">22.582</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">88.6ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">2.53ms</td>
-<td align="right">2.57ms</td>
-<td align="right">388.714</td>
+<td align="right">2.55ms</td>
+<td align="right">2.59ms</td>
+<td align="right">385.540</td>
 <td align="right">0B</td>
-<td align="right">20.459</td>
-<td align="right">19</td>
-<td align="right">1</td>
-<td align="right">48.9ms</td>
+<td align="right">42.838</td>
+<td align="right">18</td>
+<td align="right">2</td>
+<td align="right">46.7ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">3.28ms</td>
-<td align="right">3.34ms</td>
-<td align="right">298.501</td>
+<td align="right">3.37ms</td>
+<td align="right">3.46ms</td>
+<td align="right">288.877</td>
 <td align="right">69KB</td>
-<td align="right">33.167</td>
-<td align="right">18</td>
-<td align="right">2</td>
-<td align="right">60.3ms</td>
+<td align="right">15.204</td>
+<td align="right">19</td>
+<td align="right">1</td>
+<td align="right">65.8ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">7.02ms</td>
-<td align="right">7.1ms</td>
-<td align="right">140.698</td>
+<td align="right">7.15ms</td>
+<td align="right">7.21ms</td>
+<td align="right">138.804</td>
 <td align="right">0B</td>
-<td align="right">35.174</td>
-<td align="right">16</td>
-<td align="right">4</td>
-<td align="right">113.7ms</td>
+<td align="right">46.268</td>
+<td align="right">15</td>
+<td align="right">5</td>
+<td align="right">108.1ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">8.27ms</td>
-<td align="right">8.32ms</td>
-<td align="right">118.237</td>
+<td align="right">8.46ms</td>
+<td align="right">8.61ms</td>
+<td align="right">116.132</td>
 <td align="right">224KB</td>
-<td align="right">29.559</td>
-<td align="right">16</td>
-<td align="right">4</td>
-<td align="right">135.3ms</td>
+<td align="right">20.494</td>
+<td align="right">17</td>
+<td align="right">3</td>
+<td align="right">146.4ms</td>
 </tr>
 </tbody>
 </table>
@@ -1178,69 +1178,69 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">1.64ms</td>
-<td align="right">1.66ms</td>
-<td align="right">597.769</td>
+<td align="right">1.61ms</td>
+<td align="right">1.63ms</td>
+<td align="right">613.061</td>
 <td align="right">64.6KB</td>
-<td align="right">31.462</td>
+<td align="right">32.266</td>
 <td align="right">19</td>
 <td align="right">1</td>
-<td align="right">31.8ms</td>
+<td align="right">31ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">2.14ms</td>
-<td align="right">2.17ms</td>
-<td align="right">458.678</td>
+<td align="right">2.18ms</td>
+<td align="right">2.24ms</td>
+<td align="right">446.971</td>
 <td align="right">156KB</td>
-<td align="right">24.141</td>
-<td align="right">19</td>
-<td align="right">1</td>
-<td align="right">41.4ms</td>
+<td align="right">0.000</td>
+<td align="right">20</td>
+<td align="right">0</td>
+<td align="right">44.7ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">8.29ms</td>
-<td align="right">8.45ms</td>
-<td align="right">118.735</td>
+<td align="right">8.23ms</td>
+<td align="right">8.37ms</td>
+<td align="right">119.499</td>
 <td align="right">0B</td>
-<td align="right">39.578</td>
+<td align="right">39.833</td>
 <td align="right">15</td>
 <td align="right">5</td>
-<td align="right">126.3ms</td>
+<td align="right">125.5ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">10.44ms</td>
-<td align="right">10.69ms</td>
-<td align="right">93.258</td>
+<td align="right">10.45ms</td>
+<td align="right">10.72ms</td>
+<td align="right">93.443</td>
 <td align="right">386.2KB</td>
-<td align="right">31.086</td>
+<td align="right">31.148</td>
 <td align="right">15</td>
 <td align="right">5</td>
-<td align="right">160.8ms</td>
+<td align="right">160.5ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">4.45ms</td>
-<td align="right">4.51ms</td>
-<td align="right">221.317</td>
+<td align="right">4.33ms</td>
+<td align="right">4.42ms</td>
+<td align="right">226.651</td>
 <td align="right">0B</td>
-<td align="right">24.591</td>
+<td align="right">25.183</td>
 <td align="right">18</td>
 <td align="right">2</td>
-<td align="right">81.3ms</td>
+<td align="right">79.4ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">4.8ms</td>
-<td align="right">4.88ms</td>
-<td align="right">204.856</td>
+<td align="right">4.87ms</td>
+<td align="right">5.01ms</td>
+<td align="right">199.387</td>
 <td align="right">225.8KB</td>
-<td align="right">22.762</td>
+<td align="right">22.154</td>
 <td align="right">18</td>
 <td align="right">2</td>
-<td align="right">87.9ms</td>
+<td align="right">90.3ms</td>
 </tr>
 </tbody>
 </table>
@@ -1291,69 +1291,69 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">3.58ms</td>
-<td align="right">3.66ms</td>
-<td align="right">259.614</td>
+<td align="right">3.39ms</td>
+<td align="right">3.48ms</td>
+<td align="right">267.142</td>
 <td align="right">32.89KB</td>
-<td align="right">25.961</td>
+<td align="right">26.714</td>
 <td align="right">20</td>
 <td align="right">2</td>
-<td align="right">77ms</td>
+<td align="right">74.9ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">4.05ms</td>
-<td align="right">4.15ms</td>
-<td align="right">230.495</td>
+<td align="right">4.1ms</td>
+<td align="right">4.24ms</td>
+<td align="right">220.062</td>
 <td align="right">205.61KB</td>
-<td align="right">23.050</td>
+<td align="right">22.006</td>
 <td align="right">20</td>
 <td align="right">2</td>
-<td align="right">86.8ms</td>
+<td align="right">90.9ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">8.4ms</td>
-<td align="right">8.56ms</td>
-<td align="right">110.484</td>
+<td align="right">8.48ms</td>
+<td align="right">8.74ms</td>
+<td align="right">106.842</td>
 <td align="right">0B</td>
-<td align="right">33.145</td>
+<td align="right">26.711</td>
 <td align="right">20</td>
-<td align="right">6</td>
-<td align="right">181ms</td>
+<td align="right">5</td>
+<td align="right">187.2ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">9.57ms</td>
-<td align="right">9.76ms</td>
-<td align="right">97.284</td>
+<td align="right">9.87ms</td>
+<td align="right">10.04ms</td>
+<td align="right">93.003</td>
 <td align="right">386.24KB</td>
-<td align="right">24.321</td>
+<td align="right">23.251</td>
 <td align="right">20</td>
 <td align="right">5</td>
-<td align="right">205.6ms</td>
+<td align="right">215ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">43.9ms</td>
-<td align="right">45.56ms</td>
-<td align="right">21.902</td>
+<td align="right">44.53ms</td>
+<td align="right">45.16ms</td>
+<td align="right">21.974</td>
 <td align="right">0B</td>
-<td align="right">24.092</td>
+<td align="right">24.172</td>
 <td align="right">20</td>
 <td align="right">22</td>
-<td align="right">913.2ms</td>
+<td align="right">910.2ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">44.52ms</td>
-<td align="right">45.14ms</td>
-<td align="right">22.086</td>
+<td align="right">45.36ms</td>
+<td align="right">46.02ms</td>
+<td align="right">21.593</td>
 <td align="right">2.04MB</td>
-<td align="right">23.190</td>
+<td align="right">22.673</td>
 <td align="right">20</td>
 <td align="right">21</td>
-<td align="right">905.6ms</td>
+<td align="right">926.2ms</td>
 </tr>
 </tbody>
 </table>
@@ -1401,69 +1401,69 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">126.2µs</td>
-<td align="right">130.5µs</td>
-<td align="right">7464.944</td>
+<td align="right">127µs</td>
+<td align="right">138.1µs</td>
+<td align="right">6996.101</td>
 <td align="right">53.7KB</td>
-<td align="right">0.000</td>
-<td align="right">100</td>
-<td align="right">0</td>
-<td align="right">13.4ms</td>
+<td align="right">70.668</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">14.15ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">212.1µs</td>
-<td align="right">223.4µs</td>
-<td align="right">4302.687</td>
+<td align="right">212.9µs</td>
+<td align="right">225.3µs</td>
+<td align="right">4290.781</td>
 <td align="right">68.5KB</td>
-<td align="right">43.461</td>
-<td align="right">99</td>
-<td align="right">1</td>
-<td align="right">23.01ms</td>
+<td align="right">0.000</td>
+<td align="right">100</td>
+<td align="right">0</td>
+<td align="right">23.31ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">51.4µs</td>
-<td align="right">53.3µs</td>
-<td align="right">18206.392</td>
+<td align="right">51.8µs</td>
+<td align="right">54.1µs</td>
+<td align="right">17704.325</td>
 <td align="right">0B</td>
 <td align="right">0.000</td>
 <td align="right">100</td>
 <td align="right">0</td>
-<td align="right">5.49ms</td>
+<td align="right">5.65ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">154.5µs</td>
-<td align="right">162µs</td>
-<td align="right">6039.379</td>
+<td align="right">154.8µs</td>
+<td align="right">165.3µs</td>
+<td align="right">5643.709</td>
+<td align="right">0B</td>
+<td align="right">57.007</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">17.54ms</td>
+</tr>
+<tr class="odd">
+<td align="left">Non-vectorized cubature::cuhre</td>
+<td align="right">219.8µs</td>
+<td align="right">229.7µs</td>
+<td align="right">4280.917</td>
 <td align="right">0B</td>
 <td align="right">0.000</td>
 <td align="right">100</td>
 <td align="right">0</td>
-<td align="right">16.56ms</td>
-</tr>
-<tr class="odd">
-<td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">223.1µs</td>
-<td align="right">229.8µs</td>
-<td align="right">4273.118</td>
-<td align="right">0B</td>
-<td align="right">43.163</td>
-<td align="right">99</td>
-<td align="right">1</td>
-<td align="right">23.17ms</td>
+<td align="right">23.36ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">497.9µs</td>
-<td align="right">523.2µs</td>
-<td align="right">1893.390</td>
+<td align="right">502.7µs</td>
+<td align="right">530.4µs</td>
+<td align="right">1848.474</td>
 <td align="right">0B</td>
-<td align="right">19.125</td>
+<td align="right">18.671</td>
 <td align="right">99</td>
 <td align="right">1</td>
-<td align="right">52.29ms</td>
+<td align="right">53.56ms</td>
 </tr>
 </tbody>
 </table>
@@ -1509,69 +1509,69 @@ below.</p>
 <tbody>
 <tr class="odd">
 <td align="left">Non-vectorized Hcubature</td>
-<td align="right">4.75ms</td>
-<td align="right">4.82ms</td>
-<td align="right">206.691</td>
+<td align="right">4.56ms</td>
+<td align="right">4.66ms</td>
+<td align="right">210.996</td>
 <td align="right">78.4KB</td>
-<td align="right">30.885</td>
-<td align="right">87</td>
-<td align="right">13</td>
-<td align="right">420.9ms</td>
+<td align="right">34.348</td>
+<td align="right">86</td>
+<td align="right">14</td>
+<td align="right">407.6ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Hcubature</td>
-<td align="right">5.42ms</td>
-<td align="right">5.53ms</td>
-<td align="right">180.407</td>
+<td align="right">5.54ms</td>
+<td align="right">5.72ms</td>
+<td align="right">173.807</td>
 <td align="right">304.7KB</td>
-<td align="right">29.369</td>
-<td align="right">86</td>
-<td align="right">14</td>
-<td align="right">476.7ms</td>
+<td align="right">25.971</td>
+<td align="right">87</td>
+<td align="right">13</td>
+<td align="right">500.6ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized Pcubature</td>
-<td align="right">411.64µs</td>
-<td align="right">426.05µs</td>
-<td align="right">2334.373</td>
+<td align="right">408.58µs</td>
+<td align="right">432.05µs</td>
+<td align="right">2272.399</td>
 <td align="right">0B</td>
-<td align="right">23.580</td>
+<td align="right">22.954</td>
 <td align="right">99</td>
 <td align="right">1</td>
-<td align="right">42.4ms</td>
+<td align="right">43.6ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized Pcubature</td>
-<td align="right">599.31µs</td>
-<td align="right">625.27µs</td>
-<td align="right">1590.094</td>
+<td align="right">617.04µs</td>
+<td align="right">650.51µs</td>
+<td align="right">1496.325</td>
 <td align="right">18.3KB</td>
-<td align="right">16.062</td>
-<td align="right">99</td>
-<td align="right">1</td>
-<td align="right">62.3ms</td>
+<td align="right">30.537</td>
+<td align="right">98</td>
+<td align="right">2</td>
+<td align="right">65.5ms</td>
 </tr>
 <tr class="odd">
 <td align="left">Non-vectorized cubature::cuhre</td>
-<td align="right">1.23ms</td>
-<td align="right">1.26ms</td>
-<td align="right">789.506</td>
+<td align="right">1.25ms</td>
+<td align="right">1.3ms</td>
+<td align="right">752.656</td>
 <td align="right">0B</td>
-<td align="right">24.418</td>
+<td align="right">23.278</td>
 <td align="right">97</td>
 <td align="right">3</td>
-<td align="right">122.9ms</td>
+<td align="right">128.9ms</td>
 </tr>
 <tr class="even">
 <td align="left">Vectorized cubature::cuhre</td>
-<td align="right">1.33ms</td>
 <td align="right">1.36ms</td>
-<td align="right">728.257</td>
+<td align="right">1.4ms</td>
+<td align="right">698.721</td>
 <td align="right">60.1KB</td>
-<td align="right">30.344</td>
-<td align="right">96</td>
-<td align="right">4</td>
-<td align="right">131.8ms</td>
+<td align="right">21.610</td>
+<td align="right">97</td>
+<td align="right">3</td>
+<td align="right">138.8ms</td>
 </tr>
 </tbody>
 </table>
