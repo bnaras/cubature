@@ -1,28 +1,10 @@
 # Changelog
 
-## cubature 2.1.4-6
-
-Removed `Makevars.wasm` and pointed to new Cuba fixes.
-
-## cubature 2.1.4-5
-
-- Modified `Makevars.wasm`
-
-## cubature 2.1.4-4
-
-- Modified `configure.guess`
-
-## cubature 2.1.4-3
-
-- Added `Makevars.wasm`
-
-## cubature 2.1.4-2
-
-- Updated Cuba configure files (`config.guess`, `config.sub`)
-
 ## cubature 2.1.4-1
 
 - Removed use of `benchr` in favor of `bench` for benchmarking.
+- Added `Makevars.webr` for wasm. Updated Cuba configure files
+  (`config.guess`, `config.sub`) in that process.
 
 ## cubature 2.1.4
 
