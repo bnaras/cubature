@@ -1,0 +1,46 @@
+CUBATURE_DIR=cubature-1.0.4
+CUBA_DIR=Cuba
+
+R_INC_FLAG=-I"$(R_INCLUDE_DIR)"
+PKG_CPPFLAGS=-I. -I../inst/include -I../../inst/include -I./src/common -D_R_INTERFACE
+PKG_LIBS=-L./$(CUBATURE_DIR) -L./$(CUBA_DIR) -lcubature -lcuba
+
+## Emscripten toolchain + flags for cubature_init.o
+WASM_CC      = emcc
+WASM_CXX     = em++
+WASM_AR      = emar
+WASM_RANLIB  = emranlib
+WASM_ARFLAGS = -rv
+WASM_CFLAGS  = $(CPPFLAGS) $(PKG_CPPFLAGS) $(R_INC_FLAG) $(CFLAGS) $(CPICFLAGS)
+
+$(SHLIB): Rcpp-cubature.o Rcpp-Cuba.o RcppExports.o cubature_init.o
+
+Rcpp-cubature.o: cubature.ts
+RcppExports.o: cuba.ts cubature.ts
+Rcpp-Cuba.o: cuba.ts
+cubature_init.o: cuba.ts cubature.ts
+
+## Force cubature_init.o to be built with the emscripten tools and flags above
+cubature_init.o: cubature_init.c
+	CC=$(WASM_CC) CXX=$(WASM_CXX) AR=$(WASM_AR) RANLIB=$(WASM_RANLIB) \
+	  CFLAGS="$(WASM_CFLAGS)" ARFLAGS="$(WASM_ARFLAGS)" \
+	  $(WASM_CC) $(WASM_CFLAGS) -c $< -o $@
+
+cubature.ts:
+	((cd $(CUBATURE_DIR) && \
+	($(MAKE) libcubature.a CC="emcc" CXX="em++" AR="emar" RANLIB="emranlib" CFLAGS="$(CPPFLAGS) $(PKG_CPPFLAGS) $(R_INC_FLAG) $(CFLAGS) $(CPICFLAGS)"  ARFLAGS="-rv")) && \
+	touch $@)
+
+cuba.ts:
+	((cd $(CUBA_DIR) && \
+	./configure $(R_CONFIGURE_FLAGS) && \
+	$(MAKE) libcuba.a CC="emcc" CXX="em++" AR="emar" RANLIB="emranlib" CFLAGS="$(CPPFLAGS) $(PKG_CPPFLAGS) $(R_INC_FLAG) $(CFLAGS) $(CPICFLAGS)"  ARFLAGS="-rv") && \
+	touch $@)
+
+clean:
+	rm -f Rcpp-cubature.o RcppExports.o cubature.so Rcpp-Cuba.o cubature_init.o
+	rm -f $(CUBATURE_DIR)/*.o
+	rm -f $(CUBATURE_DIR)/libcubature.a cubature.ts
+	rm -f $(CUBA_DIR)/*.o
+	rm -f $(CUBA_DIR)/libcuba.a cuba.ts
+
