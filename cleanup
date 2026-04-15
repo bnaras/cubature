@@ -2,4 +2,4 @@
 
 (cd src/Cuba && make distclean)
 (cd src/libcubature && make clean)
-rm -f src/*.o src/*.so src/*.ts src/*.dll src/*.a
+rm -f src/*.o src/*.so src/*.dll src/*.a
