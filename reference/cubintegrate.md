@@ -18,6 +18,7 @@ cubintegrate(
   absTol = 1e-12,
   maxEval = 10^6,
   nVec = 1L,
+  robust = FALSE,
   ...
 )
 ```
@@ -73,6 +74,19 @@ cubintegrate(
   calls. Therefore, any value for nVec greater than one implies
   vectorization for a cubature method.
 
+- robust:
+
+  Logical (or a non-negative integer); defaults to `FALSE`. When `TRUE`
+  and `method` is `"hcubature"` or `"pcubature"`, activates the optional
+  robust-error-estimation safeguards — see the `robust` argument of
+  [`hcubature()`](hcubature.md) and [`pcubature()`](hcubature.md) for
+  details. When `method` is any Cuba method (`"cuhre"`, `"divonne"`,
+  `"suave"`, `"vegas"`) the argument is silently ignored, because those
+  methods already use more conservative error estimators and do not need
+  the safeguards. Handled as a formal argument here so that passing
+  `robust = TRUE` is safe regardless of which method is selected, and so
+  it never collides with integrand arguments flowing through `...`.
+
 - ...:
 
   All other arguments which may include integration method specific
@@ -85,29 +99,54 @@ The returned value is a list of items:
 
 - integral:
 
-  the value of the integral
+  the value of the integral (a numeric vector of length `fDim` for
+  vector integrands).
 
 - error:
 
-  the estimated absolute error
+  the estimated absolute error on `integral`. Callers who set a
+  tolerance (`relTol` / `absTol`) should treat the integral as reliable
+  only when `error` satisfies that tolerance.
 
 - neval:
 
-  the number of times the function was evaluated
+  the number of times the integrand was evaluated.
 
 - returnCode:
 
-  the actual integer return code of the C routine; a non-zero value
-  usually indicates problems; further interpretation depends on method
+  an integer status code from the underlying method. Interpretation
+  depends on the method:
+
+  - For `method = "hcubature"` or `method = "pcubature"` the code is one
+    of `0` (success — converged to the requested tolerance), `1` (hard
+    internal failure — the result should be ignored), or `2` (not
+    converged — the `maxEval` budget was exhausted before the tolerance
+    was met; `integral` and `error` hold the best-effort estimate and
+    should be treated as provisional). A
+    [`warning()`](https://rdrr.io/r/base/warning.html) is also emitted
+    when the code is `2`. The return code `2` is new in cubature 2.2.0;
+    prior versions silently reported `0` on budget exhaustion. See
+    [`hcubature()`](hcubature.md) for details.
+
+  - For the Cuba methods (`"cuhre"`, `"divonne"`, `"suave"`, `"vegas"`)
+    the code follows the convention of the Cuba library: `0` indicates
+    the requested accuracy was achieved, a positive value indicates
+    accuracy was not achieved, and a negative value indicates a hard
+    error (invalid dimensions or components). Consult the documentation
+    for [`cuhre()`](cuhre.md), [`divonne()`](divonne.md),
+    [`suave()`](suave.md), and [`vegas()`](vegas.md) for method-specific
+    interpretation.
 
 - nregions:
 
-  forcCuba routines, the actual number of subregions needed
+  for Cuba routines, the actual number of subregions used during
+  integration.
 
 - prob:
 
   the \\\chi^2\\-probability (not the \\\chi^2\\-value itself!) that
-  `error` is not a reliable estimate of the true integration error.
+  `error` is not a reliable estimate of the true integration error. Cuba
+  methods only.
 
 ## See also
 

@@ -16,10 +16,10 @@ hcubature(
   tol = 1e-05,
   fDim = 1,
   maxEval = 0,
-  absError = .Machine$double.eps * 10^2/2,
-  doChecking = FALSE,
+  absError = .Machine$double.eps * 10^2,
   vectorInterface = FALSE,
-  norm = c("INDIVIDUAL", "PAIRED", "L2", "L1", "LINF")
+  norm = c("INDIVIDUAL", "PAIRED", "L2", "L1", "LINF"),
+  robust = FALSE
 )
 
 pcubature(
@@ -31,9 +31,9 @@ pcubature(
   fDim = 1,
   maxEval = 0,
   absError = .Machine$double.eps * 10^2,
-  doChecking = FALSE,
   vectorInterface = FALSE,
-  norm = c("INDIVIDUAL", "PAIRED", "L2", "L1", "LINF")
+  norm = c("INDIVIDUAL", "PAIRED", "L2", "L1", "LINF"),
+  robust = FALSE
 )
 ```
 
@@ -73,12 +73,7 @@ pcubature(
 - absError:
 
   The maximum absolute error tolerated, default
-  `.Machine$double_eps * 10^2`.
-
-- doChecking:
-
-  As of version 2.0, this flag is ignored and will be dropped in
-  forthcoming versions
+  `.Machine$double.eps * 10^2`.
 
 - vectorInterface:
 
@@ -90,25 +85,82 @@ pcubature(
   For vector-valued integrands, `norm` specifies the norm that is used
   to measure the error and determine convergence properties. See below.
 
+- robust:
+
+  Logical; defaults to `FALSE`. If `TRUE`, `hcubature` uses a more
+  conservative error-estimation strategy combining a degree-3 null rule
+  with the existing degree-5 null rule via a Cuhre-style decay-check
+  formula, a parent-child consistency check at the subdivision step, and
+  a peak-density suspect-region detector. The robust path is opt-in
+  because it can increase the number of function evaluations (by 0% on
+  most smooth integrands and up to ~30% on sharply-peaked ones), and it
+  addresses silent "fool's-convergence" failures observed on non-smooth
+  integrands with thin or localized support (e.g. a `(max(L(x), 0))^2`
+  kink, a nearly-step logistic, or a very-narrow Gaussian inside an
+  oversized bounding box). It is not a complete cure for all such cases
+  — if the integrand's support is much smaller than the inter-sample
+  spacing of the base rule, no amount of error-model cleverness can
+  detect it; for those cases shrink the integration domain or use
+  `cubintegrate(method = "cuhre")`. Only applies to `hcubature`;
+  `pcubature` ignores it.
+
 ## Value
 
 The returned value is a list of four items:
 
 - integral:
 
-  the value of the integral
+  the value of the integral (a numeric vector of length `fDim` for
+  vector integrands)
 
 - error:
 
-  the estimated absolute error
+  the estimated absolute error on `integral`, as reported by the
+  underlying routine. For single-integrand problems this is a single
+  number; for vector integrands it is one error estimate per component.
+  Callers who supplied a tolerance (`tol` for relative or `absError` for
+  absolute) should treat the integral as reliable only when `error`
+  satisfies that tolerance.
 
 - functionEvaluations:
 
-  the number of times the function was evaluated
+  the number of times the integrand was evaluated. Use this to budget
+  `maxEval` across calls.
 
 - returnCode:
 
-  the actual integer return code of the C routine
+  an integer status code from the underlying C routine, taking one of
+  three values:
+
+  `0` (success)
+
+  :   the integrator reached the requested tolerance. The result can be
+      trusted to `error` precision.
+
+  `1` (failure)
+
+  :   a hard internal error — allocation failure, invalid parameters, an
+      integrand that returned a non-zero error code, or similar. In this
+      case `integral` and `error` should be ignored; the call has not
+      produced a meaningful result.
+
+  `2` (not converged)
+
+  :   the `maxEval` budget was exhausted before the requested tolerance
+      was met. The `integral` and `error` fields still contain the best
+      available estimate and its reported error bound, but the result
+      has not been verified to satisfy the caller's tolerance and should
+      be treated as best-effort. The R-level wrappers also emit a
+      [`warning()`](https://rdrr.io/r/base/warning.html) in this case;
+      wrap the call in
+      [`suppressWarnings()`](https://rdrr.io/r/base/warning.html) to
+      silence the warning if the best-effort value is acceptable for
+      your use. This return code is new in cubature 2.2.0; prior
+      versions silently reported `0` (success) on budget exhaustion,
+      with the caller expected to compare `error` against their own
+      tolerance. The symbolic constants `CUBATURE_SUCCESS`,
+      `CUBATURE_FAILURE`, and `CUBATURE_NOT_CONVERGED` are exported from
+      the upstream C header for compiled clients.
 
 ## Details
 
@@ -178,21 +230,55 @@ Balasubramanian Narasimhan
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-## Test function 0
-## Compare with original cubature result of
-## ./cubature_test 2 1e-4 0 0
-## 2-dim integral, tolerance = 0.0001
-## integrand 0: integral = 0.708073, est err = 1.70943e-05, true err = 7.69005e-09
-## #evals = 17
+## Simple example: integrate product of cosines over [0,1]^2
+testFn0 <- function(x) prod(cos(x))
+hcubature(testFn0, rep(0, 2), rep(1, 2), tol = 1e-4)
+#> $integral
+#> [1] 0.7080734
+#> 
+#> $error
+#> [1] 1.709434e-05
+#> 
+#> $functionEvaluations
+#> [1] 17
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
-testFn0 <- function(x) {
-  prod(cos(x))
-}
+## Simple polynomial: integral should be exactly 1
+testFn3 <- function(x) prod(2 * x)
+hcubature(testFn3, rep(0, 3), rep(1, 3), tol = 1e-4)
+#> $integral
+#> [1] 1
+#> 
+#> $error
+#> [1] 2.220446e-16
+#> 
+#> $functionEvaluations
+#> [1] 33
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
-hcubature(testFn0, rep(0,2), rep(1,2), tol=1e-4)
+# \donttest{
+## More examples (not run during R CMD check)
 
-pcubature(testFn0, rep(0,2), rep(1,2), tol=1e-4)
+## Product of cosines with pcubature
+pcubature(testFn0, rep(0, 2), rep(1, 2), tol = 1e-4)
+#> $integral
+#> [1] 0.7080734
+#> 
+#> $error
+#> [1] 1.518315e-07
+#> 
+#> $functionEvaluations
+#> [1] 81
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 M_2_SQRTPI <- 2/sqrt(pi)
 
@@ -210,7 +296,31 @@ testFn1 <- function(x) {
 }
 
 hcubature(testFn1, rep(0, 3), rep(1, 3), tol=1e-4)
+#> $integral
+#> [1] 1.00001
+#> 
+#> $error
+#> [1] 9.677977e-05
+#> 
+#> $functionEvaluations
+#> [1] 5115
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 pcubature(testFn1, rep(0, 3), rep(1, 3), tol=1e-4)
+#> $integral
+#> [1] NaN
+#> 
+#> $error
+#> [1] 0
+#> 
+#> $functionEvaluations
+#> [1] 27
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 ##
 ## Test function 2
@@ -227,7 +337,31 @@ testFn2 <- function(x) {
 }
 
 hcubature(testFn2, rep(0, 2), rep(1, 2), tol=1e-4)
+#> $integral
+#> [1] 0.1972834
+#> 
+#> $error
+#> [1] 1.972631e-05
+#> 
+#> $functionEvaluations
+#> [1] 164543
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 pcubature(testFn2, rep(0, 2), rep(1, 2), tol=1e-4)
+#> $integral
+#> [1] 0.1973732
+#> 
+#> $error
+#> [1] 8.220791e-06
+#> 
+#> $functionEvaluations
+#> [1] 1052929
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 ##
 ## Test function 3
@@ -242,7 +376,31 @@ testFn3 <- function(x) {
 }
 
 hcubature(testFn3, rep(0,3), rep(1,3), tol=1e-4)
+#> $integral
+#> [1] 1
+#> 
+#> $error
+#> [1] 2.220446e-16
+#> 
+#> $functionEvaluations
+#> [1] 33
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 pcubature(testFn3, rep(0,3), rep(1,3), tol=1e-4)
+#> $integral
+#> [1] 1
+#> 
+#> $error
+#> [1] 0
+#> 
+#> $functionEvaluations
+#> [1] 27
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 ##
 ## Test function 4 (Gaussian centered at 1/2)
@@ -259,7 +417,31 @@ testFn4 <- function(x) {
 }
 
 hcubature(testFn4, rep(0,2), rep(1,2), tol=1e-4)
+#> $integral
+#> [1] 1.000003
+#> 
+#> $error
+#> [1] 9.843987e-05
+#> 
+#> $functionEvaluations
+#> [1] 1853
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 pcubature(testFn4, rep(0,2), rep(1,2), tol=1e-4)
+#> $integral
+#> [1] 1
+#> 
+#> $error
+#> [1] 4.415857e-09
+#> 
+#> $functionEvaluations
+#> [1] 4225
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 ##
 ## Test function 5 (double Gaussian)
@@ -277,7 +459,31 @@ testFn5 <- function(x) {
 }
 
 hcubature(testFn5, rep(0,3), rep(1,3), tol=1e-4)
+#> $integral
+#> [1] 0.9999937
+#> 
+#> $error
+#> [1] 9.976201e-05
+#> 
+#> $functionEvaluations
+#> [1] 58377
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 pcubature(testFn5, rep(0,3), rep(1,3), tol=1e-4)
+#> $integral
+#> [1] 0.9999963
+#> 
+#> $error
+#> [1] 7.175992e-05
+#> 
+#> $functionEvaluations
+#> [1] 35937
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 ##
 ## Test function 6 (Tsuda's example)
@@ -293,7 +499,32 @@ testFn6 <- function(x) {
 }
 
 hcubature(testFn6, rep(0,4), rep(1,4), tol=1e-4)
+#> $integral
+#> [1] 0.9999984
+#> 
+#> $error
+#> [1] 9.996851e-05
+#> 
+#> $functionEvaluations
+#> [1] 18753
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 pcubature(testFn6, rep(0,4), rep(1,4), tol=1e-4)
+#> Warning: pcubature not recommended for dimensions > 3!
+#> $integral
+#> [1] 1
+#> 
+#> $error
+#> [1] 1.729307e-06
+#> 
+#> $functionEvaluations
+#> [1] 83521
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 
 ##
@@ -314,11 +545,35 @@ testFn7 <- function(x) {
 }
 
 hcubature(testFn7, rep(0,3), rep(1,3), tol=1e-4)
+#> $integral
+#> [1] 1.000012
+#> 
+#> $error
+#> [1] 9.966567e-05
+#> 
+#> $functionEvaluations
+#> [1] 7887
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 pcubature(testFn7, rep(0,3), rep(1,3), tol=1e-4)
+#> $integral
+#> [1] 0.9999878
+#> 
+#> $error
+#> [1] 2.175551e-05
+#> 
+#> $functionEvaluations
+#> [1] 274625
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 
 ## Example from web page
-## http://ab-initio.mit.edu/wiki/index.php/Cubature
+## https://github.com/stevengj/cubature
 ##
 ## f(x) = exp(-0.5(euclidean_norm(x)^2)) over the three-dimensional
 ## hyperbcube [-2, 2]^3
@@ -328,7 +583,31 @@ testFnWeb <-  function(x) {
 }
 
 hcubature(testFnWeb, rep(-2,3), rep(2,3), tol=1e-4)
+#> $integral
+#> [1] 13.69609
+#> 
+#> $error
+#> [1] 0.001369187
+#> 
+#> $functionEvaluations
+#> [1] 3399
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 pcubature(testFnWeb, rep(-2,3), rep(2,3), tol=1e-4)
+#> $integral
+#> [1] 13.69611
+#> 
+#> $error
+#> [1] 7.242129e-05
+#> 
+#> $functionEvaluations
+#> [1] 4913
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 ## Test function I.1d from
 ## Numerical integration using Wang-Landau sampling
@@ -342,7 +621,31 @@ I.1d <- function(x) {
 }
 
 hcubature(I.1d, -2, 2, tol=1e-7)
+#> $integral
+#> [1] 1.635644
+#> 
+#> $error
+#> [1] 4.024021e-09
+#> 
+#> $functionEvaluations
+#> [1] 105
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 pcubature(I.1d, -2, 2, tol=1e-7)
+#> $integral
+#> [1] 1.635644
+#> 
+#> $error
+#> [1] 1.332268e-15
+#> 
+#> $functionEvaluations
+#> [1] 65
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 ## Test function I.2d from
 ## Numerical integration using Wang-Landau sampling
@@ -358,7 +661,32 @@ I.2d <- function(x) {
 }
 
 hcubature(I.2d, rep(-1, 2), rep(1, 2), maxEval=10000)
+#> Warning: hcubature: maxEval (10000) exhausted before the requested tolerance was reached. Returning best-effort estimate; treat the result with caution and consider a larger maxEval, robust = TRUE, or cubintegrate(method = "cuhre").
+#> $integral
+#> [1] -0.01797993
+#> 
+#> $error
+#> [1] 7.845607e-07
+#> 
+#> $functionEvaluations
+#> [1] 10013
+#> 
+#> $returnCode
+#> [1] 2
+#> 
 pcubature(I.2d, rep(-1, 2), rep(1, 2), maxEval=10000)
+#> $integral
+#> [1] -0.01797993
+#> 
+#> $error
+#> [1] 2.092601e-10
+#> 
+#> $functionEvaluations
+#> [1] 1089
+#> 
+#> $returnCode
+#> [1] 0
+#> 
 
 ##
 ## Example of multivariate normal integration borrowed from
@@ -402,8 +730,33 @@ sigma[3,2] <- sigma[2, 3] <- 11/15
 hcubature(dmvnorm, lower=rep(-0.5, m), upper=c(1,4,2),
                         mean=rep(0, m), sigma=sigma, log=FALSE,
                maxEval=10000)
+#> Warning: hcubature: maxEval (10000) exhausted before the requested tolerance was reached. Returning best-effort estimate; treat the result with caution and consider a larger maxEval, robust = TRUE, or cubintegrate(method = "cuhre").
+#> $integral
+#> [1] 0.3341125
+#> 
+#> $error
+#> [1] 4.185435e-06
+#> 
+#> $functionEvaluations
+#> [1] 10065
+#> 
+#> $returnCode
+#> [1] 2
+#> 
 pcubature(dmvnorm, lower=rep(-0.5, m), upper=c(1,4,2),
                         mean=rep(0, m), sigma=sigma, log=FALSE,
                maxEval=10000)
-} # }
+#> $integral
+#> [1] 0.3341125
+#> 
+#> $error
+#> [1] 2.21207e-06
+#> 
+#> $functionEvaluations
+#> [1] 4913
+#> 
+#> $returnCode
+#> [1] 0
+#> 
+# }
 ```

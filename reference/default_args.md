@@ -120,43 +120,43 @@ default_args()
 #> NULL
 #> 
 #> 
-#> $sauve
-#> $sauve$minEval
+#> $suave
+#> $suave$minEval
 #> [1] 0
 #> 
-#> $sauve$stateFile
+#> $suave$stateFile
 #> NULL
 #> 
-#> $sauve$flags
-#> $sauve$flags$verbose
+#> $suave$flags
+#> $suave$flags$verbose
 #> [1] 0
 #> 
-#> $sauve$flags$final
+#> $suave$flags$final
 #> [1] 1
 #> 
-#> $sauve$flags$smooth
+#> $suave$flags$smooth
 #> [1] 0
 #> 
-#> $sauve$flags$keep_state
+#> $suave$flags$keep_state
 #> [1] 0
 #> 
-#> $sauve$flags$load_state
+#> $suave$flags$load_state
 #> [1] 0
 #> 
-#> $sauve$flags$level
+#> $suave$flags$level
 #> [1] 0
 #> 
 #> 
-#> $sauve$rngSeed
+#> $suave$rngSeed
 #> [1] 0
 #> 
-#> $sauve$nNew
+#> $suave$nNew
 #> [1] 1000
 #> 
-#> $sauve$nMin
+#> $suave$nMin
 #> [1] 50
 #> 
-#> $sauve$flatness
+#> $suave$flatness
 #> [1] 50
 #> 
 #> 

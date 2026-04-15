@@ -1,6 +1,48 @@
 # Changelog
 
+## cubature 2.2.0
+
+- New `robust = TRUE` argument for
+  [`hcubature()`](../reference/hcubature.md),
+  [`pcubature()`](../reference/hcubature.md), and
+  [`cubintegrate()`](../reference/cubintegrate.md), opting in to more
+  conservative error estimation for non-smooth or localized integrands.
+  Default behavior is unchanged; see the Get Started vignette for
+  details and limitations.
+- **Breaking change**: [`hcubature()`](../reference/hcubature.md) and
+  [`pcubature()`](../reference/hcubature.md) now return `returnCode = 2`
+  (`CUBATURE_NOT_CONVERGED`) and emit a warning when `maxEval` is
+  exhausted without reaching the requested tolerance. Previously such
+  cases silently returned `returnCode = 0`. New C-header constants
+  `CUBATURE_SUCCESS`, `CUBATURE_FAILURE`, and `CUBATURE_NOT_CONVERGED`
+  are exported.
+- Vignettes reorganized: `cubature.Rmd` is now a gentle “Get started”
+  introduction covering [`cubintegrate()`](../reference/cubintegrate.md)
+  and the robust path; benchmark content moved to a new
+  `vectorization.Rmd` vignette. The `version2.Rmd` notes have been
+  retired.
+- New hex sticker (`man/figures/logo.png`) and pkgdown theme.
+- **Breaking change**: Removed deprecated `doChecking` parameter from
+  [`hcubature()`](../reference/hcubature.md) and
+  [`pcubature()`](../reference/hcubature.md) (ignored since v2.0).
+- Fixed [`default_args()`](../reference/default_args.md) typo (`sauve` →
+  `suave`) and [`cubintegrate()`](../reference/cubintegrate.md) doc typo
+  (`forcCuba` → `for Cuba`).
+- Harmonized default `absError` between `hcubature` and `pcubature`
+  (both now `.Machine$double.eps * 10^2`).
+- Updated example URLs from ab-initio.mit.edu to GitHub.
+- Examples changed from `\dontrun{}` to `\donttest{}` with quick
+  examples that run during package checks.
+- Added Windows to the CI test matrix.
+- Build-system fix: `.ts` timestamp files now depend on the C sources,
+  so edits trigger rebuilds correctly.
+- Added a comprehensive test suite covering input validation, error
+  handling, boundary conditions, method consistency, and regression
+  against known reference values.
+
 ## cubature 2.1.4-1
+
+CRAN release: 2025-11-22
 
 - Removed use of `benchr` in favor of `bench` for benchmarking.
 - Added `Makevars.webr` for wasm. Updated Cuba configure files
