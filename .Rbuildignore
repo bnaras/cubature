@@ -1,5 +1,6 @@
 ^\.git$
 ^src/Cuba/\.git$
+^src/libcubature/\.git$
 ^.*\.Rproj$
 ^\.Rhistory$
 ^\.Rproj\.user$
@@ -19,5 +20,13 @@
 ^src/*\.dll$
 ^src/*\.a$
 ^inst/stuff
+^inst/misc
 ^\.github$
 ^revdep$
+^CLAUDE.md$
+^REVIEW\.md$
+^\.claude$
+^issues$
+^data-raw$
+^Rplots\.pdf$
+^[0-9]{4}-[0-9]{2}-[0-9]{2}.*\.txt$

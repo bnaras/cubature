@@ -1,7 +1,7 @@
 Package: cubature
 Type: Package
 Title: Adaptive Multivariate Integration over Hypercubes
-Version: 2.1.4-1
+Version: 2.2.0
 VignetteBuilder: knitr
 SystemRequirements: GNU make and USE_C17
 URL: https://bnaras.github.io/cubature/
@@ -21,10 +21,12 @@ Authors@R: c(person("Balasubramanian", "Narasimhan", role=c("aut", "cre"),
 Description: R wrappers around the cubature C library of Steven
     G. Johnson for adaptive multivariate integration over hypercubes
     and the Cuba C library of Thomas Hahn for deterministic and
-    Monte Carlo integration. Scalar and vector interfaces for 
-    cubature and Cuba routines are provided; the vector interfaces
-    are highly recommended as demonstrated in the package
-    vignette.
+    Monte Carlo integration. A unified interface is provided via
+    `cubintegrate`, and both scalar and vector interfaces are
+    available for cubature and Cuba routines; the vector interfaces
+    are recommended for performance-sensitive work, as demonstrated
+    in the vectorization vignette. An optional robust error
+    estimator is available for non-smooth integrands.
 License: GPL-3
 Encoding: UTF-8
 LinkingTo: Rcpp

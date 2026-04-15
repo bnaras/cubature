@@ -1,9 +1,13 @@
-CUBATURE_DIR=cubature-1.0.4
+CUBATURE_DIR=libcubature
 CUBA_DIR=Cuba
 
 R_INC_FLAG=-I"$(R_INCLUDE_DIR)"
 PKG_CPPFLAGS=-I. -I../inst/include -I../../inst/include -I./src/common -D_R_INTERFACE
 PKG_LIBS=-L./$(CUBATURE_DIR) -L./$(CUBA_DIR) -lcubature -lcuba
+
+# Source file dependencies for proper incremental builds
+CUBATURE_SOURCES=$(wildcard $(CUBATURE_DIR)/*.c $(CUBATURE_DIR)/*.h)
+CUBA_SOURCES=$(wildcard $(CUBA_DIR)/src/*/*.c $(CUBA_DIR)/src/*/*.h $(CUBA_DIR)/src/common/*.c $(CUBA_DIR)/*.h)
 
 ## Emscripten toolchain + flags for cubature_init.o
 WASM_CC      = emcc
@@ -26,12 +30,12 @@ cubature_init.o: cubature_init.c
 	  CFLAGS="$(WASM_CFLAGS)" ARFLAGS="$(WASM_ARFLAGS)" \
 	  $(WASM_CC) $(WASM_CFLAGS) -c $< -o $@
 
-cubature.ts:
+cubature.ts: $(CUBATURE_SOURCES)
 	((cd $(CUBATURE_DIR) && \
 	($(MAKE) libcubature.a CC="emcc" CXX="em++" AR="emar" RANLIB="emranlib" CFLAGS="$(CPPFLAGS) $(PKG_CPPFLAGS) $(R_INC_FLAG) $(CFLAGS) $(CPICFLAGS)"  ARFLAGS="-rv")) && \
 	touch $@)
 
-cuba.ts:
+cuba.ts: $(CUBA_SOURCES)
 	((cd $(CUBA_DIR) && \
 	./configure $(R_CONFIGURE_FLAGS) && \
 	$(MAKE) libcuba.a CC="emcc" CXX="em++" AR="emar" RANLIB="emranlib" CFLAGS="$(CPPFLAGS) $(PKG_CPPFLAGS) $(R_INC_FLAG) $(CFLAGS) $(CPICFLAGS)"  ARFLAGS="-rv") && \

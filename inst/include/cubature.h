@@ -74,24 +74,71 @@ typedef enum {
    absolute or relative error is achieved.  val returns the integral,
    and err returns the estimate for the absolute error in val; both
    of these are arrays of length fdim, the dimension of the vector
-   integrand f(x). The return value of the function is 0 on success
-   and non-zero if there  was an error. */
+   integrand f(x). The return value of the function is one of:
+
+     CUBATURE_SUCCESS         (0) - converged to the requested tolerance
+     CUBATURE_FAILURE         (1) - internal error (e.g. allocation failure,
+                                    invalid parameters); val/err are unset
+     CUBATURE_NOT_CONVERGED   (2) - the maxEval budget was exhausted before
+                                    the requested tolerance was reached;
+                                    val/err hold the best available estimate
+                                    and its (possibly large) error bound,
+                                    which the caller should treat as
+                                    best-effort, not guaranteed
+
+   Note: prior versions returned CUBATURE_SUCCESS even when maxEval was
+   exhausted without meeting the tolerance. Callers that relied on that
+   silent behavior should now explicitly check for CUBATURE_NOT_CONVERGED
+   and act accordingly. */
+#define CUBATURE_SUCCESS        0
+#define CUBATURE_FAILURE        1
+#define CUBATURE_NOT_CONVERGED  2
 
 /* adapative integration by partitioning the integration domain ("h-adaptive")
    and using the same fixed-degree quadrature in each subdomain, recursively,
    until convergence is achieved. */
 int hcubature(unsigned fdim, integrand f, void *fdata,
-	      unsigned dim, const double *xmin, const double *xmax, 
-	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      unsigned dim, const double *xmin, const double *xmax,
+	      size_t maxEval, double reqAbsError, double reqRelError,
 	      error_norm norm,
 	      double *val, double *err);
 
 /* as hcubature, but vectorized integrand */
 int hcubature_v(unsigned fdim, integrand_v f, void *fdata,
-		unsigned dim, const double *xmin, const double *xmax, 
-		size_t maxEval, double reqAbsError, double reqRelError, 
+		unsigned dim, const double *xmin, const double *xmax,
+		size_t maxEval, double reqAbsError, double reqRelError,
 		error_norm norm,
 		double *val, double *err);
+
+/* as hcubature / hcubature_v, but with optional "robust" error
+   estimation enabled. When robust != 0, three additional safeguards
+   are active, at the cost of some extra flops per region and a
+   modest increase in function evaluations for non-smooth integrands:
+   (1) a degree-3 null rule difference is computed alongside the
+       existing degree-5 one and combined with a Cuhre-style
+       decay-check formula (Berntsen, Espelid & Genz, ACM TOMS 17(4),
+       437-451 (1991));
+   (2) a parent-child consistency check is applied at the split step,
+       inflating the children's error by the discrepancy between the
+       sum of their estimates and the parent's prior estimate;
+   (3) a suspect-region detector based on running peak density flags
+       large regions whose density is far below the observed peak and
+       forces further subdivision.
+   When robust == 0 the behavior is identical to hcubature /
+   hcubature_v, bit-for-bit, and no extra work is done.
+   These safeguards address the TODO at the top of hcubature.c (two-
+   level error estimation) and substantially reduce "fool's
+   convergence" on integrands with thin or localized support. */
+int hcubature_robust(unsigned fdim, integrand f, void *fdata,
+		     unsigned dim, const double *xmin, const double *xmax,
+		     size_t maxEval, double reqAbsError, double reqRelError,
+		     error_norm norm,
+		     double *val, double *err, int robust);
+int hcubature_v_robust(unsigned fdim, integrand_v f, void *fdata,
+		       unsigned dim, const double *xmin, const double *xmax,
+		       size_t maxEval, double reqAbsError, double reqRelError,
+		       error_norm norm,
+		       double *val, double *err, int robust);
 
 /* adaptive integration by increasing the degree of (tensor-product
    Clenshaw-Curtis) quadrature rules ("p-adaptive"), rather than
@@ -111,10 +158,30 @@ int pcubature_v(unsigned fdim, integrand_v f, void *fdata,
 		error_norm norm,
 		double *val, double *err);
 int pcubature(unsigned fdim, integrand f, void *fdata,
-	      unsigned dim, const double *xmin, const double *xmax, 
-	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      unsigned dim, const double *xmin, const double *xmax,
+	      size_t maxEval, double reqAbsError, double reqRelError,
 	      error_norm norm,
 	      double *val, double *err);
+
+/* Robust variants of pcubature / pcubature_v: when robust > 0, the
+   Clenshaw-Curtis rule starts at order m=robust in every dimension
+   (instead of m=0), providing denser initial sampling that is less
+   likely to structurally miss localized integrand features. Cost
+   scales as (2^(robust+1)+1)^dim extra function evaluations up
+   front. robust = 0 is identical to the non-robust entry points.
+   This does NOT promise correctness for arbitrarily localized
+   integrands; for those, prefer hcubature(..., robust = 1) or
+   Cuba cuhre / divonne. */
+int pcubature_robust(unsigned fdim, integrand f, void *fdata,
+		     unsigned dim, const double *xmin, const double *xmax,
+		     size_t maxEval, double reqAbsError, double reqRelError,
+		     error_norm norm,
+		     double *val, double *err, int robust);
+int pcubature_v_robust(unsigned fdim, integrand_v f, void *fdata,
+		       unsigned dim, const double *xmin, const double *xmax,
+		       size_t maxEval, double reqAbsError, double reqRelError,
+		       error_norm norm,
+		       double *val, double *err, int robust);
 
 #ifdef __cplusplus
 }  /* extern "C" */

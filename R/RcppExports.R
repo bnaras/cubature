@@ -17,11 +17,11 @@ doDivonne <- function(nComp, f, nDim, nVec, minEval, maxEval, absTol, relTol, ke
     .Call('_cubature_doDivonne', PACKAGE = 'cubature', nComp, f, nDim, nVec, minEval, maxEval, absTol, relTol, key1, key2, key3, maxPass, border, maxChisq, minDeviation, nGiven, ldxGiven, xGiven, nExtra, peakFinder, stateFile, seed, flag, cuba_args)
 }
 
-doHCubature <- function(fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm) {
-    .Call('_cubature_doHCubature', PACKAGE = 'cubature', fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm)
+doHCubature <- function(fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm, robust = 0L) {
+    .Call('_cubature_doHCubature', PACKAGE = 'cubature', fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm, robust)
 }
 
-doPCubature <- function(fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm) {
-    .Call('_cubature_doPCubature', PACKAGE = 'cubature', fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm)
+doPCubature <- function(fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm, robust = 0L) {
+    .Call('_cubature_doPCubature', PACKAGE = 'cubature', fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm, robust)
 }
 

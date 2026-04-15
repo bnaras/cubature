@@ -1,0 +1,46 @@
+/* Force Source Sans 3 on every text element, except KaTeX-rendered math
+   (which has its own .katex font stack and should remain serif/Computer-
+   Modern-style). The litera Bootswatch theme applies Lora (serif) to a
+   handful of elements via class-specific rules that bypass our SCSS
+   font-family overrides; this catches them. */
+
+/* litera's compiled Bootstrap CSS hardcodes `p { font-family:
+   Georgia,Cambria,"Times New Roman",Times,serif }`, which overrides
+   body-level inheritance. We have to name every text-carrying
+   selector explicitly. */
+body,
+p, li, dl, dt, dd, th, td,
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.display-1, .display-2, .display-3, .display-4, .display-5, .display-6,
+.lead,
+blockquote, .blockquote,
+figure, figcaption,
+.navbar, .navbar-brand, .nav, .nav-link,
+.dropdown-menu, .dropdown-item,
+.btn, .form-control, .form-label, .form-text, label,
+.card, .card-title, .card-subtitle, .card-body, .card-text,
+.alert,
+.page-header,
+.template-home h1,
+.section h1, .section h2, .section h3, .section h4,
+.ref-arguments, .ref-description, .ref-usage,
+.pkgdown-footer {
+  font-family: 'Source Sans 3', system-ui, -apple-system,
+               'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Code stays mono. */
+code, pre, kbd, samp,
+.sourceCode, .sourceCode * {
+  font-family: 'JetBrains Mono', Menlo, Consolas, 'Courier New', monospace !important;
+}
+
+/* Leave KaTeX math alone — it ships its own font set and the serif
+   feel of inline math is intentional and standard. */
+.katex,
+.katex *,
+mjx-container,
+mjx-container * {
+  font-family: revert !important;
+}

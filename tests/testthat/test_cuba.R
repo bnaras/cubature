@@ -41,8 +41,6 @@ do_test <- function(info_string,
     })
 }
 
-context("Test known Cuba results")
-
 ## Numerical integration using Wang-Landau sampling
 ## Y. W. Li, T. Wust, D. P. Landau, H. Q. Lin
 ## Computer Physics Communications, 2007, 524-529
