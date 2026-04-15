@@ -47,8 +47,13 @@ jobs:
         with:
           extra-packages: any::testthat, any::Rcpp, any::knitr, any::rmarkdown
 
+      # R CMD INSTALL normally runs a post-install load test in a
+      # fresh R subprocess; that subprocess does not inherit our
+      # LD_PRELOAD and aborts with "ASan runtime does not come first
+      # in initial library list". Skip it with --no-test-load and
+      # do the load ourselves under LD_PRELOAD in the next step.
       - name: Install cubature under sanitizers
-        run: R CMD INSTALL --preclean .
+        run: R CMD INSTALL --preclean --no-test-load .
 
       - name: Run tests under sanitizers
         run: |
