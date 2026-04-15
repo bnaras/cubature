@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [main, master, release-2.2.0-prep]
+    branches: [main, master]
   pull_request:
 
 name: sanitizers.yaml
