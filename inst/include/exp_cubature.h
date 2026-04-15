@@ -74,8 +74,8 @@ extern "C" {
   
   /* as pcubature, but vectorized integrand */
   int pcubature_v(unsigned fdim, integrand_v f, void *fdata,
-                  unsigned dim, const double *xmin, const double *xmax, 
-                  size_t maxEval, double reqAbsError, double reqRelError, 
+                  unsigned dim, const double *xmin, const double *xmax,
+                  size_t maxEval, double reqAbsError, double reqRelError,
                   error_norm norm, double *val, double *err) {
     typedef int (*Fun)(unsigned, integrand_v, void*, unsigned, const double*,
                  const double*, size_t, double, double, error_norm,
@@ -88,9 +88,97 @@ extern "C" {
       UNPROTECT(1);
       fun = (Fun) R_GetCCallable("cubature", "pcubature_v");
     }
-    return fun(fdim,f,fdata,dim,xmin,xmax,maxEval,reqAbsError,reqRelError,norm,val,err); 
+    return fun(fdim,f,fdata,dim,xmin,xmax,maxEval,reqAbsError,reqRelError,norm,val,err);
   }
-  
+
+  /* ------------------------------------------------------------------
+     Robust variants (new in cubature 2.2.0). Each takes an extra
+     trailing `int robust` parameter; when robust != 0, the call
+     activates the opt-in Berntsen-Espelid-Genz style safeguards
+     (multi-null-rule error estimation and parent-child consistency
+     check for hcubature; denser initial Clenshaw-Curtis order for
+     pcubature). Default behavior (robust == 0) is bit-identical to
+     the non-robust entry points above.
+     See https://bnaras.github.io/cubature/articles/cubature.html for
+     the full rationale and caveats.
+     ------------------------------------------------------------------ */
+
+  int hcubature_robust(unsigned fdim, integrand f, void *fdata,
+                       unsigned dim, const double *xmin, const double *xmax,
+                       size_t maxEval, double reqAbsError, double reqRelError,
+                       error_norm norm,
+                       double *val, double *err, int robust) {
+    typedef int (*Fun)(unsigned, integrand, void*, unsigned, const double*,
+                       const double*, size_t, double, double, error_norm,
+                       double*, double*, int);
+    static Fun fun = NULL;
+    if (fun == NULL) {
+      Rf_eval(Rf_lang2(Rf_install("loadNamespace"),
+                       PROTECT(Rf_ScalarString(Rf_mkChar("cubature")))),
+              R_GlobalEnv);
+      UNPROTECT(1);
+      fun = (Fun) R_GetCCallable("cubature", "hcubature_robust");
+    }
+    return fun(fdim,f,fdata,dim,xmin,xmax,maxEval,reqAbsError,reqRelError,norm,val,err,robust);
+  }
+
+  int hcubature_v_robust(unsigned fdim, integrand_v f, void *fdata,
+                         unsigned dim, const double *xmin, const double *xmax,
+                         size_t maxEval, double reqAbsError, double reqRelError,
+                         error_norm norm,
+                         double *val, double *err, int robust) {
+    typedef int (*Fun)(unsigned, integrand_v, void*, unsigned, const double*,
+                       const double*, size_t, double, double, error_norm,
+                       double*, double*, int);
+    static Fun fun = NULL;
+    if (fun == NULL) {
+      Rf_eval(Rf_lang2(Rf_install("loadNamespace"),
+                       PROTECT(Rf_ScalarString(Rf_mkChar("cubature")))),
+              R_GlobalEnv);
+      UNPROTECT(1);
+      fun = (Fun) R_GetCCallable("cubature", "hcubature_v_robust");
+    }
+    return fun(fdim,f,fdata,dim,xmin,xmax,maxEval,reqAbsError,reqRelError,norm,val,err,robust);
+  }
+
+  int pcubature_robust(unsigned fdim, integrand f, void *fdata,
+                       unsigned dim, const double *xmin, const double *xmax,
+                       size_t maxEval, double reqAbsError, double reqRelError,
+                       error_norm norm,
+                       double *val, double *err, int robust) {
+    typedef int (*Fun)(unsigned, integrand, void*, unsigned, const double*,
+                       const double*, size_t, double, double, error_norm,
+                       double*, double*, int);
+    static Fun fun = NULL;
+    if (fun == NULL) {
+      Rf_eval(Rf_lang2(Rf_install("loadNamespace"),
+                       PROTECT(Rf_ScalarString(Rf_mkChar("cubature")))),
+              R_GlobalEnv);
+      UNPROTECT(1);
+      fun = (Fun) R_GetCCallable("cubature", "pcubature_robust");
+    }
+    return fun(fdim,f,fdata,dim,xmin,xmax,maxEval,reqAbsError,reqRelError,norm,val,err,robust);
+  }
+
+  int pcubature_v_robust(unsigned fdim, integrand_v f, void *fdata,
+                         unsigned dim, const double *xmin, const double *xmax,
+                         size_t maxEval, double reqAbsError, double reqRelError,
+                         error_norm norm,
+                         double *val, double *err, int robust) {
+    typedef int (*Fun)(unsigned, integrand_v, void*, unsigned, const double*,
+                       const double*, size_t, double, double, error_norm,
+                       double*, double*, int);
+    static Fun fun = NULL;
+    if (fun == NULL) {
+      Rf_eval(Rf_lang2(Rf_install("loadNamespace"),
+                       PROTECT(Rf_ScalarString(Rf_mkChar("cubature")))),
+              R_GlobalEnv);
+      UNPROTECT(1);
+      fun = (Fun) R_GetCCallable("cubature", "pcubature_v_robust");
+    }
+    return fun(fdim,f,fdata,dim,xmin,xmax,maxEval,reqAbsError,reqRelError,norm,val,err,robust);
+  }
+
 #ifdef __cplusplus
 }
 #endif

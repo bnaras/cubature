@@ -118,8 +118,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // doHCubature
-Rcpp::List doHCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int maxEval, double absErr, double tol, int vectorInterface, unsigned norm);
-RcppExport SEXP _cubature_doHCubature(SEXP fDimSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP maxEvalSEXP, SEXP absErrSEXP, SEXP tolSEXP, SEXP vectorInterfaceSEXP, SEXP normSEXP) {
+Rcpp::List doHCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int maxEval, double absErr, double tol, int vectorInterface, unsigned norm, int robust);
+RcppExport SEXP _cubature_doHCubature(SEXP fDimSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP maxEvalSEXP, SEXP absErrSEXP, SEXP tolSEXP, SEXP vectorInterfaceSEXP, SEXP normSEXP, SEXP robustSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -132,13 +132,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< int >::type vectorInterface(vectorInterfaceSEXP);
     Rcpp::traits::input_parameter< unsigned >::type norm(normSEXP);
-    rcpp_result_gen = Rcpp::wrap(doHCubature(fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm));
+    Rcpp::traits::input_parameter< int >::type robust(robustSEXP);
+    rcpp_result_gen = Rcpp::wrap(doHCubature(fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm, robust));
     return rcpp_result_gen;
 END_RCPP
 }
 // doPCubature
-Rcpp::List doPCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int maxEval, double absErr, double tol, int vectorInterface, unsigned norm);
-RcppExport SEXP _cubature_doPCubature(SEXP fDimSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP maxEvalSEXP, SEXP absErrSEXP, SEXP tolSEXP, SEXP vectorInterfaceSEXP, SEXP normSEXP) {
+Rcpp::List doPCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL, int maxEval, double absErr, double tol, int vectorInterface, unsigned norm, int robust);
+RcppExport SEXP _cubature_doPCubature(SEXP fDimSEXP, SEXP fSEXP, SEXP xLLSEXP, SEXP xULSEXP, SEXP maxEvalSEXP, SEXP absErrSEXP, SEXP tolSEXP, SEXP vectorInterfaceSEXP, SEXP normSEXP, SEXP robustSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -151,7 +152,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< int >::type vectorInterface(vectorInterfaceSEXP);
     Rcpp::traits::input_parameter< unsigned >::type norm(normSEXP);
-    rcpp_result_gen = Rcpp::wrap(doPCubature(fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm));
+    Rcpp::traits::input_parameter< int >::type robust(robustSEXP);
+    rcpp_result_gen = Rcpp::wrap(doPCubature(fDim, f, xLL, xUL, maxEval, absErr, tol, vectorInterface, norm, robust));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -14,6 +14,7 @@ cubintegrate(
   absTol = 1e-12,
   maxEval = 10^6,
   nVec = 1L,
+  robust = FALSE,
   ...
 )
 }
@@ -55,6 +56,19 @@ its own and can vary between calls. Therefore, any value for
 nVec greater than one implies vectorization for a cubature
 method.}
 
+\item{robust}{Logical (or a non-negative integer); defaults to
+\code{FALSE}. When \code{TRUE} and \code{method} is \code{"hcubature"} or
+\code{"pcubature"}, activates the optional robust-error-estimation
+safeguards — see the \code{robust} argument of \code{\link[=hcubature]{hcubature()}} and
+\code{\link[=pcubature]{pcubature()}} for details. When \code{method} is any Cuba method
+(\code{"cuhre"}, \code{"divonne"}, \code{"suave"}, \code{"vegas"}) the argument is
+silently ignored, because those methods already use more
+conservative error estimators and do not need the safeguards.
+Handled as a formal argument here so that passing
+\code{robust = TRUE} is safe regardless of which method is
+selected, and so it never collides with integrand arguments
+flowing through \code{...}.}
+
 \item{...}{All other arguments which may include integration
 method specific parameters and those for f. Unrecognized
 parameters for integration method are presumed to be intended
@@ -63,12 +77,41 @@ for f and so processed.}
 \value{
 The returned value is a list of items:
 \describe{
-\item{integral}{the value of the integral}
-\item{error}{the estimated absolute error}
-\item{neval}{the number of times the function was evaluated}
-\item{returnCode}{the actual integer return code of the C routine; a non-zero value usually indicates problems; further interpretation depends on method}
-\item{nregions}{forcCuba routines, the actual number of subregions needed}
-\item{prob}{the \eqn{\chi^2}{Chi2}-probability (not the \eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a reliable estimate of the true integration error.}
+\item{integral}{the value of the integral (a numeric vector of
+length \code{fDim} for vector integrands).}
+\item{error}{the estimated absolute error on \code{integral}. Callers
+who set a tolerance (\code{relTol} / \code{absTol}) should treat the
+integral as reliable only when \code{error} satisfies that tolerance.}
+\item{neval}{the number of times the integrand was evaluated.}
+\item{returnCode}{an integer status code from the underlying
+method. Interpretation depends on the method:
+\itemize{
+\item For \code{method = "hcubature"} or \code{method = "pcubature"}
+the code is one of \code{0} (success — converged to the
+requested tolerance), \code{1} (hard internal failure — the
+result should be ignored), or \code{2} (not converged — the
+\code{maxEval} budget was exhausted before the tolerance was
+met; \code{integral} and \code{error} hold the best-effort estimate
+and should be treated as provisional). A \code{warning()} is
+also emitted when the code is \code{2}. The return code \code{2} is
+new in cubature 2.2.0; prior versions silently reported
+\code{0} on budget exhaustion. See \code{\link[=hcubature]{hcubature()}} for details.
+\item For the Cuba methods (\code{"cuhre"}, \code{"divonne"},
+\code{"suave"}, \code{"vegas"}) the code follows the convention of
+the Cuba library: \code{0} indicates the requested accuracy was
+achieved, a positive value indicates accuracy was not
+achieved, and a negative value indicates a hard error
+(invalid dimensions or components). Consult the
+documentation for \code{\link[=cuhre]{cuhre()}}, \code{\link[=divonne]{divonne()}}, \code{\link[=suave]{suave()}}, and
+\code{\link[=vegas]{vegas()}} for method-specific interpretation.
+}
+}
+\item{nregions}{for Cuba routines, the actual number of
+subregions used during integration.}
+\item{prob}{the \eqn{\chi^2}{Chi2}-probability (not the
+\eqn{\chi^2}{Chi2}-value itself!) that \code{error} is not a
+reliable estimate of the true integration error. Cuba methods
+only.}
 }
 }
 \description{

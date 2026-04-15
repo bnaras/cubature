@@ -1,0 +1,67 @@
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+name: sanitizers.yaml
+
+permissions: read-all
+
+# Runs the testthat suite under GCC AddressSanitizer + UBSanitizer.
+# R itself is not built with sanitizers on the runner, so we rely on
+# LD_PRELOAD of libasan to make sure ASan's interceptors initialise
+# before R loads the compiled cubature shared object. Leak detection
+# is disabled because R's allocator surfaces false positives that we
+# would have to suppress on every run.
+jobs:
+  asan-ubsan:
+    runs-on: ubuntu-latest
+    name: ubuntu-latest (gcc ASAN+UBSAN)
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+      ASAN_OPTIONS: detect_leaks=0:abort_on_error=1:print_summary=1:strict_string_checks=1
+      UBSAN_OPTIONS: print_stacktrace=1:halt_on_error=1
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+          use-public-rspm: true
+
+      - name: Configure sanitizer CFLAGS
+        run: |
+          mkdir -p ~/.R
+          cat > ~/.R/Makevars <<'EOF'
+          CFLAGS   = -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover=undefined -O1 -g
+          CXXFLAGS = -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover=undefined -O1 -g
+          LDFLAGS  = -fsanitize=address,undefined
+          EOF
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::testthat, any::Rcpp, any::knitr, any::rmarkdown
+
+      # R CMD INSTALL normally runs a post-install load test in a
+      # fresh R subprocess; that subprocess does not inherit our
+      # LD_PRELOAD and aborts with "ASan runtime does not come first
+      # in initial library list". Skip it with --no-test-load and
+      # do the load ourselves under LD_PRELOAD in the next step.
+      - name: Install cubature under sanitizers
+        run: R CMD INSTALL --preclean --no-test-load .
+
+      - name: Run tests under sanitizers
+        run: |
+          LIBASAN=$(gcc -print-file-name=libasan.so)
+          echo "Preloading $LIBASAN"
+          LD_PRELOAD="$LIBASAN" R --no-save -e '
+            library(testthat)
+            library(cubature)
+            setwd("tests/testthat")
+            test_dir(".", reporter="summary", stop_on_failure=TRUE)
+          '

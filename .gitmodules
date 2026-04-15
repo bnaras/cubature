@@ -2,3 +2,7 @@
 	path = src/Cuba
 	url = https://github.com/bnaras/Cuba
 	branch = R_pkg
+[submodule "src/libcubature"]
+	path = src/libcubature
+	url = https://github.com/bnaras/libcubature.git
+	branch = R_pkg

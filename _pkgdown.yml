@@ -1,12 +1,31 @@
 template:
   bootstrap: 5
-  bootswatch: materia
+  bootswatch: litera
   light-switch: true
+  bslib:
+    # Harmonize link/button/accent colors with the hex sticker's warm
+    # gold-to-pink-to-purple gradient, so the docs visually pair with
+    # the logo rather than defaulting to blue.
+    primary: "#c04a45"     # warm rose-red, the mid-tone of the logo gradient
+    secondary: "#7d1e6a"   # deep magenta from the logo's outer ring
+    info:    "#e88b2a"     # orange accent used for tips/info callouts
+    link-color: "#c04a45"
+    link-hover-color: "#7d1e6a"
+    base_font: {google: "Source Sans 3"}
+    heading_font: {google: "Source Sans 3"}
+    code_font: {google: "JetBrains Mono"}
+    # Belt-and-braces: also override the underlying Bootstrap SCSS
+    # variables so any litera rule that bypasses base_font/heading_font
+    # still resolves to Source Sans 3. KaTeX math uses its own font set
+    # and is not affected by these.
+    font-family-sans-serif: "'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif"
+    font-family-base: "'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif"
+    headings-font-family: "'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif"
 
 authors:
 
   Balasubramanian Narasimhan:
-    href: https://statistics.stanford.edu/people/balasubramanian-narasimhan
+    href: https://naras.su.domains
 
   Steven G. Johnson:
     href: https://math.mit.edu/~stevenj/

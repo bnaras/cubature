@@ -1,5 +1,4 @@
 library(cubature)
-context("Test known integration results")
 
 test_that("Test a product of Cosine functions", {
     expected <- 0.708073

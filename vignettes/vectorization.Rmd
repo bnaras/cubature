@@ -1,0 +1,426 @@
+---
+title: "Vectorization benchmarks"
+author: "Balasubramanian Narasimhan"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+  fig_caption: yes
+  toc: yes
+  toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Vectorization benchmarks}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(
+    message = FALSE,
+    warning = FALSE,
+    error = FALSE,
+    tidy = FALSE,
+    cache = FALSE
+)
+```
+
+## When to read this
+
+This vignette assumes you've already read the
+[Get started](cubature.html) vignette and you now have a specific
+performance question: **is it worth vectorizing my R integrand?**
+
+`cubature` exposes two calling conventions for the same underlying
+C routine:
+
+- **Scalar interface** (the default) — your R function receives one
+  point at a time and returns one scalar (or length-`fDim` vector).
+- **Vectorized interface** (opt-in, `vectorInterface = TRUE` for
+  `hcubature`/`pcubature` or `nVec > 1` for Cuba methods) — your R
+  function receives a matrix of points and returns a matrix of values,
+  amortizing R's per-call overhead over many integrand evaluations at
+  once.
+
+The vectorized interface almost always wins for non-trivial problems,
+sometimes by a factor of 10–50×, because the dominant cost is R's
+function-call overhead rather than the arithmetic inside the
+integrand. But the speedup depends on your specific integrand, the
+method you pick, and the dimension. This vignette runs ten
+representative integrands through every combination and reports
+timings, so you can make an informed decision rather than guess.
+
+## A timing harness
+
+Our harness will provide timing results for `hcubature`, `pcubature`
+(where appropriate), and Cuba `cuhre` calls — scalar and vectorized
+variants of each.
+
+```{r, message = FALSE}
+library(bench)
+library(cubature)
+
+harness <- function(which = NULL,
+                    f, fv, lowerLimit, upperLimit, tol = 1e-3, iterations = 20, ...) {
+
+  fns <- c(hc = "Non-vectorized Hcubature",
+           hc.v = "Vectorized Hcubature",
+           pc = "Non-vectorized Pcubature",
+           pc.v = "Vectorized Pcubature",
+           cc = "Non-vectorized cubature::cuhre",
+           cc_v = "Vectorized cubature::cuhre")
+  cc <- function() cubature::cuhre(f = f,
+                                   lowerLimit = lowerLimit, upperLimit = upperLimit,
+                                   relTol = tol,
+                                   ...)
+  cc_v <- function() cubature::cuhre(f = fv,
+                                     lowerLimit = lowerLimit, upperLimit = upperLimit,
+                                     relTol = tol,
+                                     nVec = 1024L,
+                                     ...)
+  hc <- function() cubature::hcubature(f = f,
+                                       lowerLimit = lowerLimit,
+                                       upperLimit = upperLimit,
+                                       tol = tol,
+                                       ...)
+  hc.v <- function() cubature::hcubature(f = fv,
+                                         lowerLimit = lowerLimit,
+                                         upperLimit = upperLimit,
+                                         tol = tol,
+                                         vectorInterface = TRUE,
+                                         ...)
+  pc <- function() cubature::pcubature(f = f,
+                                       lowerLimit = lowerLimit,
+                                       upperLimit = upperLimit,
+                                       tol = tol,
+                                       ...)
+  pc.v <- function() cubature::pcubature(f = fv,
+                                         lowerLimit = lowerLimit,
+                                         upperLimit = upperLimit,
+                                         tol = tol,
+                                         vectorInterface = TRUE,
+                                         ...)
+
+  ndim <- length(lowerLimit)
+
+  if (is.null(which)) {
+    fnIndices <- seq_along(fns)
+  } else {
+    fnIndices <- na.omit(match(which, names(fns)))
+  }
+  fnList <- lapply(names(fns)[fnIndices], function(x) call(x))
+
+  argList <- c(fnList, iterations = iterations, check = FALSE)
+  result <- do.call(bench::mark, args = argList)
+  d <- result[seq_along(fnIndices), 1:9]
+  d$expression <- fns[fnIndices]
+  d
+}
+```
+
+We reel off the timing runs.
+
+## Example 1
+
+```{r, message = FALSE}
+func <- function(x) sin(x[1]) * cos(x[2]) * exp(x[3])
+func.v <- function(x) {
+    matrix(apply(x, 2, function(z) sin(z[1]) * cos(z[2]) * exp(z[3])), ncol = ncol(x))
+}
+
+d <- harness(f = func, fv = func.v,
+             lowerLimit = rep(0, 3),
+             upperLimit = rep(1, 3),
+             tol = 1e-5,
+             iterations = 100)[, 1:9]
+
+knitr::kable(d, digits = 3, row.names = FALSE)
+```
+
+
+## Multivariate normal
+
+Using `cubature`, we evaluate
+$$
+\int_R\phi(x)dx
+$$
+where $\phi(x)$ is the three-dimensional multivariate normal density with mean
+0, and variance
+$$
+\Sigma = \left(\begin{array}{rrr}
+1 &\frac{3}{5} &\frac{1}{3}\\
+\frac{3}{5} &1 &\frac{11}{15}\\
+\frac{1}{3} &\frac{11}{15} & 1
+\end{array}
+\right)
+$$
+and $R$ is $[-\frac{1}{2}, 1] \times [-\frac{1}{2}, 4] \times [-\frac{1}{2}, 2].$
+
+We construct a scalar function (`my_dmvnorm`) and a vector analogue
+(`my_dmvnorm_v`). First the functions.
+
+```{r, message = FALSE}
+m <- 3
+sigma <- diag(3)
+sigma[2,1] <- sigma[1, 2] <- 3/5 ; sigma[3,1] <- sigma[1, 3] <- 1/3
+sigma[3,2] <- sigma[2, 3] <- 11/15
+logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
+my_dmvnorm <- function (x, mean, sigma, logdet) {
+    x <- matrix(x, ncol = length(x))
+    distval <- stats::mahalanobis(x, center = mean, cov = sigma)
+    exp(-(3 * log(2 * pi) + logdet + distval)/2)
+}
+
+my_dmvnorm_v <- function (x, mean, sigma, logdet) {
+    distval <- stats::mahalanobis(t(x), center = mean, cov = sigma)
+    exp(matrix(-(3 * log(2 * pi) + logdet + distval)/2, ncol = ncol(x)))
+}
+```
+
+Now the timing.
+
+```{r, message = FALSE}
+d <- harness(f = my_dmvnorm, fv = my_dmvnorm_v,
+             lowerLimit = rep(-0.5, 3),
+             upperLimit = c(1, 4, 2),
+             tol = 1e-5,
+             iterations = 10,
+             mean = rep(0, m), sigma = sigma, logdet = logdet)
+knitr::kable(d, digits = 3)
+```
+
+The effect of vectorization is huge. So it makes sense for users to
+vectorize their integrands as much as possible for efficiency.
+
+Furthermore, for this particular example, we expect `mvtnorm::pmvnorm`
+to do pretty well since it is specialized for the multivariate normal.
+The vectorized versions of `hcubature` and `pcubature` seem
+competitive and in some cases better, as the table below shows.
+
+```{r, message = FALSE}
+library(mvtnorm)
+g1 <- function() pmvnorm(lower = rep(-0.5, m),
+                                  upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                                  alg = Miwa(), abseps = 1e-5, releps = 1e-5)
+g2 <- function() pmvnorm(lower = rep(-0.5, m),
+                         upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                         alg = GenzBretz(), abseps = 1e-5, releps = 1e-5)
+g3 <- function() pmvnorm(lower = rep(-0.5, m),
+                         upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
+                         alg = TVPACK(), abseps = 1e-5, releps = 1e-5)
+
+knitr::kable(bench::mark(g1(), g2(), g3(), iterations = 20, check = FALSE)[, 1:9],
+             digits = 3, row.names = FALSE)
+```
+
+## Product of cosines
+
+```{r, message = FALSE}
+testFn0 <- function(x) prod(cos(x))
+testFn0_v <- function(x) matrix(apply(x, 2, function(z) prod(cos(z))), ncol = ncol(x))
+
+d <- harness(f = testFn0, fv = testFn0_v,
+             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), iterations = 1000)
+knitr::kable(d, digits = 3)
+```
+
+## Gaussian function
+
+```{r, message = FALSE}
+testFn1 <- function(x) {
+    val <- sum(((1 - x) / x)^2)
+    scale <- prod((2 / sqrt(pi)) / x^2)
+    exp(-val) * scale
+}
+
+testFn1_v <- function(x) {
+    val <- matrix(apply(x, 2, function(z) sum(((1 - z) / z)^2)), ncol(x))
+    scale <- matrix(apply(x, 2, function(z) prod((2 / sqrt(pi)) / z^2)), ncol(x))
+    exp(-val) * scale
+}
+
+d <- harness(f = testFn1, fv = testFn1_v,
+             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), iterations = 10)
+
+knitr::kable(d, digits = 3)
+```
+
+## Discontinuous function
+
+```{r, message = FALSE}
+testFn2 <- function(x) {
+    radius <- 0.50124145262344534123412
+    ifelse(sum(x * x) < radius * radius, 1, 0)
+}
+
+testFn2_v <- function(x) {
+    radius <- 0.50124145262344534123412
+    matrix(apply(x, 2, function(z) ifelse(sum(z * z) < radius * radius, 1, 0)), ncol = ncol(x))
+}
+
+d <- harness(which = c("hc", "hc.v", "cc", "cc_v"),
+             f = testFn2, fv = testFn2_v,
+             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), iterations = 10)
+knitr::kable(d, digits = 3)
+```
+
+## A simple polynomial (product of coordinates)
+
+```{r, message = FALSE}
+testFn3 <- function(x) prod(2 * x)
+testFn3_v <- function(x) matrix(apply(x, 2, function(z) prod(2 * z)), ncol = ncol(x))
+
+d <- harness(f = testFn3, fv = testFn3_v,
+             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), iterations = 50)
+knitr::kable(d, digits = 3)
+```
+
+## Gaussian centered at $\frac{1}{2}$
+
+```{r, message = FALSE}
+testFn4 <- function(x) {
+    a <- 0.1
+    s <- sum((x - 0.5)^2)
+    ((2 / sqrt(pi)) / (2. * a))^length(x) * exp (-s / (a * a))
+}
+
+testFn4_v <- function(x) {
+    a <- 0.1
+    r <- apply(x, 2, function(z) {
+        s <- sum((z - 0.5)^2)
+        ((2 / sqrt(pi)) / (2. * a))^length(z) * exp (-s / (a * a))
+    })
+    matrix(r, ncol = ncol(x))
+}
+
+d <- harness(f = testFn4, fv = testFn4_v,
+             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), iterations = 20)
+knitr::kable(d, digits = 3)
+```
+
+## Double Gaussian
+
+```{r, message = FALSE}
+testFn5 <- function(x) {
+    a <- 0.1
+    s1 <- sum((x - 1 / 3)^2)
+    s2 <- sum((x - 2 / 3)^2)
+    0.5 * ((2 / sqrt(pi)) / (2. * a))^length(x) * (exp(-s1 / (a * a)) + exp(-s2 / (a * a)))
+}
+testFn5_v <- function(x) {
+    a <- 0.1
+    r <- apply(x, 2, function(z) {
+        s1 <- sum((z - 1 / 3)^2)
+        s2 <- sum((z - 2 / 3)^2)
+        0.5 * ((2 / sqrt(pi)) / (2. * a))^length(z) * (exp(-s1 / (a * a)) + exp(-s2 / (a * a)))
+    })
+    matrix(r, ncol = ncol(x))
+}
+
+d <- harness(f = testFn5, fv = testFn5_v,
+             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), iterations = 20)
+knitr::kable(d, digits = 3)
+```
+
+## Tsuda's example
+
+```{r, message = FALSE}
+testFn6 <- function(x) {
+    a <- (1 + sqrt(10.0)) / 9.0
+    prod( a / (a + 1) * ((a + 1) / (a + x))^2)
+}
+
+testFn6_v <- function(x) {
+    a <- (1 + sqrt(10.0)) / 9.0
+    r <- apply(x, 2, function(z) prod( a / (a + 1) * ((a + 1) / (a + z))^2))
+    matrix(r, ncol = ncol(x))
+}
+
+d <- harness(f = testFn6, fv = testFn6_v,
+             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), iterations = 20)
+knitr::kable(d, digits = 3)
+```
+
+## Morokoff & Caflisch example
+
+```{r, message = FALSE}
+testFn7 <- function(x) {
+    n <- length(x)
+    p <- 1/n
+    (1 + p)^n * prod(x^p)
+}
+testFn7_v <- function(x) {
+    matrix(apply(x, 2, function(z) {
+        n <- length(z)
+        p <- 1/n
+        (1 + p)^n * prod(z^p)
+    }), ncol = ncol(x))
+}
+
+d <- harness(f = testFn7, fv = testFn7_v,
+             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), iterations = 20)
+knitr::kable(d, digits = 3)
+```
+
+## Wang-Landau sampling 1d, 2d examples
+
+```{r, message = FALSE}
+I.1d <- function(x) {
+    sin(4 * x) *
+        x * ((x * ( x * (x * x - 4) + 1) - 1))
+}
+I.1d_v <- function(x) {
+    matrix(apply(x, 2, function(z)
+        sin(4 * z) *
+        z * ((z * ( z * (z * z - 4) + 1) - 1))),
+        ncol = ncol(x))
+}
+d <- harness(f = I.1d, fv = I.1d_v,
+             lowerLimit = -2, upperLimit = 2, iterations = 100)
+knitr::kable(d, digits = 3)
+```
+
+```{r, message = FALSE}
+I.2d <- function(x) {
+    x1 <- x[1]; x2 <- x[2]
+    sin(4 * x1 + 1) * cos(4 * x2) * x1 * (x1 * (x1 * x1)^2 - x2 * (x2 * x2 - x1) +2)
+}
+I.2d_v <- function(x) {
+    matrix(apply(x, 2,
+                 function(z) {
+                     x1 <- z[1]; x2 <- z[2]
+                     sin(4 * x1 + 1) * cos(4 * x2) * x1 * (x1 * (x1 * x1)^2 - x2 * (x2 * x2 - x1) +2)
+                 }),
+           ncol = ncol(x))
+}
+d <- harness(f = I.2d, fv = I.2d_v,
+             lowerLimit = rep(-1, 2), upperLimit = rep(1, 2), iterations = 100)
+knitr::kable(d, digits = 3)
+```
+
+## Summary
+
+The recommendations are:
+
+1. **Vectorize your integrand.** The time spent in so doing pays back
+   enormously on all but the most trivial problems. This is easy to do
+   and the examples above show how.
+
+2. **Vectorized `hcubature` is a good default starting point.** It
+   handles the widest range of problems well.
+
+3. **For smooth integrands in low dimensions ($\leq 3$), try
+   `pcubature`.** It can be substantially faster than `hcubature`
+   when its assumptions hold. Experiment before committing in a
+   production setting, and be aware of the sampling-density cliff
+   documented in the Get Started vignette — when in doubt, cross-check
+   with `cuhre`.
+
+4. **For non-smooth or localized integrands, prefer
+   `cubintegrate(method = "cuhre")`** or at least
+   `hcubature(..., robust = TRUE)`. See the Robustness section of the
+   [Get Started](cubature.html) vignette.
+
+## Session info
+
+```{r, message = FALSE}
+sessionInfo()
+```

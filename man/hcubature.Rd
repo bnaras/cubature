@@ -14,10 +14,10 @@ hcubature(
   tol = 1e-05,
   fDim = 1,
   maxEval = 0,
-  absError = .Machine$double.eps * 10^2/2,
-  doChecking = FALSE,
+  absError = .Machine$double.eps * 10^2,
   vectorInterface = FALSE,
-  norm = c("INDIVIDUAL", "PAIRED", "L2", "L1", "LINF")
+  norm = c("INDIVIDUAL", "PAIRED", "L2", "L1", "LINF"),
+  robust = FALSE
 )
 
 pcubature(
@@ -29,9 +29,9 @@ pcubature(
   fDim = 1,
   maxEval = 0,
   absError = .Machine$double.eps * 10^2,
-  doChecking = FALSE,
   vectorInterface = FALSE,
-  norm = c("INDIVIDUAL", "PAIRED", "L2", "L1", "LINF")
+  norm = c("INDIVIDUAL", "PAIRED", "L2", "L1", "LINF"),
+  robust = FALSE
 )
 }
 \arguments{
@@ -55,10 +55,7 @@ default 0 implying no limit. Note that the actual number of
 function evaluations performed is only approximately guaranteed
 not to exceed this number.}
 
-\item{absError}{The maximum absolute error tolerated, default \code{.Machine$double_eps * 10^2}.}
-
-\item{doChecking}{As of version 2.0, this flag is ignored and will
-be dropped in forthcoming versions}
+\item{absError}{The maximum absolute error tolerated, default \code{.Machine$double.eps * 10^2}.}
 
 \item{vectorInterface}{A flag that indicates whether to use the
 vector interface and is by default FALSE. See details below}
@@ -66,13 +63,69 @@ vector interface and is by default FALSE. See details below}
 \item{norm}{For vector-valued integrands, \code{norm} specifies the
 norm that is used to measure the error and determine
 convergence properties. See below.}
+
+\item{robust}{Logical; defaults to \code{FALSE}. If \code{TRUE},
+\code{hcubature} uses a more conservative error-estimation
+strategy combining a degree-3 null rule with the existing
+degree-5 null rule via a Cuhre-style decay-check formula, a
+parent-child consistency check at the subdivision step, and a
+peak-density suspect-region detector. The robust path is
+opt-in because it can increase the number of function
+evaluations (by 0\% on most smooth integrands and up to ~30\%
+on sharply-peaked ones), and it addresses silent
+"fool's-convergence" failures observed on non-smooth
+integrands with thin or localized support (e.g. a
+\code{(max(L(x), 0))^2} kink, a nearly-step logistic, or a
+very-narrow Gaussian inside an oversized bounding box). It is
+not a complete cure for all such cases — if the integrand's
+support is much smaller than the inter-sample spacing of the
+base rule, no amount of error-model cleverness can detect it;
+for those cases shrink the integration domain or use
+\code{cubintegrate(method = "cuhre")}. Only applies to
+\code{hcubature}; \code{pcubature} ignores it.}
 }
 \value{
 The returned value is a list of four items:
-\item{integral}{the value of the integral} \item{error}{the
-estimated absolute error} \item{functionEvaluations}{the number
-of times the function was evaluated} \item{returnCode}{the
-actual integer return code of the C routine}
+\describe{
+\item{integral}{the value of the integral (a numeric vector of
+length \code{fDim} for vector integrands)}
+\item{error}{the estimated absolute error on \code{integral}, as
+reported by the underlying routine. For single-integrand
+problems this is a single number; for vector integrands it is
+one error estimate per component. Callers who supplied a
+tolerance (\code{tol} for relative or \code{absError} for absolute)
+should treat the integral as reliable only when \code{error}
+satisfies that tolerance.}
+\item{functionEvaluations}{the number of times the integrand
+was evaluated. Use this to budget \code{maxEval} across calls.}
+\item{returnCode}{an integer status code from the underlying C
+routine, taking one of three values:
+\describe{
+\item{\code{0} (success)}{the integrator reached the requested
+tolerance. The result can be trusted to \code{error} precision.}
+\item{\code{1} (failure)}{a hard internal error — allocation
+failure, invalid parameters, an integrand that returned a
+non-zero error code, or similar. In this case \code{integral}
+and \code{error} should be ignored; the call has not produced a
+meaningful result.}
+\item{\code{2} (not converged)}{the \code{maxEval} budget was
+exhausted before the requested tolerance was met. The
+\code{integral} and \code{error} fields still contain the best
+available estimate and its reported error bound, but the
+result has not been verified to satisfy the caller's
+tolerance and should be treated as best-effort. The R-level
+wrappers also emit a \code{warning()} in this case; wrap the
+call in \code{suppressWarnings()} to silence the warning if
+the best-effort value is acceptable for your use. This
+return code is new in cubature 2.2.0; prior versions
+silently reported \code{0} (success) on budget exhaustion, with
+the caller expected to compare \code{error} against their own
+tolerance. The symbolic constants \code{CUBATURE_SUCCESS},
+\code{CUBATURE_FAILURE}, and \code{CUBATURE_NOT_CONVERGED} are
+exported from the upstream C header for compiled clients.}
+}
+}
+}
 }
 \description{
 The function performs adaptive multidimensional integration (cubature) of
@@ -133,21 +186,19 @@ imaginary parts separately}
 }
 \examples{
 
-\dontrun{
-## Test function 0
-## Compare with original cubature result of
-## ./cubature_test 2 1e-4 0 0
-## 2-dim integral, tolerance = 0.0001
-## integrand 0: integral = 0.708073, est err = 1.70943e-05, true err = 7.69005e-09
-## #evals = 17
+## Simple example: integrate product of cosines over [0,1]^2
+testFn0 <- function(x) prod(cos(x))
+hcubature(testFn0, rep(0, 2), rep(1, 2), tol = 1e-4)
 
-testFn0 <- function(x) {
-  prod(cos(x))
-}
+## Simple polynomial: integral should be exactly 1
+testFn3 <- function(x) prod(2 * x)
+hcubature(testFn3, rep(0, 3), rep(1, 3), tol = 1e-4)
 
-hcubature(testFn0, rep(0,2), rep(1,2), tol=1e-4)
+\donttest{
+## More examples (not run during R CMD check)
 
-pcubature(testFn0, rep(0,2), rep(1,2), tol=1e-4)
+## Product of cosines with pcubature
+pcubature(testFn0, rep(0, 2), rep(1, 2), tol = 1e-4)
 
 M_2_SQRTPI <- 2/sqrt(pi)
 
@@ -273,7 +324,7 @@ pcubature(testFn7, rep(0,3), rep(1,3), tol=1e-4)
 
 
 ## Example from web page
-## http://ab-initio.mit.edu/wiki/index.php/Cubature
+## https://github.com/stevengj/cubature
 ##
 ## f(x) = exp(-0.5(euclidean_norm(x)^2)) over the three-dimensional
 ## hyperbcube [-2, 2]^3

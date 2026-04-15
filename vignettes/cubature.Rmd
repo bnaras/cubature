@@ -1,15 +1,14 @@
 ---
-title: "Cubature Vectorization Results"
+title: "Get started with cubature"
 author: "Balasubramanian Narasimhan"
 date: '`r Sys.Date()`'
 output:
   html_document:
   fig_caption: yes
-  theme: cerulean
   toc: yes
   toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{Cubature Vectorization Efficiency}
+  %\VignetteIndexEntry{Get started with cubature}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -26,402 +25,282 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-This R `cubature` package exposes both the `hcubature` and `pcubature`
-routines of the underlying C `cubature` library, including the
-vectorized interfaces. 
+`cubature` approximates definite integrals over hypercubes in arbitrary
+dimension, including improper integrals over infinite limits, by
+evaluating the integrand at adaptively-chosen sample points. It bundles
+two well-known C libraries:
 
-Per the documentation, use of `pcubature` is advisable only for smooth
-integrands in dimensions up to three at most. In fact, the `pcubature`
-routines perform significantly worse than the vectorized `hcubature`
-in inappropriate cases. So when in doubt, you are better off using
-`hcubature`.
+- the
+  [cubature library](https://github.com/stevengj/cubature)
+  of Steven G. Johnson (routines `hcubature` and `pcubature`), and
+- the
+  [Cuba library](https://feynarts.de/cuba/)
+  of Thomas Hahn (routines `cuhre`, `divonne`, `suave`, `vegas`).
 
-Version 2.0 of this package integrates the `Cuba` library as well,
-once again providing vectorized interfaces. 
+Together these give you six integration methods in a single package.
+Each method is available through its own named function
+(`hcubature`, `pcubature`, `cuhre`, `divonne`, `suave`, `vegas`) as
+well as through a uniform dispatcher, `cubintegrate()`, that lets
+you switch methods with a single argument. Vectorized variants of
+every method are also available for performance-sensitive work; see
+the [vectorization vignette](vectorization.html) for timing data
+and recommendations.
 
-The main point of this note is to examine the difference vectorization
-makes. My recommendations are below in the summary section.
+## Your first integral
 
-## A Timing Harness
+The simplest possible call integrates a one-argument function over
+an interval.
 
-Our harness will provide timing results for `hcubature`, `pcubature`
-(where appropriate) and Cuba `cuhre` calls.  We begin by creating a
-harness for these calls.
-
-```{r, message = FALSE}
-library(bench)
+```{r}
 library(cubature)
-
-harness <- function(which = NULL,
-                    f, fv, lowerLimit, upperLimit, tol = 1e-3, iterations = 20, ...) {
-  
-  fns <- c(hc = "Non-vectorized Hcubature",
-           hc.v = "Vectorized Hcubature",
-           pc = "Non-vectorized Pcubature",
-           pc.v = "Vectorized Pcubature",
-           cc = "Non-vectorized cubature::cuhre",
-           cc_v = "Vectorized cubature::cuhre")
-  cc <- function() cubature::cuhre(f = f,
-                                   lowerLimit = lowerLimit, upperLimit = upperLimit,
-                                   relTol = tol,
-                                   ...)
-  cc_v <- function() cubature::cuhre(f = fv,
-                                     lowerLimit = lowerLimit, upperLimit = upperLimit,
-                                     relTol = tol,
-                                     nVec = 1024L,
-                                     ...)
-  hc <- function() cubature::hcubature(f = f,
-                                       lowerLimit = lowerLimit,
-                                       upperLimit = upperLimit,
-                                       tol = tol,
-                                       ...)
-  hc.v <- function() cubature::hcubature(f = fv,
-                                         lowerLimit = lowerLimit,
-                                         upperLimit = upperLimit,
-                                         tol = tol,
-                                         vectorInterface = TRUE,
-                                         ...)
-  pc <- function() cubature::pcubature(f = f,
-                                       lowerLimit = lowerLimit,
-                                       upperLimit = upperLimit,
-                                       tol = tol,
-                                       ...)
-  pc.v <- function() cubature::pcubature(f = fv,
-                                         lowerLimit = lowerLimit,
-                                         upperLimit = upperLimit,
-                                         tol = tol,
-                                         vectorInterface = TRUE,
-                                         ...)
-
-  ndim <- length(lowerLimit)
-  
-  if (is.null(which)) {
-    fnIndices <- seq_along(fns)
-  } else {
-    fnIndices <- na.omit(match(which, names(fns)))
-  }
-  fnList <- lapply(names(fns)[fnIndices], function(x) call(x))
-  
-  argList <- c(fnList, iterations = iterations, check = FALSE)
-  result <- do.call(bench::mark, args = argList)
-  d <- result[seq_along(fnIndices), 1:9]
-  d$expression <- fns[fnIndices]
-  d
-}
+hcubature(f = sin, lowerLimit = 0, upperLimit = pi)
 ```
 
-We reel off the timing runs.
+The returned list has four elements:
 
-## Example 1.
+- **`integral`** — the estimated value of the integral,
+- **`error`** — the estimated absolute error,
+- **`functionEvaluations`** — how many times the integrand was called,
+- **`returnCode`** — an integer status code, where `0` means the
+  algorithm reached the requested tolerance. A non-zero value means
+  something went wrong; see `?hcubature` for the full meaning
+  (`1` = hard internal failure, `2` = `maxEval` budget exhausted
+  before tolerance was met).
 
-```{r, message = FALSE}
-func <- function(x) sin(x[1]) * cos(x[2]) * exp(x[3])
-func.v <- function(x) {
-    matrix(apply(x, 2, function(z) sin(z[1]) * cos(z[2]) * exp(z[3])), ncol = ncol(x))
-}
+Here is a two-dimensional example that integrates the product
+`cos(x₁)·cos(x₂)` over the unit square.
 
-d <- harness(f = func, fv = func.v,
-             lowerLimit = rep(0, 3),
-             upperLimit = rep(1, 3),
-             tol = 1e-5,
-             iterations = 100)[, 1:9]
-
-knitr::kable(d, digits = 3, row.names = FALSE)
+```{r}
+f <- function(x) cos(x[1]) * cos(x[2])
+hcubature(f, lowerLimit = c(0, 0), upperLimit = c(1, 1))
 ```
 
+The exact answer is $\sin(1)^2 \approx 0.7081$.
 
-## Multivariate Normal
+The integration limits can be infinite — `hcubature` and `pcubature`
+automatically transform the variable using `atan` so the unit-hypercube
+routines inside still work:
 
-Using `cubature`, we evaluate
-$$
-\int_R\phi(x)dx
-$$
-where $\phi(x)$ is the three-dimensional multivariate normal density with mean
-0, and variance
-$$
-\Sigma = \left(\begin{array}{rrr}
-1 &\frac{3}{5} &\frac{1}{3}\\
-\frac{3}{5} &1 &\frac{11}{15}\\
-\frac{1}{3} &\frac{11}{15} & 1
-\end{array}
-\right)
-$$
-and $R$ is $[-\frac{1}{2}, 1] \times [-\frac{1}{2}, 4] \times [-\frac{1}{2}, 2].$
-
-We construct a scalar function (`my_dmvnorm`) and a vector analog
-(`my_dmvnorm_v`). First the functions.
-
-```{r, message = FALSE}
-m <- 3
-sigma <- diag(3)
-sigma[2,1] <- sigma[1, 2] <- 3/5 ; sigma[3,1] <- sigma[1, 3] <- 1/3
-sigma[3,2] <- sigma[2, 3] <- 11/15
-logdet <- sum(log(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values))
-my_dmvnorm <- function (x, mean, sigma, logdet) {
-    x <- matrix(x, ncol = length(x))
-    distval <- stats::mahalanobis(x, center = mean, cov = sigma)
-    exp(-(3 * log(2 * pi) + logdet + distval)/2)
-}
-
-my_dmvnorm_v <- function (x, mean, sigma, logdet) {
-    distval <- stats::mahalanobis(t(x), center = mean, cov = sigma)
-    exp(matrix(-(3 * log(2 * pi) + logdet + distval)/2, ncol = ncol(x)))
-}
+```{r}
+## Standard normal density integrates to 1 over the real line
+hcubature(function(x) exp(-x^2 / 2) / sqrt(2 * pi),
+          lowerLimit = -Inf, upperLimit = Inf)
 ```
 
-Now the timing.
+## The unified `cubintegrate()` interface
 
-```{r, message = FALSE}
-d <- harness(f = my_dmvnorm, fv = my_dmvnorm_v,
-             lowerLimit = rep(-0.5, 3),
-             upperLimit = c(1, 4, 2),
-             tol = 1e-5,
-             iterations = 10,
-             mean = rep(0, m), sigma = sigma, logdet = logdet)
-knitr::kable(d, digits = 3)
+The package exposes a second, uniform way to call every integration
+method: `cubintegrate()`. One signature, one argument convention, and
+a `method = ` argument to pick which C routine you want. This is the
+interface we recommend for new code, because swapping methods to
+compare results or tune performance becomes a one-argument change.
+
+```{r}
+## The same 2D integral via three different methods, all the same way
+cubintegrate(f, lower = c(0, 0), upper = c(1, 1), method = "hcubature")$integral
+cubintegrate(f, lower = c(0, 0), upper = c(1, 1), method = "cuhre")$integral
+cubintegrate(f, lower = c(0, 0), upper = c(1, 1), method = "pcubature")$integral
 ```
 
-The effect of vectorization is huge. So it makes sense for users to
-vectorize the integrands as much as possible for efficiency.
+Each of those would otherwise have required `hcubature(...)`,
+`cuhre(...)`, `pcubature(...)` — different function names, slightly
+different argument names, and (for the Cuba routines) different
+conventions for passing method-specific options. `cubintegrate`
+papers over all of that.
 
-Furthermore, for this particular example, we expect `mvtnorm::pmvnorm`
-to do pretty well since it is specialized for the multivariate
-normal. The vectorized versions of `hcubature` and `pcubature` seem
-competitive and in some cases better, if you compare the table above
-to the one below.
+Method-specific arguments (e.g. Cuhre's `key` parameter or Divonne's
+`maxPass`) are passed through `...`. To see what each method
+accepts, use `default_args()`:
 
-```{r, message = FALSE}
-library(mvtnorm)
-g1 <- function() pmvnorm(lower = rep(-0.5, m),
-                                  upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
-                                  alg = Miwa(), abseps = 1e-5, releps = 1e-5)
-g2 <- function() pmvnorm(lower = rep(-0.5, m),
-                         upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
-                         alg = GenzBretz(), abseps = 1e-5, releps = 1e-5)
-g3 <- function() pmvnorm(lower = rep(-0.5, m),
-                         upper = c(1, 4, 2), mean = rep(0, m), corr = sigma,
-                         alg = TVPACK(), abseps = 1e-5, releps = 1e-5)
-
-knitr::kable(bench::mark(g1(), g2(), g3(), iterations = 20, check = FALSE)[, 1:9],
-             digits = 3, row.names = FALSE)
+```{r}
+str(default_args(), list.len = 4, vec.len = 2)
 ```
 
-## Product of cosines
+## Choosing a method
 
-```{r, message = FALSE}
-testFn0 <- function(x) prod(cos(x))
-testFn0_v <- function(x) matrix(apply(x, 2, function(z) prod(cos(z))), ncol = ncol(x))
+The six methods are not interchangeable — each is best on a different
+class of integrand. A short decision table:
 
-d <- harness(f = testFn0, fv = testFn0_v,
-             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), iterations = 1000)
-knitr::kable(d, digits = 3)
+| Situation | Recommended |
+|---|---|
+| You're not sure / general use | `hcubature` |
+| Smooth integrand, low dimension (≤ 3) | `pcubature` or `cuhre` |
+| Non-smooth, localized, or suspicious | `cuhre`, or `hcubature(..., robust = TRUE)` |
+| High dimension (> 5) | `vegas`, `suave`, `divonne` (Monte Carlo) |
+| You want a second opinion | any of the above, compared |
+
+`hcubature` uses h-adaptive Genz–Malik subdivision; it refines the
+integration region where the integrand varies most. `pcubature`
+increases the polynomial degree of a tensor Clenshaw–Curtis rule on a
+fixed domain; it can be very efficient on smooth integrands but is
+brittle when features are localized (see the robustness section
+below). Cuba's `cuhre` is h-adaptive like `hcubature` but with a
+denser base rule, which makes it substantially more robust on
+non-smooth integrands — at the cost of more function evaluations per
+subregion. The Monte Carlo methods (`vegas`, `suave`, `divonne`)
+scale better than deterministic methods in high dimensions but return
+probabilistic error estimates rather than deterministic bounds.
+
+When in genuine doubt, run your integrand through `cubintegrate` with
+two different methods and check they agree.
+
+## Vector-valued integrands
+
+All six methods support integrands that return more than one scalar
+per call — `fDim > 1` for `hcubature`/`pcubature`, `nComp > 1` for
+the Cuba methods. The integrand should return a numeric vector of
+length `fDim` (scalar interface) or a `fDim × npt` matrix (vectorized
+interface). Example:
+
+```{r}
+## Simultaneously integrate sin and cos over [0, pi/2]
+f2 <- function(x) c(sin(x), cos(x))
+hcubature(f2, 0, pi / 2, fDim = 2)$integral
+## Exact: both equal 1
 ```
 
-## Gaussian function
+## Robustness: when hcubature and pcubature can silently fail
 
-```{r, message = FALSE}
-testFn1 <- function(x) {
-    val <- sum(((1 - x) / x)^2)
-    scale <- prod((2 / sqrt(pi)) / x^2)
-    exp(-val) * scale
+The default error estimator in `hcubature` uses a single "null rule"
+difference between the degree-7 Genz–Malik rule and its embedded
+degree-5 companion on each region. For smooth integrands this is
+reliable and cheap. For integrands with **localized support** — a
+thin hinge, a near-step sigmoid, a very narrow Gaussian inside an
+oversized bounding box — it can fail in a particular way: the rule's
+sample points miss the integrand's support entirely, all sample values
+are zero, the rule estimate is zero with zero estimated error, and
+the algorithm confidently reports "converged" on a completely wrong
+answer. This is sometimes called **fool's convergence** or a
+**sampling-density blind spot**. It is distinct from ordinary
+numerical error — the algorithm is internally consistent; it has
+just never evaluated the function at a point where it's nonzero.
+`pcubature` can fail the same way because its Clenshaw–Curtis tensor
+grid is also a fixed sample geometry.
+
+A small reproducible example: a hinge-squared times a steep logistic
+times a standard Gaussian over `[-10, 10]²`. With default settings
+`hcubature` returns exactly `0` (with `returnCode = 0`, i.e. silent
+"success"), while the true integral is about 0.21:
+
+```r
+f <- function(x) {
+  t1 <- -3.5862; t2 <- -9.3801
+  beta0 <- 9.5;  gamma0 <- 19 * sqrt(0.75)
+  (max(t1 + t2 * x[1] - x[2], 0))^2 *
+    plogis(beta0 + gamma0 * x[1]) *
+    dnorm(x[1]) * dnorm(x[2])
 }
-
-testFn1_v <- function(x) {
-    val <- matrix(apply(x, 2, function(z) sum(((1 - z) / z)^2)), ncol(x))
-    scale <- matrix(apply(x, 2, function(z) prod((2 / sqrt(pi)) / z^2)), ncol(x))
-    exp(-val) * scale
-}
-
-d <- harness(f = testFn1, fv = testFn1_v,
-             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), iterations = 10)
-
-knitr::kable(d, digits = 3)
+## Default: silently wrong
+hcubature(f, c(-10, -10), c(10, 10))$integral
+#> [1] 0
+## robust = TRUE: correct
+hcubature(f, c(-10, -10), c(10, 10), robust = TRUE)$integral
+#> [1] ~0.21
+## cuhre: also correct
+cubintegrate(f, c(-10, -10), c(10, 10), method = "cuhre")$integral
+#> [1] ~0.21
 ```
 
-## Discontinuous function
+### The opt-in `robust` path
 
-```{r, message = FALSE}
-testFn2 <- function(x) {
-    radius <- 0.50124145262344534123412
-    ifelse(sum(x * x) < radius * radius, 1, 0)
-}
+Starting in cubature 2.2.0, `hcubature()`, `pcubature()`, and
+`cubintegrate()` accept an optional `robust = TRUE` argument that
+activates extra safeguards. For `hcubature` these are: an additional
+degree-3 null rule combined with the existing degree-5 one via a
+Cuhre-style decay-check formula (Berntsen, Espelid & Genz, *ACM
+TOMS* **17**(4), 437–451, 1991); a parent–child consistency check at
+each subdivision step that inflates children's error estimates by
+the discrepancy between their sum and the parent's prior estimate;
+and a running peak-density "suspect region" detector. For
+`pcubature` the robust path raises the initial Clenshaw–Curtis
+tensor order so the starting grid is denser. In both cases the
+default (non-robust) path is unchanged bit-for-bit; the safeguards
+are paid for only when opted into.
 
-testFn2_v <- function(x) {
-    radius <- 0.50124145262344534123412
-    matrix(apply(x, 2, function(z) ifelse(sum(z * z) < radius * radius, 1, 0)), ncol = ncol(x))
-}
+The cost of `robust = TRUE` on smooth integrands is near zero in
+most cases and at most ~25% extra function evaluations on
+sharply-peaked ones. The cost on genuinely problem integrands (where
+the default path was silently wrong) is several times more function
+evaluations — which is the price of correctness. When `method` is a
+Cuba method, `cubintegrate` silently ignores `robust` because those
+integrators already use more conservative error estimators.
 
-d <- harness(which = c("hc", "hc.v", "cc", "cc_v"),
-             f = testFn2, fv = testFn2_v,
-             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), iterations = 10)
-knitr::kable(d, digits = 3)
-```
+### When robust is not enough: the sampling-density cliff
 
-## A Simple Polynomial (product of coordinates)
+Neither robust path is a complete cure. The safeguards work on
+regions where the rule has *seen some signal* and needs a better
+estimate of it. If the integrand's support is so narrow that every
+sample point of the base rule misses it entirely, the safeguards
+have nothing to work with. This failure mode — what we call the
+**sampling-density cliff** — is located at a parameter value
+determined by the rule's sample geometry. For `hcubature`'s
+Genz–Malik rule on `[-h, h]^d`, the cliff for hinge-line integrands
+sits at `t₁ = -√(9/70)·h ≈ -0.3586·h`; for `pcubature`'s robust
+(m = 2) Clenshaw–Curtis grid it's at
+`t₁ = -cos(3π/8)·h ≈ -0.3827·h`. For parameters on one side of the
+cliff every sample point fires and the algorithm converges
+correctly; for parameters on the other side every sample point
+evaluates to zero and the algorithm silently reports zero. No
+combination of error-estimator tweaks can detect this.
 
-```{r, message = FALSE}
-testFn3 <- function(x) prod(2 * x)
-testFn3_v <- function(x) matrix(apply(x, 2, function(z) prod(2 * z)), ncol = ncol(x))
+The only way to address the cliff is a **denser base rule**, which
+is exactly what Cuba's Cuhre provides: it uses a degree-13 rule with
+65 sample points in 2D, far more than Genz–Malik's 17, making the
+cliff arbitrarily thin. **If your integrand is non-smooth and has
+features much smaller than the integration box, prefer
+`cubintegrate(method = "cuhre")` over `hcubature` / `pcubature` —
+even with `robust = TRUE`.** As a secondary workaround, shrinking
+the integration box (removing tail regions that contribute
+negligibly) reduces the scale mismatch between the rule and the
+integrand's features and can make either `hcubature` or `pcubature`
+reliable on problems where they would otherwise fail.
 
-d <- harness(f = testFn3, fv = testFn3_v,
-             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), iterations = 50)
-knitr::kable(d, digits = 3)
-```
+### The `NOT_CONVERGED` return code
 
-## Gaussian centered at $\frac{1}{2}$
+Independently of `robust`, starting in 2.2.0 `hcubature` and
+`pcubature` return `returnCode = 2` (and emit an R `warning()`)
+when the `maxEval` budget is exhausted without meeting the requested
+tolerance. Previously such cases silently returned `returnCode = 0`
+(success), with the caller expected to compare `error` against their
+own tolerance. The new behavior is a strict improvement in honesty:
+the `error` field is still populated with the best available
+estimate, and the returned `integral` is still the best-effort
+result, so users who want the permissive old behavior can wrap the
+call in `suppressWarnings(...)` and/or check
+`returnCode %in% c(0, 2)`. But callers that defensively did
+`if (returnCode == 0) use(result)` will now correctly fall through
+on non-convergence rather than silently accept a possibly-wrong
+answer. The symbolic constants `CUBATURE_SUCCESS`, `CUBATURE_FAILURE`,
+and `CUBATURE_NOT_CONVERGED` are exported from the upstream C header
+for compiled clients.
 
-```{r, message = FALSE}
-testFn4 <- function(x) {
-    a <- 0.1
-    s <- sum((x - 0.5)^2)
-    ((2 / sqrt(pi)) / (2. * a))^length(x) * exp (-s / (a * a))
-}
+## Where to go next
 
-testFn4_v <- function(x) {
-    a <- 0.1
-    r <- apply(x, 2, function(z) {
-        s <- sum((z - 0.5)^2)
-        ((2 / sqrt(pi)) / (2. * a))^length(z) * exp (-s / (a * a))
-    })
-    matrix(r, ncol = ncol(x))
-}
+- The
+  [vectorization vignette](vectorization.html) benchmarks scalar vs.
+  vectorized interfaces across ten test integrands and makes
+  per-method recommendations — read this if you call the integrator
+  many times in a loop and want maximum performance.
+- The reference pages for [`hcubature()`], [`pcubature()`],
+  [`cubintegrate()`], [`cuhre()`], [`divonne()`], [`suave()`], and
+  [`vegas()`] document every method-specific option.
+- The source for both bundled C libraries is in
+  `src/libcubature/` and `src/Cuba/`.
 
-d <- harness(f = testFn4, fv = testFn4_v,
-             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), iterations = 20)
-knitr::kable(d, digits = 3)
-```
+## Implementation notes
 
-## Double Gaussian
+The only real modification we have made to the underlying `cubature`
+library beyond the 2.2.0 robustness safeguards is that we use
+`M = 16` rather than the default `M = 19` suggested by the original
+author for `pcubature`, to comply with CRAN package size limits. The
+changes made to the `Cuba` library are managed in a
+[GitHub repo branch](https://github.com/bnaras/Cuba/tree/R_pkg): each
+time a new release is made, we update the main branch and keep
+Unix-platform changes in a branch named `R_pkg` against the current
+main branch. Windows customization lives in `Makevars.win`.
 
-```{r, message = FALSE}
-testFn5 <- function(x) {
-    a <- 0.1
-    s1 <- sum((x - 1 / 3)^2)
-    s2 <- sum((x - 2 / 3)^2)
-    0.5 * ((2 / sqrt(pi)) / (2. * a))^length(x) * (exp(-s1 / (a * a)) + exp(-s2 / (a * a)))
-}
-testFn5_v <- function(x) {
-    a <- 0.1
-    r <- apply(x, 2, function(z) {
-        s1 <- sum((z - 1 / 3)^2)
-        s2 <- sum((z - 2 / 3)^2)
-        0.5 * ((2 / sqrt(pi)) / (2. * a))^length(z) * (exp(-s1 / (a * a)) + exp(-s2 / (a * a)))
-    })
-    matrix(r, ncol = ncol(x))
-}
+## Session info
 
-d <- harness(f = testFn5, fv = testFn5_v,
-             lowerLimit = rep(0, 2), upperLimit = rep(1, 2), iterations = 20)
-knitr::kable(d, digits = 3)
-```
-
-## Tsuda's Example
-
-```{r, message = FALSE}
-testFn6 <- function(x) {
-    a <- (1 + sqrt(10.0)) / 9.0
-    prod( a / (a + 1) * ((a + 1) / (a + x))^2)
-}
-
-testFn6_v <- function(x) {
-    a <- (1 + sqrt(10.0)) / 9.0
-    r <- apply(x, 2, function(z) prod( a / (a + 1) * ((a + 1) / (a + z))^2))
-    matrix(r, ncol = ncol(x))
-}
-
-d <- harness(f = testFn6, fv = testFn6_v,
-             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), iterations = 20)
-knitr::kable(d, digits = 3)
-```
-
-## Morokoff & Calflish Example
-
-```{r, message = FALSE}
-testFn7 <- function(x) {
-    n <- length(x)
-    p <- 1/n
-    (1 + p)^n * prod(x^p)
-}
-testFn7_v <- function(x) {
-    matrix(apply(x, 2, function(z) {
-        n <- length(z)
-        p <- 1/n
-        (1 + p)^n * prod(z^p)
-    }), ncol = ncol(x))
-}
-
-d <- harness(f = testFn7, fv = testFn7_v,
-             lowerLimit = rep(0, 3), upperLimit = rep(1, 3), iterations = 20)
-knitr::kable(d, digits = 3)
-```
-
-## Wang-Landau Sampling 1d, 2d Examples
-
-```{r, message = FALSE}
-I.1d <- function(x) {
-    sin(4 * x) *
-        x * ((x * ( x * (x * x - 4) + 1) - 1))
-}
-I.1d_v <- function(x) {
-    matrix(apply(x, 2, function(z)
-        sin(4 * z) *
-        z * ((z * ( z * (z * z - 4) + 1) - 1))),
-        ncol = ncol(x))
-}
-d <- harness(f = I.1d, fv = I.1d_v,
-             lowerLimit = -2, upperLimit = 2, iterations = 100)
-knitr::kable(d, digits = 3)
-```
-
-```{r, message = FALSE}
-I.2d <- function(x) {
-    x1 <- x[1]; x2 <- x[2]
-    sin(4 * x1 + 1) * cos(4 * x2) * x1 * (x1 * (x1 * x1)^2 - x2 * (x2 * x2 - x1) +2)
-}
-I.2d_v <- function(x) {
-    matrix(apply(x, 2,
-                 function(z) {
-                     x1 <- z[1]; x2 <- z[2]
-                     sin(4 * x1 + 1) * cos(4 * x2) * x1 * (x1 * (x1 * x1)^2 - x2 * (x2 * x2 - x1) +2)
-                 }),
-           ncol = ncol(x))
-}
-d <- harness(f = I.2d, fv = I.2d_v,
-             lowerLimit = rep(-1, 2), upperLimit = rep(1, 2), iterations = 100)
-knitr::kable(d, digits = 3)
-```
-
-
-## Implementation Notes
-
-About the only real modification we have made to the underlying
-`cubature` library is that we use `M = 16` rather than the default `M
-= 19` suggested by the original author for `pcubature`. This allows us
-to comply with CRAN package size limits and seems to work reasonably
-well for the above tests. Future versions will allow for such
-customization on demand.
-
-The changes made to the `Cuba` library are managed in a [Github repo
-branch](https://github.com/bnaras/Cuba/tree/R_pkg): each time a new
-release is made, we update the main branch, and keep all changes for
-Unix platforms in a branch named `R_pkg` against the current main
-branch. Customization for windows is done in the package itself using
-the `Makevars.win` script.
-
-## Summary
-
-The recommendations are:
-
-1. _Vectorize_ your function. The time spent in so doing pays back
-   enormously. This is easy to do and the examples above show how.
-
-2. Vectorized `hcubature` seems to be a good starting point.
-
-3. For smooth integrands in low dimensions ($\leq 3$), `pcubature` might be
-   worth trying out. Experiment before using in a production package.
-   
-## Session Info
-
-```{r, message = FALSE}
+```{r}
 sessionInfo()
 ```

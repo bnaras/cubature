@@ -49,40 +49,8 @@ int fWrapper_v(unsigned ndim, size_t npts, const double *x, void *fdata,
 
 // [[Rcpp::export]]
 Rcpp::List doHCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL,
-                       int maxEval, double absErr, double tol, int vectorInterface, unsigned norm) {
-
-    Rcpp::NumericVector integral(fDim);
-    Rcpp::NumericVector errVals(fDim);
-    int retCode;
-
-    // Create a structure to hold integrand function and initialize it
-    integrand_info II;
-    II.count = 0;               /* Zero count */    
-    II.fun = f;                 /* R function */
-
-    // Rcpp::Rcout<<"Call Integrator" <<std::endl;
-    if (vectorInterface) {
-        retCode = hcubature_v(fDim, fWrapper_v, (void *) &II,
-                              xLL.size(), xLL.begin(), xUL.begin(),
-                              maxEval, absErr, tol, (error_norm) norm,
-                              integral.begin(), errVals.begin());
-    } else {
-        retCode = hcubature(fDim, fWrapper, (void *) &II,
-                            xLL.size(), xLL.begin(), xUL.begin(),
-                            maxEval, absErr, tol, (error_norm) norm,
-                            integral.begin(), errVals.begin());
-    }
-    return Rcpp::List::create(
-                              Rcpp::_["integral"] = integral,
-                              Rcpp::_["error"] = errVals,
-                              Rcpp::_["functionEvaluations"] = II.count,
-                              Rcpp::_["returnCode"] = retCode);
-
-}
-
-// [[Rcpp::export]]
-Rcpp::List doPCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL,
-                       int maxEval, double absErr, double tol, int vectorInterface, unsigned norm) {
+                       int maxEval, double absErr, double tol, int vectorInterface, unsigned norm,
+                       int robust = 0) {
 
     Rcpp::NumericVector integral(fDim);
     Rcpp::NumericVector errVals(fDim);
@@ -95,15 +63,77 @@ Rcpp::List doPCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericV
 
     // Rcpp::Rcout<<"Call Integrator" <<std::endl;
     if (vectorInterface) {
-        retCode = pcubature_v(fDim, fWrapper_v, (void *) &II,
-                              xLL.size(), xLL.begin(), xUL.begin(),
-                              maxEval, absErr, tol, (error_norm) norm,
-                              integral.begin(), errVals.begin());
+        if (robust) {
+            retCode = hcubature_v_robust(fDim, fWrapper_v, (void *) &II,
+                                         xLL.size(), xLL.begin(), xUL.begin(),
+                                         maxEval, absErr, tol, (error_norm) norm,
+                                         integral.begin(), errVals.begin(), robust);
+        } else {
+            retCode = hcubature_v(fDim, fWrapper_v, (void *) &II,
+                                  xLL.size(), xLL.begin(), xUL.begin(),
+                                  maxEval, absErr, tol, (error_norm) norm,
+                                  integral.begin(), errVals.begin());
+        }
     } else {
-        retCode = pcubature(fDim, fWrapper, (void *) &II,
-                            xLL.size(), xLL.begin(), xUL.begin(),
-                            maxEval, absErr, tol, (error_norm) norm,
-                            integral.begin(), errVals.begin());
+        if (robust) {
+            retCode = hcubature_robust(fDim, fWrapper, (void *) &II,
+                                       xLL.size(), xLL.begin(), xUL.begin(),
+                                       maxEval, absErr, tol, (error_norm) norm,
+                                       integral.begin(), errVals.begin(), robust);
+        } else {
+            retCode = hcubature(fDim, fWrapper, (void *) &II,
+                                xLL.size(), xLL.begin(), xUL.begin(),
+                                maxEval, absErr, tol, (error_norm) norm,
+                                integral.begin(), errVals.begin());
+        }
+    }
+    return Rcpp::List::create(
+                              Rcpp::_["integral"] = integral,
+                              Rcpp::_["error"] = errVals,
+                              Rcpp::_["functionEvaluations"] = II.count,
+                              Rcpp::_["returnCode"] = retCode);
+
+}
+
+// [[Rcpp::export]]
+Rcpp::List doPCubature(int fDim, SEXP f, Rcpp::NumericVector xLL, Rcpp::NumericVector xUL,
+                       int maxEval, double absErr, double tol, int vectorInterface, unsigned norm,
+                       int robust = 0) {
+
+    Rcpp::NumericVector integral(fDim);
+    Rcpp::NumericVector errVals(fDim);
+    int retCode;
+
+    // Create a structure to hold integrand function and initialize it
+    integrand_info II;
+    II.count = 0;               /* Zero count */
+    II.fun = f;                 /* R function */
+
+    // Rcpp::Rcout<<"Call Integrator" <<std::endl;
+    if (vectorInterface) {
+        if (robust > 0) {
+            retCode = pcubature_v_robust(fDim, fWrapper_v, (void *) &II,
+                                         xLL.size(), xLL.begin(), xUL.begin(),
+                                         maxEval, absErr, tol, (error_norm) norm,
+                                         integral.begin(), errVals.begin(), robust);
+        } else {
+            retCode = pcubature_v(fDim, fWrapper_v, (void *) &II,
+                                  xLL.size(), xLL.begin(), xUL.begin(),
+                                  maxEval, absErr, tol, (error_norm) norm,
+                                  integral.begin(), errVals.begin());
+        }
+    } else {
+        if (robust > 0) {
+            retCode = pcubature_robust(fDim, fWrapper, (void *) &II,
+                                       xLL.size(), xLL.begin(), xUL.begin(),
+                                       maxEval, absErr, tol, (error_norm) norm,
+                                       integral.begin(), errVals.begin(), robust);
+        } else {
+            retCode = pcubature(fDim, fWrapper, (void *) &II,
+                                xLL.size(), xLL.begin(), xUL.begin(),
+                                maxEval, absErr, tol, (error_norm) norm,
+                                integral.begin(), errVals.begin());
+        }
     }
     return Rcpp::List::create(
                               Rcpp::_["integral"] = integral,

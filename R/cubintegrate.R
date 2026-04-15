@@ -57,7 +57,7 @@ default_args <- function() {
                         nExtra = 0L,
                         peakFinder = NULL)
                     ),
-        sauve = c(cuba_common_defaults,
+        suave = c(cuba_common_defaults,
                   flags = list(cuba_all_flags),
                   list(
                       rngSeed = 0L,
@@ -112,18 +112,59 @@ default_args <- function() {
 #'     method.
 #' @param method the method to use should be one of "hcubature",
 #'     "pcubature", "cuhre", "divonne", "suave" or "vegas".
+#' @param robust Logical (or a non-negative integer); defaults to
+#'     `FALSE`. When `TRUE` and `method` is `"hcubature"` or
+#'     `"pcubature"`, activates the optional robust-error-estimation
+#'     safeguards — see the `robust` argument of [hcubature()] and
+#'     [pcubature()] for details. When `method` is any Cuba method
+#'     (`"cuhre"`, `"divonne"`, `"suave"`, `"vegas"`) the argument is
+#'     silently ignored, because those methods already use more
+#'     conservative error estimators and do not need the safeguards.
+#'     Handled as a formal argument here so that passing
+#'     `robust = TRUE` is safe regardless of which method is
+#'     selected, and so it never collides with integrand arguments
+#'     flowing through `...`.
 #' @param ...  All other arguments which may include integration
 #'     method specific parameters and those for f. Unrecognized
 #'     parameters for integration method are presumed to be intended
 #'     for f and so processed.
-#' @return The returned value is a list of items: 
+#' @return The returned value is a list of items:
 #' \describe{
-#'   \item{integral}{the value of the integral}
-#'   \item{error}{the estimated absolute error}
-#'   \item{neval}{the number of times the function was evaluated}
-#'   \item{returnCode}{the actual integer return code of the C routine; a non-zero value usually indicates problems; further interpretation depends on method}
-#'   \item{nregions}{forcCuba routines, the actual number of subregions needed}
-#'   \item{prob}{the \eqn{\chi^2}{Chi2}-probability (not the \eqn{\chi^2}{Chi2}-value itself!) that `error` is not a reliable estimate of the true integration error.}
+#'   \item{integral}{the value of the integral (a numeric vector of
+#'     length `fDim` for vector integrands).}
+#'   \item{error}{the estimated absolute error on `integral`. Callers
+#'     who set a tolerance (`relTol` / `absTol`) should treat the
+#'     integral as reliable only when `error` satisfies that tolerance.}
+#'   \item{neval}{the number of times the integrand was evaluated.}
+#'   \item{returnCode}{an integer status code from the underlying
+#'     method. Interpretation depends on the method:
+#'     \itemize{
+#'       \item For `method = "hcubature"` or `method = "pcubature"`
+#'         the code is one of `0` (success — converged to the
+#'         requested tolerance), `1` (hard internal failure — the
+#'         result should be ignored), or `2` (not converged — the
+#'         `maxEval` budget was exhausted before the tolerance was
+#'         met; `integral` and `error` hold the best-effort estimate
+#'         and should be treated as provisional). A `warning()` is
+#'         also emitted when the code is `2`. The return code `2` is
+#'         new in cubature 2.2.0; prior versions silently reported
+#'         `0` on budget exhaustion. See [hcubature()] for details.
+#'       \item For the Cuba methods (`"cuhre"`, `"divonne"`,
+#'         `"suave"`, `"vegas"`) the code follows the convention of
+#'         the Cuba library: `0` indicates the requested accuracy was
+#'         achieved, a positive value indicates accuracy was not
+#'         achieved, and a negative value indicates a hard error
+#'         (invalid dimensions or components). Consult the
+#'         documentation for [cuhre()], [divonne()], [suave()], and
+#'         [vegas()] for method-specific interpretation.
+#'     }
+#'   }
+#'   \item{nregions}{for Cuba routines, the actual number of
+#'     subregions used during integration.}
+#'   \item{prob}{the \eqn{\chi^2}{Chi2}-probability (not the
+#'     \eqn{\chi^2}{Chi2}-value itself!) that `error` is not a
+#'     reliable estimate of the true integration error. Cuba methods
+#'     only.}
 #' }
 #' @seealso [default_args()], [hcubature()],
 #'     [pcubature()], [cuhre()],
@@ -157,18 +198,27 @@ cubintegrate <- function(f, lower, upper, fDim = 1,
                          absTol = 1e-12,
                          maxEval = 10^6,
                          nVec = 1L,
+                         robust = FALSE,
                          ...) {
     method <- match.arg(method)
     other_args <- list(...)
+    ## In case robust accidentally also appears in `...` (e.g. from a user
+    ## programmatically building an argument list), drop it: the formal
+    ## `robust` above is authoritative.
+    other_args[["robust"]] <- NULL
     result <-
         if (grepl("cubature", method)) {
             do.call(method,
                     args = c(list(f = f, fDim = fDim, lowerLimit = lower, upperLimit = upper),
                              list(tol = relTol, absError = absTol, maxEval = maxEval,
-                                  vectorInterface = (nVec > 1L)),
+                                  vectorInterface = (nVec > 1L), robust = robust),
                              other_args))
 
         } else {
+            ## Cuba methods already use more conservative error estimation;
+            ## the robust flag is silently ignored here so that users can
+            ## pass robust = TRUE via cubintegrate without worrying about
+            ## which method is selected.
             do.call(method,
                     args = c(list(f = f, nComp = fDim, lowerLimit = lower, upperLimit = upper),
                              list(relTol = relTol, absTol = absTol, maxEval = maxEval, nVec = nVec),

@@ -7,6 +7,17 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+  /* Return codes (new in cubature 2.2.0). Earlier versions only
+     used 0 (success) and 1 (failure); CUBATURE_NOT_CONVERGED is a
+     third, distinct status returned when the maxEval budget is
+     exhausted before the requested tolerance is met. Clients that
+     set maxEval = 0 (no limit) will never see this code. */
+  #ifndef CUBATURE_SUCCESS
+  #define CUBATURE_SUCCESS        0
+  #define CUBATURE_FAILURE        1
+  #define CUBATURE_NOT_CONVERGED  2
+  #endif
   
   /* a vector integrand - evaluates the function at the given point x
    (an array of length ndim) and returns the result in fval (an array
