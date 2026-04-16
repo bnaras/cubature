@@ -227,10 +227,9 @@ bounding box — it can fail in a particular way: the rule’s sample points
 miss the integrand’s support entirely, all sample values are zero, the
 rule estimate is zero with zero estimated error, and the algorithm
 confidently reports “converged” on a completely wrong answer. This is
-sometimes called **fool’s convergence** or a **sampling-density blind
-spot**. It is distinct from ordinary numerical error — the algorithm is
-internally consistent; it has just never evaluated the function at a
-point where it’s nonzero. `pcubature` can fail the same way because its
+distinct from ordinary numerical error — the algorithm is internally
+consistent; it has just never evaluated the function at a point where
+it’s nonzero. `pcubature` can fail the same way because its
 Clenshaw–Curtis tensor grid is also a fixed sample geometry.
 
 A small reproducible example: a hinge-squared times a steep logistic
@@ -288,11 +287,10 @@ Neither robust path is a complete cure. The safeguards work on regions
 where the rule has *seen some signal* and needs a better estimate of it.
 If the integrand’s support is so narrow that every sample point of the
 base rule misses it entirely, the safeguards have nothing to work with.
-This failure mode — what we call the **sampling-density cliff** — is
-located at a parameter value determined by the rule’s sample geometry.
-For `hcubature`’s Genz–Malik rule on `[-h, h]^d`, the cliff for
-hinge-line integrands sits at `t₁ = -√(9/70)·h ≈ -0.3586·h`; for
-`pcubature`’s robust (m = 2) Clenshaw–Curtis grid it’s at
+This failure mode is determined by the rule’s sample geometry. For
+`hcubature`’s Genz–Malik rule on `[-h, h]^d`, the cliff for hinge-line
+integrands sits at `t₁ = -√(9/70)·h ≈ -0.3586·h`; for `pcubature`’s
+robust (m = 2) Clenshaw–Curtis grid it’s at
 `t₁ = -cos(3π/8)·h ≈ -0.3827·h`. For parameters on one side of the cliff
 every sample point fires and the algorithm converges correctly; for
 parameters on the other side every sample point evaluates to zero and

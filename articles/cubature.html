@@ -76,7 +76,7 @@
                         <h4 data-toc-skip class="author">Balasubramanian
 Narasimhan</h4>
             
-            <h4 data-toc-skip class="date">2026-04-15</h4>
+            <h4 data-toc-skip class="date">2026-04-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bnaras/cubature/blob/main/vignettes/cubature.Rmd" class="external-link"><code>vignettes/cubature.Rmd</code></a></small>
       <div class="d-none name"><code>cubature.Rmd</code></div>
@@ -330,13 +330,11 @@ Gaussian inside an oversized bounding box — it can fail in a particular
 way: the rule’s sample points miss the integrand’s support entirely, all
 sample values are zero, the rule estimate is zero with zero estimated
 error, and the algorithm confidently reports “converged” on a completely
-wrong answer. This is sometimes called <strong>fool’s
-convergence</strong> or a <strong>sampling-density blind spot</strong>.
-It is distinct from ordinary numerical error — the algorithm is
-internally consistent; it has just never evaluated the function at a
-point where it’s nonzero. <code>pcubature</code> can fail the same way
-because its Clenshaw–Curtis tensor grid is also a fixed sample
-geometry.</p>
+wrong answer. This is distinct from ordinary numerical error — the
+algorithm is internally consistent; it has just never evaluated the
+function at a point where it’s nonzero. <code>pcubature</code> can fail
+the same way because its Clenshaw–Curtis tensor grid is also a fixed
+sample geometry.</p>
 <p>A small reproducible example: a hinge-squared times a steep logistic
 times a standard Gaussian over <code>[-10, 10]²</code>. With default
 settings <code>hcubature</code> returns exactly <code>0</code> (with
@@ -392,11 +390,9 @@ conservative error estimators.</p>
 regions where the rule has <em>seen some signal</em> and needs a better
 estimate of it. If the integrand’s support is so narrow that every
 sample point of the base rule misses it entirely, the safeguards have
-nothing to work with. This failure mode — what we call the
-<strong>sampling-density cliff</strong> — is located at a parameter
-value determined by the rule’s sample geometry. For
-<code>hcubature</code>’s Genz–Malik rule on <code>[-h, h]^d</code>, the
-cliff for hinge-line integrands sits at
+nothing to work with. This failure mode is determined by the rule’s
+sample geometry. For <code>hcubature</code>’s Genz–Malik rule on
+<code>[-h, h]^d</code>, the cliff for hinge-line integrands sits at
 <code>t₁ = -√(9/70)·h ≈ -0.3586·h</code>; for <code>pcubature</code>’s
 robust (m = 2) Clenshaw–Curtis grid it’s at
 <code>t₁ = -cos(3π/8)·h ≈ -0.3827·h</code>. For parameters on one side
