@@ -114,12 +114,12 @@ knitr::kable(d, digits = 3, row.names = FALSE)
 
 | expression                     |      min |   median |  itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
 |:-------------------------------|---------:|---------:|---------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       | 272.22µs |  282.3µs | 3479.881 |    64.4KB | 35.150 |    99 |    1 |     28.4ms |
-| Vectorized Hcubature           | 387.94µs | 416.42µs | 2371.814 |    54.5KB |  0.000 |   100 |    0 |     42.2ms |
-| Non-vectorized Pcubature       | 853.05µs | 881.33µs | 1119.147 |    39.2KB | 34.613 |    97 |    3 |     86.7ms |
-| Vectorized Pcubature           |   1.16ms |   1.19ms |  833.351 |    58.4KB | 17.007 |    98 |    2 |    117.6ms |
-| Non-vectorized cubature::cuhre | 576.69µs | 597.38µs | 1660.635 |    40.4KB | 33.891 |    98 |    2 |       59ms |
-| Vectorized cubature::cuhre     | 577.11µs | 612.79µs | 1626.880 |    39.8KB | 16.433 |    99 |    1 |     60.9ms |
+| Non-vectorized Hcubature       | 273.23µs | 286.79µs | 3460.028 |    64.4KB | 34.950 |    99 |    1 |     28.6ms |
+| Vectorized Hcubature           | 384.76µs | 411.39µs | 2379.679 |    54.5KB |  0.000 |   100 |    0 |       42ms |
+| Non-vectorized Pcubature       | 865.24µs |  885.7µs | 1112.672 |    39.2KB | 34.413 |    97 |    3 |     87.2ms |
+| Vectorized Pcubature           |   1.16ms |   1.19ms |  833.805 |    58.4KB | 17.016 |    98 |    2 |    117.5ms |
+| Non-vectorized cubature::cuhre | 579.87µs | 601.28µs | 1646.726 |    40.4KB | 33.607 |    98 |    2 |     59.5ms |
+| Vectorized cubature::cuhre     | 582.62µs | 615.66µs | 1612.229 |    39.8KB | 16.285 |    99 |    1 |     61.4ms |
 
 ## Multivariate normal
 
@@ -167,12 +167,12 @@ knitr::kable(d, digits = 3)
 
 | expression                     |      min |   median | itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
 |:-------------------------------|---------:|---------:|--------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       | 815.37ms | 824.87ms |   1.195 |  139.68KB | 19.002 |    10 |  159 |      8.37s |
-| Vectorized Hcubature           |   1.79ms |   2.12ms | 443.194 |    1.89MB |  0.000 |    10 |    0 |    22.56ms |
-| Non-vectorized Pcubature       | 351.68ms |  354.9ms |   2.771 |        0B | 18.845 |    10 |   68 |      3.61s |
-| Vectorized Pcubature           |   1.26ms |    1.3ms | 761.638 |  810.26KB |  0.000 |    10 |    0 |    13.13ms |
-| Non-vectorized cubature::cuhre | 338.48ms | 341.42ms |   2.932 |        0B | 19.056 |    10 |   65 |      3.41s |
-| Vectorized cubature::cuhre     |   3.23ms |   3.28ms | 301.551 |  898.41KB |  0.000 |    10 |    0 |    33.16ms |
+| Non-vectorized Hcubature       | 816.85ms | 820.59ms |   1.200 |  139.68KB | 19.084 |    10 |  159 |      8.33s |
+| Vectorized Hcubature           |   1.79ms |   2.15ms | 448.431 |    1.89MB |  0.000 |    10 |    0 |     22.3ms |
+| Non-vectorized Pcubature       |  352.7ms | 354.37ms |   2.760 |        0B | 18.769 |    10 |   68 |      3.62s |
+| Vectorized Pcubature           |   1.26ms |   1.28ms | 762.980 |  810.26KB |  0.000 |    10 |    0 |    13.11ms |
+| Non-vectorized cubature::cuhre | 338.58ms | 341.54ms |   2.927 |        0B | 19.026 |    10 |   65 |      3.42s |
+| Vectorized cubature::cuhre     |   3.25ms |   3.28ms | 302.530 |  898.41KB |  0.000 |    10 |    0 |    33.05ms |
 
 The effect of vectorization is huge. So it makes sense for users to
 vectorize their integrands as much as possible for efficiency.
@@ -201,9 +201,9 @@ knitr::kable(bench::mark(g1(), g2(), g3(), iterations = 20, check = FALSE)[, 1:9
 
 | expression |   min | median | itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
 |:-----------|------:|-------:|--------:|----------:|-------:|------:|-----:|-----------:|
-| g1()       | 764µs | 1.38ms | 733.532 |  355.13KB |      0 |    20 |    0 |     27.3ms |
-| g2()       | 766µs | 1.37ms | 755.885 |    2.49KB |      0 |    20 |    0 |     26.5ms |
-| g3()       | 751µs | 1.38ms | 737.770 |    2.49KB |      0 |    20 |    0 |     27.1ms |
+| g1()       | 757µs | 1.38ms | 734.166 |  355.13KB |      0 |    20 |    0 |     27.2ms |
+| g2()       | 765µs | 1.38ms | 758.771 |    2.49KB |      0 |    20 |    0 |     26.4ms |
+| g3()       | 752µs | 1.38ms | 739.555 |    2.49KB |      0 |    20 |    0 |       27ms |
 
 ## Product of cosines
 
@@ -218,12 +218,12 @@ knitr::kable(d, digits = 3)
 
 | expression                     |     min |  median |   itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
 |:-------------------------------|--------:|--------:|----------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       |  37.7µs |  39.4µs | 24468.103 |    7.66KB | 49.034 |   998 |    2 |     40.8ms |
-| Vectorized Hcubature           |  65.6µs |  69.1µs | 13995.017 |    1.16KB | 14.009 |   999 |    1 |     71.4ms |
-| Non-vectorized Pcubature       |  50.6µs |  52.8µs | 18215.148 |        0B | 36.503 |   998 |    2 |     54.8ms |
-| Vectorized Pcubature           | 118.1µs | 124.1µs |  7828.974 |   18.68KB | 23.558 |   997 |    3 |    127.3ms |
-| Non-vectorized cubature::cuhre | 329.5µs | 341.6µs |  2901.090 |        0B | 26.347 |   991 |    9 |    341.6ms |
-| Vectorized cubature::cuhre     |   358µs | 375.5µs |  2633.551 |   16.38KB | 26.602 |   990 |   10 |    375.9ms |
+| Non-vectorized Hcubature       |  37.1µs |    39µs | 24574.794 |    7.66KB | 49.248 |   998 |    2 |     40.6ms |
+| Vectorized Hcubature           |  66.3µs |  69.2µs | 13976.476 |    1.16KB | 13.990 |   999 |    1 |     71.5ms |
+| Non-vectorized Pcubature       |  50.6µs |  52.7µs | 18323.884 |        0B | 36.721 |   998 |    2 |     54.5ms |
+| Vectorized Pcubature           | 116.6µs | 122.1µs |  7884.054 |   18.68KB | 23.723 |   997 |    3 |    126.5ms |
+| Non-vectorized cubature::cuhre | 328.8µs | 339.6µs |  2905.470 |        0B | 26.387 |   991 |    9 |    341.1ms |
+| Vectorized cubature::cuhre     | 360.8µs | 375.2µs |  2634.434 |   16.38KB | 26.610 |   990 |   10 |    375.8ms |
 
 ## Gaussian function
 
@@ -248,12 +248,12 @@ knitr::kable(d, digits = 3)
 
 | expression                     |      min |   median |   itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
 |:-------------------------------|---------:|---------:|----------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       |   2.88ms |   2.93ms |   339.354 |    67.3KB | 37.706 |     9 |    1 |    26.52ms |
-| Vectorized Hcubature           |   4.81ms |   4.93ms |   203.249 |   290.5KB | 22.583 |     9 |    1 |    44.28ms |
-| Non-vectorized Pcubature       |  77.99µs |  79.56µs | 11659.037 |        0B |  0.000 |    10 |    0 |    857.7µs |
-| Vectorized Pcubature           | 154.47µs | 161.69µs |  5944.676 |     4.1KB |  0.000 |    10 |    0 |     1.68ms |
-| Non-vectorized cubature::cuhre |  13.49ms |  13.78ms |    72.725 |        0B | 48.483 |     6 |    4 |     82.5ms |
-| Vectorized cubature::cuhre     |  20.26ms |  20.42ms |    49.006 |   971.5KB | 49.006 |     5 |    5 |   102.03ms |
+| Non-vectorized Hcubature       |   2.93ms |   2.97ms |   333.770 |    67.3KB | 37.086 |     9 |    1 |    26.96ms |
+| Vectorized Hcubature           |   4.86ms |      5ms |   200.125 |   290.5KB | 22.236 |     9 |    1 |    44.97ms |
+| Non-vectorized Pcubature       |  78.06µs |  82.68µs | 11230.483 |        0B |  0.000 |    10 |    0 |   890.43µs |
+| Vectorized Pcubature           | 155.52µs | 161.27µs |  6031.830 |     4.1KB |  0.000 |    10 |    0 |     1.66ms |
+| Non-vectorized cubature::cuhre |   13.6ms |  13.76ms |    72.472 |        0B | 48.315 |     6 |    4 |    82.79ms |
+| Vectorized cubature::cuhre     |  20.17ms |  20.28ms |    49.288 |   971.5KB | 49.288 |     5 |    5 |   101.44ms |
 
 ## Discontinuous function
 
@@ -276,10 +276,10 @@ knitr::kable(d, digits = 3)
 
 | expression                     |     min |  median | itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
 |:-------------------------------|--------:|--------:|--------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       |  40.9ms |  42.3ms |  19.263 |    17.7KB | 30.821 |    10 |   16 |   519.12ms |
-| Vectorized Hcubature           |  46.8ms |  48.6ms |  20.681 |  1011.8KB | 26.885 |    10 |   13 |   483.54ms |
-| Non-vectorized cubature::cuhre | 795.4ms | 808.3ms |   1.216 |        0B | 29.681 |    10 |  244 |      8.22s |
-| Vectorized cubature::cuhre     | 884.9ms | 891.9ms |   1.112 |    21.2MB | 26.022 |    10 |  234 |      8.99s |
+| Non-vectorized Hcubature       |  40.9ms |  42.6ms |  19.127 |    17.7KB | 30.603 |    10 |   16 |   522.83ms |
+| Vectorized Hcubature           |  47.8ms |  48.4ms |  20.566 |  1011.8KB | 26.736 |    10 |   13 |   486.24ms |
+| Non-vectorized cubature::cuhre | 789.4ms | 798.3ms |   1.235 |        0B | 30.130 |    10 |  244 |       8.1s |
+| Vectorized cubature::cuhre     | 890.5ms | 901.4ms |   1.102 |    21.2MB | 25.794 |    10 |  234 |      9.07s |
 
 ## A simple polynomial (product of coordinates)
 
@@ -294,12 +294,12 @@ knitr::kable(d, digits = 3)
 
 | expression                     |     min |  median |   itr/sec | mem_alloc |  gc/sec | n_itr | n_gc | total_time |
 |:-------------------------------|--------:|--------:|----------:|----------:|--------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       |  59.1µs |  60.9µs | 15906.021 |    6.75KB |   0.000 |    50 |    0 |     3.14ms |
-| Vectorized Hcubature           |  92.4µs |   100µs |  9494.738 |    2.91KB | 193.770 |    49 |    1 |     5.16ms |
-| Non-vectorized Pcubature       |  53.5µs |  54.8µs | 17490.903 |        0B |   0.000 |    50 |    0 |     2.86ms |
-| Vectorized Pcubature           |  84.1µs |  87.8µs | 11012.801 |   19.12KB |   0.000 |    50 |    0 |     4.54ms |
-| Non-vectorized cubature::cuhre | 628.4µs | 662.9µs |  1499.325 |        0B |  30.598 |    49 |    1 |    32.68ms |
-| Vectorized cubature::cuhre     |   642µs |   666µs |  1495.135 |   39.84KB |  30.513 |    49 |    1 |    32.77ms |
+| Non-vectorized Hcubature       |  59.5µs |  61.4µs | 15355.364 |    6.75KB |   0.000 |    50 |    0 |     3.26ms |
+| Vectorized Hcubature           |  92.5µs |  96.8µs | 10040.206 |    2.91KB |   0.000 |    50 |    0 |     4.98ms |
+| Non-vectorized Pcubature       |  55.6µs |  58.3µs | 15991.049 |        0B | 326.348 |    49 |    1 |     3.06ms |
+| Vectorized Pcubature           |  84.4µs |  88.2µs | 10918.069 |   19.12KB |   0.000 |    50 |    0 |     4.58ms |
+| Non-vectorized cubature::cuhre | 637.2µs |   663µs |  1500.595 |        0B |  30.624 |    49 |    1 |    32.65ms |
+| Vectorized cubature::cuhre     | 637.8µs | 664.2µs |  1500.822 |   39.84KB |   0.000 |    50 |    0 |    33.31ms |
 
 ## Gaussian centered at $\frac{1}{2}$
 
@@ -326,12 +326,12 @@ knitr::kable(d, digits = 3)
 
 | expression                     |    min | median | itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
 |:-------------------------------|-------:|-------:|--------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       | 1.35ms | 1.39ms | 715.864 |    85.2KB | 37.677 |    19 |    1 |     26.5ms |
-| Vectorized Hcubature           | 1.78ms | 1.83ms | 547.057 |   147.2KB |  0.000 |    20 |    0 |     36.6ms |
-| Non-vectorized Pcubature       | 2.02ms | 2.03ms | 484.986 |        0B | 53.887 |    18 |    2 |     37.1ms |
-| Vectorized Pcubature           | 2.56ms |  2.6ms | 381.754 |    68.9KB | 20.092 |    19 |    1 |     49.8ms |
-| Non-vectorized cubature::cuhre | 3.22ms | 3.27ms | 304.090 |        0B | 33.788 |    18 |    2 |     59.2ms |
-| Vectorized cubature::cuhre     | 3.71ms | 3.77ms | 264.152 |   125.6KB | 13.903 |    19 |    1 |     71.9ms |
+| Non-vectorized Hcubature       | 1.35ms | 1.39ms | 718.005 |    85.2KB | 37.790 |    19 |    1 |     26.5ms |
+| Vectorized Hcubature           | 1.78ms | 1.85ms | 541.106 |   147.2KB | 28.479 |    19 |    1 |     35.1ms |
+| Non-vectorized Pcubature       | 2.05ms | 2.08ms | 479.438 |        0B | 25.234 |    19 |    1 |     39.6ms |
+| Vectorized Pcubature           | 2.56ms | 2.62ms | 380.795 |    68.9KB | 20.042 |    19 |    1 |     49.9ms |
+| Non-vectorized cubature::cuhre | 3.21ms | 3.24ms | 307.896 |        0B | 34.211 |    18 |    2 |     58.5ms |
+| Vectorized cubature::cuhre     | 3.75ms | 3.81ms | 262.196 |   125.6KB | 29.133 |    18 |    2 |     68.7ms |
 
 ## Double Gaussian
 
@@ -359,12 +359,12 @@ knitr::kable(d, digits = 3)
 
 | expression                     |    min | median | itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
 |:-------------------------------|-------:|-------:|--------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       | 3.58ms | 3.63ms | 273.069 |     133KB | 48.189 |    17 |    3 |     62.3ms |
-| Vectorized Hcubature           | 4.58ms | 4.64ms | 214.781 |     249KB | 23.865 |    18 |    2 |     83.8ms |
-| Non-vectorized Pcubature       |  2.5ms | 2.53ms | 391.725 |        0B | 43.525 |    18 |    2 |       46ms |
-| Vectorized Pcubature           | 3.23ms |  3.3ms | 301.751 |      69KB | 15.882 |    19 |    1 |       63ms |
-| Non-vectorized cubature::cuhre | 6.94ms | 7.01ms | 142.227 |        0B | 35.557 |    16 |    4 |    112.5ms |
-| Vectorized cubature::cuhre     | 8.33ms |  8.4ms | 118.700 |     224KB | 29.675 |    16 |    4 |    134.8ms |
+| Non-vectorized Hcubature       | 3.61ms | 3.68ms | 271.656 |     133KB | 30.184 |    18 |    2 |     66.3ms |
+| Vectorized Hcubature           | 4.56ms | 4.64ms | 214.092 |     249KB | 37.781 |    17 |    3 |     79.4ms |
+| Non-vectorized Pcubature       |  2.5ms | 2.53ms | 393.154 |        0B | 20.692 |    19 |    1 |     48.3ms |
+| Vectorized Pcubature           | 3.24ms | 3.31ms | 298.333 |      69KB | 33.148 |    18 |    2 |     60.3ms |
+| Non-vectorized cubature::cuhre | 6.97ms | 7.05ms | 141.376 |        0B | 35.344 |    16 |    4 |    113.2ms |
+| Vectorized cubature::cuhre     | 8.32ms | 8.43ms | 116.048 |     224KB | 29.012 |    16 |    4 |    137.9ms |
 
 ## Tsuda’s example
 
@@ -385,14 +385,14 @@ d <- harness(f = testFn6, fv = testFn6_v,
 knitr::kable(d, digits = 3)
 ```
 
-| expression                     |    min |  median | itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
-|:-------------------------------|-------:|--------:|--------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       | 1.59ms |  1.62ms | 616.056 |    64.6KB | 32.424 |    19 |    1 |     30.8ms |
-| Vectorized Hcubature           | 2.11ms |  2.19ms | 458.246 |     156KB | 24.118 |    19 |    1 |     41.5ms |
-| Non-vectorized Pcubature       | 8.15ms |  8.33ms | 120.320 |        0B | 40.107 |    15 |    5 |    124.7ms |
-| Vectorized Pcubature           | 10.3ms | 10.43ms |  95.765 |   386.2KB | 23.941 |    16 |    4 |    167.1ms |
-| Non-vectorized cubature::cuhre | 4.32ms |  4.41ms | 226.213 |        0B | 39.920 |    17 |    3 |     75.2ms |
-| Vectorized cubature::cuhre     | 4.69ms |  4.82ms | 201.774 |   225.8KB | 22.419 |    18 |    2 |     89.2ms |
+| expression                     |     min |  median | itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
+|:-------------------------------|--------:|--------:|--------:|----------:|-------:|------:|-----:|-----------:|
+| Non-vectorized Hcubature       |  1.56ms |   1.6ms | 624.762 |    64.6KB | 32.882 |    19 |    1 |     30.4ms |
+| Vectorized Hcubature           |  2.11ms |  2.14ms | 464.839 |     156KB | 24.465 |    19 |    1 |     40.9ms |
+| Non-vectorized Pcubature       |  8.12ms |   8.2ms | 121.136 |        0B | 40.379 |    15 |    5 |    123.8ms |
+| Vectorized Pcubature           | 10.21ms | 10.38ms |  96.451 |   386.2KB | 32.150 |    15 |    5 |    155.5ms |
+| Non-vectorized cubature::cuhre |  4.31ms |  4.38ms | 227.697 |        0B | 25.300 |    18 |    2 |     79.1ms |
+| Vectorized cubature::cuhre     |  4.73ms |  4.82ms | 207.175 |   225.8KB | 36.560 |    17 |    3 |     82.1ms |
 
 ## Morokoff & Caflisch example
 
@@ -417,12 +417,12 @@ knitr::kable(d, digits = 3)
 
 | expression                     |     min |  median | itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
 |:-------------------------------|--------:|--------:|--------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       |  3.32ms |  3.39ms | 278.260 |   32.89KB | 27.826 |    20 |    2 |     71.9ms |
-| Vectorized Hcubature           |  3.96ms |  4.11ms | 233.202 |  205.61KB | 23.320 |    20 |    2 |     85.8ms |
-| Non-vectorized Pcubature       |  8.25ms |  8.41ms | 109.912 |        0B | 32.974 |    20 |    6 |      182ms |
-| Vectorized Pcubature           |  9.47ms |  9.66ms |  97.057 |  386.24KB | 24.264 |    20 |    5 |    206.1ms |
-| Non-vectorized cubature::cuhre | 42.52ms |  44.2ms |  22.717 |        0B | 26.124 |    20 |   23 |    880.4ms |
-| Vectorized cubature::cuhre     | 42.82ms | 43.41ms |  22.817 |    2.04MB | 25.099 |    20 |   22 |    876.5ms |
+| Non-vectorized Hcubature       |  3.34ms |  3.41ms | 275.491 |   32.89KB | 27.549 |    20 |    2 |     72.6ms |
+| Vectorized Hcubature           |  3.99ms |  4.08ms | 233.348 |  205.61KB | 23.335 |    20 |    2 |     85.7ms |
+| Non-vectorized Pcubature       |  8.25ms |  8.45ms | 108.773 |        0B | 32.632 |    20 |    6 |    183.9ms |
+| Vectorized Pcubature           |  9.39ms |  9.63ms |  98.014 |  386.24KB | 24.503 |    20 |    5 |    204.1ms |
+| Non-vectorized cubature::cuhre | 42.55ms | 42.85ms |  23.085 |        0B | 26.548 |    20 |   23 |    866.4ms |
+| Vectorized cubature::cuhre     | 42.62ms | 43.22ms |  22.970 |    2.04MB | 25.267 |    20 |   22 |    870.7ms |
 
 ## Wang-Landau sampling 1d, 2d examples
 
@@ -442,14 +442,14 @@ d <- harness(f = I.1d, fv = I.1d_v,
 knitr::kable(d, digits = 3)
 ```
 
-| expression                     |     min |  median |   itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
-|:-------------------------------|--------:|--------:|----------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       | 128.6µs | 133.1µs |  7343.472 |    53.7KB |  0.000 |   100 |    0 |    13.62ms |
-| Vectorized Hcubature           | 210.7µs | 221.5µs |  4361.072 |    68.5KB | 44.051 |    99 |    1 |     22.7ms |
-| Non-vectorized Pcubature       |  54.7µs |  57.7µs | 16599.833 |        0B |  0.000 |   100 |    0 |     6.02ms |
-| Vectorized Pcubature           |   157µs | 162.9µs |  5918.349 |        0B |  0.000 |   100 |    0 |     16.9ms |
-| Non-vectorized cubature::cuhre | 222.6µs | 230.2µs |  4254.330 |        0B | 42.973 |    99 |    1 |    23.27ms |
-| Vectorized cubature::cuhre     | 498.5µs | 527.6µs |  1880.729 |        0B | 18.997 |    99 |    1 |    52.64ms |
+| expression                     |   min |  median |   itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
+|:-------------------------------|------:|--------:|----------:|----------:|-------:|------:|-----:|-----------:|
+| Non-vectorized Hcubature       | 130µs | 133.3µs |  7320.174 |    53.7KB |  0.000 |   100 |    0 |    13.66ms |
+| Vectorized Hcubature           | 213µs | 220.9µs |  4371.734 |    68.5KB | 44.159 |    99 |    1 |    22.64ms |
+| Non-vectorized Pcubature       |  55µs |  57.1µs | 16713.644 |        0B |  0.000 |   100 |    0 |     5.98ms |
+| Vectorized Pcubature           | 157µs | 163.1µs |  5947.573 |        0B |  0.000 |   100 |    0 |    16.81ms |
+| Non-vectorized cubature::cuhre | 226µs | 232.5µs |  4184.584 |        0B | 42.269 |    99 |    1 |    23.66ms |
+| Vectorized cubature::cuhre     | 495µs | 516.4µs |  1927.086 |        0B | 19.466 |    99 |    1 |    51.37ms |
 
 ``` r
 I.2d <- function(x) {
@@ -471,12 +471,12 @@ knitr::kable(d, digits = 3)
 
 | expression                     |      min |   median |  itr/sec | mem_alloc | gc/sec | n_itr | n_gc | total_time |
 |:-------------------------------|---------:|---------:|---------:|----------:|-------:|------:|-----:|-----------:|
-| Non-vectorized Hcubature       |    4.5ms |   4.58ms |  217.292 |    78.4KB | 35.373 |    86 |   14 |    395.8ms |
-| Vectorized Hcubature           |   5.32ms |    5.4ms |  184.913 |   304.7KB | 27.631 |    87 |   13 |    470.5ms |
-| Non-vectorized Pcubature       | 409.23µs | 426.06µs | 2334.308 |        0B | 23.579 |    99 |    1 |     42.4ms |
-| Vectorized Pcubature           | 599.31µs | 634.03µs | 1566.569 |    18.3KB | 31.971 |    98 |    2 |     62.6ms |
-| Non-vectorized cubature::cuhre |   1.21ms |   1.24ms |  799.006 |        0B | 24.712 |    97 |    3 |    121.4ms |
-| Vectorized cubature::cuhre     |   1.32ms |   1.35ms |  734.291 |    60.1KB | 22.710 |    97 |    3 |    132.1ms |
+| Non-vectorized Hcubature       |   4.51ms |    4.6ms |  217.273 |    78.4KB | 35.370 |    86 |   14 |    395.8ms |
+| Vectorized Hcubature           |   5.32ms |    5.4ms |  184.589 |   304.7KB | 27.582 |    87 |   13 |    471.3ms |
+| Non-vectorized Pcubature       | 413.79µs | 429.15µs | 2318.957 |        0B | 23.424 |    99 |    1 |     42.7ms |
+| Vectorized Pcubature           | 595.41µs | 624.34µs | 1582.770 |    18.3KB | 32.301 |    98 |    2 |     61.9ms |
+| Non-vectorized cubature::cuhre |   1.22ms |   1.24ms |  804.141 |        0B | 24.870 |    97 |    3 |    120.6ms |
+| Vectorized cubature::cuhre     |   1.32ms |   1.35ms |  733.460 |    60.1KB | 22.684 |    97 |    3 |    132.2ms |
 
 ## Summary
 

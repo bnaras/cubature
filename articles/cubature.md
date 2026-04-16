@@ -283,19 +283,19 @@ already use more conservative error estimators.
 
 ### When robust is not enough: the sampling-density cliff
 
-Neither robust path is a complete cure. The safeguards work on regions
-where the rule has *seen some signal* and needs a better estimate of it.
-If the integrand’s support is so narrow that every sample point of the
-base rule misses it entirely, the safeguards have nothing to work with.
-This failure mode is determined by the rule’s sample geometry. For
-`hcubature`’s Genz–Malik rule on `[-h, h]^d`, the cliff for hinge-line
-integrands sits at `t₁ = -√(9/70)·h ≈ -0.3586·h`; for `pcubature`’s
-robust (m = 2) Clenshaw–Curtis grid it’s at
-`t₁ = -cos(3π/8)·h ≈ -0.3827·h`. For parameters on one side of the cliff
-every sample point fires and the algorithm converges correctly; for
-parameters on the other side every sample point evaluates to zero and
-the algorithm silently reports zero. No combination of error-estimator
-tweaks can detect this.
+Setting `robust = TRUE` is not a complete cure for either `hcubature` or
+`pcubature`. The safeguards work on regions where the rule has *seen
+some signal* and needs a better estimate of it. If the integrand’s
+support is so narrow that every sample point of the base rule misses it
+entirely, the safeguards have nothing to work with. This failure mode is
+determined by the rule’s sample geometry. For `hcubature`’s Genz–Malik
+rule on `[-h, h]^d`, the cliff for hinge-line integrands sits at
+`t₁ = -√(9/70)·h ≈ -0.3586·h`; for `pcubature`’s robust (m = 2)
+Clenshaw–Curtis grid it’s at `t₁ = -cos(3π/8)·h ≈ -0.3827·h`. For
+parameters on one side of the cliff every sample point fires and the
+algorithm converges correctly; for parameters on the other side every
+sample point evaluates to zero and the algorithm silently reports zero.
+No combination of error-estimator tweaks can detect this.
 
 The only way to address the cliff is a **denser base rule**, which is
 exactly what Cuba’s Cuhre provides: it uses a degree-13 rule with 65
@@ -348,15 +348,21 @@ compiled clients.
 
 ## Implementation notes
 
-The only real modification we have made to the underlying `cubature`
-library beyond the 2.2.0 robustness safeguards is that we use `M = 16`
-rather than the default `M = 19` suggested by the original author for
-`pcubature`, to comply with CRAN package size limits. The changes made
-to the `Cuba` library are managed in a [GitHub repo
-branch](https://github.com/bnaras/Cuba/tree/R_pkg): each time a new
-release is made, we update the main branch and keep Unix-platform
-changes in a branch named `R_pkg` against the current main branch.
-Windows customization lives in `Makevars.win`.
+Both bundled C libraries are maintained as git submodules pointing at
+personal forks with `R_pkg` branches that carry the R-package-specific
+patches:
+
+- The [cubature library
+  fork](https://github.com/bnaras/libcubature/tree/R_pkg)
+  (`src/libcubature`; the fork is named `libcubature` to avoid colliding
+  with this R package’s own repo name). The only substantive
+  modification beyond the 2.2.0 robustness safeguards is that we use
+  `M = 16` rather than the default `M = 19` suggested by the original
+  author for `pcubature`, to comply with CRAN package size limits.
+- The [Cuba library fork](https://github.com/bnaras/Cuba/tree/R_pkg)
+  (`src/Cuba`). Each time a new upstream release is made, we update the
+  main branch and keep Unix-platform changes in the `R_pkg` branch.
+  Windows customization lives in `Makevars.win`.
 
 ## Session info
 

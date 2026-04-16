@@ -386,7 +386,8 @@ conservative error estimators.</p>
 <div class="section level3">
 <h3 id="when-robust-is-not-enough-the-sampling-density-cliff">When robust is not enough: the sampling-density cliff<a class="anchor" aria-label="anchor" href="#when-robust-is-not-enough-the-sampling-density-cliff"></a>
 </h3>
-<p>Neither robust path is a complete cure. The safeguards work on
+<p>Setting <code>robust = TRUE</code> is not a complete cure for either
+<code>hcubature</code> or <code>pcubature</code>. The safeguards work on
 regions where the rule has <em>seen some signal</em> and needs a better
 estimate of it. If the integrand’s support is so narrow that every
 sample point of the base rule misses it entirely, the safeguards have
@@ -457,16 +458,23 @@ method-specific option.</li>
 <div class="section level2">
 <h2 id="implementation-notes">Implementation notes<a class="anchor" aria-label="anchor" href="#implementation-notes"></a>
 </h2>
-<p>The only real modification we have made to the underlying
-<code>cubature</code> library beyond the 2.2.0 robustness safeguards is
-that we use <code>M = 16</code> rather than the default
-<code>M = 19</code> suggested by the original author for
-<code>pcubature</code>, to comply with CRAN package size limits. The
-changes made to the <code>Cuba</code> library are managed in a <a href="https://github.com/bnaras/Cuba/tree/R_pkg" class="external-link">GitHub repo branch</a>:
-each time a new release is made, we update the main branch and keep
-Unix-platform changes in a branch named <code>R_pkg</code> against the
-current main branch. Windows customization lives in
-<code>Makevars.win</code>.</p>
+<p>Both bundled C libraries are maintained as git submodules pointing at
+personal forks with <code>R_pkg</code> branches that carry the
+R-package-specific patches:</p>
+<ul>
+<li>The <a href="https://github.com/bnaras/libcubature/tree/R_pkg" class="external-link">cubature library
+fork</a> (<code>src/libcubature</code>; the fork is named
+<code>libcubature</code> to avoid colliding with this R package’s own
+repo name). The only substantive modification beyond the 2.2.0
+robustness safeguards is that we use <code>M = 16</code> rather than the
+default <code>M = 19</code> suggested by the original author for
+<code>pcubature</code>, to comply with CRAN package size limits.</li>
+<li>The <a href="https://github.com/bnaras/Cuba/tree/R_pkg" class="external-link">Cuba library
+fork</a> (<code>src/Cuba</code>). Each time a new upstream release is
+made, we update the main branch and keep Unix-platform changes in the
+<code>R_pkg</code> branch. Windows customization lives in
+<code>Makevars.win</code>.</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
